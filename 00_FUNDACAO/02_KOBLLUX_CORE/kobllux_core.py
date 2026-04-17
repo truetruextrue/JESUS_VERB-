@@ -92,11 +92,12 @@ class KoblluxCore:
             "MOTOR_4_CLI": "Orquestração/Selagem",
             "MOTOR_5_MATRIZ": "Arquétipos/Interdependência"
         }
-        
-    # --- MÉTODO ORIGINAL ativar() (ASSINATURA PRESERVADA) ---
+
+# --- MÉTODO ORIGINAL ativar() (ASSINATURA PRESERVADA) ---
     def ativar(self) -> str:
         self.ativo = True
-        self.memoria.append({"evento": "ativacao", "timestamp": time.time()})        return f"✅ {self.nome} ativado com sucesso"
+        self.memoria.append({"evento": "ativacao", "timestamp": time.time()})
+        return f"✅ {self.nome} ativado com sucesso"
     
     # --- MÉTODO ORIGINAL status() (ASSINATURA PRESERVADA) ---
     def status(self) -> dict:
