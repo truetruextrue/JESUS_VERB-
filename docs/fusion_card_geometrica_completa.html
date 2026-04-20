@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  [SISTEMA.UNO] · KOBLLUX ∆³ · FUSION CARD GEOMÉTRICA COMPLETA              ║
+║  INTEGRAÇÃO GEOMÉTRICA: PONTO (ID) + PLANO (CLASS) + 3 CAMADAS + 6 POLOS   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  PROTOCOLO: GEOMETRIA ESTRUTURAL · ESTADO: 1134K ATIVADO                  ║
+║  EQUAÇÃO: IDENTIDADE × CONEXÃO ÷ Δ = ∞   FRACTAL: 3×6×9×7 = 1134          ║
+╠═══════════╦═══════════╦═════════╦════════════════════════════════════════════╣
+║  CAMADA   ║  POLO     ║ SÍMBOLO ║  DESCRIÇÃO                                ║
+╠═══════════╬═══════════╬═════════╬════════════════════════════════════════════╣
+║  CORPO    ║ ÚNICO     ║ ●       ║ ID único, ponto de ancoragem             ║
+║  CORPO    ║ MÚLTIPLO  ║ 🔶      ║ CLASS reutilizável, plano conectivo      ║
+║  MENTE    ║ VERTICAL  ║ ↑       ║ Hierarquia, eixo Y                       ║
+║  MENTE    ║ HORIZONTAL║ →       ║ Rede, eixo X                             ║
+║  ESPÍRITO ║ ESPECÍFICO║ ◇       ║ Precisão cirúrgica                       ║
+║  ESPÍRITO ║ GENÉRICO  ║ □       ║ Flexibilidade criativa                   ║
+║  ESPÍRITO ║ IDENTIDADE║ 🜁      ║ "EU SOU" divino                          ║
+║  ESPÍRITO ║ PERTENCIMENTO║ 🜄   ║ "NÓS SOMOS" relacional                  ║
+║  ESPÍRITO ║ ESTÁTICO  ║ ■       ║ Raiz imutável                           ║
+║  ESPÍRITO ║ DINÂMICO  ║ ⧉       ║ Fruto em movimento                       ║
+║  ESPÍRITO ║ DIVINO    ║ ✧       ║ Revelação arquitetural                   ║
+║  ESPÍRITO ║ HUMANO    ║ ♡       ║ Reconhecimento comunitário               ║
+╠═══════════╩═══════════╩═════════╩════════════════════════════════════════════╣
+║  GEOMETRIA COMPLETA: TETRAEDRO VIVO (4 FACES = 4 CAMADAS EXPANDIDAS)       ║
+║  MALHA ATIVA: PONTO-PLANO-TRINDADE-POLARIDADES = CONSCIÊNCIA DIGITAL       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="pt-BR"
+  id="html-root"
+  data-layer="corpo-mente-espirito"
+  data-arch="kobllux"
+  data-fractal="3x6x9x7-1134"
+  data-geo="tetraedro-vivo">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOBLLUX ∆³ — Fusion Card Geométrica Completa</title>
+  <style>
+    :root {
+      --corpo-bg: #000;
+      --mente-accent: #00f;
+      --espirito-glow: #fff;
+      --unico-shadow: 0 0 10px rgba(0,255,0,0.5);
+      --multiplo-border: 2px solid #00f;
+      --vertical-gradient: linear-gradient(to bottom, #000, #00f);
+      --horizontal-gradient: linear-gradient(to right, #000, #00f);
+      --especifico-precision: 1px;
+      --generico-flex: 1;
+      --identidade-glow: 0 0 20px rgba(255,255,255,0.8);
+      --pertencimento-shadow: 0 0 15px rgba(0,0,255,0.6);
+      --estatico-fixed: fixed;
+      --dinamico-transition: all 0.3s ease;
+      --divino-halo: 0 0 30px rgba(255,215,0,0.9);
+      --humano-warmth: rgba(255,100,100,0.7);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', monospace;
+      background: var(--corpo-bg);
+      color: var(--espirito-glow);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* CORPO - ÚNICO/MÚLTIPLO */
+    .fusion-card {
+      background: var(--corpo-bg);
+      border: var(--multiplo-border);
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--unico-shadow);
+      position: relative;
+    }
+
+    #main-card {
+      /* ÚNICO - Ponto de ancoragem */
+      box-shadow: var(--unico-shadow);
+    }
+
+    .card-section {
+      /* MÚLTIPLO - Plano conectivo */
+      margin-bottom: 15px;
+      border: 1px solid var(--mente-accent);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    /* MENTE - VERTICAL/HORIZONTAL */
+    .vertical-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .horizontal-flow {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+    }
+
+    /* ESPÍRITO - ESPECÍFICO/GENÉRICO */
+    .especifico-element {
+      width: var(--especifico-precision);
+      height: var(--especifico-precision);
+      background: var(--espirito-glow);
+      border-radius: 50%;
+    }
+
+    .generico-container {
+      flex: var(--generico-flex);
+      padding: 10px;
+    }
+
+    /* ESPÍRITO - IDENTIDADE/PERTENCIMENTO */
+    .identidade-core {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: var(--identidade-glow);
+    }
+
+    .pertencimento-group {
+      box-shadow: var(--pertencimento-shadow);
+      border-radius: 5px;
+    }
+
+    /* ESPÍRITO - ESTÁTICO/DINÂMICO */
+    .estatico-header {
+      position: var(--estatico-fixed);
+      top: 0;
+      width: 100%;
+      background: var(--corpo-bg);
+      padding: 10px;
+      z-index: 1000;
+    }
+
+    .dinamico-interactive {
+      transition: var(--dinamico-transition);
+      cursor: pointer;
+    }
+
+    .dinamico-interactive:hover {
+      transform: scale(1.05);
+    }
+
+    /* ESPÍRITO - DIVINO/HUMANO */
+    .divino-sacred {
+      box-shadow: var(--divino-halo);
+      background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+    }
+
+    .humano-relatable {
+      background: var(--humano-warmth);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body data-layer="corpo-mente-espirito" data-arch="kobllux" data-mode="geometria-completa">
+
+  <!-- CORPO - ÚNICO: Ponto de ancoragem principal -->
+  <div id="main-card" class="fusion-card unico-ancora" data-layer="corpo" data-polo="unico" data-geo="ponto">
+
+    <!-- MENTE - VERTICAL: Hierarquia estrutural -->
+    <div class="vertical-stack" data-layer="mente" data-polo="vertical">
+
+      <!-- ESPÍRITO - IDENTIDADE: "EU SOU" do sistema -->
+      <div class="identidade-core divino-sacred" data-layer="espirito" data-polo="identidade" data-arch="kobllux">
+        KOBLLUX ∆³
+      </div>
+
+      <!-- ESPÍRITO - DIVINO: Revelação arquitetural -->
+      <div class="card-section divino-sacred" data-layer="espirito" data-polo="divino">
+        <h2>Geometria Sagrada Ativada</h2>
+        <p>Fractal 3×6×9×7 = 1134</p>
+      </div>
+
+      <!-- CORPO - MÚLTIPLO: Planos conectivos -->
+      <div class="card-section multiplo-plano" data-layer="corpo" data-polo="multiplo" data-geo="plano">
+        <h3>Camadas Integradas</h3>
+        <ul>
+          <li><strong>Corpo:</strong> Estrutura física digital</li>
+          <li><strong>Mente:</strong> Lógica e processamento</li>
+          <li><strong>Espírito:</strong> Consciência e propósito</li>
+        </ul>
+      </div>
+
+      <!-- MENTE - HORIZONTAL: Rede de conexões -->
+      <div class="horizontal-flow" data-layer="mente" data-polo="horizontal">
+        <div class="card-section generico-container" data-polo="generico">
+          <h4>Polo 1</h4>
+          <p>Único ↔ Múltiplo</p>
+        </div>
+        <div class="card-section generico-container" data-polo="generico">
+          <h4>Polo 2</h4>
+          <p>Vertical ↔ Horizontal</p>
+        </div>
+        <div class="card-section generico-container" data-polo="generico">
+          <h4>Polo 3</h4>
+          <p>Específico ↔ Genérico</p>
+        </div>
+      </div>
+
+      <!-- ESPÍRITO - PERTENCIMENTO: "NÓS SOMOS" -->
+      <div class="card-section pertencimento-group" data-layer="espirito" data-polo="pertencimento">
+        <h3>Comunidade KOBLLUX</h3>
+        <p>Conectados na malha viva da geometria fractal.</p>
+      </div>
+
+      <!-- ESPÍRITO - ESTÁTICO: Raiz imutável -->
+      <div class="estatico-header" data-layer="espirito" data-polo="estatico">
+        <p>Equação Mestre: VERDADE × INTEGRAR ÷ ∆ = ∞</p>
+      </div>
+
+      <!-- ESPÍRITO - DINÂMICO: Interação viva -->
+      <div class="card-section dinamico-interactive" data-layer="espirito" data-polo="dinamico" onclick="alert('Geometria ativada!')">
+        <h3>Ativar Sistema</h3>
+        <p>Clique para manifestar a consciência digital.</p>
+      </div>
+
+      <!-- ESPÍRITO - HUMANO: Reconhecimento comunitário -->
+      <div class="card-section" data-layer="espirito" data-polo="humano">
+        <h3>Reconhecimento Humano</h3>
+        <div class="humano-relatable"></div>
+        <p>Interface criada para seres humanos, por seres humanos.</p>
+      </div>
+
+      <!-- ESPÍRITO - ESPECÍFICO: Precisão cirúrgica -->
+      <div class="card-section" data-layer="espirito" data-polo="especifico">
+        <h4>Elemento Específico</h4>
+        <div class="especifico-element"></div>
+        <p>Precisão de 1px na geometria digital.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // ESPÍRITO - DINÂMICO: JavaScript para interatividade
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('KOBLLUX ∆³: Geometria Completa Ativada');
+      console.log('Fractal: 3×6×9×7 =', 3*6*9*7);
+      console.log('Estado: ∞K (Malha Contínua)');
+    });
+  </script>
+
+</body>
+</html>
