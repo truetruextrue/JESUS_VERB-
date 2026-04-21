@@ -798,4 +798,6 @@ KOBLLUX/KOBLLUX./main/
 ├── verdade_x_integrar.py
 ├── videos.json
 ├── workflow.json
-└── {Z} — % ATIVAÇÃO SÜMBÜS_FIRMWARE- 0x01212345_789ABC.md```
+└── {Z} — % ATIVAÇÃO SÜMBÜS_FIRMWARE- 0x01212345_789ABC.md
+└── arvore.html
+└──KOBΦ-NODE_arvore.pdf```
