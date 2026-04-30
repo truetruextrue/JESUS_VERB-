@@ -1,0 +1,8 @@
+@import url('../../inbox/[0×00]_CONFIGURAÇÕES_GERAIS_RODA_VIVA_KOBLLUX.css');
+:root { --bg: linear-gradient(to bottom,#000,#1a1a1a); --text:#d7d7d7; }
+*{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Montserrat,sans-serif;overflow:hidden}
+body{background:var(--bg);color:var(--text)}
+.response-container{position:fixed;left:20px;right:20px;bottom:160px;padding:12px;background:rgba(0,0,0,.3);border-radius:20px;max-height:calc(100vh - 200px);overflow-y:auto}
+.input-container{position:fixed;left:20px;right:20px;bottom:90px;display:flex;gap:6px}
+.input-container input{flex:1;padding:10px;border:none;border-radius:20px;background:rgba(255,255,255,.1);color:inherit}
+.symbol-bar{position:fixed;left:16px;top:50%;transform:translateY(-50%);z-index:5000;background:rgba(6,6,21,.88);padding:10px;border-radius:20px}
