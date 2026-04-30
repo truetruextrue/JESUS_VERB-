@@ -1,0 +1,315 @@
+/* ═══════════════════════════════════════════════════════════════ */
+/* CONFIGURAÇÕES GERAIS - RODA VIVA KOBLLUX */
+/* ═══════════════════════════════════════════════════════════════ */
+
+html, body {
+    font-family: 'Segoe UI', 'Roboto', sans-serif-condensed;
+    font-size: 85%;
+    line-height: 1.6;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    color: #e0e6ed;
+    padding: 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* TABELAS - ESTILO KOBLLUX */
+/* ═══════════════════════════════════════════════════════════════ */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 216, 216, 0.2);
+}
+
+thead {
+    background: linear-gradient(135deg, #00d8d8 0%, #d800d8 100%);
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid rgba(0, 216, 216, 0.3);
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(0, 216, 216, 0.05);
+}
+
+tbody tr:hover {
+    background: rgba(216, 0, 216, 0.1);
+    transform: translateX(5px);
+    transition: all 0.3s ease;}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ÁRVORES E ESTRUTURAS HIERÁRQUICAS */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.tree, .tree ul, .tree li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.tree ul {
+    padding-left: 30px;
+}
+
+.tree li {
+    margin: 8px 0;
+    padding: 8px 12px;
+    background: rgba(0, 216, 216, 0.08);
+    border-left: 3px solid #00d8d8;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease;
+}
+
+.tree li:hover {
+    background: rgba(216, 0, 216, 0.15);
+    border-left-color: #d800d8;
+    transform: translateX(8px);
+}
+
+.tree li::before {
+    content: "├─";
+    color: #00d8d8;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.tree li:last-child::before {
+    content: "└─";
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* CÓDIGO E BLOCOS - CORES ANSI SIMULADAS */
+/* ═══════════════════════════════════════════════════════════════ */
+
+pre, code {
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    background: #0d1117;    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 2px 6px;
+}
+
+pre {
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+    position: relative;
+}
+
+pre::before {
+    content: "⌘ KOBLLUX";
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(135deg, #00d8d8, #d800d8);
+    color: #fff;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 0 6px 0 6px;
+    font-weight: bold;
+}
+
+/* ANSI Colors Simulation */
+.ansi-blue { color: #5aa9e6; }
+.ansi-green { color: #6ee7f2; }
+.ansi-yellow { color: #f2c335; }
+.ansi-magenta { color: #d16bff; }
+.ansi-cyan { color: #00d8d8; }
+.ansi-red { color: #ff6b6b; }
+.ansi-bold { font-weight: bold; }
+.ansi-dim { opacity: 0.7; }
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* KaTeX / LaTeX */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.katex {
+    font-size: 1.1em;
+    color: #00d8d8;
+    background: rgba(0, 216, 216, 0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.katex-display {
+    background: rgba(216, 0, 216, 0.05);
+    padding: 15px;    border-radius: 8px;
+    border-left: 4px solid #d800d8;
+    margin: 20px 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ASCII ART */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.ascii-art {
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    background: #0a0e27;
+    color: #00ff88;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #00d8d8;
+    overflow-x: auto;
+    line-height: 1.4;
+    text-shadow: 0 0 10px rgba(0, 216, 216, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* HEADINGS - RODA VIVA STYLE */
+/* ═══════════════════════════════════════════════════════════════ */
+
+h1, h2, h3, h4, h5, h6 {
+    color: #00d8d8;
+    border-bottom: 2px solid rgba(0, 216, 216, 0.3);
+    padding-bottom: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.2em;
+    background: linear-gradient(135deg, #00d8d8, #d800d8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border: none;
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #d800d8;
+}
+
+h3 {
+    font-size: 1.5em;    color: #f2c335;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* BLOCKQUOTES */
+/* ═══════════════════════════════════════════════════════════════ */
+
+blockquote {
+    border-left: 5px solid #00d8d8;
+    background: rgba(0, 216, 216, 0.05);
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+}
+
+blockquote::before {
+    content: "✧ ";
+    color: #d800d8;
+    font-size: 1.5em;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* LINKS */
+/* ═══════════════════════════════════════════════════════════════ */
+
+a {
+    color: #00d8d8;
+    text-decoration: none;
+    border-bottom: 1px dotted #00d8d8;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #d800d8;
+    border-bottom-color: #d800d8;
+    background: rgba(216, 0, 216, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* AST / ÁRVORE DE SINTAXE */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.ast-node {
+    display: inline-block;
+    margin: 5px;
+    padding: 8px 12px;
+    background: rgba(0, 216, 216, 0.1);    border: 2px solid #00d8d8;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+}
+
+.ast-node.function { border-color: #f2c335; background: rgba(242, 195, 53, 0.1); }
+.ast-node.class { border-color: #d800d8; background: rgba(216, 0, 216, 0.1); }
+.ast-node.variable { border-color: #6ee7f2; background: rgba(110, 231, 242, 0.1); }
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* SCROLLBAR PERSONALIZADA */
+/* ═══════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0e27;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #00d8d8, #d800d8);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #d800d8, #00d8d8);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ANIMAÇÕES - RODA VIVA */
+/* ═══════════════════════════════════════════════════════════════ */
+
+@keyframes rodaViva {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.roda-viva {
+    animation: rodaViva 20s linear infinite;
+}
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* BADGES / ETIQUETAS */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin: 2px;
+}
+
+.badge-opcode { background: #00d8d8; color: #000; }
+.badge-frequencia { background: #d800d8; color: #fff; }
+.badge-fase { background: #f2c335; color: #000; }
+.badge-ciclo { background: #6ee7f2; color: #000; }

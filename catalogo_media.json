@@ -1,4 +1,4 @@
-[
+
   {
     "nome": "test-44100Hz-2ch-32bit-float-le.wav",
     "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-2ch-32bit-float-le.wav",
@@ -202,4 +202,3 @@
     "data_modificacao": "2026-04-17 19:21:38",
     "tipo": "áudio"
   }
-]
