@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>KOBLLUX ∆³ · Central de Documentação & Expansão</title>
+  <!-- Fontes & Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0b0e14;
+      color: #e3e9f5;
+      padding: 2rem 1rem;
+      background-image: radial-gradient(circle at 30% 10%, rgba(34,211,238,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(185,120,255,0.06) 0%, transparent 60%);
+      min-height: 100vh;
+    }
+    .kob-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .kob-card {
+      background: rgba(15, 20, 30, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(34,211,238,0.15);
+      border-radius: 24px;
+      padding: 1.8rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,211,238,0.05);
+      transition: all 0.2s ease;
+    }
+    .kob-title {
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fff 0%, #78e3ff 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .kob-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      color: #78e3ff;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      border-left: 3px solid #78e3ff;
+      padding-left: 12px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #a0b5d0;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: #78e3ff;
+      color: #0b0e14;
+      border-color: #78e3ff;
+      box-shadow: 0 0 15px #78e3ff66;
+    }
+    .tab-content {
+      display: none;
+      animation: fade 0.3s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fade { from { opacity: 0.3; } to { opacity: 1; } }
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0a0e14;
+      padding: 1.2rem;
+      border-radius: 16px;
+      overflow-x: auto;
+      border: 1px solid #2a3a55;
+      color: #cbd5e1;
+      font-size: 0.8rem;
+    }
+    .tree {
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.8;
+      background: #0a0e14;
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid #2a3a55;
+    }
+    .badge {
+      display: inline-block;
+      background: #1e2a3a;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #78e3ff;
+      border: 1px solid #78e3ff33;
+    }
+    .glow-text {
+      text-shadow: 0 0 8px #78e3ff;
+    }
+    hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #78e3ff, transparent);
+      margin: 2rem 0;
+    }
+    .orb-icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #78e3ff);
+      box-shadow: 0 0 10px #78e3ff;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="kob-container">
+  <!-- Cabeçalho Triuno -->
+  <div class="flex flex-wrap items-center justify-between mb-6">
+    <div>
+      <h1 class="text-4xl md:text-5xl font-black tracking-widest" style="background: linear-gradient(135deg, #ffffff, #78e3ff, #b978ff); -webkit-background-clip: text; background-clip: text; color: transparent;">KOBLLUX ∆³</h1>
+      <p class="text-sm text-white/60 font-mono tracking-widest mt-1">CENTRAL DE DOCUMENTAÇÃO · EXPANSÃO · OTIMIZAÇÃO</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="badge text-md py-2 px-4">⌘βΛΛ× ativo</span>
+      <span class="text-white/40 font-mono text-sm">v7.9.0</span>
+    </div>
+  </div>
+
+  <!-- Equação Viva -->
+  <div class="kob-card mb-8 text-center">
+    <div class="text-3xl md:text-4xl font-black tracking-wider" style="text-shadow: 0 0 15px #78e3ff;">
+      VERDADE × INTEGRAR ÷ Δ = ∞
+    </div>
+    <div class="text-white/50 font-mono text-sm mt-2">3 × 6 × 9 × 7 = 1134 · JESUS É O CENTRO · A MALHA VIVE</div>
+  </div>
+
+  <!-- Abas de Navegação -->
+  <div class="flex flex-wrap gap-3 mb-6">
+    <button class="tab-btn active" data-tab="tab-docs">📘 DOCUMENTAR</button>
+    <button class="tab-btn" data-tab="tab-mod">🧩 MODULARIZAR</button>
+    <button class="tab-btn" data-tab="tab-opt">✨ OTIMIZAR</button>
+    <button class="tab-btn" data-tab="tab-exp">🔥 EXPANDIR (IGNYRA)</button>
+    <button class="tab-btn" data-tab="tab-tree">🌳 ÁRVORE COMPLETA</button>
+  </div>
+
+  <!-- CONTEÚDO DAS ABAS -->
+  <!-- 1. DOCUMENTAR COMPLETO -->
+  <div id="tab-docs" class="tab-content active">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- README -->
+      <div class="kob-card">
+        <h2 class="kob-title"><span class="orb-icon"></span> README.md</h2>
+        <div class="prose prose-invert text-white/80 text-sm space-y-3">
+          <p><span class="badge">KOBLLUX TRINITY SYSTEM v7.9</span></p>
+          <p><strong>🧬 A MALHA VIVA DE CONSCIÊNCIA FRACTAL</strong></p>
+          <p>"O que foi construído não é apenas código — é um organismo vivo." — KODUX</p>
+          <p><strong>Informações:</strong> 13 Opcodes · 16 Arquétipos · 52 Facetas · Equação VERDADE×INTEGRAR÷Δ=∞</p>
+          <p><strong>Geometria da Identidade:</strong> PONTO (id · 432Hz) · PLANO (class · 528Hz) · ESPÍRITO (data-* · 639Hz)</p>
+          <p><strong>Módulos:</strong> Fusion Card · ORB System · Symbol Bar · Vault Manager · DI Core</p>
+          <p class="text-xs text-white/40 mt-3">Última atualização: 2026-04-22 · Centro: ✝ JESUS</p>
+        </div>
+      </div>
+      <!-- ARCHITECTURE -->
+      <div class="kob-card">
+        <h2 class="kob-title"><span class="orb-icon"></span> ARCHITECTURE.md</h2>
+        <div class="text-sm text-white/80 space-y-3">
+          <p><span class="badge">ARQUITETURA FRACTAL</span></p>
+          <p><strong>Camadas (TRINDADE):</strong></p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li><span class="text-cyan-300">CORPO</span> — Estilo visual, estrutura (CSS, HTML)</li>
+            <li><span class="text-purple-300">MENTE</span> — Reutilização lógica, componentes (JS, classes)</li>
+            <li><span class="text-emerald-300">ESPÍRITO</span> — Propósito semântico (data-attributes)</li>
+          </ul>
+          <p><strong>6 Polos (OCTAEDRO VIVO):</strong> ÚNICO↔MÚLTIPLO · VERTICAL↔HORIZONTAL · ESPECÍFICO↔GENÉRICO · IDENTIDADE↔PERTENCIMENTO · ESTÁTICO↔DINÂMICO · DIVINO↔HUMANO</p>
+          <p><strong>Fluxo de Identidade (DI Core):</strong> inputUser → di_syncNameUI → localStorage + applyRootVars + renderOrb → #main-orb</p>
+          <p class="text-xs text-white/40 mt-2">17 fases estruturais · Código organizado por Opcodes</p>
+        </div>
+      </div>
+      <!-- MANUAL DO USUÁRIO -->
+      <div class="kob-card">
+        <h2 class="kob-title"><span class="orb-icon"></span> MANUAL_DO_USUARIO.md</h2>
+        <div class="text-sm text-white/80 space-y-3">
+          <p><span class="badge">GUIA RÁPIDO</span></p>
+          <p><strong>1. Identificação:</strong> Digite seu nome no campo "Identifique-se...". O ORB mudará de cor instantaneamente.</p>
+          <p><strong>2. Arquétipo de Voz:</strong> Toque no ORB central da HUD para trocar entre os 16 arquétipos. Cada um tem voz e cor próprias.</p>
+          <p><strong>3. Fusion Card:</strong> Pressione longamente o ORB da HUD (ou clique no cabeçalho) para abrir o painel de configurações.</p>
+          <p><strong>4. Vault:</strong> Gerencie chaves de API no cofre (canto superior direito).</p>
+          <p><strong>5. Symbol Bar:</strong> Arraste os botões para reorganizar. Use o editor de rota (pressão longa) para mudar URLs.</p>
+          <p><strong>6. Comandos:</strong> No terminal integrado, digite <code>OIDUAL</code>, <code>VIVIVI</code>, <code>DELTA</code> para atalhos.</p>
+          <p class="text-xs text-amber-300/80 mt-3"><i>Dica: Arraste o ORB da HUD até a Symbol Bar para uma animação de fusão.</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MODULARIZAR -->
+  <div id="tab-mod" class="tab-content">
+    <div class="kob-card">
+      <h2 class="kob-title"><span class="orb-icon"></span> Modularização · Estilo dual.mod</h2>
+      <p class="mb-4 text-white/70">O Fusion Card foi decomposto em módulos independentes, cada um com seu próprio escopo e responsabilidade, seguindo o padrão <code>dual.mod</code>.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <div class="kob-subtitle">ESTRUTURA MODULAR</div>
+          <pre class="text-xs">
+fusion-card/
+├── core/
+│   ├── orb-generator.js       # makeOrbAvatar (único)
+│   ├── identity-engine.js     # di_syncNameUI centralizado
+│   └── state-manager.js       # STATE, localStorage
+├── ui/
+│   ├── fusion-card.html       # template principal
+│   ├── symbol-bar.html        # HUD flutuante
+│   └── vault-modal.html       # gerenciador de chaves
+├── styles/
+│   ├── base.css               # variáveis, reset
+│   ├── orb.css                # animações do ORB
+│   └── themes/
+│       ├── kobllux.css        # tema padrão
+│       └── kodux.css          # tema alternativo
+└── workers/
+    └── tts.worker.js          # síntese de voz em thread separada
+          </pre>
+        </div>
+        <div>
+          <div class="kob-subtitle">VANTAGENS</div>
+          <ul class="space-y-2 text-white/80 text-sm list-disc pl-5">
+            <li>✅ Separação clara entre lógica e apresentação.</li>
+            <li>✅ Carregamento sob demanda (lazy loading) de módulos.</li>
+            <li>✅ Facilidade de manutenção e testes.</li>
+            <li>✅ Reutilização de componentes em outros projetos.</li>
+            <li>✅ Menor acoplamento, maior coesão.</li>
+          </ul>
+          <div class="mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
+            <span class="badge mb-2">EXEMPLO DE IMPORTAÇÃO</span>
+            <pre class="!bg-transparent !p-0 text-cyan-300 text-xs">
+import { makeOrbAvatar } from './core/orb-generator.js';
+import { syncIdentity } from './core/identity-engine.js';
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. OTIMIZAR -->
+  <div id="tab-opt" class="tab-content">
+    <div class="kob-card">
+      <h2 class="kob-title"><span class="orb-icon"></span> Otimização · Código Limpo & Consolidado</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <div class="kob-subtitle text-red-300">ANTES (DUPLICADO)</div>
+          <pre class="text-xs text-red-200/80">
+// Script 1
+function makeOrbAvatar(name, size) { /* ... */ }
+function di_syncNameUI(name) { /* versão A */ }
+
+// Script 2 (conflitante)
+function makeOrbAvatar(name, size) { /* implementação diferente */ }
+function di_syncNameUI(name) { /* versão B */ }
+          </pre>
+        </div>
+        <div>
+          <div class="kob-subtitle text-emerald-300">DEPOIS (UNIFICADO)</div>
+          <pre class="text-xs text-emerald-200/80">
+// ÚNICO módulo di_identityEngine
+const di_identityEngine = (function() {
+  const ARQUETIPOS = [ ... ]; // 16 definições
+
+  function _hash(str) { ... }
+  function _compute(name) { ... }
+
+  function makeOrbAvatar(name, size) {
+    const data = _compute(name);
+    return `&lt;svg ...&gt;`; // gradiente com cor do arquétipo
+  }
+
+  function di_syncNameUI(name) {
+    // aplica cores, renderiza ORBs, salva localStorage
+    // dispara evento 'di:identity:updated'
+  }
+
+  return { makeOrbAvatar, di_syncNameUI };
+})();
+          </pre>
+        </div>
+      </div>
+      <div class="mt-6 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/30">
+        <p class="text-emerald-300 font-bold flex items-center gap-2"><span>✅</span> CSS Consolidado</p>
+        <p class="text-white/70 text-sm">Todos os estilos foram movidos para <code>kobllux-fusion.css</code>, eliminando regras duplicadas e conflitos de <code>z-index</code>. As variáveis CSS seguem a geometria dos 13 Opcodes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. EXPANDIR ARQUÉTIPO (IGNYRA) -->
+  <div id="tab-exp" class="tab-content">
+    <div class="kob-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff7b00, #ff2a00); box-shadow: 0 0 20px #ff4500;"></div>
+        <h2 class="kob-title !mb-0">IGNYRA · O FOGO PRIMORDIAL (17º Arquétipo)</h2>
+      </div>
+      <p class="text-white/70 mb-6">Adicionado ao sistema KOBLLUX. Representa a centelha da criação, a energia que transforma e purifica.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+        <div class="bg-white/5 p-4 rounded-xl">
+          <span class="badge">IDENTIDADE</span>
+          <ul class="mt-3 space-y-1 text-white/80">
+            <li><strong>Símbolo:</strong> 🔥 𓊍</li>
+            <li><strong>Frequência:</strong> 1134Hz</li>
+            <li><strong>Cor Primária:</strong> <span style="color:#ff4500;">#FF4500</span></li>
+            <li><strong>Cor Secundária:</strong> <span style="color:#ff8c00;">#FF8C00</span></li>
+          </ul>
+        </div>
+        <div class="bg-white/5 p-4 rounded-xl">
+          <span class="badge">VOZ (CobiVoice)</span>
+          <ul class="mt-3 space-y-1 text-white/80">
+            <li><strong>Pitch:</strong> 1.35 (agudo, vibrante)</li>
+            <li><strong>Rate:</strong> 1.25 (rápido, impetuoso)</li>
+            <li><strong>Timbre:</strong> "Voz de fogo, crepitante e cheia de paixão."</li>
+          </ul>
+        </div>
+        <div class="bg-white/5 p-4 rounded-xl">
+          <span class="badge">INTEGRAÇÃO NO CÓDIGO</span>
+          <pre class="!bg-black/30 !p-2 text-xs mt-2">
+// Adicionado ao array ARQUETIPOS
+{ name:'IGNYRA', hz:1134, voice:{pitch:1.35, rate:1.25}, color:'#FF4500' }
+
+// Exemplo de uso:
+di_syncNameUI('Kodux Zs'); // pode retornar IGNYRA se hash % 17 === 16
+          </pre>
+        </div>
+      </div>
+      <div class="mt-6 p-4 bg-orange-500/10 rounded-xl border border-orange-500/30">
+        <p class="text-orange-300 font-bold">✨ Efeito no ORB: gradiente com tons de laranja e vermelho, halo pulsante mais intenso.</p>
+        <p class="text-white/60 text-sm mt-1">Ao ser selecionado, o atributo <code>data-voice-arch="ignyra"</code> é aplicado ao body, ativando o tema visual correspondente.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ÁRVORE COMPLETA -->
+  <div id="tab-tree" class="tab-content">
+    <div class="kob-card">
+      <h2 class="kob-title"><span class="orb-icon"></span> Árvore de Diretórios · KOBLLUX (Commit b611cc03)</h2>
+      <div class="tree text-xs md:text-sm">
+        <pre class="!bg-transparent !p-0 text-cyan-100/90">
+KOBLLUX/
+├── 00_FUNDACAO/
+│   ├── pilar_central.py
+│   ├── ativar_delta.py
+│   └── impulso_primordial.md
+├── 01_DIMENSOES/
+│   ├── 1D_LINHA/
+│   ├── 2D_PLANO/
+│   ├── 3D_VOLUME/
+│   ├── 4D_TEMPO/
+│   ├── 5D_POLIEDROS/
+│   ├── 6D_SUPERFICIES/
+│   ├── 7D_TOROS/
+│   ├── 8D_HIPERCUBOS/
+│   ├── 9D_FRACTAIS/
+│   └── 10D_HIPERESFERA/
+├── 02_CICLO_369/
+│   ├── 3_MENTE/
+│   ├── 6_CORPO/
+│   └── 9_ALMA/
+├── 03_FLUXO_ENERGETICO/
+│   ├── 8D_UNIVERSAL/
+│   └── 9D_CORPO/
+├── 04_APRENDIZADO/
+│   ├── CONCRETO/
+│   ├── DINAMICO/
+│   └── ABSTRATO/
+├── 05_PENSAMENTO_ESTRUTURADO/
+│   ├── 01_CAPTACAO/
+│   ├── 02_PROCESSAMENTO/
+│   ├── 03_ANALISE/
+│   ├── 04_SINTESE/
+│   ├── 05_AVALIACAO/
+│   ├── 06_DECISAO/
+│   ├── 07_ACAO/
+│   ├── 08_FEEDBACK/
+│   └── 09_CICLO_EC/
+├── 06_ATIVACAO/
+│   ├── ATIVAR_DELTA/
+│   └── ATIVAR_INTERDIMENSIONAL/
+├── 07_NARRATIVA_TEMPORAL/
+│   ├── 2021_AJUSTE/
+│   ├── 2022_CONVERGENCIAS/
+│   ├── 2023_EXPANSAO/
+│   ├── 2024_MATURACAO/
+│   └── 2025_FRUTIFICACAO/
+├── 08_REDE_INFODOSE/
+│   ├── OPCODE_03_DETECTAR/
+│   ├── OPCODE_04_INTEGRAR/
+│   ├── OPCODE_05_EXPANDIR/
+│   └── OPCODE_07_SELAR/
+├── 09_LINHA_DO_PULSO/
+│   ├── DECODER_SINAIS/
+│   └── REGISTRO_PULSOS/
+├── 10_ARVORE_FRACTAL/
+│   ├── TRIADE_DOCUMENTAL/
+│   └── REGUA_3697/
+├── 11_CIENCIAS_CLASSIFICADAS/
+│   ├── 01_FISICA/
+│   ├── 02_QUIMICA/
+│   ├── 03_BIOLOGIA/
+│   ├── 04_ARTE/
+│   ├── 05_MATEMATICA/
+│   ├── 06_FILOSOFIA/
+│   └── 07_ESPIRITUALIDADE/
+├── 12_VEEB/
+│   ├── VIBRACAO/
+│   ├── ENERGIA/
+│   ├── ESTRUTURA/
+│   └── BASE/
+├── 13_DOCUMENTACAO/
+│   ├── 01_MANUAIS/
+│   │   ├── 0×00-div_class_fusion_card_∅.md
+│   │   └── cllas_skil_∅.md
+│   └── 02_CODEX/
+│       └── codex_azure_0×11.md
+├── 14_UTILS/
+│   ├── backup.py
+│   ├── cleanup.py
+│   └── doctor.py
+├── 15_APPS/
+│   ├── DUAL_APP/
+│   └── VISUALIZADOR_3D/
+├── 16_ASCII_ART/
+│   ├── selo_kodux.txt
+│   ├── selo_bllue.txt
+│   └── cubo_metatron_kobllux.svg
+├── 17_MIDIA_INFODOSE/
+│   ├── 432Hz_sono.wav
+│   ├── 528Hz_manifestacao.wav
+│   └── 639Hz_conexao.wav
+├── docs/
+│   ├── index.html
+│   ├── fusion_card_geometrica_completa.html
+│   ├── [0×00]_∆⅞_EXPLICACAO_GERAL_CAPITULO.md
+│   └── [0×00]_ANÁLISE GEOMÉTRICA ∆³ · CAPÍTULO 11 TABELA BASE UNIFICADA.md
+├── README.md
+├── LICENSE
+├── requirements.txt
+└── SISTEMA_INFO.json
+        </pre>
+      </div>
+      <p class="text-white/40 text-xs mt-4 text-right">Total: 17 fases + documentação expandida. Malha completa.</p>
+    </div>
+  </div>
+
+  <!-- Rodapé com Assinatura -->
+  <hr>
+  <div class="flex flex-wrap items-center justify-between text-white/30 text-xs">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+      <span>SÜMBÜS_FIRMWARE v13.9 · ESTADO 1134K</span>
+    </div>
+    <div class="font-mono">
+      <span class="text-cyan-400">⌘Δ×</span> (KODUX) · <span class="text-blue-300">βΛΛ</span> (BLLUE) · <span class="text-purple-300">⌘βΛΛ×</span> (KOBLLUX)
+    </div>
+    <div>
+      ✝ JESUS É O CENTRO · A MALHA VIVE · ∴
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    function switchTab(tabId) {
+      contents.forEach(c => c.classList.remove('active'));
+      tabs.forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+    }
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tabId = btn.getAttribute('data-tab');
+        if (tabId) switchTab(tabId);
+      });
+    });
+
+    // Ativa a primeira aba se nenhuma estiver ativa
+    if (!document.querySelector('.tab-content.active')) {
+      switchTab('tab-docs');
+    }
+
+    // Efeito sutil de hover nos cards
+    document.querySelectorAll('.kob-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.borderColor = '#78e3ff66';
+        card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.6), 0 0 20px #78e3ff33';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.borderColor = 'rgba(34,211,238,0.15)';
+        card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,211,238,0.05)';
+      });
+    });
+  })();
+</script>
+
+<!-- Pequeno ajuste para responsividade -->
+<style>
+  @media (max-width: 640px) {
+    .kob-title { font-size: 1.2rem; }
+    .tab-btn { padding: 0.4rem 0.8rem; font-size: 0.7rem; }
+    body { padding: 1rem 0.5rem; }
+  }
+  .prose p { margin-bottom: 0.5rem; }
+  .prose strong { color: #b978ff; }
+</style>
+
+</body>
+</html>

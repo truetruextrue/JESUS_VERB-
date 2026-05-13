@@ -1,0 +1,40 @@
+{
+  "versao": "1.0",
+  "total_midias": 2,
+  "data": "2026-02-28",
+  "data_atualizacao": "2026-02-28 16:18:18",
+  "midias": [
+    {
+      "nome": "0x03_639Hz_46cec3fd-6145-44b2-a18f-c098c2960d80_VITALIS.wav",
+      "opcode": "0x03",
+      "frequencia": "639Hz",
+      "arquétipo": "VITALIS",
+      "tipo": "audio",
+      "caminho": "/storage/emulated/0/0/0/KOBLLUX/17_MIDIA_INFODOSE/02_AUDIO/01_PULSOS/0x03_639Hz_46cec3fd-6145-44b2-a18f-c098c2960d80_VITALIS.wav",
+      "tamanho_bytes": 1989690,
+      "data_processamento": "2026-02-28 16:18:18"
+    },
+    {
+      "nome": "0x03_639Hz_76f87eb2-4a8d-4682-9cf6-76dd6a233739_VITALIS.wav",
+      "opcode": "0x03",
+      "frequencia": "639Hz",
+      "arquétipo": "VITALIS",
+      "tipo": "audio",
+      "caminho": "/storage/emulated/0/0/0/KOBLLUX/17_MIDIA_INFODOSE/02_AUDIO/01_PULSOS/0x03_639Hz_76f87eb2-4a8d-4682-9cf6-76dd6a233739_VITALIS.wav",
+      "tamanho_bytes": 2298810,
+      "data_processamento": "2026-02-28 16:18:18"
+    }
+  ],
+  "por_tipo": {
+    "video": 0,
+    "audio": 2,
+    "app": 0,
+    "outro": 0
+  },
+  "por_opcode": {
+    "0x03": 2
+  },
+  "por_arquétipo": {
+    "VITALIS": 2
+  }
+}

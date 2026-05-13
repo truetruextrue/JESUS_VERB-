@@ -1,0 +1,69 @@
+{
+  "title": "KOBLLUX · Infodose Feed",
+  "description": "VERDADE × INTEGRAR ÷ Δ = ∞ · 3×6×9×7=1134",
+  "version": "1.0",
+  "updated": "2026-03-22",
+  "categories": [
+    {
+      "cat": "432Hz · NOVA · Gênese",
+      "opcode": "0x01",
+      "freq": 432,
+      "arquetipo": "NOVA",
+      "vids": []
+    },
+    {
+      "cat": "528Hz · ATLAS · Orquestrador",
+      "opcode": "0x02",
+      "freq": 528,
+      "arquetipo": "ATLAS",
+      "vids": []
+    },
+    {
+      "cat": "639Hz · VITALIS · Expansão",
+      "opcode": "0x03",
+      "freq": 639,
+      "arquetipo": "VITALIS",
+      "vids": []
+    },
+    {
+      "cat": "777Hz · LUMINE · Selar",
+      "opcode": "0x07",
+      "freq": 777,
+      "arquetipo": "LUMINE",
+      "vids": []
+    },
+    {
+      "cat": "963Hz · AION · Manifestar",
+      "opcode": "0x09",
+      "freq": 963,
+      "arquetipo": "AION",
+      "vids": []
+    }
+  ],
+  "podcasts": [
+    {
+      "cat": "0x03 · VITALIS · 639Hz · Pulsos",
+      "opcode": "0x03",
+      "freq": 639,
+      "arquetipo": "VITALIS",
+      "eps": [
+        {
+          "title": "VITALIS · Pulso 01 · 639Hz",
+          "url": "https://raw.githubusercontent.com/KOBLLUX/KOBLLUX./main/17_MIDIA_INFODOSE/02_AUDIO/01_PULSOS/0x03_639Hz_46cec3fd-6145-44b2-a18f-c098c2960d80_VITALIS.wav",
+          "cover": "",
+          "opcode": "0x03",
+          "freq": 639,
+          "tamanho_bytes": 1989690
+        },
+        {
+          "title": "VITALIS · Pulso 02 · 639Hz",
+          "url": "https://raw.githubusercontent.com/KOBLLUX/KOBLLUX./main/17_MIDIA_INFODOSE/02_AUDIO/01_PULSOS/0x03_639Hz_76f87eb2-4a8d-4682-9cf6-76dd6a233739_VITALIS.wav",
+          "cover": "",
+          "opcode": "0x03",
+          "freq": 639,
+          "tamanho_bytes": 2298810
+        }
+      ]
+    }
+  ]
+}

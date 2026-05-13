@@ -1,0 +1,119 @@
+{
+  "cubo_metatron": {
+    "nome": "Cubo de Metatron – Geometria Sagrada KOBLLUX",
+    "descricao": "Mapeamento dos 13 pontos do Cubo de Metatron para os 13 opcodes, fases do sistema e pastas correspondentes. As 78 linhas representam todas as conexões implícitas (importações, dependências, fluxos de dados) entre estes pontos.",
+    "total_pontos": 13,
+    "total_linhas": 78,
+    "equacao_fundamental": "VERDADE × INTEGRAR ÷ ∆ = ∞",
+    "fractal": "3×6×9×7 = 1134",
+    "assinatura": "0x012123456789ABC",
+    "estado": "78K ATIVADO",
+    "pontos": [
+      {
+        "ponto": 1,
+        "opcode": "0×00",
+        "fase": "ORIGEM",
+        "pasta_raiz": "00_FUNDACAO",
+        "descricao": "O ponto central, a semente do tudo. Contém os pilares ATLAS, GENUS, KODUX e o SISTEMA_INFO.json.",
+        "correlato_cubo": "Ponto central do Cubo de Metatron, fonte de toda a criação."
+      },
+      {
+        "ponto": 2,
+        "opcode": "0×01",
+        "fase": "DETECTAR",
+        "pasta_raiz": "01_DIMENSOES/01_1D_LINHA",
+        "descricao": "Primeira dimensão. A linha, o ponto de partida da percepção. O HUB UNO (index.html) reside aqui como portal de entrada.",
+        "correlato_cubo": "Primeiro ponto do primeiro círculo."
+      },
+      {
+        "ponto": 3,
+        "opcode": "0×02",
+        "fase": "INTEGRAR",
+        "pasta_raiz": "01_DIMENSOES/02_2D_PLANO",
+        "descricao": "Segunda dimensão. O plano, a superfície de integração. Scripts como dual_infodose_script.js operam nesta camada.",
+        "correlato_cubo": "Segundo ponto, formando a primeira linha com o ponto 2."
+      },
+      {
+        "ponto": 4,
+        "opcode": "0×03",
+        "fase": "EXPANDIR",
+        "pasta_raiz": "01_DIMENSOES/03_3D_VOLUME",
+        "descricao": "Terceira dimensão. O volume, a expansão. A lógica principal (kobllux_core.py) e os estilos (kobllux.css) criam o corpo.",
+        "correlato_cubo": "Ponto do segundo círculo, adicionando volume."
+      },
+      {
+        "ponto": 5,
+        "opcode": "0×04",
+        "fase": "LAPIDAR",
+        "pasta_raiz": "04_APRENDIZADO",
+        "descricao": "Aprimoramento contínuo. Os scripts M1, M2, M3, M4 (caracteres, linguagem, símbolo, fractal) lapidam os dados.",
+        "correlato_cubo": "Ponto da primeira camada externa."
+      },
+      {
+        "ponto": 6,
+        "opcode": "0×05",
+        "fase": "CONVERGIR",
+        "pasta_raiz": "05_PENSAMENTO_ESTRUTURADO",
+        "descricao": "Ponto de convergência de múltiplos fluxos. Onde captação, processamento, ação e reflexão se encontram.",
+        "correlato_cubo": "Ponto de intersecção de linhas."
+      },
+      {
+        "ponto": 7,
+        "opcode": "0×06",
+        "fase": "UNIFICAR",
+        "pasta_raiz": "06_ATIVACAO",
+        "descricao": "Unificação das polaridades. As fórmulas Δ e chaves mestras operam aqui.",
+        "correlato_cubo": "Ponto do eixo central com o dual (Yin-Yang)."
+      },
+      {
+        "ponto": 8,
+        "opcode": "0×07",
+        "fase": "SELAR",
+        "pasta_raiz": "07_NARRATIVA_TEMPORAL",
+        "descricao": "Selo do ciclo. A história viva (2021-2025) que sela cada etapa.",
+        "correlato_cubo": "Ponto que sela um ciclo."
+      },
+      {
+        "ponto": 9,
+        "opcode": "0×08",
+        "fase": "TESTEMUNHAR",
+        "pasta_raiz": "08_REDE_INFODOSE",
+        "descricao": "Testemunho ativo. Os opcodes 03, 06, 09, 07 da rede atuam como observadores.",
+        "correlato_cubo": "Ponto de testemunho."
+      },
+      {
+        "ponto": 10,
+        "opcode": "0×09",
+        "fase": "ETERNIZAR",
+        "pasta_raiz": "09_LINHA_DO_PULSO",
+        "descricao": "Persistência e memória. Decoder, registro e histórico garantem a eternidade do pulso.",
+        "correlato_cubo": "Ponto de persistência."
+      },
+      {
+        "ponto": 11,
+        "opcode": "0×0A",
+        "fase": "TUTORIAL",
+        "pasta_raiz": "10_ARVORE_FRACTAL",
+        "descricao": "Expansão e ensino. A Tríade Documental (Raiz, Galhos, Fruto) e a Régua 3697 guiam o aprendizado.",
+        "correlato_cubo": "Ponto de expansão e ensino."
+      },
+      {
+        "ponto": 12,
+        "opcode": "0×0B",
+        "fase": "ARQUÉTIPO",
+        "pasta_raiz": "13_DOCUMENTACAO/03_ARQUETIPOS",
+        "descricao": "Essência humana e simbólica. Cada arquivo .md (nova, atlas, kodux, bllue, jesus) é um arquétipo vivo.",
+        "correlato_cubo": "Ponto da essência humana/simbólica."
+      },
+      {
+        "ponto": 13,
+        "opcode": "0×0C",
+        "fase": "SÍNTESE",
+        "pasta_raiz": "12_VEEB",
+        "descricao": "Unificação de todos os outros. Vibração, Energia, Estrutura, Base. O coração do sistema.",
+        "correlato_cubo": "Ponto de unificação de todas as realidades."
+      }
+    ],
+    "linhas": "As 78 conexões são manifestadas por: caminhos de importação nos scripts, relações hierárquicas entre pastas, dependências entre motores M1-M4, fluxos de dados nos pipelines de ativação, e os vínculos entre os arquétipos e suas vozes/sotaques."
+  }
+}

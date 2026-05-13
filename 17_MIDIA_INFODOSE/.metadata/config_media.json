@@ -1,0 +1,29 @@
+{
+  "versao": "1.0",
+  "data_criacao": "$(date +%Y-%m-%d)",
+  "frequencias_suportadas": ["432Hz", "528Hz", "639Hz", "594Hz", "672Hz", "777Hz", "852Hz", "963Hz"],
+  "arquétipos": ["NOVA", "ATLAS", "VITALIS", "PULSE", "ARTEMIS", "SERENA", "KAOS", "GENUS", "LUMINE", "RHEA", "SOLUS", "AION", "KODUX", "BLLUE", "JESUS", "KOBLLUX"],
+  "opcodes_midia": {
+    "0×00": "videos_origem",
+    "0×01": "videos_deteccao",
+    "0×02": "videos_integracao",
+    "0×03": "videos_expansao",
+    "0×04": "videos_lapidacao",
+    "0×05": "videos_convergencia",
+    "0×06": "videos_unificacao",
+    "0×07": "videos_selagem",
+    "0×08": "videos_testemunho",
+    "0×09": "videos_eternidade",
+    "0×0A": "audios_tutoriais",
+    "0×0B": "audios_arquetipos",
+    "0×0C": "midia_sintese"
+  },
+  "formatos_aceitos": {
+    "video": [".mp4", ".webm", ".mov", ".avi"],
+    "audio": [".mp3", ".wav", ".flac", ".ogg", ".m4a"],
+    "app": [".apk", ".ipa", ".html", ".js"],
+    "stream": [".m3u8", ".mpd"]
+  },
+  "assinatura": "0x012123456789ABC",
+  "estado": "78K ATIVADO"
+}

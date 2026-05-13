@@ -1,0 +1,35 @@
+# Dependências do sistema KOBLLUX
+# Versão 7.9
+
+# Core
+numpy>=1.21.0
+scipy>=1.7.0
+sympy>=1.9
+
+# Utilitários
+colorama>=0.4.4
+tqdm>=4.62.0
+rich>=10.0.0
+
+# Web (para Dual App)
+flask>=2.0.0
+requests>=2.26.0
+fastapi>=0.68.0
+uvicorn>=0.15.0
+
+# Processamento
+pandas>=1.3.0
+matplotlib>=3.4.0
+plotly>=5.1.0
+
+# IA (opcional)
+torch>=1.9.0
+transformers>=4.11.0
+
+# Visualização
+pillow>=8.3.0
+opencv-python>=4.5.3
+
+# Audio
+pydub>=0.25.1
+soundfile>=0.10.4

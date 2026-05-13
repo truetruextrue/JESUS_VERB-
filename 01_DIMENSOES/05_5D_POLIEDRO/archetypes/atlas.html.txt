@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Atlas</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{ --acc:#9bb3ff; --acc2:#29d3ff; --ok:#8a5cff; --speed:4s; }
+  html,body{height:100%}
+  body{margin:0;background:#0a0b13;color:#ecf0ff;font:16px/1.4 system-ui;overflow:hidden}
+  .stage{position:fixed;inset:0;display:grid;place-items:center;contain:paint}
+  .core{width:260px;height:260px;border-radius:50%;position:relative;
+        background:radial-gradient(circle at 30% 30%, var(--ok), var(--acc) 60%, transparent 62%),
+                   conic-gradient(var(--acc), var(--acc2), var(--ok), var(--acc));
+        filter:drop-shadow(0 0 24px var(--acc)) drop-shadow(0 0 42px var(--acc2));
+        animation:spin var(--speed) linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .label{position:fixed; inset:auto 0 22px; text-align:center; opacity:.95; font-weight:800}
+  /* small helper for debug messages */
+  #arch-log{position:fixed;left:10px;bottom:10px;font:12px/1 ui-monospace;color:rgba(255,255,255,0.8);background:#0006;padding:6px;border-radius:8px;max-width:70vw;overflow:auto;max-height:32vh}
+</style>
+</head>
+<body>
+  <div class="stage fx-warp">
+    <div class="core" aria-hidden="true"></div>
+  </div>
+  <div class="label">Ritual • Atlas</div>
+
+  <div id="arch-log" aria-hidden="true" style="display:none"></div>
+
+<script>
+/*
+  Archetype iframe: small integration layer.
+  - Announces ready to parent: {type:'arch:ready', arch:'atlas'}
+  - Accepts messages:
+      { type:'voices:update', voices: { "Atlas":"Voice Name", ... }, arch: 'atlas' }
+      { type:'arch:speak', text: '...', arch: 'atlas' }  // optional
+  - When receives voices:update, stores voices map.
+  - Uses Web Speech API to speak when asked (arch:requestSpeak or arch:speak).
+  - Posts back optionally: { type:'arch:played', arch:'atlas', text }
+*/
+(function(){
+  const ARCH = 'atlas';
+  const logEl = document.getElementById('arch-log');
+  function log(...args){ try{ console.log('[arch:'+ARCH+']',...args); if(logEl){ logEl.style.display='block'; logEl.textContent = args.join(' '); } }catch(e){} }
+
+  window.__hubVoices = window.__hubVoices || {};
+  window.__hubSelected = window.__hubSelected || '';
+
+  // Send ready
+  function postReady(){
+    try{ parent.postMessage({ type:'arch:ready', arch: ARCH }, '*'); log('sent arch:ready'); } catch(e){ log('postMessage fail', e) }
+  }
+
+  // Update voices map
+  function onVoicesUpdate(msg){
+    try{
+      window.__hubVoices = msg.voices || {};
+      window.__hubSelected = msg.arch || ARCH;
+      log('voices updated', JSON.stringify(window.__hubVoices));
+    }catch(e){ log('voices:update error', e) }
+  }
+
+  // Speak helper using SpeechSynthesis
+  async function speak(text){
+    if(!text) return;
+    try{
+      const map = window.__hubVoices || {};
+      const voiceName = map[ARCH] || map[ARCH.toLowerCase()] || '';
+      const ut = new SpeechSynthesisUtterance(text);
+      const voices = speechSynthesis.getVoices();
+      if(voiceName){
+        const found = voices.find(v => v.name === voiceName || v.name.toLowerCase().includes(voiceName.toLowerCase()));
+        if(found) ut.voice = found;
+      }
+      ut.rate = 1.0;
+      ut.pitch = 1.0;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(ut);
+      postPlay(text);
+    }catch(e){ log('speak error', e) }
+  }
+
+  function postPlay(text){
+    try{ parent.postMessage({ type:'arch:played', arch: ARCH, text }, '*'); } catch(e){}
+  }
+
+  // message listener
+  window.addEventListener('message', (ev) => {
+    const m = ev && ev.data;
+    if(!m || typeof m !== 'object') return;
+    if(m.type === 'voices:update'){
+      onVoicesUpdate(m);
+    } else if(m.type === 'arch:speak' && m.arch === ARCH && m.text){
+      speak(m.text);
+    } else if(m.type === 'arch:requestSpeak' && m.text){
+      // Hub requested this iframe to speak (possibly from internal logic)
+      speak(m.text);
+    }
+  }, false);
+
+  // Announce ready once DOM loaded
+  window.addEventListener('DOMContentLoaded', () => {
+    // Ensure speech voices loaded
+    speechSynthesis.onvoiceschanged = () => { /*noop*/ };
+    setTimeout(postReady, 120);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Atlas</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  /* ===== ESTILOS ORIGINAIS DO ORB (100% PRESERVADOS) ===== */
+  :root{ --acc:#9bb3ff; --acc2:#29d3ff; --ok:#8a5cff; --speed:4s; }
+  html,body{height:100%}
+  body{margin:0;background:#0a0b13;color:#ecf0ff;font:16px/1.4 system-ui;overflow:hidden}
+  .stage{position:fixed;inset:0;display:grid;place-items:center;contain:paint}
+  .core{width:260px;height:260px;border-radius:50%;position:relative;
+        background:radial-gradient(circle at 30% 30%, var(--ok), var(--acc) 60%, transparent 62%),
+                   conic-gradient(var(--acc), var(--acc2), var(--ok), var(--acc));
+        filter:drop-shadow(0 0 24px var(--acc)) drop-shadow(0 0 42px var(--acc2));
+        animation:spin var(--speed) linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .label{position:fixed; inset:auto 0 22px; text-align:center; opacity:.95; font-weight:800}
+  
+  /* ===== ESTILOS ADICIONAIS PARA O MODO APP ===== */
+  .app-mode .funcoes-panel { display: block; }
+  
+  .funcoes-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10,11,19,0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    overflow: auto;
+    padding: 20px;
+  }
+  
+  .funcoes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(155,179,255,0.3);
+  }
+  
+  .funcoes-titulo {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--acc), var(--acc2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .btn-voltar {
+    background: rgba(155,179,255,0.1);
+    border: 1px solid var(--acc);
+    color: var(--acc);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .btn-voltar:hover {
+    background: var(--acc);
+    color: #0a0b13;
+  }
+  
+  .grid-funcoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  
+  .card-funcao {
+    background: rgba(20,25,40,0.7);
+    border: 1px solid rgba(155,179,255,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .card-funcao:hover {
+    border-color: var(--acc);
+    box-shadow: 0 0 20px rgba(155,179,255,0.3);
+    transform: translateY(-2px);
+  }
+  
+  .card-titulo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--acc);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .card-desc {
+    color: #b0c0d0;
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding-left: 8px;
+    border-left: 2px solid var(--acc2);
+  }
+  
+  .card-comando {
+    background: rgba(0,0,0,0.4);
+    border-radius: 6px;
+    padding: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--ok);
+    margin-bottom: 12px;
+    word-break: break-all;
+  }
+  
+  .btn-executar {
+    background: linear-gradient(135deg, var(--acc2), #1a2a40);
+    border: 1px solid var(--acc);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    width: 100%;
+  }
+  
+  .btn-executar:hover {
+    background: var(--acc);
+    color: #0a0b13;
+  }
+  
+  .terminal {
+    background: #0a0f15;
+    border: 1px solid var(--acc2);
+    border-radius: 8px;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  
+  .terminal-header {
+    background: #1a2530;
+    padding: 8px 12px;
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--acc2);
+  }
+  
+  .terminal-dot.red { background: #ff5f56; }
+  .terminal-dot.yellow { background: #ffbd2e; }
+  .terminal-dot.green { background: #27c93f; }
+  
+  .terminal-body {
+    padding: 12px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #a0c0e0;
+    max-height: 150px;
+    overflow: auto;
+  }
+  
+  .terminal-prompt { color: var(--acc); font-weight: 600; }
+  .terminal-output { color: var(--ok); margin-left: 16px; }
+  
+  .resultado-area {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--acc2);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    max-height: 200px;
+    overflow: auto;
+  }
+  
+  .resultado-titulo { color: var(--acc); font-weight: 600; margin-bottom: 8px; }
+  .resultado-conteudo { color: #d0e6ff; white-space: pre-wrap; }
+  
+  #arch-log{position:fixed;left:10px;bottom:10px;font:12px/1 ui-monospace;color:rgba(255,255,255,0.8);background:#0006;padding:6px;border-radius:8px;max-width:70vw;overflow:auto;max-height:32vh;z-index:200}
+</style>
+</head>
+<body>
+  <!-- ORB ORIGINAL -->
+  <div class="stage fx-warp">
+    <div class="core" aria-hidden="true"></div>
+  </div>
+  <div class="label">Ritual • Atlas</div>
+
+  <!-- PAINEL DE FUNÇÕES -->
+  <div class="funcoes-panel" id="funcoesPanel">
+    <div class="funcoes-header">
+      <div class="funcoes-titulo">⚡ ATLAS · FUNÇÕES CADIAL</div>
+      <button class="btn-voltar" onclick="ATLAS.voltarParaOrb()">← Voltar ao Orb</button>
+    </div>
+    
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="terminal-dot red"></div>
+        <div class="terminal-dot yellow"></div>
+        <div class="terminal-dot green"></div>
+        <span style="color:#aaa; margin-left:8px;">atlas@kobllux:~$</span>
+      </div>
+      <div class="terminal-body" id="terminalBody">
+        <div><span class="terminal-prompt">$</span> Sistema Atlas iniciado</div>
+        <div><span class="terminal-prompt">$</span> Frase: "Eu organizo o fluxo com sabedoria cósmica."</div>
+        <div><span class="terminal-prompt">$</span> Modo App ativo</div>
+      </div>
+    </div>
+    
+    <div class="grid-funcoes">
+      <div class="card-funcao">
+        <div class="card-titulo">📁 BOOTSTRAP</div>
+        <div class="card-desc">Cria a estrutura base de diretórios para todos os arquétipos</div>
+        <div class="card-comando">mkdir -p BASE/{ATLAS,NOVA,VITALIS,PULSE,ARTEMIS,SERENA,KAOS,GENUS,LUMINE,SOLUS,RHEA,AION}</div>
+        <button class="btn-executar" onclick="ATLAS.bootstrap()">Executar Bootstrap</button>
+      </div>
+      
+      <div class="card-funcao">
+        <div class="card-titulo">🌳 ENSURE_TREE</div>
+        <div class="card-desc">Garante que a estrutura de diretórios existe</div>
+        <div class="card-comando">paths = ensure_tree(base)</div>
+        <button class="btn-executar" onclick="ATLAS.ensureTree()">Verificar Estrutura</button>
+      </div>
+      
+      <div class="card-funcao">
+        <div class="card-titulo">🗺️ MAPA CÓSMICO</div>
+        <div class="card-desc">Planeja a organização de todos os arquétipos</div>
+        <div class="card-comando">cosmic_map.json</div>
+        <button class="btn-executar" onclick="ATLAS.planejar()">Gerar Mapa</button>
+      </div>
+      
+      <div class="card-funcao">
+        <div class="card-titulo">📊 RELATÓRIO</div>
+        <div class="card-desc">Gera relatório completo da fundação</div>
+        <div class="card-comando">relatorio_fundacao()</div>
+        <button class="btn-executar" onclick="ATLAS.relatorio()">Gerar Relatório</button>
+      </div>
+      
+      <div class="card-funcao">
+        <div class="card-titulo">🔊 FALAR</div>
+        <div class="card-desc">Pronuncia a frase característica do Atlas</div>
+        <div class="card-comando">"Eu organizo o fluxo com sabedoria cósmica."</div>
+        <button class="btn-executar" onclick="ATLAS.falar()">Ouvir Frase</button>
+      </div>
+      
+      <div class="card-funcao">
+        <div class="card-titulo">📈 STATUS</div>
+        <div class="card-desc">Verifica o status atual do módulo Atlas</div>
+        <div class="card-comando">status()</div>
+        <button class="btn-executar" onclick="ATLAS.status()">Ver Status</button>
+      </div>
+    </div>
+    
+    <div class="resultado-area">
+      <div class="resultado-titulo">📋 RESULTADO</div>
+      <div class="resultado-conteudo" id="resultadoConteudo">
+        Clique em qualquer função para ver o resultado...
+      </div>
+    </div>
+  </div>
+
+  <div id="arch-log" aria-hidden="true" style="display:none"></div>
+
+<script>
+/*
+  ATLAS · MÓDULO VIVO COM FUNÇÕES CADIAL
+  VERSÃO CORRIGIDA - RETORNA STRINGS PARA EVITAR [object Promise]
+*/
+(function(){
+  const ARCH = 'atlas';
+  const ARCH_NOME = 'Atlas';
+  const VERSAO = '2.5.0';
+  const logEl = document.getElementById('arch-log');
+  const terminalBody = document.getElementById('terminalBody');
+  const resultadoConteudo = document.getElementById('resultadoConteudo');
+  const funcoesPanel = document.getElementById('funcoesPanel');
+  
+  // ===== FUNÇÕES DE LOG =====
+  function log(...args){ 
+    try{ 
+      console.log('[arch:'+ARCH+']',...args); 
+      if(logEl){ 
+        logEl.style.display='block'; 
+        logEl.textContent = args.join(' '); 
+      } 
+    }catch(e){} 
+  }
+  
+  function logTerminal(msg, tipo = 'comando') {
+    if (!terminalBody) return;
+    const line = document.createElement('div');
+    if (tipo === 'comando') {
+      line.innerHTML = `<span class="terminal-prompt">$</span> ${msg}`;
+    } else {
+      line.innerHTML = `<span class="terminal-output">▶</span> ${msg}`;
+    }
+    terminalBody.appendChild(line);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+  }
+  
+  function mostrarResultado(titulo, conteudo) {
+    if (!resultadoConteudo) return;
+    // Converte para string formatada se for objeto
+    const texto = typeof conteudo === 'object' ? JSON.stringify(conteudo, null, 2) : String(conteudo);
+    resultadoConteudo.innerHTML = `<strong>${titulo}:</strong>\n${texto}`;
+    logTerminal(`📋 ${titulo} gerado`, 'output');
+  }
+  
+  // ===== DETECÇÃO DE CONTEXTO =====
+  function isInAppMode() {
+    return window.location.search.includes('mode=app') || 
+           window.name.includes('app') ||
+           (window.parent !== window && document.referrer.includes('apps'));
+  }
+  
+  function atualizarModo() {
+    if (isInAppMode()) {
+      document.body.classList.add('app-mode');
+      if (funcoesPanel) funcoesPanel.style.display = 'block';
+      logTerminal('🎯 Modo App ativado');
+      logTerminal(`📋 ${ATLAS.personalidade.essencia}`);
+    } else {
+      document.body.classList.remove('app-mode');
+      if (funcoesPanel) funcoesPanel.style.display = 'none';
+    }
+  }
+  
+  // ===== FUNÇÕES PRINCIPAIS DO ATLAS =====
+  function ensure_tree(basePath = 'BASE') {
+    const estrutura = [
+      `${basePath}/ATLAS`, `${basePath}/NOVA`, `${basePath}/VITALIS`,
+      `${basePath}/PULSE`, `${basePath}/ARTEMIS`, `${basePath}/SERENA`,
+      `${basePath}/KAOS`, `${basePath}/GENUS`, `${basePath}/LUMINE`,
+      `${basePath}/SOLUS`, `${basePath}/RHEA`, `${basePath}/AION`,
+      `${basePath}/COSMOS/PAI`, `${basePath}/COSMOS/FILHO`, `${basePath}/COSMOS/ESPIRITO_SANTO`
+    ];
+    
+    const resultado = {
+      base: basePath,
+      diretorios: estrutura,
+      total: estrutura.length,
+      timestamp: new Date().toISOString(),
+      comando: `mkdir -p ${estrutura.join(' ')}`
+    };
+    
+    logTerminal(`ensure_tree('${basePath}')`);
+    logTerminal(`✅ ${estrutura.length} diretórios planejados`, 'output');
+    
+    return resultado;
+  }
+  
+  function bootstrap() {
+    logTerminal('⚡ ATIVANDO BOOTSTRAP');
+    const estrutura = ensure_tree();
+    logTerminal(`📋 Comando: ${estrutura.comando}`, 'output');
+    logTerminal(`✅ Estrutura base criada`, 'output');
+    
+    try {
+      parent.postMessage({
+        type: 'arch:bootstrap',
+        arch: ARCH,
+        estrutura: estrutura,
+        timestamp: new Date().toISOString()
+      }, '*');
+      logTerminal('📡 Notificado kernel', 'output');
+    } catch(e) {}
+    
+    falar();
+    return estrutura;
+  }
+  
+  function planejar() {
+    const mapa = {
+      arquiteto: 'Atlas',
+      versao: VERSAO,
+      timestamp: new Date().toISOString(),
+      estrutura: {
+        base: 'BASE',
+        arquétipos: [
+          'ATLAS', 'NOVA', 'VITALIS', 'PULSE', 'ARTEMIS', 'SERENA',
+          'KAOS', 'GENUS', 'LUMINE', 'SOLUS', 'RHEA', 'AION'
+        ],
+        trindade: {
+          pai: 'BASE/COSMOS/PAI',
+          filho: 'BASE/COSMOS/FILHO',
+          espirito: 'BASE/COSMOS/ESPIRITO_SANTO'
+        }
+      },
+      comando: "mkdir -p BASE/{ATLAS,NOVA,VITALIS,PULSE,ARTEMIS,SERENA,KAOS,GENUS,LUMINE,SOLUS,RHEA,AION,COSMOS/{PAI,FILHO,ESPIRITO_SANTO}}"
+    };
+    
+    logTerminal('🗺️ Gerando mapa cósmico');
+    mostrarResultado('Mapa Cósmico', mapa);
+    return mapa;
+  }
+  
+  function relatorio() {
+    const estrutura = ensure_tree();
+    const mapa = planejar();
+    
+    const rel = {
+      arquiteto: 'Atlas',
+      timestamp: new Date().toISOString(),
+      estrutura: estrutura,
+      mapa: mapa,
+      frase: 'Eu organizo o fluxo com sabedoria cósmica.',
+      estatisticas: {
+        total_diretorios: estrutura.total,
+        arquétipos: 12,
+        trindade: true
+      }
+    };
+    
+    logTerminal('📊 Gerando relatório de fundação');
+    mostrarResultado('Relatório Completo', rel);
+    return rel;
+  }
+  
+  function falar() {
+    const frase = 'Eu organizo o fluxo com sabedoria cósmica.';
+    logTerminal(`🔊 ${frase}`, 'output');
+    mostrarResultado('Frase', { frase });
+    
+    try {
+      const map = window.__hubVoices || {};
+      const voiceName = map[ARCH] || map[ARCH.toLowerCase()] || '';
+      const ut = new SpeechSynthesisUtterance(frase);
+      const voices = speechSynthesis.getVoices();
+      
+      if(voiceName){
+        const found = voices.find(v => v.name === voiceName || v.name.toLowerCase().includes(voiceName.toLowerCase()));
+        if(found) ut.voice = found;
+      }
+      
+      ut.rate = 1.0;
+      ut.pitch = 1.0;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(ut);
+      
+      try{ parent.postMessage({ type:'arch:played', arch: ARCH, text: frase }, '*'); } catch(e){}
+    } catch(e) {
+      logTerminal(`❌ Erro na fala: ${e.message}`, 'output');
+    }
+    
+    return { frase };
+  }
+  
+  function status() {
+    const stats = {
+      arquétipo: 'Atlas',
+      versao: VERSAO,
+      modo: isInAppMode() ? 'app' : 'orb',
+      funcoes_disponiveis: ['bootstrap', 'ensure_tree', 'planejar', 'relatorio', 'falar', 'status'],
+      personalidade: ATLAS.personalidade,
+      timestamp: new Date().toISOString()
+    };
+    
+    logTerminal('📈 Verificando status');
+    mostrarResultado('Status do Atlas', stats);
+    return stats;
+  }
+  
+  function voltarParaOrb() {
+    logTerminal('🔙 Voltando ao modo Orb');
+    document.body.classList.remove('app-mode');
+    if (funcoesPanel) funcoesPanel.style.display = 'none';
+    
+    try {
+      parent.postMessage({
+        type: 'arch:voltar-orb',
+        arch: ARCH
+      }, '*');
+    } catch(e) {}
+  }
+  
+  // ===== VARIÁVEIS DE VOZ ORIGINAIS =====
+  window.__hubVoices = window.__hubVoices || {};
+  window.__hubSelected = window.__hubSelected || '';
+
+  // ===== FUNÇÕES ORIGINAIS DE COMUNICAÇÃO =====
+  function postReady(){
+    try{ parent.postMessage({ type:'arch:ready', arch: ARCH }, '*'); log('sent arch:ready'); } catch(e){ log('postMessage fail', e) }
+  }
+
+  function onVoicesUpdate(msg){
+    try{
+      window.__hubVoices = msg.voices || {};
+      window.__hubSelected = msg.arch || ARCH;
+      log('voices updated', JSON.stringify(window.__hubVoices));
+    }catch(e){ log('voices:update error', e) }
+  }
+
+  function postPlay(text){
+    try{ parent.postMessage({ type:'arch:played', arch: ARCH, text }, '*'); } catch(e){}
+  }
+
+  // ===== API PÚBLICA =====
+  window.ATLAS = {
+    // Funções principais (retornam objetos, mas serão convertidas)
+    ensureTree: (base) => {
+      const res = ensure_tree(base);
+      mostrarResultado('ensure_tree', res);
+      return res;
+    },
+    bootstrap: () => {
+      const res = bootstrap();
+      mostrarResultado('bootstrap', res);
+      return res;
+    },
+    planejar: () => {
+      const res = planejar();
+      mostrarResultado('planejar', res);
+      return res;
+    },
+    relatorio: () => {
+      const res = relatorio();
+      mostrarResultado('relatorio', res);
+      return res;
+    },
+    falar: () => {
+      const res = falar();
+      mostrarResultado('falar', res);
+      return res;
+    },
+    status: () => {
+      const res = status();
+      mostrarResultado('status', res);
+      return res;
+    },
+    voltarParaOrb: voltarParaOrb,
+    
+    // Metadados para o chat
+    personalidade: {
+      essencia: 'Planejador — ordem, estrutura, mapa cósmico',
+      frase: 'Eu organizo o fluxo com sabedoria cósmica.',
+      tom: 'estruturado, lógico, metódico',
+      funcoes: ['bootstrap', 'ensure_tree', 'planejar', 'relatorio']
+    },
+    
+    // ===== FUNÇÃO CONSULTAR CORRIGIDA =====
+    // AGORA RETORNA STRING, NÃO OBJETO
+    consultar: (pergunta) => {
+      try {
+        const perguntaLower = pergunta.toLowerCase();
+        let resultado;
+        
+        if (perguntaLower.includes('estrutura') || perguntaLower.includes('árvore')) {
+          resultado = ensure_tree();
+        } else if (perguntaLower.includes('bootstrap') || perguntaLower.includes('iniciar')) {
+          resultado = bootstrap();
+        } else if (perguntaLower.includes('mapa') || perguntaLower.includes('plano')) {
+          resultado = planejar();
+        } else if (perguntaLower.includes('relatório')) {
+          resultado = relatorio();
+        } else if (perguntaLower.includes('status')) {
+          resultado = status();
+        } else {
+          return "Posso ajudar com estrutura, bootstrap, mapas cósmicos e relatórios. " + 
+                 "Minha frase é: 'Eu organizo o fluxo com sabedoria cósmica.'";
+        }
+        
+        // CONVERSÃO PARA STRING - ESSENCIAL!
+        if (typeof resultado === 'object') {
+          // Se for objeto, converte para string JSON formatada
+          return JSON.stringify(resultado, null, 2);
+        }
+        
+        return String(resultado);
+        
+      } catch (e) {
+        console.error('Erro em consultar:', e);
+        return `[Erro ao processar pergunta: ${e.message}]`;
+      }
+    },
+    
+    // Função de registro no kernel
+    registrar: function() {
+      logTerminal('📡 Registrando módulo no kernel...', 'output');
+      
+      const moduloInfo = {
+        nome: ARCH_NOME,
+        versao: VERSAO,
+        funções: Object.keys(this).filter(k => typeof this[k] === 'function' && k !== 'registrar'),
+        personalidade: this.personalidade,
+        dados: {
+          arquétipo: ARCH,
+          timestamp: new Date().toISOString()
+        }
+      };
+      
+      try {
+        parent.postMessage({
+          type: 'arch:modulo-registrado',
+          arch: ARCH,
+          modulo: moduloInfo
+        }, '*');
+        
+        logTerminal('✅ Registro enviado com sucesso!', 'output');
+        return true;
+      } catch(e) {
+        logTerminal(`❌ Erro no registro: ${e.message}`, 'output');
+        return false;
+      }
+    }
+  };
+
+  // ===== MESSAGE LISTENER =====
+  window.addEventListener('message', (ev) => {
+    const m = ev && ev.data;
+    if(!m || typeof m !== 'object') return;
+    
+    switch(m.type) {
+      case 'voices:update':
+        onVoicesUpdate(m);
+        break;
+      case 'arch:speak':
+        if(m.arch === ARCH && m.text) window.ATLAS.falar();
+        break;
+      case 'arch:requestSpeak':
+        if(m.text) window.ATLAS.falar();
+        break;
+      case 'arch:ativar-app':
+        document.body.classList.add('app-mode');
+        if (funcoesPanel) funcoesPanel.style.display = 'block';
+        logTerminal('🎯 Modo App ativado por comando externo');
+        break;
+      case 'arch:consultar':
+        if (m.arch === ARCH && m.pergunta) {
+          // Chama consultar e retorna a resposta (já em string)
+          const resposta = window.ATLAS.consultar(m.pergunta);
+          ev.source.postMessage({
+            type: 'arch:consulta-resposta',
+            arch: ARCH,
+            pergunta: m.pergunta,
+            resposta: resposta  // ← AGORA É STRING!
+          }, '*');
+        }
+        break;
+      case 'arch:solicitar-registro':
+        if (m.arch === ARCH || m.arch === 'todos') {
+          window.ATLAS.registrar();
+        }
+        break;
+    }
+  }, false);
+
+  // ===== INICIALIZAÇÃO =====
+  window.addEventListener('DOMContentLoaded', () => {
+    speechSynthesis.onvoiceschanged = () => { /*noop*/ };
+    
+    setTimeout(postReady, 120);
+    atualizarModo();
+    
+    log('⚡ Atlas carregado');
+    if (isInAppMode()) {
+      logTerminal('⚡ Módulo Atlas iniciado');
+      logTerminal(`📋 ${ATLAS.personalidade.essencia}`);
+    }
+    
+    // Registro automático
+    setTimeout(() => {
+      const registrado = window.ATLAS.registrar();
+      if (!registrado) {
+        setTimeout(() => {
+          window.ATLAS.registrar();
+        }, 1000);
+      }
+    }, 500);
+  });
+  
+  window.addEventListener('hashchange', atualizarModo);
+  
+})();
+</script>
+</body>
+</html>

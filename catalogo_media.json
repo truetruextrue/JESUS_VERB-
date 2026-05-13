@@ -1,0 +1,204 @@
+
+  {
+    "nome": "test-44100Hz-2ch-32bit-float-le.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-2ch-32bit-float-le.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-48000Hz-2ch-64bit-float-le-wavex.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-48000Hz-2ch-64bit-float-le-wavex.wav",
+    "tamanho_MB": 0.01,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-4ch-9S-12bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-4ch-9S-12bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-3ch-5S-24bit-rf64.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-3ch-5S-24bit-rf64.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-3ch-5S-53bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-3ch-5S-53bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-3ch-5S-24bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-3ch-5S-24bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-1ch-1byte-ulaw.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-1ch-1byte-ulaw.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-44100Hz-le-1ch-4bytes.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-le-1ch-4bytes.wav",
+    "tamanho_MB": 0.02,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-3ch-5S-45bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-3ch-5S-45bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-44100Hz-le-1ch-4bytes-rf64.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-le-1ch-4bytes-rf64.wav",
+    "tamanho_MB": 0.02,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-3ch-5S-36bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-3ch-5S-36bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-be-3ch-5S-24bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-be-3ch-5S-24bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-2ch-1byteu.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-2ch-1byteu.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-44100Hz-le-1ch-4bytes-early-eof.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-le-1ch-4bytes-early-eof.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-3ch-5S-64bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-3ch-5S-64bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-5ch-9S-5bit.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-5ch-9S-5bit.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-44100Hz-be-1ch-4bytes.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-be-1ch-4bytes.wav",
+    "tamanho_MB": 0.02,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-44100Hz-2ch-32bit-float-be.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-2ch-32bit-float-be.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-44100Hz-le-1ch-4bytes-early-eof-no-data.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-le-1ch-4bytes-early-eof-no-data.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-44100Hz-le-1ch-4bytes-incomplete-chunk.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-44100Hz-le-1ch-4bytes-incomplete-chunk.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-1234Hz-le-1ch-10S-20bit-extra.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-1234Hz-le-1ch-10S-20bit-extra.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "test-8000Hz-le-3ch-5S-24bit-inconsistent.wav",
+    "caminho_relativo": ".venv/lib/python3.12/site-packages/scipy/io/tests/data/test-8000Hz-le-3ch-5S-24bit-inconsistent.wav",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:45:57",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "Whisk_e2nkdtn0ijywiwow0cn4mwytigohrtlyymmj1sn.mp4",
+    "caminho_relativo": "000_VIDEOS/Whisk_e2nkdtn0ijywiwow0cn4mwytigohrtlyymmj1sn.mp4",
+    "tamanho_MB": 1.2,
+    "data_modificacao": "2026-04-17 19:21:38",
+    "tipo": "vídeo"
+  },
+  {
+    "nome": "EP.mp3",
+    "caminho_relativo": "000_AUDIO/EP.mp3",
+    "tamanho_MB": 0.0,
+    "data_modificacao": "2026-04-17 19:21:38",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "0x03_639Hz_76f87eb2-4a8d-4682-9cf6-76dd6a233739_VITALIS.wav",
+    "caminho_relativo": "17_MIDIA_INFODOSE/02_AUDIO/01_PULSOS/0x03_639Hz_76f87eb2-4a8d-4682-9cf6-76dd6a233739_VITALIS.wav",
+    "tamanho_MB": 2.19,
+    "data_modificacao": "2026-04-17 19:21:38",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "0x03_639Hz_46cec3fd-6145-44b2-a18f-c098c2960d80_VITALIS.wav",
+    "caminho_relativo": "17_MIDIA_INFODOSE/02_AUDIO/01_PULSOS/0x03_639Hz_46cec3fd-6145-44b2-a18f-c098c2960d80_VITALIS.wav",
+    "tamanho_MB": 1.9,
+    "data_modificacao": "2026-04-17 19:21:38",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "0x02_528Hz_KOBLLUX-estrutura_base_ATLAS.wav",
+    "caminho_relativo": "17_MIDIA_INFODOSE/02_AUDIO/03_FREQUENCIAS/0x02_528Hz_KOBLLUX-estrutura_base_ATLAS.wav",
+    "tamanho_MB": 17.06,
+    "data_modificacao": "2026-04-17 19:21:38",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "0x02_528Hz_KOBΦ-NODE_e_MYRMIDE_ATLAS.wav",
+    "caminho_relativo": "17_MIDIA_INFODOSE/02_AUDIO/03_FREQUENCIAS/0x02_528Hz_KOBΦ-NODE_e_MYRMIDE_ATLAS.wav",
+    "tamanho_MB": 12.36,
+    "data_modificacao": "2026-04-17 19:21:38",
+    "tipo": "áudio"
+  },
+  {
+    "nome": "0x01_432Hz_0x01_432Hz_KOBLLUX_-_A_Forma_Viva_entre_Tempo_e_EspaçoINTRODUÇÃO__VIDA_AMA_VIDA_NOVA_NOVA.wav",
+    "caminho_relativo": "17_MIDIA_INFODOSE/02_AUDIO/04_INFODOSES/0x01_432Hz_0x01_432Hz_KOBLLUX_-_A_Forma_Viva_entre_Tempo_e_EspaçoINTRODUÇÃO__VIDA_AMA_VIDA_NOVA_NOVA.wav",
+    "tamanho_MB": 7.47,
+    "data_modificacao": "2026-04-17 19:21:38",
+    "tipo": "áudio"
+  }

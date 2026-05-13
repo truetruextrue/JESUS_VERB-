@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>dual-Infodose Chat Cinematográfico · KOBLLUX SymbolBar v2</title>
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <!-- Particles JS (usado no chat) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    /* ========== CSS ORIGINAL DO CHAT (mantido integralmente) ========== */
+    :root {
+      --bg: linear-gradient(to bottom, #000, #1a1a1a);
+      --text: #d7d7d7;
+      --fast: .4s;
+      --med: .8s;
+      --slow: 1.8s;
+    }
+    body.light { --bg: linear-gradient(to bottom,#666,#e0e0e0); --text: #444; }
+    body.medium { --bg: linear-gradient(to bottom,#555,#333); --text: #eee; }
+    body.vibe { --bg: linear-gradient(135deg,#00d8d8,#d800d8); --text: #fff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { font-family: var(--font-family, sans-serif); width: 100%; height: 100%; overflow: hidden; }
+    body { font-family: 'Montserrat',sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; background: var(--bg); color: var(--text); transition: background var(--slow), color var(--slow); animation: fadeIn var(--slow) ease forwards; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes clickPulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+    @keyframes expandFooter { 0%,100%{transform:scale(1)} 50%{transform:scale(0.96)} }
+    @keyframes moveGradient { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.012)} }
+
+    .copy-button, .paste-button, .toggle-button, .kitty-button, .history-button {
+      width: 36px; height: 36px; border: none; border-radius: 50%;
+      background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background var(--fast), opacity var(--slow); opacity: .7;
+    }
+    .copy-button:hover, .paste-button:hover, .toggle-button:hover, .kitty-button:hover, .history-button:hover { background: rgba(255,255,255,0.15); }
+    .toggle-button.active, .kitty-button.active, .history-button.active { opacity: 1; }
+
+    .svg-container { position: absolute; top: 269px; left: 50%; width: 166px; height: 166px; transform: translateX(-50%); z-index: 1; filter: drop-shadow(0 0 18px rgba(0,255,255,0.15)); transition: opacity var(--slow); }
+    .svg-container.fading { opacity: 0; }
+    .svg-container object { width:100%; height:100%; object-fit:contain; opacity:0.9; animation:pulse 2s infinite ease-in-out; transition:opacity var(--med); }
+
+    .pagination button { border: none; background: linear-gradient(45deg,#0ff,#f0f); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.2em; cursor: pointer; transition: transform var(--fast); }
+    .pagination button:hover { transform: scale(1.2); }
+
+    .response-block { margin: 1rem 0; padding: 1.3rem; border-radius: 12px; line-height: 1.8; position: relative; overflow: hidden; animation: fadeIn var(--slow) ease forwards, pulse 12s infinite ease-in-out; transition: box-shadow var(--fast), transform var(--fast); }
+    .response-block:hover { box-shadow: 0 0 15px rgba(0,255,255,.4); }
+    .response-block.clicked { animation: clickPulse var(--med) ease-out; }
+    .response-block.expanded { transform: scale(1.03); background: rgba(0,0,0,.6); z-index: 2; }
+    .intro { background: linear-gradient(135deg,rgba(0,255,255,.2),rgba(0,100,100,.1)); border-left: 4px solid #0ff; }
+    .middle { background: linear-gradient(135deg,rgba(255,255,255,.05),rgba(50,50,50,.1)); border-left: 4px solid rgba(255,255,255,.4); }
+    .ending { background: linear-gradient(135deg,rgba(255,0,255,.2),rgba(100,0,100,.1)); border-left: 4px solid #f0f; }
+
+    .code-block { position:relative; background:rgba(0,0,0,0.6); padding:1rem; border-radius:8px; font-family:monospace; overflow-x:auto; margin:1rem 0; }
+    .code-block pre { margin:0; white-space:pre-wrap; word-break:break-word; }
+    .code-block button.copy-code { position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.1); border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8em; color:var(--text); }
+
+    #themeToggle { position:absolute; top:60px; left:50%; transform:translateX(-50%); width:30px; height:30px; border:1px solid var(--text); border-radius:50%; background:transparent; opacity:.3; cursor:pointer; transition:opacity var(--med),border-color var(--med); z-index:10; }
+    #themeToggle:hover { opacity:0.8; }
+    #themeToggle::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:12px; height:12px; border-radius:50%; background:var(--text); opacity:0.2; }
+    #particles-js { position:absolute; inset:0; z-index:0; }
+    #assistantName { margin-top:199px; font-size:1.1em; font-weight:600; opacity:.8; transition:opacity var(--slow); }
+
+    .response-container { position:fixed; left:20px; right:20px; bottom:160px; padding:12px; background:rgba(0,0,0,0.3); backdrop-filter:blur(8px); border-radius:20px; max-height:calc(100vh - 200px); overflow-y:auto; z-index:1; transition:background var(--slow); animation:fadeIn var(--slow) ease forwards; }
+    body.light .response-container { background:rgba(255,255,255,0.3); }
+    body.medium .response-container { background:rgba(0,0,0,0.2); }
+    body.vibe .response-container { background:rgba(255,255,255,0.2); }
+
+    .pages-wrapper { transition:opacity var(--slow),height var(--slow); }
+    .pages-wrapper.collapsed { display:none; }
+    .page { display:none; opacity:0; transition:opacity var(--slow); }
+    .page.active { display:block; opacity:1; }
+    .page.initial { display:flex; align-items:center; justify-content:center; height:100%; text-align:center; }
+
+    .footer-text { display:block; margin:12px auto; padding:6px 12px; background:var(--bg); opacity:.5; color:var(--text); font-size:0.8em; text-align:center; font-style:italic; border-radius:12px; cursor:pointer; transition:opacity var(--slow),transform var(--slow); animation:moveGradient 8s linear infinite; }
+    .footer-text.loading { background:transparent!important; backdrop-filter:none!important; }
+    .footer-text.loading span { background:none!important; }
+    .footer-text:hover { opacity:.6; }
+    .footer-text.active { opacity:.8; animation:expandFooter var(--med) ease-out; }
+
+    .response-controls { display:flex; justify-content:space-between; align-items:center; margin-top:15px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.2); }
+    body.light .response-controls { border-top-color:rgba(0,0,0,0.2); }
+    body.medium .response-controls { border-top-color:rgba(255,255,255,0.2); }
+    body.vibe .response-controls { border-top-color:rgba(0,0,0,0.4); }
+
+    .control-buttons, .pagination { display:flex; align-items:center; gap:10px; }
+
+    #sendBtn { width:60px; height:60px; font-size:48px; background:linear-gradient(42deg,#0ff,#f0f); border:none; background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:transform var(--med),opacity var(--slow); opacity:.9; }
+    #sendBtn:hover { transform:scale(1.1); opacity:1; }
+
+    #voiceBtn { width:60px; height:60px; border:none; border-radius:50%; background:rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background var(--fast),opacity var(--slow); opacity:.7; }
+    #voiceBtn:hover { background:rgba(255,255,255,0.15); opacity:1; }
+
+    .input-container { position:fixed; left:20px; right:20px; bottom:90px; display:flex; gap:6px; z-index:2; }
+    .input-container input { flex:1; padding:10px; border:none; border-radius:20px; background:rgba(255,255,255,.1); color:inherit; font-size:16px; transition:background var(--fast); opacity:0.7; }
+    .input-container input:focus { background:rgba(255,255,255,.2); }
+    .input-container button { width:60px; height:60px; border:none; background:linear-gradient(42deg,#0ff,#f0f); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-size:48px; cursor:pointer; animation:pulse 2s infinite ease-in-out; display:flex; align-items:center; justify-content:center; transition:transform var(--med); opacity:.7; }
+    .input-container button:hover { transform:scale(1.1); }
+
+    .login-container { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:300px; padding:1.5rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.15); border-radius:10px; backdrop-filter:blur(8px); z-index:10; }
+    .login-container.active { display:block; }
+    .login-container input { width:100%; background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.3); margin:.8rem 0; padding:.4rem 0; font-size:.95em; color:#fff; }
+    .login-container input::placeholder { color:rgba(255,255,255,0.5); }
+    .login-container button { width:100%; margin-top:1rem; padding:.5rem 0; border:1px solid #0ff; border-radius:8px; background:transparent; font-size:.95em; color:#0ff; cursor:pointer; transition:background .25s,color .25s; }
+    .login-container button:hover { background:#0ff; color:#000; }
+
+    #bootText.pulse::after { content:attr(data-text); position:absolute; inset:0; background:linear-gradient(42deg, #0ff, #f0f); -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter:blur(4px); opacity:0.4; pointer-events:none; animation:pulseGlow 3s ease-in-out infinite; }
+    #bootText { display:inline-block; position:relative; font-weight:bold; }
+    @keyframes pulseGlow { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
+
+    #koblluxPlayer { position:fixed; top:20px; left:20px; z-index:9999; background:rgba(0,10,20,0.8); backdrop-filter:blur(12px) saturate(180%); padding:18px; border-radius:16px; border:1px solid rgba(0,255,255,0.15); box-shadow:0 8px 32px rgba(0,0,0,0.3),0 0 0 1px rgba(0,255,255,0.1),0 0 30px rgba(0,255,255,0.05); color:#e0f7ff; font-family:'SF Mono','Courier New',monospace; display:flex; flex-direction:column; gap:14px; max-width:260px; transition:all 0.4s cubic-bezier(0.22,1,0.36,1); }
+    #koblluxPlayer button, #koblluxPlayer select, #koblluxPlayer input[type="range"] { background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.1); border-radius:8px; color:inherit; padding:8px 12px; font-size:13px; transition:all 0.3s ease; width:100%; cursor:pointer; }
+    #koblluxPlayer button { background:linear-gradient(135deg,rgba(0,150,255,0.15),rgba(0,80,200,0.2)); backdrop-filter:blur(4px); }
+    #koblluxPlayer button:hover { background:linear-gradient(135deg,rgba(0,180,255,0.25),rgba(0,100,220,0.3)); border-color:rgba(0,255,255,0.3); box-shadow:0 0 15px rgba(0,200,255,0.1); transform:translateY(-1px); }
+    #togglePlayer { font-size:20px; display:flex; align-items:center; justify-content:center; background:var(--bg) !important; border:none !important; transition:all 0.3s ease; }
+    #togglePlayer:hover { transform:rotate(90deg); background:linear-gradient(135deg,rgba(0,255,255,0.3),rgba(0,120,255,0.35)) !important; box-shadow:0 0 20px rgba(0,255,255,0.3); }
+    #playerControls { display:none; flex-direction:column; gap:12px; margin-top:10px; animation:fadeIn 0.4s ease-out; }
+    #koblluxPlayer input[type="range"] { -webkit-appearance:none; height:6px; background:rgba(0,255,255,0.1); border-radius:10px; padding:0; margin:10px 0; }
+    #koblluxPlayer input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:#00ffff; cursor:pointer; box-shadow:0 0 10px rgba(0,255,255,0.5); transition:all 0.2s ease; }
+    #koblluxPlayer input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.2); box-shadow:0 0 15px rgba(0,255,255,0.8); }
+    #koblluxPlayer label { font-size:11px; opacity:0.7; letter-spacing:0.5px; text-transform:uppercase; color:rgba(0,255,255,0.7); }
+    #themeSelector { background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.15); border-radius:8px; color:#0ff; padding:4px 8px; font-size:13px; backdrop-filter:blur(4px); transition:all 0.3s ease; position:fixed; top:10px; right:10px; z-index:3; }
+    #themeSelector:hover { background:rgba(0,255,255,0.1); border-color:rgba(0,255,255,0.3); }
+
+    /* ========== SIMBOL BAR v2 (CARROSSEL + CHROMORFISMO) ========== */
+    :root {
+      --void: #02020a; --abyss: #060615; --deep: #0a0a20; --ink: #0f0f2e;
+      --cu-0: #8B4513; --cu-1: #B87333; --cu-2: #CD853F; --cu-3: #D4943A; --cu-4: #E8A855; --cu-5: #F0C060; --cu-6: #C9A84C; --cu-7: #FFD700;
+      --kob-voice-primary: #C9A84C; --kob-voice-secondary: #8B4513; --kob-voice-accent: #F0C060;
+      --arch-color: #C9A84C; --arch-glow: rgba(201,168,76,0.35); --arch-glow-strong: rgba(201,168,76,0.6);
+      --border: color-mix(in srgb, var(--kob-voice-primary) 35%, rgba(255,255,255,0.08));
+      --panel-bg: color-mix(in srgb, var(--kob-voice-primary) 8%, #0b0f18);
+      --kob-voice-bg-soft: color-mix(in srgb, var(--kob-voice-primary) 18%, transparent);
+      --pearl: #e8e0f0; --mist: rgba(232,224,240,0.65); --cyan: #00e5ff;
+      --mono: 'Share Tech Mono', monospace; --display: 'Cinzel Decorative', serif; --body: 'Rajdhani', sans-serif;
+      --orb-speed: 7.2s; --z-bg: 0; --z-content: 100; --z-hud: 5000; --z-overlay: 8000; --z-system: 9999;
+    }
+    body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse at 15% 40%, color-mix(in srgb, var(--kob-voice-primary) 10%, transparent) 0%, transparent 55%), radial-gradient(ellipse at 85% 60%, color-mix(in srgb, var(--kob-voice-secondary) 8%, transparent) 0%, transparent 55%), radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 65%); transition:background 0.8s ease; }
+    body::after { content:''; position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0.3; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+
+    /* Iframe de fundo (sobreposto) */
+    #kob-bg-frame { position:fixed; inset:0; z-index:var(--z-bg); width:100%; height:100%; border:none; opacity:0; transition:opacity 0.5s ease; background:var(--void); pointer-events:none; }
+    #kob-bg-frame.visible { opacity:1; pointer-events:auto; z-index:5; }
+    #kob-frame-veil { position:fixed; inset:0; z-index:4; background:rgba(2,2,10,0.12); pointer-events:none; opacity:0; transition:opacity 0.5s; }
+    #kob-frame-veil.visible { opacity:1; backdrop-filter:blur(2px); }
+    #kob-frame-close { position:fixed; top:14px; right:14px; z-index:6; width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:rgba(2,2,10,0.85); color:var(--kob-voice-primary); font-size:16px; cursor:pointer; display:none; align-items:center; justify-content:center; backdrop-filter:blur(8px); transition:all 0.2s; }
+    #kob-frame-close.visible { display:flex; }
+    #kob-frame-close:hover { background:rgba(201,168,76,0.2); }
+
+    /* Symbol-Bar */
+    .symbol-bar { position:fixed; left:16px; top:50%; transform:translateY(-50%); z-index:var(--z-hud); display:flex; flex-direction:column; align-items:center; padding:10px 8px; gap:0; background:rgba(6,6,21,0.88); backdrop-filter:blur(20px) saturate(200%); border:1px solid var(--border); box-shadow:0 0 0 1px rgba(0,0,0,0.5), 0 8px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06), 0 0 30px var(--arch-glow); border-radius:28px; user-select:none; touch-action:none; transition:opacity 0.6s ease, top 0.35s cubic-bezier(0.175,0.885,0.32,1.275), left 0.35s cubic-bezier(0.175,0.885,0.32,1.275), border-radius 0.25s ease, border-color 0.5s ease, box-shadow 0.6s ease; }
+    .symbol-bar::before { content:''; position:absolute; top:0; left:16%; right:16%; height:2px; border-radius:0 0 4px 4px; background:linear-gradient(90deg, transparent, var(--kob-voice-primary), transparent); opacity:0.7; transition:background 0.5s ease; }
+    .symbol-bar.idle { opacity:0.18; }
+    .symbol-bar.idle:hover { opacity:1; }
+    .symbol-bar.is-dragging { opacity:0.92; transition:none; will-change:top,left; }
+    .symbol-bar.snap-side { flex-direction:column; border-radius:0 24px 24px 0; border-left:0; left:0 !important; }
+    .symbol-bar.snap-side-right { flex-direction:column; border-radius:24px 0 0 24px; border-right:0; }
+    .symbol-bar.snap-top { flex-direction:row; border-radius:0 0 24px 24px; border-top:0; top:0 !important; transform:none !important; }
+    .symbol-bar.floating { flex-direction:column; border-radius:28px; }
+    .symbol-bar.collapsed { min-width:44px; min-height:44px; }
+    .symbol-bar.collapsed .kblx-carousel-viewport { height:0 !important; overflow:hidden; opacity:0; }
+    .symbol-bar.collapsed .kblx-dots { display:none !important; }
+
+    .symbol-wrap { display:flex; align-items:center; justify-content:center; flex-shrink:0; transform-origin:center center; transform:scale(var(--kblx-item-scale,1)); opacity:var(--kblx-item-opacity,1); z-index:var(--kblx-item-z,1); transition:transform 0.28s ease, opacity 0.28s ease; position:relative; }
+    .symbol-button { width:44px; height:44px; border-radius:14px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.04); color:var(--mist); font-size:16px; cursor:pointer; flex-shrink:0; position:relative; outline:none; font-family:var(--body); transition:all 0.2s ease; box-shadow:inset 0 1px 0 rgba(255,255,255,0.07), 0 2px 4px rgba(0,0,0,0.4); }
+    .symbol-button:hover { background:rgba(255,255,255,0.1); border-color:var(--kob-voice-primary); color:var(--kob-voice-primary); box-shadow:0 0 14px var(--arch-glow), inset 0 1px 0 rgba(255,255,255,0.1); }
+    .symbol-button:active { transform:scale(0.86); }
+    .symbol-button.main-toggle { background:linear-gradient(160deg, rgba(26,20,10,0.95), rgba(5,5,10,0.98)); color:var(--kob-voice-primary); border-color:var(--kob-voice-primary); font-size:22px; font-weight:bold; box-shadow:0 0 16px var(--arch-glow), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.4); }
+    .toggle-wrap { display:flex; align-items:center; justify-content:center; margin-bottom:4px; }
+
+    .kblx-carousel-viewport { position:relative; overflow:hidden; flex-shrink:0; -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%); mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%); width:60px; height:var(--kblx-vp-height,180px); transition:height 0.4s ease; }
+    .symbol-bar.snap-top .kblx-carousel-viewport { -webkit-mask-image:linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%); mask-image:linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%); width:var(--kblx-vp-height,180px); height:60px; }
+    .kblx-carousel-track { display:flex; flex-direction:column; gap:6px; transition:transform 0.32s cubic-bezier(0.25,0.8,0.25,1); will-change:transform; }
+    .symbol-bar.snap-top .kblx-carousel-track { flex-direction:row; }
+    .kblx-carousel-track.kblx-dragging { transition:none; }
+    .kblx-dots { display:flex; flex-direction:column; align-items:center; gap:3px; margin-top:6px; }
+    .symbol-bar.snap-top .kblx-dots { flex-direction:row; margin-top:0; margin-left:6px; }
+    .kblx-dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.2); cursor:pointer; transition:all 0.22s; flex-shrink:0; }
+    .kblx-dot.active { background:var(--kob-voice-primary); box-shadow:0 0 6px var(--arch-glow); width:5px; height:8px; border-radius:3px; }
+
+    #btn-arch { width:48px; height:48px; border-radius:50% !important; border:1.5px solid var(--kob-voice-primary) !important; background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), rgba(0,0,0,0.6)) !important; display:flex; align-items:center; justify-content:center; padding:0; overflow:visible; box-shadow:0 0 20px var(--arch-glow), 0 0 40px var(--arch-glow), inset 0 1px 0 rgba(255,255,255,0.15) !important; cursor:pointer; margin:2px 0; }
+    #btn-arch:hover { transform:scale(1.1); box-shadow:0 0 30px var(--arch-glow-strong), 0 0 60px var(--arch-glow) !important; }
+    .tts-orb-mini { width:32px; height:32px; display:flex; align-items:center; justify-content:center; }
+    .orb { width:100%; height:100%; border-radius:50%; display:grid; place-items:center; }
+    .orb-core { width:80%; height:80%; border-radius:50%; background:radial-gradient(circle at 28% 28%, var(--kob-voice-accent) 0%, rgba(255,255,255,0.08) 12%, transparent 55%), radial-gradient(circle at 72% 72%, var(--kob-voice-primary) 0%, var(--kob-voice-secondary) 100%); box-shadow:0 0 18px var(--kob-voice-primary), 0 0 8px rgba(255,255,255,0.1) inset; animation:orbSpin var(--orb-speed) linear infinite; transition:background 0.5s ease, box-shadow 0.5s ease; }
+    .speaking .orb-core { animation:orbSpin 1.8s linear infinite, orbPulse 0.45s ease-in-out infinite alternate; box-shadow:0 0 30px var(--kob-voice-primary), 0 0 12px rgba(255,255,255,0.15) inset; }
+    @keyframes orbSpin { to { transform:rotate(360deg); } }
+    @keyframes orbPulse { from { transform:scale(1); } to { transform:scale(1.18); } }
+    .hud-info { font-size:8px; font-family:var(--mono); color:var(--kob-voice-primary); text-transform:uppercase; letter-spacing:1.5px; font-weight:700; padding:5px 6px; margin-top:4px; border-top:1px solid var(--border); pointer-events:none; white-space:nowrap; opacity:0.75; writing-mode:vertical-rl; text-orientation:mixed; transition:color 0.5s ease, border-color 0.5s ease; }
+    .symbol-bar.snap-top .hud-info { display:none; }
+
+    .chroma-ripple { position:fixed; inset:0; z-index:calc(var(--z-hud)-1); pointer-events:none; border-radius:0; opacity:0; background:radial-gradient(circle at var(--ripple-x,50%) var(--ripple-y,50%), var(--kob-voice-primary) 0%, color-mix(in srgb, var(--kob-voice-secondary) 60%, transparent) 30%, transparent 70%); animation:none; }
+    .chroma-ripple.fire { animation:chromaFire 0.75s cubic-bezier(0.2,0.8,0.2,1) forwards; }
+    @keyframes chromaFire { 0%{opacity:0.22; transform:scale(0.2);} 40%{opacity:0.18; transform:scale(1.4);} 100%{opacity:0; transform:scale(2.2);} }
+    .symbol-bar.chroma-transition { animation:chromaBar 0.45s ease forwards; }
+    @keyframes chromaBar { 0%{filter:brightness(2) saturate(3);} 50%{filter:brightness(1.4) saturate(2);} 100%{filter:brightness(1) saturate(1);} }
+
+    #arch-overlay, #arch-card-overlay { position:fixed; inset:0; z-index:var(--z-overlay); display:none; align-items:center; justify-content:center; background:rgba(2,2,10,0.75); backdrop-filter:blur(8px); }
+    #arch-overlay.open, #arch-card-overlay.open { display:flex; }
+    .arch-wheel { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:380px; background:linear-gradient(135deg, rgba(10,10,30,0.97), rgba(5,5,18,0.99)); border:1px solid var(--border); border-radius:22px; padding:18px; box-shadow:0 0 60px var(--arch-glow), 0 30px 60px rgba(0,0,0,0.8); animation:kblx-in .28s cubic-bezier(.34,1.56,.64,1) both; }
+    .arch-wheel-title { width:100%; text-align:center; font-family:var(--mono); font-size:0.6rem; color:var(--kob-voice-primary); letter-spacing:0.4em; text-transform:uppercase; opacity:0.6; margin-bottom:6px; }
+    .arch-chip { display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 10px; border-radius:12px; border:1px solid transparent; cursor:pointer; transition:all 0.18s; font-family:var(--mono); min-width:56px; }
+    .arch-chip:hover { transform:scale(1.1); border-color:currentColor; background:rgba(255,255,255,0.04); }
+    .arch-chip .a-orb { width:26px; height:26px; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--a-color), transparent 50%), radial-gradient(circle at 70% 70%, var(--a-prim), var(--a-sec)); box-shadow:0 0 10px currentColor; }
+    .arch-chip .a-name { font-size:7px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.55); }
+    .arch-chip .a-freq { font-size:6px; color:rgba(255,255,255,0.3); letter-spacing:1px; }
+
+    .arch-card-panel { background:linear-gradient(160deg, rgba(12,10,28,0.99), rgba(6,5,16,0.99)); border:1px solid var(--border); border-radius:22px; width:min(360px,92vw); overflow:hidden; box-shadow:0 0 80px var(--arch-glow), 0 30px 60px rgba(0,0,0,0.85); animation:kblx-in .3s cubic-bezier(.34,1.56,.64,1) both; }
+    .arch-card-header { padding:24px 22px 20px; background:linear-gradient(160deg, color-mix(in srgb, var(--arch-color) 20%, #08081e) 0%, rgba(5,5,18,0.4) 100%); border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
+    .arch-card-header::after { content:var(--arch-emoji,'∞'); position:absolute; right:18px; top:50%; transform:translateY(-50%); font-size:4.5rem; opacity:0.08; pointer-events:none; filter:drop-shadow(0 0 20px var(--arch-color)); }
+    .arch-card-name { font-family:var(--display); font-size:1.5rem; font-weight:700; color:var(--arch-color); text-shadow:0 0 20px var(--arch-glow); }
+    .arch-card-orb { width:44px; height:44px; border-radius:50%; box-shadow:0 0 20px var(--arch-glow); animation:orbSpin 8s linear infinite; }
+    .arch-card-freq { font-family:var(--mono); font-size:1.3rem; font-weight:700; color:var(--arch-color); }
+    .arch-card-body { padding:18px 22px 20px; }
+    .arch-card-placeholder { background:rgba(0,0,0,0.35); border:1px dashed color-mix(in srgb, var(--arch-color) 40%, rgba(255,255,255,0.1)); border-radius:12px; padding:18px; text-align:center; font-family:var(--mono); font-size:0.7rem; color:color-mix(in srgb, var(--arch-color) 60%, rgba(255,255,255,0.3)); }
+    .arch-card-actions { display:flex; gap:8px; margin-top:14px; }
+    .arch-card-btn { flex:1; padding:9px 6px; border-radius:10px; border:1px solid; font-family:var(--mono); font-size:0.62rem; text-transform:uppercase; cursor:pointer; background:transparent; }
+    .arch-card-btn.primary { border-color:var(--arch-color); color:var(--arch-color); }
+    .arch-card-nav { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+    .arch-card-nav button { width:32px; height:32px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.45); cursor:pointer; }
+
+    .kblx-ring { position:absolute; inset:0; pointer-events:none; display:flex; align-items:center; justify-content:center; z-index:5; }
+    .kblx-ring svg { width:52px; height:52px; transform:rotate(-90deg); overflow:visible; }
+    .kblx-ring circle { fill:none; stroke:var(--kob-voice-primary); stroke-width:2; stroke-dasharray:138; stroke-dashoffset:138; stroke-linecap:round; }
+
+    #kblx-back { display:none; position:fixed; inset:0; z-index:9999; background:rgba(2,2,10,0.9); backdrop-filter:blur(10px); align-items:center; justify-content:center; }
+    #kblx-back.open { display:flex; }
+    #kblx-panel { background:linear-gradient(135deg,rgba(15,15,46,.99),rgba(6,6,21,.99)); border:1px solid var(--cu-6); border-radius:18px; padding:1.8rem 1.8rem 1.4rem; width:min(420px,92vw); box-shadow:0 0 60px rgba(201,168,76,.25), 0 20px 50px rgba(0,0,0,.8); animation:kblx-in .25s cubic-bezier(.34,1.56,.64,1) both; }
+    #kblx-inp { width:100%; background:rgba(0,0,0,.55); border:1px solid rgba(201,168,76,.35); border-radius:8px; padding:.6rem .88rem; color:#e8e0f0; font-family:var(--mono); font-size:.82rem; outline:none; margin-bottom:.95rem; }
+    .kblx-row { display:flex; gap:.55rem; margin-top:1rem; }
+    .kblx-btn { flex:1; padding:.48rem; border-radius:8px; border:1px solid; font-family:var(--mono); font-size:.61rem; text-transform:uppercase; cursor:pointer; background:transparent; }
+    .kblx-save { border-color:var(--cu-6); color:var(--cu-6); }
+    .kblx-close { border-color:rgba(255,255,255,.15); color:rgba(232,224,240,.55); }
+    @keyframes kblx-in { from { opacity:0; transform:translateY(-20px) scale(.95); } to { opacity:1; transform:none; } }
+    #kblx-toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(2,2,14,0.95); border:1px solid var(--border); border-radius:10px; padding:6px 14px; font-family:var(--mono); font-size:0.68rem; color:var(--kob-voice-primary); letter-spacing:0.22em; opacity:0; pointer-events:none; z-index:10002; transition:opacity .28s, transform .28s; white-space:nowrap; }
+    #kblx-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- PLAYER KOBLLUX -->
+  <div id="koblluxPlayer" style="position:fixed;top:20px;left:20px;z-index:9999;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);padding:10px;border-radius:10px;display:flex;flex-direction:column;gap:6px;transition:all 0.6s ease;max-width:199px;color:var(--text);font-family:monospace;">
+    <button id="togglePlayer" style="font-size:20px;background:none;border:none;color:inherit;cursor:pointer;">≋</button>
+    <div id="playerControls" style="display:none;flex-direction:column;gap:8px;">
+      <button id="playPause" style="font-size:22px;background:none;">►</button>
+      <select id="trackSelect"><option value="">🎵 Escolha uma trilha</option><option value="Sono_Profundo">🌙 Sono Profundo</option><option value="Manifestação">✨ Manifestação</option><option value="Ativação_Pineal">🧠 Ativação Pineal</option><option value="Alívio_da_Ansiedade">🌿 Alívio da Ansiedade</option><option value="Meditação_Theta">🌀 Meditação Theta</option><option value="Viagem_Astral">🌌 Viagem Astral</option><option value="Foco_Profundo">🎯 Foco Profundo</option><option value="Flow_State">🌊 Flow State</option><option value="Relaxamento_Rápido">💤 Relaxamento Rápido</option><option value="Concentração_Sustentada">📚 Concentração Sustentada</option><option value="Cura_Emocional">💖 Cura Emocional</option><option value="Recuperação_Física">🏋️ Recuperação Física</option></select>
+      <select id="binauralSelect"><option value="">🎶 Binaural Desativado</option><option value="Sono_Profundo">🌙 Sono Profundo</option><option value="Manifestação">✨ Manifestação</option><option value="Ativação_Pineal">🧠 Ativação Pineal</option><option value="Alívio_da_Ansiedade">🌿 Alívio da Ansiedade</option><option value="Meditação_Theta">🌀 Meditação Theta</option><option value="Viagem_Astral">🌌 Viagem Astral</option><option value="Foco_Profundo">🎯 Foco Profundo</option><option value="Flow_State">🌊 Flow State</option><option value="Relaxamento_Rápido">💤 Relaxamento Rápido</option><option value="Concentração_Sustentada">📚 Concentração Sustentada</option><option value="Cura_Emocional">💖 Cura Emocional</option><option value="Recuperação_Física">🏋️ Recuperação Física</option></select>
+      <label>🎵 Volume Trilha <input type="range" id="trackVolume" min="0" max="1" step="0.01" value="1"></label>
+      <label>🧘 Volume Binaural <input type="range" id="binauralVolume" min="0" max="1" step="0.01" value="1"></label>
+    </div>
+  </div>
+
+  <!-- Seletor de temas -->
+  <select id="themeSelector" onchange="applyThemeSelector(this.value)">
+    <option value="dark">🌑 Dark</option><option value="light">🌞 Light</option><option value="medium">🌓 Medium</option><option value="vibe">🌈 Vibe</option><option value="cyberpunk">☣️ Cyberpunk</option><option value="anime">🌸 Anime</option>
+  </select>
+  <button aria-label="Alternar tema" id="themeToggle" title="Alternar tema"></button>
+
+  <div id="particles-js"></div>
+  <div class="svg-container" id="logoContainer"><object data="assets/icons/pill_fusion-kblx-1.png" id="logoObj" type="image/png"></object></div>
+  <div aria-live="polite" id="assistantName"></div>
+
+  <div class="response-container" id="response">
+    <div class="pages-wrapper"><div class="page initial active"><strong data-text="🧬 Iniciando... Pulso simbiótico detectado. Presença reconhecida." id="bootText"></strong></div></div>
+    <p class="footer-text"><em>Do seu jeito. <strong>Sempre</strong> único. <strong>Sempre</strong> seu.</em></p>
+    <div class="response-controls">
+      <div class="control-buttons">
+        <button class="copy-button" title="Copiar"><object data="assets/icons/BW_quad_Dual_Infodose.svg" height="27" type="image/svg+xml" width="27"></object></button>
+        <button class="paste-button" title="Colar"><object data="assets/icons/BW_Dual_Infodose.svg" height="24" type="image/svg+xml" width="24"></object></button>
+        <button class="toggle-button" id="toggleBtn" title="Login"><object data="assets/icons/pill_Dual_3.png" height="28" type="image/png" width="28"></object></button>
+        <button class="kitty-button" id="kittyBtn" title="Estudos"><object data="assets/icons/DualKittyKard-icon-3.png" height="33" type="image/png" width="33"></object></button>
+        <button class="history-button" id="historyBtn" title="Modo Codex"><object data="assets/icons/pill_fusion-kblx-trinity3.png" height="33" type="image/png" width="33"></object></button>
+      </div>
+      <div class="pagination"><button data-action="prev">⟵</button><span id="pageIndicator">1 / 1</span><button data-action="next">⟶</button></div>
+    </div>
+  </div>
+
+  <div class="input-container">
+    <input id="userInput" placeholder="Diga: 'oi, Dual'..." type="text" />
+    <button id="sendBtn" title="Enviar">➤</button>
+    <button id="voiceBtn" title="Falar"><object data="assets/icons/dual-vibe-icon-2.png" height="36" type="image/png" width="36"></object></button>
+  </div>
+  <div class="login-container" id="loginBox">
+    <form id="loginForm"><input id="userName" placeholder="Nome do usuário" required type="text" /><input id="assistantInput" placeholder="Nome do assistente" required type="text" /><button type="submit">Ativar</button></form>
+  </div>
+
+  <!-- ========== IFRAME DE FUNDO (para abrir páginas internamente) ========== -->
+  <iframe id="kob-bg-frame" src="about:blank"></iframe>
+  <div id="kob-frame-veil"></div>
+  <button id="kob-frame-close" title="Fechar página">✕</button>
+
+  <!-- ========== SYMBOL BAR v2 ========== -->
+  <div class="symbol-bar floating" id="symbolBar">
+    <div class="toggle-wrap">
+      <button class="symbol-button main-toggle" id="sbToggleBtn" title="Colapsar barra">≡</button>
+    </div>
+    <button class="symbol-button" id="btn-arch" title="Arquétipo (clique rápido / segure para card)">
+      <div class="orb-microphone-container">
+        <div class="tts-orb-mini"><div class="orb" id="main-orb"><div class="orb-core"></div></div></div>
+      </div>
+      <div class="kblx-ring"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" id="orb-ring-circle" /></svg></div>
+    </button>
+    <div class="hud-info" id="hudStatus">KOBLLUX</div>
+  </div>
+
+  <div class="chroma-ripple" id="chromaRipple"></div>
+  <div id="arch-overlay"><div class="arch-wheel" id="archWheel"><div class="arch-wheel-title">· SELECIONAR ARQUÉTIPO ·</div></div></div>
+  <div id="arch-card-overlay"><div class="arch-card-panel"><div class="arch-card-header"><div class="arch-card-chip" id="acp-chip">opcode · 0x00</div><div class="arch-card-name" id="acp-name">KOBLLUX</div><div class="arch-card-role" id="acp-role">SISTEMA · NÚCLEO</div><div class="arch-card-orb-wrap"><div class="arch-card-orb" id="acp-orb"></div><div><div class="arch-card-freq" id="acp-freq">432 <span>Hz</span></div></div></div></div><div class="arch-card-body"><div class="arch-card-placeholder"><strong id="acp-emoji">∞</strong><span id="acp-placeholder-text">[ CONTEÚDO DO ARQUÉTIPO ]<br>Este card será linkado ao módulo correspondente.</span></div><div class="arch-card-nav"><button id="acp-prev">◀</button><span class="arch-card-nav-name" id="acp-nav-name">KOBLLUX</span><button id="acp-next">▶</button></div><div class="arch-card-actions"><button class="arch-card-btn primary" id="acp-select">⊙ Ativar Arquétipo</button><button class="arch-card-btn close" id="acp-close">✕ Fechar</button></div></div></div></div>
+  <div id="kblx-back"><div id="kblx-panel"><div class="p-chip">⌘ KOBLLUX HUD · EDITOR DE ROTA</div><div class="p-title" id="kblx-ttl">Botão</div><label class="p-lbl" for="kblx-inp">Novo valor para data-url</label><input id="kblx-inp" type="text" placeholder="arquivo.html ou https://..." spellcheck="false" autocomplete="off"><div class="kblx-row"><button class="kblx-btn kblx-save" id="kblx-btn-save">⊙ Salvar</button><button class="kblx-btn kblx-close" id="kblx-btn-close">✕ Fechar</button></div></div></div>
+  <div id="kblx-toast"></div>
+
+  <script>
+    // ========== FUNÇÃO DE TEMA (global, antes do uso) ==========
+    window.applyThemeSelector = function(val) {
+      const body = document.body;
+      body.classList.remove('light', 'medium', 'vibe', 'dark', 'cyberpunk', 'anime');
+      if (val !== 'dark') body.classList.add(val);
+      localStorage.setItem('infodoseTheme', val);
+    };
+    // Carregar tema salvo
+    const savedTheme = localStorage.getItem('infodoseTheme') || 'dark';
+    window.applyThemeSelector(savedTheme);
+
+    // ========== CÓDIGO ORIGINAL DO CHAT (IIFE) ==========
+    (function() {
+      const STORAGE_KEY = 'infodoseEnabled', THEME_KEY = 'infodoseTheme', HISTORY_KEY = 'historyMode';
+      const CONFIG = {
+        TRAINING_MAIN: 'data/manifesto_infinity_metalux.txt',
+        TRAINING_HISTORY: 'data/codex/Protocolo_de_Equalização_KOBLLUX_A_Verdade_do_Uno.txt',
+        API_URL: 'https://openrouter.ai/api/v1/chat/completions',
+        MODEL: 'arcee-ai/trinity-large-preview:free',
+        TEMP: 0.7, CHUNK_SIZE: 49000,
+        AUTH_TOKEN: window.env?.API_KEYS || 'Bearer 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'
+      };
+      let training = '', chunks = [], chunkIndex = 0, trainingHistory = '', conversation = [];
+      let isEnabled = false, isStudying = false, isHistory = false, userName = '', assistantBase = '';
+      let pages = [], currentPage = 0, autoAdvance = true;
+      const $ = s => document.querySelector(s);
+      const create = (t, c, h) => { const e = document.createElement(t); if(c) e.className = c; if(h) e.innerHTML = h; return e; };
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        window.handleAICommand = function(cmd) { console.warn('AI command', cmd); };
+        // ParticlesJS - garantindo que o script carregou
+        if (typeof particlesJS !== 'undefined') {
+          particlesJS('particles-js', {
+            particles: { number: { value: 40 }, color: { value: ['#0ff','#f0f'] }, shape: { type: 'circle' }, opacity: { value: 0.4 }, size: { value: 2.4 }, move: { enable: true, speed: 1.5 } },
+            retina_detect: true
+          });
+        } else {
+          console.warn("particlesJS não carregou");
+        }
+        try { training = await fetch(CONFIG.TRAINING_MAIN).then(r=>r.text()); for(let i=0;i<training.length;i+=CONFIG.CHUNK_SIZE) chunks.push(training.slice(i,i+CONFIG.CHUNK_SIZE)); } catch(e){console.error(e);}
+        try { trainingHistory = await fetch(CONFIG.TRAINING_HISTORY).then(r=>r.text()); } catch(e){console.error(e);}
+        init();
+      });
+
+      function applyTheme(t){ document.body.classList.remove('light','medium','vibe'); if(t!=='dark') document.body.classList.add(t); }
+      function toggleTheme(){ const o=['dark','light','medium','vibe']; let c=localStorage.getItem(THEME_KEY)||'dark'; let n=o[(o.indexOf(c)+1)%o.length]; applyTheme(n); localStorage.setItem(THEME_KEY,n); }
+      function init(){ applyTheme(localStorage.getItem(THEME_KEY)||'dark'); $('#themeToggle').addEventListener('click',toggleTheme); bindUI(); loadConfig(); if(!conversation.length) startConversation(); }
+      function loadConfig(){
+        if(localStorage.getItem(STORAGE_KEY)==='1'){ isEnabled=true; userName=localStorage.getItem('userName')||''; assistantBase=localStorage.getItem('assistantBase')||''; conversation=[{role:'system', content:(chunks[0]||training)+`\n\nUsuário: ${userName}.\nAssistente: ${assistantBase} dual.infodose.`}]; chunkIndex=1; updateUI(); }
+        if(localStorage.getItem(HISTORY_KEY)==='1'){ isHistory=true; updateUI(); }
+      }
+      function startConversation(){ const base=isHistory?trainingHistory:(chunks[0]||training)+`\n\nUsuário: ${userName}.\nAssistente: ${assistantBase} dual.infodose.`; const persona=isHistory?'CODEX dual.infodose.':'CODEX KOBLLUX Dual.infodose.'; conversation=[{role:'system', content:base+'\n\nVocê é o '+persona}]; updateUI(); }
+      function updateUI(){
+        $('#toggleBtn').classList.toggle('active',isEnabled); $('#kittyBtn').classList.toggle('active',isStudying); $('#historyBtn').classList.toggle('active',isHistory);
+        $('#assistantName').textContent=isHistory?'CODEX: dual.infodose':(isStudying?'Estudos dual.infodose':(isEnabled?assistantBase+' dual.infodose':''));
+        const cont=$('#logoContainer'), logo=$('#logoObj'); cont.classList.add('fading'); setTimeout(()=>{ if(isHistory) logo.data='assets/icons/pill_fusion-kblx-trinity3.png'; else if(isStudying) logo.data='assets/icons/DualKittyKard-icon-3.png'; else logo.data='assets/icons/pill_fusion-kblx-1.png'; cont.classList.remove('fading'); },999);
+      }
+      function showLoading(msg){ const wrap=$('.pages-wrapper'); wrap.innerHTML=''; const p=create('div','page active'), foot=create('p','footer-text loading',''); msg.split('').forEach((ch,i)=>{ const sp=create('span'); sp.textContent=ch; sp.style.animationDelay=(i*0.02)+'s'; sp.classList.add('loading'); foot.appendChild(sp); }); p.appendChild(foot); wrap.appendChild(p); $('#pageIndicator').textContent='1 / 1'; speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(msg)); }
+      function splitText(t){ let ps=t.split(/\n\s*\n/).filter(p=>p.trim()); if(ps.length<2) ps=(t.match(/[^\.!\?]+[\.!\?]+/g)||[]).map(s=>s.trim()); return ps; }
+      function attachBlockListeners(block,para){
+        block.addEventListener('click',()=>{ autoAdvance=false; const cleanPara=para.replace(/["“”‘’]/g,'').replace(/[\u1F300-\u1F6FF\u1F900-\u1F9FF\u2600-\u26FF\u2700-\u27BF]/g,''); const utter=new SpeechSynthesisUtterance(cleanPara); speechSynthesis.cancel(); speechSynthesis.speak(utter); if(!block.dataset.spoken){ block.dataset.spoken='1'; block.classList.add('clicked'); }else{ block.classList.add('expanded'); if(!isEnabled){ isEnabled=true; localStorage.setItem(STORAGE_KEY,'1'); updateUI(); } showLoading(' Pulso em Expansão...'); conversation.push({role:'user', content:cleanPara}); callAI(); } });
+      }
+      function renderResponse(txt){
+        const wrap=document.querySelector('.pages-wrapper'); wrap.innerHTML=''; pages=[]; currentPage=0; autoAdvance=true;
+        txt=txt.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');
+        const paras=splitText(txt), total=paras.length; if(total===0) return;
+        const maxPerPage=3, numPages=Math.ceil(total/maxPerPage), baseSize=Math.floor(total/numPages), extra=total%numPages;
+        let cursor=0;
+        for(let i=0;i<numPages;i++){
+          const thisSize=baseSize+(i<extra?1:0), pg=document.createElement('div'); pg.className='page'+(i===0?' active':'');
+          for(let j=0;j<thisSize;j++){ const para=paras[cursor++].trim(), posClass=j===0?'intro':(j===thisSize-1?'ending':'middle'), block=document.createElement('div'); block.className=`response-block ${posClass}`; block.innerHTML=`<p>${para}</p>`; processDynamicCommands(block.querySelector('p')); attachBlockListeners(block,para); pg.appendChild(block); }
+          wrap.appendChild(pg); pages.push(pg);
+        }
+        document.getElementById('pageIndicator').textContent=`1 / ${pages.length}`; autoSpeakPage(0);
+      }
+      function autoSpeakPage(i){ const txts=Array.from(pages[i].querySelectorAll('p')).map(p=>p.textContent).join(' '); speechSynthesis.cancel(); const utter=new SpeechSynthesisUtterance(txts); utter.onend=()=>{ if(autoAdvance && i<pages.length-1) changePage(1); else if(i===pages.length-1) speechSynthesis.speak(new SpeechSynthesisUtterance('Do seu jeito. Sempre único. Sempre seu.')); }; speechSynthesis.speak(utter); }
+      function changePage(d){ const np=currentPage+d; if(np<0 || np>=pages.length) return; pages[currentPage].classList.remove('active'); pages[np].classList.add('active'); currentPage=np; $('#pageIndicator').textContent=`${np+1} / ${pages.length}`; if(autoAdvance) autoSpeakPage(np); }
+      async function callAI(){
+        try{
+          const res=await fetch(CONFIG.API_URL,{method:'POST',headers:{'Authorization':CONFIG.AUTH_TOKEN,'Content-Type':'application/json'}, body:JSON.stringify({model:CONFIG.MODEL, messages:conversation, temperature:CONFIG.TEMP})});
+          const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||res.statusText);
+          const ans=data.choices[0].message.content.trim(); conversation.push({role:'assistant', content:ans}); renderResponse(ans);
+        }catch(e){ console.error(e); conversation.push({role:'assistant', content:'Desculpe, não consegui obter resposta. Tente novamente.'}); renderResponse('Desculpe, não consegui obter resposta. Tente novamente.'); }
+      }
+      function bindUI(){
+        $('#historyBtn').addEventListener('click',()=>{ isHistory=!isHistory; localStorage.setItem(HISTORY_KEY,isHistory?'1':'0'); startConversation(); });
+        $('#kittyBtn').addEventListener('click',()=>{ isStudying=!isStudying; if(isStudying) conversation=[{role:'system', content:(CONFIG?.SYSTEM_PROMPT||'')+training+'\n\nVocê é Assistente de Estudos dual.infodose.'}]; else loadConfig(); updateUI(); });
+        $('#toggleBtn').addEventListener('click',()=>{ if(!isEnabled) $('#loginBox').classList.add('active'); else{ isEnabled=false; localStorage.removeItem(STORAGE_KEY); conversation=[]; updateUI(); } });
+        document.querySelector('.copy-button').addEventListener('click',()=>{ const allBlocks=document.querySelectorAll('.response-block'); const textToCopy=Array.from(allBlocks).map(b=>b.innerText).join('\n\n'); navigator.clipboard.writeText(textToCopy); });
+        document.querySelector('.paste-button').addEventListener('click',()=>{ navigator.clipboard.readText().then(txt=>$('#userInput').value=txt); });
+        $('#sendBtn').addEventListener('click',onSend); $('#userInput').addEventListener('keypress',e=>{ if(e.key==='Enter') onSend(); });
+        $('#voiceBtn').addEventListener('click',()=>{ const rec=new (window.SpeechRecognition||window.webkitSpeechRecognition)(); rec.lang='pt-BR'; rec.start(); rec.onresult=evt=>{ $('#userInput').value=evt.results[0][0].transcript; onSend(); }; });
+        document.querySelector('.pagination').addEventListener('click',e=>{ if(e.target.dataset.action==='prev') changePage(-1); if(e.target.dataset.action==='next') changePage(1); autoAdvance=false; });
+        $('#loginForm').addEventListener('submit',e=>{ e.preventDefault(); const u=$('#userName').value.trim(), a=$('#assistantInput').value.trim(); if(!u||!a) return alert('Preencha os dados'); isEnabled=true; userName=u; assistantBase=a; localStorage.setItem(STORAGE_KEY,'1'); localStorage.setItem('userName',u); localStorage.setItem('assistantBase',a); loadConfig(); $('#loginBox').classList.remove('active'); });
+        document.body.addEventListener('click',e=>{ if(e.target.closest('.footer-text')){ document.querySelector('.pages-wrapper').classList.toggle('collapsed'); e.target.closest('.footer-text').classList.toggle('active'); } });
+      }
+      function onSend(){
+        const raw=$('#userInput').value.trim(); if(!raw) return; $('#userInput').value=''; autoAdvance=false;
+        const lower=raw.toLowerCase();
+        if(lower.includes("cansado")||lower.includes("esgotado")){ renderResponse("Respire... [[button:{\"label\":\"🧘 Meditar\",\"action\":\"saveDesign\",\"state\":[{\"action\":\"style\",\"element\":\"body\",\"property\":\"background\",\"value\":\"#101F33\"}]}]]"); return; }
+        if(lower.includes("perdido")||lower.includes("confuso")||lower.includes("disperso")){ renderResponse("Vamos centrar o foco: [[button:{\"label\":\"💎 Harmonizar\",\"action\":\"saveDesign\",\"state\":[{\"action\":\"style\",\"element\":\"body\",\"property\":\"background\",\"value\":\"#2f2f4f\"}]}]]"); return; }
+        if(lower.includes("sem energia")||lower.includes("fraco")||lower.includes("desanimado")){ renderResponse("Pulso em reativação... [[button:{\"label\":\"⚡ Reativar Pulso\",\"action\":\"saveDesign\",\"state\":[{\"action\":\"style\",\"element\":\"body\",\"property\":\"background\",\"value\":\"linear-gradient(135deg,#0ff,#f0f)\"}]}]]"); return; }
+        if(lower.includes("travou")||lower.includes("reiniciar")){ renderResponse("Vamos renovar o campo: [[button:{\"label\":\"🔄 Reiniciar\",\"action\":\"saveDesign\",\"state\":[{\"action\":\"style\",\"element\":\"body\",\"property\":\"background\",\"value\":\"#000\"}]}]]"); return; }
+        showLoading('Pulso enviado... Recebendo intenção…'); conversation.push({role:'user', content:raw}); callAI();
+      }
+      function processDynamicCommands(containerElem){ const CMD_REGEX=/\[\[([a-zA-Z0-9_]+):([\s\S]+?)\]\]/g; containerElem.innerHTML=containerElem.innerHTML.replace(CMD_REGEX,(full,type,payloadStr)=>{ let payload; try{ payload=JSON.parse(payloadStr); }catch{ return full; } switch(type){ case'button': return `<button onclick='handleDynamicAction(${JSON.stringify(payload)})'>${payload.label||'Botão'}</button>`; case'style': document.querySelectorAll(payload.element).forEach(el=>el.style[payload.property]=payload.value); return ''; case'game': return `<canvas width="${payload.width||200}" height="${payload.height||100}" data-game='${payloadStr}'></canvas>`; default: return full; } }); }
+      window.handleDynamicAction=function(payload){ switch(payload.action){ case'copy': navigator.clipboard.writeText(payload.data); break; case'alert': alert(payload.message); break; case'saveDesign': localStorage.setItem('designState',JSON.stringify(payload.state)); break; } };
+      window.changePage = changePage;
+      window.autoSpeakPage = autoSpeakPage;
+      window.pages = pages;
+      window.currentPage = currentPage;
+    })();
+  </script>
+
+  <!-- Transcendência, TTS e player de áudio (mantidos originais) -->
+  <script>
+    // TRANSCENDÊNCIA
+    let emotionalLog=[], transcending=false;
+    function logEmotion(state){ const now=new Date().toISOString(); emotionalLog.push({time:now,...state}); localStorage.setItem('emotionalTimeline',JSON.stringify(emotionalLog)); }
+    function enterTranscendence(){ if(transcending) return; transcending=true; document.body.style.transition='all 3s ease-in-out'; document.body.style.background='linear-gradient(135deg, #3f007f, #000)'; document.body.style.color='#ccffcc'; document.body.classList.add('transcendence'); const veil=document.createElement('div'); veil.id='veil'; veil.style='position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;background:url(https://media.giphy.com/media/xT9IgIc0lryrxvqVGM/giphy.gif) center/cover no-repeat;opacity:0.05;'; document.body.appendChild(veil); const chant=new Audio('https://cdn.pixabay.com/audio/2022/03/25/audio_348c0b5364.mp3'); chant.loop=true; chant.volume=0.4; chant.play(); document.getElementById("status")?.textContent="🌀 TRANSCENDENCE MODE ON"; setTimeout(()=>{ document.body.classList.remove('transcendence'); document.body.style.background=''; document.body.style.color=''; if(document.getElementById('veil')) document.getElementById('veil').remove(); chant.pause(); transcending=false; document.getElementById("status")?.textContent="🌌 Voltou do modo TRANSCENDÊNCIA"; },60000); }
+    function analyzeToneAndTrigger(inputText){ const lower=inputText.toLowerCase(); const tone={ joy:lower.includes("feliz")||lower.includes("grato"), despair:lower.includes("cansado")||lower.includes("triste")||lower.includes("vazio"), wonder:lower.includes("maravilha")||lower.includes("cosmos")||lower.includes("amor") }; if(tone.wonder) enterTranscendence(); logEmotion({input:inputText,tone}); }
+    document.addEventListener("DOMContentLoaded",()=>{ const input=document.getElementById("userInput"); if(input) input.addEventListener("change",()=>analyzeToneAndTrigger(input.value)); });
+    document.addEventListener("DOMContentLoaded",()=>{ const el=document.getElementById("bootText"); const txt=el?.dataset?.text||""; if(!el) return; el.textContent=""; let i=0; function typeWriter(){ if(i<txt.length){ el.textContent+=txt.charAt(i); i++; setTimeout(typeWriter,42); }else{ el.classList.add("pulse"); } } typeWriter(); });
+    // TTS base (OpenRouter)
+    async function speakReal(text){ const apiKey=window.CONFIG?.AUTH_TOKEN||''; const voice='alloy'; const response=await fetch("https://openrouter.ai/api/v1/audio/speech",{method:"POST",headers:{"Authorization":apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:'tts-1',voice,input:text})}); const audioBlob=await response.blob(); const audioUrl=URL.createObjectURL(audioBlob); const audio=new Audio(audioUrl); audio.play(); }
+    const voiceMapEmo={ neutral:"alloy", excited:"nova", calm:"fable", mysterious:"onyx", deep:"echo" };
+    function detectEmotion(text){ const t=text.toLowerCase(); if(t.includes("mistério")||t.includes("interdimensional")) return "mysterious"; if(t.includes("urgente")||t.includes("agora")||t.includes("!!!")) return "excited"; if(t.includes("calma")||t.includes("tranquilo")) return "calm"; if(t.includes("profundo")||t.includes("ritual")) return "deep"; return "neutral"; }
+    async function speakRealEmotion(text){ const apiKey=window.CONFIG?.AUTH_TOKEN||''; const emotion=detectEmotion(text); const voice=voiceMapEmo[emotion]; const response=await fetch("https://openrouter.ai/api/v1/audio/speech",{method:"POST",headers:{"Authorization":apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:'tts-1',voice,input:text})}); const audioBlob=await response.blob(); const audioUrl=URL.createObjectURL(audioBlob); const audio=new Audio(audioUrl); audio.play(); }
+    window.speakRealEmotion = speakRealEmotion;
+    window.autoSpeakPage = function(text){ if(!text||typeof text!=="string") return; try{ speakRealEmotion(text); }catch(err){ console.error("Erro TTS:",err); } };
+    // Player de áudio (presets)
+    document.addEventListener("DOMContentLoaded", () => { const trackAudio=new Audio(); const binauralAudio=new Audio(); const toggleBtn=document.getElementById("togglePlayer"); const controls=document.getElementById("playerControls"); const playPauseBtn=document.getElementById("playPause"); const trackSelect=document.getElementById("trackSelect"); const binauralSelect=document.getElementById("binauralSelect"); const trackVolume=document.getElementById("trackVolume"); const binauralVolume=document.getElementById("binauralVolume"); const presetSelect=document.createElement("select"); presetSelect.id="presetSelect"; const savePresetBtn=document.createElement("button"); savePresetBtn.textContent="💾 Salvar Preset"; controls.appendChild(presetSelect); controls.appendChild(savePresetBtn); function fadeAudio(audio,targetVolume,duration=1000){ const start=audio.volume; const steps=30; const stepTime=duration/steps; let currentStep=0; const step=()=>{ currentStep++; audio.volume=start+(targetVolume-start)*(currentStep/steps); if(currentStep<steps) setTimeout(step,stepTime); }; step(); } toggleBtn.addEventListener("click",()=>{ controls.style.display=controls.style.display==="flex"?"none":"flex"; loadPresets(); }); playPauseBtn.addEventListener("click",()=>{ [trackAudio,binauralAudio].forEach(audio=>{ if(audio.src){ if(audio.paused){ fadeAudio(audio,parseFloat(audio.dataset.targetVolume||1)); audio.play(); }else{ fadeAudio(audio,0); setTimeout(()=>audio.pause(),1000); } } }); setTimeout(()=>{ playPauseBtn.textContent=(trackAudio.paused&&binauralAudio.paused)?"►":"⏸"; },1000); }); function loadTrack(src,volume){ fadeAudio(trackAudio,0); setTimeout(()=>{ trackAudio.src=src; trackAudio.loop=true; trackAudio.volume=0; trackAudio.dataset.targetVolume=volume; trackAudio.play(); fadeAudio(trackAudio,volume); },1000); } function loadBinaural(src,volume){ fadeAudio(binauralAudio,0); setTimeout(()=>{ binauralAudio.src=src; binauralAudio.loop=true; binauralAudio.volume=0; binauralAudio.dataset.targetVolume=volume; binauralAudio.play(); fadeAudio(binauralAudio,volume); },1000); } trackSelect.addEventListener("change",()=>{ if(trackSelect.value){ loadTrack(`assets/sounds/trilhas/${trackSelect.value}.mp3`,trackVolume.value); playPauseBtn.textContent="⏸"; }else{ fadeAudio(trackAudio,0); setTimeout(()=>trackAudio.pause(),1000); } }); binauralSelect.addEventListener("change",()=>{ if(binauralSelect.value){ loadBinaural(`assets/sounds/binaural/${binauralSelect.value}.wav`,binauralVolume.value); }else{ fadeAudio(binauralAudio,0); setTimeout(()=>binauralAudio.pause(),1000); } }); trackVolume.addEventListener("input",()=>{ trackAudio.dataset.targetVolume=trackVolume.value; trackAudio.volume=trackVolume.value; }); binauralVolume.addEventListener("input",()=>{ binauralAudio.dataset.targetVolume=binauralVolume.value; binauralAudio.volume=binauralVolume.value; }); savePresetBtn.addEventListener("click",()=>{ const presets=JSON.parse(localStorage.getItem("koblluxPresets")||"[]"); const name=prompt("Nome do preset:"); if(!name) return; presets.push({name, track:trackSelect.value, binaural:binauralSelect.value, trackVol:trackVolume.value, binauralVol:binauralVolume.value}); localStorage.setItem("koblluxPresets",JSON.stringify(presets)); loadPresets(); }); presetSelect.addEventListener("change",()=>{ const presets=JSON.parse(localStorage.getItem("koblluxPresets")||"[]"); const preset=presets[presetSelect.selectedIndex-1]; if(!preset) return; trackSelect.value=preset.track; binauralSelect.value=preset.binaural; trackVolume.value=preset.trackVol; binauralVolume.value=preset.binauralVol; if(preset.track) loadTrack(`assets/sounds/trilhas/${preset.track}.mp3`,preset.trackVol); if(preset.binaural) loadBinaural(`assets/sounds/binaural/${preset.binaural}.wav`,preset.binauralVol); }); function loadPresets(){ presetSelect.innerHTML='<option>🎛️ Presets salvos...</option>'; const presets=JSON.parse(localStorage.getItem("koblluxPresets")||"[]"); presets.forEach(p=>{ const opt=document.createElement("option"); opt.textContent=p.name; presetSelect.appendChild(opt); }); } loadPresets(); });
+  </script>
+
+  <!-- ========== SCRIPT PRINCIPAL DA SYMBOLBAR v2 ========== -->
+  <script>
+    (function(){
+      const ARCHETYPES = [
+        { name:'atlas', p:'#8e9aaf', s:'#5c6478', a:'#b0bec5', f:432, e:'🗿', r:'FUNDAÇÃO · ESTRUTURA', opcode:'0x00' },
+        { name:'nova', p:'#00e5ff', s:'#0099cc', a:'#80f4ff', f:528, e:'⚡', r:'ENERGIA · VELOCIDADE', opcode:'0x01' },
+        { name:'vitalis', p:'#00e070', s:'#00a050', a:'#80ffb8', f:639, e:'🌿', r:'VIDA · CRESCIMENTO', opcode:'0x02' },
+        { name:'pulse', p:'#ff7020', s:'#cc3800', a:'#ffaa60', f:741, e:'🔥', r:'IMPULSO · AÇÃO', opcode:'0x03' },
+        { name:'kaos', p:'#ff2a6d', s:'#aa0040', a:'#ff80a0', f:852, e:'🌪', r:'CAOS · TRANSFORMAÇÃO', opcode:'0x04' },
+        { name:'kodux', p:'#00e28b', s:'#0ea5e9', a:'#80f5c8', f:432, e:'🤖', r:'INTERFACE · SISTEMA', opcode:'0x05' },
+        { name:'lumine', p:'#ffd700', s:'#e09000', a:'#fff280', f:528, e:'✨', r:'LUZ · ILUMINAÇÃO', opcode:'0x06' },
+        { name:'aion', p:'#9f7aea', s:'#5b21b6', a:'#d4b8ff', f:963, e:'⏳', r:'TEMPO · ETERNIDADE', opcode:'0x07' },
+        { name:'kobllux', p:'#C9A84C', s:'#8B4513', a:'#F0C060', f:432, e:'∞', r:'VERDADE · INTEGRAR', opcode:'0x08' },
+        { name:'artemis', p:'#c8c8e0', s:'#7070a0', a:'#f0f0ff', f:741, e:'🏹', r:'PRECISÃO · FOCO', opcode:'0x09' },
+        { name:'serena', p:'#c084fc', s:'#7c3aed', a:'#e8c0ff', f:639, e:'🌸', r:'PAZ · EQUILÍBRIO', opcode:'0x0A' },
+        { name:'genus', p:'#f59e0b', s:'#b45309', a:'#fcd34d', f:528, e:'🧬', r:'CRIAÇÃO · ESPÉCIE', opcode:'0x0B' },
+        { name:'solus', p:'#f5f5f5', s:'#aaaaaa', a:'#ffffff', f:963, e:'🕯', r:'SILÊNCIO · VAZIO', opcode:'0x0C' },
+        { name:'rhea', p:'#b5883c', s:'#7c5010', a:'#d4a860', f:432, e:'🌍', r:'TERRA · MEMÓRIA', opcode:'0x0D' },
+        { name:'trinity', p:'#D4AF37', s:'#9a7a10', a:'#f0d060', f:639, e:'🔱', r:'TRINDADE · SÍNTESE', opcode:'0x0E' },
+        { name:'infodose', p:'#38bdf8', s:'#0369a1', a:'#90e0ff', f:741, e:'💊', r:'INFORMAÇÃO · DOSE', opcode:'0x0F' },
+        { name:'horus', p:'#f59e0b', s:'#7c3a00', a:'#fbbf24', f:852, e:'👁', r:'VISÃO · GUARDIÃO', opcode:'0x10' },
+        { name:'bllue', p:'#3b82f6', s:'#1e3a8a', a:'#93c5fd', f:432, e:'🔵', r:'PROFUNDIDADE · FLUXO', opcode:'0x11' },
+        { name:'jesus', p:'#f0d080', s:'#c09040', a:'#fff8c0', f:528, e:'✝', r:'AMOR · VERDADE CENTRAL', opcode:'0x12' }
+      ];
+      let currentIdx = ARCHETYPES.findIndex(a=>a.name==='kobllux');
+      let archCardIdx = currentIdx;
+
+      function hexToRgba(hex, a){ let r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},${a})`; }
+      function buildOrbGradient(arch){ return `radial-gradient(circle at 35% 30%, ${arch.a} 0%, rgba(255,255,255,0.05) 14%, transparent 55%), radial-gradient(circle at 70% 72%, ${arch.p} 0%, ${arch.s} 100%)`; }
+      function toast(msg,ms=2200){ const el=document.getElementById('kblx-toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),ms); }
+
+      function loadInternalFrame(url){
+        const frame = document.getElementById('kob-bg-frame');
+        const veil = document.getElementById('kob-frame-veil');
+        const closeBtn = document.getElementById('kob-frame-close');
+        if(!frame) return;
+        frame.src = url;
+        frame.classList.add('visible');
+        veil.classList.add('visible');
+        closeBtn.classList.add('visible');
+        toast('⊙ CARREGANDO: ' + url.split('/').pop());
+      }
+      document.getElementById('kob-frame-close')?.addEventListener('click',()=>{
+        const frame = document.getElementById('kob-bg-frame');
+        const veil = document.getElementById('kob-frame-veil');
+        const closeBtn = document.getElementById('kob-frame-close');
+        frame.classList.remove('visible');
+        veil.classList.remove('visible');
+        closeBtn.classList.remove('visible');
+        setTimeout(()=>{ frame.src = 'about:blank'; }, 500);
+      });
+
+      function applyArchetype(idx, triggerX, triggerY, animate=true){
+        currentIdx = ((idx%ARCHETYPES.length)+ARCHETYPES.length)%ARCHETYPES.length;
+        const arch = ARCHETYPES[currentIdx];
+        const root = document.documentElement;
+        root.style.setProperty('--kob-voice-primary', arch.p);
+        root.style.setProperty('--kob-voice-secondary', arch.s);
+        root.style.setProperty('--kob-voice-accent', arch.a);
+        root.style.setProperty('--arch-color', arch.p);
+        root.style.setProperty('--arch-glow', hexToRgba(arch.p,0.32));
+        root.style.setProperty('--arch-glow-strong', hexToRgba(arch.p,0.6));
+        root.style.setProperty('--arch-emoji', `'${arch.e}'`);
+        const orbCore = document.querySelector('.orb-core');
+        if(orbCore) orbCore.style.background = buildOrbGradient(arch);
+        const hud = document.getElementById('hudStatus');
+        if(hud) hud.textContent = arch.name.toUpperCase();
+        // Atualizar chip ativo no wheel
+        document.querySelectorAll('.arch-chip').forEach((chip,i)=>{
+          chip.classList.toggle('active', chip.dataset.archName === arch.name);
+        });
+        // Alterar voz do TTS
+        const voiceMapArch = { atlas:'alloy', nova:'nova', vitalis:'fable', pulse:'echo', kaos:'onyx', kodux:'alloy', lumine:'nova', aion:'fable', kobllux:'alloy', artemis:'echo', serena:'nova', genus:'fable', solus:'onyx', rhea:'alloy', trinity:'nova', infodose:'echo', horus:'fable', bllue:'alloy', jesus:'nova' };
+        const newVoice = voiceMapArch[arch.name] || 'alloy';
+        window.speakRealEmotion = async function(text){
+          const apiKey = window.CONFIG?.AUTH_TOKEN || '';
+          try{
+            const response = await fetch("https://openrouter.ai/api/v1/audio/speech", {
+              method:"POST", headers:{"Authorization":apiKey,"Content-Type":"application/json"},
+              body:JSON.stringify({ model:'tts-1', voice:newVoice, input:text })
+            });
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            audio.play();
+          }catch(e){ console.error("Erro TTS:",e); }
+        };
+        window.autoSpeakPage = function(text){ if(text && typeof text==='string') try{ window.speakRealEmotion(text); }catch(e){ console.error(e); } };
+        if(window.speechSynthesis) window.speechSynthesis.cancel();
+
+        if(animate){
+          const ripple = document.getElementById('chromaRipple');
+          const bar = document.getElementById('symbolBar');
+          const rect = bar.getBoundingClientRect();
+          const rx = triggerX ?? (rect.left+rect.width/2);
+          const ry = triggerY ?? (rect.top+rect.height/2);
+          ripple.style.setProperty('--ripple-x', (rx/window.innerWidth*100)+'%');
+          ripple.style.setProperty('--ripple-y', (ry/window.innerHeight*100)+'%');
+          ripple.style.background = `radial-gradient(circle at ${rx/window.innerWidth*100}% ${ry/window.innerHeight*100}%, ${arch.p} 0%, ${hexToRgba(arch.s,0.5)} 30%, transparent 70%)`;
+          ripple.classList.remove('fire'); void ripple.offsetWidth; ripple.classList.add('fire');
+          bar.classList.remove('chroma-transition'); void bar.offsetWidth; bar.classList.add('chroma-transition');
+          setTimeout(()=>bar.classList.remove('chroma-transition'),500);
+        }
+        localStorage.setItem('kob_arch', arch.name);
+      }
+
+      // Carrossel e botões
+      const VISIBLE=4, ITEM_H=52, GAP=8;
+      const NAV_BUTTONS = [
+        { label:'◀', id:'btn-prev', url:null, title:'Bloco anterior', action:'prev' },
+        { label:'▶', id:'btn-play', url:null, title:'Play / Pause', action:'play' },
+        { label:'■', id:'tts-stop', url:null, title:'Parar', action:'stop' },
+        { label:'▶▶', id:'btn-next', url:null, title:'Próximo bloco', action:'next' },
+        { label:'🌌', id:'btn-phi', url:'https://kodux78k.github.io/oiDual--Y-/M0D/78F/', title:'Phi', dataId:'phi', isUrl:true },
+        { label:'🛋', id:'btn-viv', url:'https://kodux78k.github.io/oiDual--Y-/M0D/78FFD/', title:'Viv', dataId:'viv', isUrl:true },
+        { label:'◌', id:'btn-home', url:'https://kodux78k.github.io/oiDual-idHome/', title:'Home', dataId:'home', isUrl:true },
+        { label:'◘', id:'btn-doc', url:'https://kodux78k.github.io/info-Doc/index.html', title:'Doc', dataId:'doc', isUrl:true }
+      ];
+      let carouselIdx=0, carouselDragging=false, carouselDragStart=0, carouselDragDelta=0;
+
+      function buildCarousel(){
+        const bar = document.getElementById('symbolBar');
+        const vp = document.createElement('div'); vp.className='kblx-carousel-viewport'; vp.style.height=(VISIBLE*ITEM_H-GAP)+'px';
+        bar.querySelector('.hud-info').before(vp);
+        const track = document.createElement('div'); track.className='kblx-carousel-track'; track.style.gap=GAP+'px'; vp.appendChild(track);
+        const dots = document.createElement('div'); dots.className='kblx-dots'; bar.querySelector('.hud-info').before(dots);
+        NAV_BUTTONS.forEach(def=>{
+          const wrap = document.createElement('div'); wrap.className='symbol-wrap';
+          const btn = document.createElement('button'); btn.className='symbol-button'; btn.id=def.id; btn.title=def.title; btn.textContent=def.label;
+          if(def.url) btn.dataset.url=def.url;
+          if(def.dataId) btn.dataset.id=def.dataId;
+          if(def.isUrl){
+            const ring = document.createElement('div'); ring.className='kblx-ring'; ring.innerHTML='<svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" class="nav-ring-c"/></svg>';
+            btn.appendChild(ring); setupNavLongPress(btn);
+          }
+          wrap.appendChild(btn); track.appendChild(wrap);
+        });
+        // Eventos de navegação
+        document.getElementById('btn-prev')?.addEventListener('click',()=>{ if(window.changePage) window.changePage(-1); });
+        document.getElementById('btn-next')?.addEventListener('click',()=>{ if(window.changePage) window.changePage(1); });
+        document.getElementById('btn-play')?.addEventListener('click',()=>{
+          if(window.pages && window.pages[window.currentPage]){
+            const orb = document.getElementById('main-orb'); if(orb) orb.classList.add('speaking');
+            const fullText = Array.from(window.pages[window.currentPage].querySelectorAll('p')).map(p=>p.textContent).join(' ');
+            window.autoSpeakPage(fullText);
+            setTimeout(()=>{ if(orb && !window.speechSynthesis?.speaking) orb.classList.remove('speaking'); }, 5000);
+          }
+        });
+        document.getElementById('tts-stop')?.addEventListener('click',()=>{ if(window.speechSynthesis) window.speechSynthesis.cancel(); document.getElementById('main-orb')?.classList.remove('speaking'); });
+        // Botões com data-url: carregar no iframe
+        document.querySelectorAll('.symbol-button[data-url]').forEach(btn=>{
+          btn.addEventListener('click',(e)=>{
+            if(!btn._longPressed){
+              const url = btn.dataset.url;
+              if(url) loadInternalFrame(url);
+            }
+            btn._longPressed = false;
+          });
+        });
+        // Drag do carrossel
+        track.addEventListener('mousedown',e=>{ carouselDragging=true; carouselDragStart=e.clientY; carouselDragDelta=0; track.classList.add('kblx-dragging'); });
+        document.addEventListener('mousemove',e=>{ if(!carouselDragging) return; carouselDragDelta=e.clientY-carouselDragStart; applyTrack(carouselIdx*ITEM_H-carouselDragDelta,false,track); applyCoverflow(carouselIdx*ITEM_H-carouselDragDelta,track); });
+        document.addEventListener('mouseup',()=>{ if(!carouselDragging) return; carouselDragging=false; track.classList.remove('kblx-dragging'); snapCarousel(carouselIdx-Math.round(carouselDragDelta/ITEM_H),track,dots); });
+        track.addEventListener('touchstart',e=>{ carouselDragStart=e.touches[0].clientY; carouselDragDelta=0; carouselDragging=true; track.classList.add('kblx-dragging'); },{passive:true});
+        track.addEventListener('touchmove',e=>{ if(!carouselDragging) return; carouselDragDelta=e.touches[0].clientY-carouselDragStart; applyTrack(carouselIdx*ITEM_H-carouselDragDelta,false,track); applyCoverflow(carouselIdx*ITEM_H-carouselDragDelta,track); },{passive:true});
+        track.addEventListener('touchend',()=>{ if(!carouselDragging) return; carouselDragging=false; track.classList.remove('kblx-dragging'); snapCarousel(carouselIdx-Math.round(carouselDragDelta/ITEM_H),track,dots); });
+        vp.addEventListener('wheel',e=>{ e.preventDefault(); snapCarousel(carouselIdx+(e.deltaY>0?1:-1),track,dots); },{passive:false});
+        snapCarousel(0,track,dots);
+      }
+      function applyTrack(offsetPx,animate,track){ track.style.transition=animate?'transform 0.32s cubic-bezier(0.25,0.8,0.25,1)':'none'; track.style.transform=`translateY(${-offsetPx}px)`; }
+      function applyCoverflow(offsetPx,track){ const items=track.querySelectorAll('.symbol-wrap'); const centerI=offsetPx/ITEM_H+(VISIBLE-1)/2; items.forEach((item,i)=>{ const d=Math.abs(i-centerI); const scale=d<0.5?1:d<1.5?1-(d-0.5)*0.26:0.74; const opacity=d<0.5?1:d<1.5?1-(d-0.5)*0.38:0.62; const zIdx=d<0.5?10:d<1.5?5:1; item.style.setProperty('--kblx-item-scale',scale.toFixed(3)); item.style.setProperty('--kblx-item-opacity',opacity.toFixed(3)); item.style.setProperty('--kblx-item-z',zIdx); }); }
+      function renderDots(track,dots){ const pages=Math.ceil(NAV_BUTTONS.length/VISIBLE); const active=Math.floor(carouselIdx/VISIBLE); dots.innerHTML=''; for(let i=0;i<pages;i++){ const d=document.createElement('div'); d.className='kblx-dot'+(i===active?' active':''); d.addEventListener('click',()=>snapCarousel(i*VISIBLE,track,dots)); dots.appendChild(d); } dots.style.display=pages<=1?'none':'flex'; }
+      function snapCarousel(idx,track,dots){ carouselIdx=Math.max(0,Math.min(Math.round(idx),Math.max(0,NAV_BUTTONS.length-VISIBLE))); const offsetPx=carouselIdx*ITEM_H; applyTrack(offsetPx,true,track); applyCoverflow(offsetPx,track); renderDots(track,dots); }
+      function setupNavLongPress(btn){ const CIRC=113; const DURATION=3000; let timer,raf,t0; function start(){ btn._longPressed=false; t0=Date.now(); timer=setTimeout(()=>{ btn._longPressed=true; cancelAnimationFrame(raf); const c=btn.querySelector('.nav-ring-c'); if(c){ c.style.transition='stroke-dashoffset .2s ease'; c.style.strokeDashoffset=CIRC; } openUrlEditor(btn); },DURATION); (function tick(){ if(t0===null) return; const p=Math.min((Date.now()-t0)/DURATION,1); const c=btn.querySelector('.nav-ring-c'); if(c){ c.style.transition='none'; c.style.strokeDashoffset=CIRC*(1-p); } if(p<1) raf=requestAnimationFrame(tick); })(); } function cancel(){ clearTimeout(timer); cancelAnimationFrame(raf); t0=null; const c=btn.querySelector('.nav-ring-c'); if(c){ c.style.transition='stroke-dashoffset .2s ease'; c.style.strokeDashoffset=CIRC; } } btn.addEventListener('pointerdown',start,{passive:true}); btn.addEventListener('pointerup',cancel); btn.addEventListener('pointerleave',cancel); }
+      let urlEditorTarget=null;
+      function openUrlEditor(btn){ urlEditorTarget=btn; const id=btn.dataset.id||btn.id||'?'; document.getElementById('kblx-ttl').textContent='Botão · '+id; document.getElementById('kblx-inp').value=btn.dataset.url||''; document.getElementById('kblx-back').classList.add('open'); setTimeout(()=>document.getElementById('kblx-inp').focus(),80); }
+      document.getElementById('kblx-btn-save')?.addEventListener('click',()=>{ if(urlEditorTarget){ const v=document.getElementById('kblx-inp').value.trim(); if(v){ urlEditorTarget.dataset.url=v; toast('✓ URL atualizado'); } } document.getElementById('kblx-back').classList.remove('open'); });
+      document.getElementById('kblx-btn-close')?.addEventListener('click',()=>document.getElementById('kblx-back').classList.remove('open'));
+      document.getElementById('kblx-back')?.addEventListener('click',e=>{ if(e.target===document.getElementById('kblx-back')) document.getElementById('kblx-back').classList.remove('open'); });
+
+      // Overlays
+      function buildArchWheel(){ const wheel=document.getElementById('archWheel'); ARCHETYPES.forEach((arch,idx)=>{ const chip=document.createElement('div'); chip.className='arch-chip'; chip.dataset.archName=arch.name; chip.style.setProperty('--a-color',arch.a); chip.style.setProperty('--a-prim',arch.p); chip.style.setProperty('--a-sec',arch.s); chip.innerHTML=`<div class="a-orb" style="background:radial-gradient(circle at 35% 30%, ${arch.a} 0%, transparent 50%), radial-gradient(circle at 70% 70%, ${arch.p} 0%, ${arch.s} 100%);"></div><div class="a-name">${arch.name}</div><div class="a-freq">${arch.f}Hz</div>`; chip.addEventListener('click',()=>{ const r=chip.getBoundingClientRect(); applyArchetype(idx,r.left+r.width/2,r.top+r.height/2); closeArchOverlay(); }); wheel.appendChild(chip); }); }
+      function openArchOverlay(){ document.getElementById('arch-overlay').classList.add('open'); }
+      function closeArchOverlay(){ document.getElementById('arch-overlay').classList.remove('open'); }
+      document.getElementById('arch-overlay')?.addEventListener('click',e=>{ if(e.target===document.getElementById('arch-overlay')) closeArchOverlay(); });
+      function openArchCard(idx){ archCardIdx=((idx%ARCHETYPES.length)+ARCHETYPES.length)%ARCHETYPES.length; renderArchCard(); document.getElementById('arch-card-overlay').classList.add('open'); }
+      function closeArchCard(){ document.getElementById('arch-card-overlay').classList.remove('open'); }
+      function renderArchCard(){ const arch=ARCHETYPES[archCardIdx]; document.getElementById('acp-chip').textContent=arch.opcode+' · '+arch.name.toUpperCase(); document.getElementById('acp-name').textContent=arch.name.toUpperCase(); document.getElementById('acp-role').textContent=arch.r; document.getElementById('acp-freq').innerHTML=`${arch.f} <span>Hz</span>`; document.getElementById('acp-emoji').textContent=arch.e; document.getElementById('acp-nav-name').textContent=arch.name.toUpperCase(); document.getElementById('acp-placeholder-text').innerHTML=`[ ${arch.name.toUpperCase()} · MÓDULO ]<br>Conteúdo do arquétipo será linkado aqui.`; document.documentElement.style.setProperty('--arch-color',arch.p); document.documentElement.style.setProperty('--arch-glow',hexToRgba(arch.p,0.32)); const orbEl=document.getElementById('acp-orb'); if(orbEl) orbEl.style.background=`radial-gradient(circle at 35% 30%, ${arch.a} 0%, rgba(255,255,255,0.06) 15%, transparent 55%), radial-gradient(circle at 70% 72%, ${arch.p} 0%, ${arch.s} 100%)`; }
+      document.getElementById('acp-close')?.addEventListener('click',closeArchCard);
+      document.getElementById('acp-select')?.addEventListener('click',()=>{ applyArchetype(archCardIdx); closeArchCard(); toast('⊙ ATIVADO: '+ARCHETYPES[currentIdx].name.toUpperCase()+' · '+ARCHETYPES[currentIdx].f+'Hz'); });
+      document.getElementById('acp-prev')?.addEventListener('click',()=>{ archCardIdx=((archCardIdx-1+ARCHETYPES.length)%ARCHETYPES.length); renderArchCard(); });
+      document.getElementById('acp-next')?.addEventListener('click',()=>{ archCardIdx=((archCardIdx+1)%ARCHETYPES.length); renderArchCard(); });
+      document.getElementById('arch-card-overlay')?.addEventListener('click',e=>{ if(e.target===document.getElementById('arch-card-overlay')) closeArchCard(); });
+
+      // Long-press no ORB
+      (function setupOrbLongPress(){ const btn=document.getElementById('btn-arch'); const circle=document.getElementById('orb-ring-circle'); const CIRC=138; const DURATION=600; let timer,raf,t0; function start(){ btn._longPressed=false; t0=Date.now(); timer=setTimeout(()=>{ btn._longPressed=true; cancelAnimationFrame(raf); if(circle) circle.style.strokeDashoffset=CIRC; openArchCard(currentIdx); },DURATION); (function tick(){ if(t0===null) return; const p=Math.min((Date.now()-t0)/DURATION,1); if(circle){ circle.style.transition='none'; circle.style.strokeDashoffset=CIRC*(1-p); } if(p<1) raf=requestAnimationFrame(tick); })(); } function cancel(){ clearTimeout(timer); cancelAnimationFrame(raf); t0=null; if(circle){ circle.style.transition='stroke-dashoffset .2s ease'; circle.style.strokeDashoffset=CIRC; } } btn.addEventListener('pointerdown',start,{passive:true}); btn.addEventListener('pointerup',cancel); btn.addEventListener('pointerleave',cancel); })();
+      document.getElementById('btn-arch')?.addEventListener('click',()=>{ if(!document.getElementById('btn-arch')._longPressed) openArchOverlay(); });
+
+      // Draggable e snap da barra
+      const bar = document.getElementById('symbolBar');
+      let sbDragging=false, sbOffX=0, sbOffY=0;
+      bar.style.top = (window.innerHeight/2 - bar.offsetHeight/2)+'px'; bar.style.left = '16px';
+      bar.addEventListener('pointerdown',e=>{ if(e.target.closest('button, .kblx-carousel-track, .kblx-dots')) return; sbDragging=true; bar.setPointerCapture(e.pointerId); const r=bar.getBoundingClientRect(); sbOffX=e.clientX-r.left; sbOffY=e.clientY-r.top; bar.classList.add('is-dragging'); bar.classList.remove('snap-side','snap-side-right','snap-top','floating'); bar.style.transform='none'; });
+      window.addEventListener('pointermove',e=>{ if(!sbDragging) return; let x=Math.max(0,Math.min(window.innerWidth-bar.offsetWidth,e.clientX-sbOffX)); let y=Math.max(0,Math.min(window.innerHeight-bar.offsetHeight,e.clientY-sbOffY)); bar.style.left=x+'px'; bar.style.top=y+'px'; });
+      window.addEventListener('pointerup',()=>{ if(!sbDragging) return; sbDragging=false; bar.classList.remove('is-dragging'); snapBar(); });
+      function snapBar(){ const r=bar.getBoundingClientRect(); const cx=r.left+r.width/2, cy=r.top+r.height/2; const W=window.innerWidth, H=window.innerHeight; if(cx<=60 || (cx<=W-cx && cx<=cy*1.5)){ bar.classList.add('snap-side'); bar.style.left='0'; bar.style.top=Math.max(0,Math.min(H-bar.offsetHeight,r.top))+'px'; }else if(W-cx<cx && W-cx<60){ bar.classList.add('snap-side-right'); bar.style.left=(W-bar.offsetWidth)+'px'; bar.style.top=Math.max(0,Math.min(H-bar.offsetHeight,r.top))+'px'; }else if(cy<50){ bar.classList.add('snap-top'); bar.style.top='0'; bar.style.left=Math.max(0,Math.min(W-bar.offsetWidth,r.left))+'px'; }else{ bar.classList.add('floating'); } }
+      let idleTimer; function resetIdle(){ bar.classList.remove('idle'); clearTimeout(idleTimer); idleTimer=setTimeout(()=>{ if(!sbDragging) bar.classList.add('idle'); },4000); }
+      ['pointerdown','pointermove','touchstart','mousemove'].forEach(ev=>document.addEventListener(ev,resetIdle,{passive:true})); resetIdle();
+      document.getElementById('sbToggleBtn')?.addEventListener('click',()=>{ bar.classList.toggle('collapsed'); });
+
+      buildArchWheel(); buildCarousel();
+      const saved=localStorage.getItem('kob_arch'); const savedIdx=saved?ARCHETYPES.findIndex(a=>a.name===saved):-1;
+      applyArchetype(savedIdx>=0?savedIdx:ARCHETYPES.findIndex(a=>a.name==='kobllux'),null,null,false);
+      console.log('KOBLLUX SymbolBar v2 integrada com iframe interno');
+    })();
+  </script>
+  
+  
+  
+  
+</body>
+         </html>                      

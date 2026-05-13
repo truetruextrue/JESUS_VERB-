@@ -1,0 +1,3 @@
+# arvore_vida.txt
+
+Arquivo criado pelo construtor KOBLLUX.
