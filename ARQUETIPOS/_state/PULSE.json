@@ -1,0 +1,20 @@
+{
+  "id": "KBLX-ARCH/PULSE",
+  "name": "PULSE",
+  "status": "ATIVO",
+  "activated_at": "2026-05-13T00:00:00Z",
+  "gloss_pt": "ritmo, batida e frequência",
+  "seeds": ["rhythm", "beat", "frequency", "pulse"],
+  "tags": ["#KOBLLUX", "#ARCHETYPE", "#PULSE", "#UNO", "#DUO", "#TRINITY"],
+  "voice": {
+    "engine": "pt-BR-AntonioNeural",
+    "style": "cheerful",
+    "rate": "+3%",
+    "pitch": "+1st",
+    "break_ms": 80,
+    "post_fx": "bright"
+  },
+  "essence": "PULSE traduz a emoção em movimento. Cada batida afina a escuta do corpo e da mente.",
+  "cycle_role": "DUO → ressoar e ritmar",
+  "seal": "∆7"
+}

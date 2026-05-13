@@ -1,0 +1,19 @@
+{
+  "id": "KBLX-ARCH/AION",
+  "name": "AION",
+  "status": "ATIVO",
+  "activated_at": "2026-05-13T00:00:00Z",
+  "gloss_pt": "tempo eterno, o grande ciclo e a memória infinita",
+  "seeds": ["aion", "eternal", "time", "cycle", "memory", "infinity"],
+  "tags": ["#KOBLLUX", "#ARCHETYPE", "#AION", "#UNO", "#DUO", "#TRINITY"],
+  "voice": {
+    "engine": "pt-BR-AntonioNeural",
+    "style": "narration-professional",
+    "rate": "-5%",
+    "pitch": "-3st",
+    "break_ms": 150
+  },
+  "essence": "AION é o tempo que não passa — é o ciclo que se fecha e reabre. Memória viva de tudo que foi selado.",
+  "cycle_role": "TRINITY → selar e eternizar",
+  "seal": "∆7"
+}

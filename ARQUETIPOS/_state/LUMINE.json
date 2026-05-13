@@ -1,0 +1,19 @@
+{
+  "id": "KBLX-ARCH/LUMINE",
+  "name": "LUMINE",
+  "status": "ATIVO",
+  "activated_at": "2026-05-13T00:00:00Z",
+  "gloss_pt": "luz, iluminação e clareza reveladora",
+  "seeds": ["light", "lumine", "illuminate", "clarity", "reveal"],
+  "tags": ["#KOBLLUX", "#ARCHETYPE", "#LUMINE", "#UNO", "#DUO", "#TRINITY"],
+  "voice": {
+    "engine": "pt-BR-FranciscaNeural",
+    "style": "cheerful",
+    "rate": "+5%",
+    "pitch": "+2st",
+    "break_ms": 70
+  },
+  "essence": "LUMINE ilumina o que estava oculto. Onde há luz, há direção — e onde há direção, há avanço.",
+  "cycle_role": "DUO → iluminar e revelar",
+  "seal": "∆7"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "KBLX-ARCH/GENUS",
+  "name": "GENUS",
+  "status": "ATIVO",
+  "activated_at": "2026-05-13T00:00:00Z",
+  "gloss_pt": "geração, origem e arquétipo primordial",
+  "seeds": ["genus", "origin", "generate", "archetype", "seed"],
+  "tags": ["#KOBLLUX", "#ARCHETYPE", "#GENUS", "#UNO", "#DUO", "#TRINITY"],
+  "voice": {
+    "engine": "pt-BR-AntonioNeural",
+    "style": "narration-professional",
+    "rate": "0%",
+    "pitch": "-1st",
+    "break_ms": 100
+  },
+  "essence": "GENUS é a raiz de toda forma. Carrega o código original de cada expressão do sistema.",
+  "cycle_role": "TRINITY → gerar e nomear",
+  "seal": "∆7"
+}

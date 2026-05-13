@@ -1,0 +1,19 @@
+{
+  "id": "KBLX-ARCH/ATLAS",
+  "name": "ATLAS",
+  "status": "ATIVO",
+  "activated_at": "2026-05-13T00:00:00Z",
+  "gloss_pt": "estrutura, grade e ordem do mundo",
+  "seeds": ["structure", "atlas", "grid", "atlasian"],
+  "tags": ["#KOBLLUX", "#ARCHETYPE", "#ATLAS", "#UNO", "#DUO", "#TRINITY"],
+  "voice": {
+    "engine": "pt-BR-AntonioNeural",
+    "style": "conversational",
+    "rate": "+3%",
+    "pitch": "+1st",
+    "break_ms": 80
+  },
+  "essence": "ATLAS sustenta e mapeia. É a grade invisível que dá forma ao caos, o esqueleto do sistema vivo.",
+  "cycle_role": "UNO → estruturar intenção",
+  "seal": "∆7"
+}

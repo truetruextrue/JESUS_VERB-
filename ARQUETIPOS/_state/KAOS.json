@@ -1,0 +1,20 @@
+{
+  "id": "KBLX-ARCH/KAOS",
+  "name": "KAOS",
+  "status": "ATIVO",
+  "activated_at": "2026-05-13T00:00:00Z",
+  "gloss_pt": "entropia criativa, destruição construtiva",
+  "seeds": ["chaos", "entropy", "disrupt", "kaos", "creative-destruction"],
+  "tags": ["#KOBLLUX", "#ARCHETYPE", "#KAOS", "#UNO", "#DUO", "#TRINITY"],
+  "voice": {
+    "engine": "pt-BR-AntonioNeural",
+    "style": "angry",
+    "rate": "+8%",
+    "pitch": "+2st",
+    "break_ms": 40
+  },
+  "essence": "KAOS dissolve o que está fixo. O caos não é inimigo — é o campo fértil antes da forma.",
+  "cycle_role": "UNO → quebrar e reimaginar",
+  "config_ref": "CODEX/KAOS/kaos.config.json",
+  "seal": "∆7"
+}
