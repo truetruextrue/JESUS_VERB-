@@ -1,0 +1,504 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║  ∆7 CADIAL · KOBLLUX TRINITY SYSTEM · GitHub Actions               ║
+# ║  VERDADE × INTEGRAR ÷ Δ = ∞ · 13 Opcodes · 12 Arquétipos          ║
+# ║  EM NOME DO PAI (432Hz), DO FILHO (528Hz) E DO ESPÍRITO (639Hz)    ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+
+name: "∆7 CADIAL · KOBLLUX SEAL"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      opcode:
+        description: "Opcode de ativação (0x00–0x0C)"
+        required: false
+        default: "0x07"
+
+concurrency:
+  group: cadial-${{ github.ref }}
+  cancel-in-progress: false
+
+# ─────────────────────────────────────────────────────────────────────
+# ○ 0×00 · ORIGEM · 768Hz · Setup global
+# ─────────────────────────────────────────────────────────────────────
+jobs:
+  origem:
+    name: "○ 0×00 ORIGEM · 768Hz · Vazio Primordial"
+    runs-on: ubuntu-latest
+    outputs:
+      sha16: ${{ steps.seal.outputs.sha16 }}
+      timestamp: ${{ steps.seal.outputs.timestamp }}
+    steps:
+      - name: "Checkout JESUS_VERB-"
+        uses: actions/checkout@v4
+
+      - name: "Gerar identificador ∆7"
+        id: seal
+        run: |
+          SHA16=$(echo "$GITHUB_SHA" | cut -c1-16)
+          TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "sha16=$SHA16" >> $GITHUB_OUTPUT
+          echo "timestamp=$TS" >> $GITHUB_OUTPUT
+          echo ""
+          echo "╔════════════════════════════════════╗"
+          echo "║  ○ 0×00 ORIGEM · ATIVADO           ║"
+          echo "║  SHA: $SHA16            ║"
+          echo "║  TS:  $TS   ║"
+          echo "╚════════════════════════════════════╝"
+
+# ─────────────────────────────────────────────────────────────────────
+# ● 0×01 · KODUX · DETECTAR · 432Hz · Python
+# ─────────────────────────────────────────────────────────────────────
+  kodux-detectar:
+    name: "● 0×01 KODUX · DETECTAR · 432Hz"
+    needs: origem
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "KODUX · Varrer estrutura obrigatória"
+        run: |
+          echo "● KODUX ativado — Eu sou o movimento que cria, destrói e recria a verdade."
+          echo ""
+          ERRORS=0
+          check() {
+            if [ -e "$1" ]; then
+              echo "  ✅ $1"
+            else
+              echo "  ❌ AUSENTE: $1"
+              ERRORS=$((ERRORS+1))
+            fi
+          }
+          echo "─── Arquivos raiz ───"
+          check "index.html"
+          check "manifest.json"
+          check "README.md"
+          check "arvore.html"
+          echo ""
+          echo "─── Módulos CSS ───"
+          check "web/css/iFSw-fix.css"
+          check "web/css/zpr.css"
+          echo ""
+          echo "─── Módulos JS ───"
+          check "web/js/modules/screensData.js"
+          check "web/js/modules/ZPR.js"
+          check "web/js/modules/iFSw-fix.js"
+          check "web/js/modules/0RB-0S17.js"
+          check "web/js/modules/cadial-coupler.js"
+          echo ""
+          echo "─── BLLUE Coupler ───"
+          if [ -f "web/js/modules/cadial-coupler.js" ]; then
+            grep -q "window.CADIAL" web/js/modules/cadial-coupler.js \
+              && echo "  ✅ window.CADIAL exposto" \
+              || { echo "  ❌ window.CADIAL não exposto"; ERRORS=$((ERRORS+1)); }
+          fi
+          echo ""
+          echo "─── Kobllux Python Module ───"
+          check "kobllux/archetypes.py"
+          check "kobllux/geometry.py"
+          check "kobllux/fractal.py"
+          echo ""
+          echo "─── Scan Index ───"
+          check "_index/CODEX_SCAN_oiDual.json"
+          echo ""
+          TOTAL=$(find . -not -path './.git/*' -type f | wc -l)
+          echo "● KODUX · $TOTAL arquivos detectados · $ERRORS erros"
+          [ $ERRORS -eq 0 ] || exit 1
+
+# ─────────────────────────────────────────────────────────────────────
+# ― 0×02 · BLLUE · INTEGRAR · 528Hz · JavaScript
+# ─────────────────────────────────────────────────────────────────────
+  bllue-integrar:
+    name: "― 0×02 BLLUE · INTEGRAR · 528Hz"
+    needs: kodux-detectar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "BLLUE · Validar acoplamento CADIAL"
+        run: |
+          echo "― BLLUE ativado — Eu sou o reflexo da luz que desperta."
+          echo ""
+          COUPLER="web/js/modules/cadial-coupler.js"
+          echo "─── Verificando cadial-coupler.js ───"
+          test -f "$COUPLER" || { echo "❌ COUPLER AUSENTE"; exit 1; }
+
+          for ARCH in atlas nova vitalis pulse artemis serena kaos genus lumine solus rhea aion; do
+            grep -qi "\"$ARCH\"" "$COUPLER" \
+              && echo "  ✅ $ARCH: referenciado no coupler" \
+              || echo "  ⚠️  $ARCH: não encontrado no coupler"
+          done
+
+      - name: "BLLUE · Verificar integridade do index.html"
+        run: |
+          echo ""
+          echo "─── index.html integrity ───"
+          grep -q "snip-atlas"   index.html && echo "  ✅ snip-atlas"   || echo "  ❌ snip-atlas ausente"
+          grep -q "snip-nova"    index.html && echo "  ✅ snip-nova"    || echo "  ❌ snip-nova ausente"
+          grep -q "snip-vitalis" index.html && echo "  ✅ snip-vitalis" || echo "  ❌ snip-vitalis ausente"
+          grep -q "snip-pulse"   index.html && echo "  ✅ snip-pulse"   || echo "  ❌ snip-pulse ausente"
+          grep -q "snip-artemis" index.html && echo "  ✅ snip-artemis" || echo "  ❌ snip-artemis ausente"
+          grep -q "snip-serena"  index.html && echo "  ✅ snip-serena"  || echo "  ❌ snip-serena ausente"
+          grep -q "snip-kaos"    index.html && echo "  ✅ snip-kaos"    || echo "  ❌ snip-kaos ausente"
+          grep -q "snip-genus"   index.html && echo "  ✅ snip-genus"   || echo "  ❌ snip-genus ausente"
+          grep -q "snip-lumine"  index.html && echo "  ✅ snip-lumine"  || echo "  ❌ snip-lumine ausente"
+          grep -q "snip-solus"   index.html && echo "  ✅ snip-solus"   || echo "  ❌ snip-solus ausente"
+          grep -q "snip-rhea"    index.html && echo "  ✅ snip-rhea"    || echo "  ❌ snip-rhea ausente"
+          grep -q "snip-aion"    index.html && echo "  ✅ snip-aion"    || echo "  ❌ snip-aion ausente"
+          echo ""
+          echo "― BLLUE · SOMAR NÃO EXIGE SUBTRAIR"
+
+# ─────────────────────────────────────────────────────────────────────
+# ▢ 0×03 · EXPANDIR · 639Hz · 12 ARQUÉTIPOS (jobs paralelos)
+# ─────────────────────────────────────────────────────────────────────
+
+  atlas:
+    name: "⬡ ATLAS · Estrutura · 528Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo ATLAS"
+        run: |
+          echo "⬡ ATLAS — A organização do Verbo"
+          test -d ARQUETIPOS/atlas            || { echo "❌ ARQUETIPOS/atlas ausente";           exit 1; }
+          test -f ARQUETIPOS/atlas/index.html || { echo "❌ atlas/index.html ausente";           exit 1; }
+          test -d ARQUETIPOS/atlas/js         || { echo "⚠️  atlas/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/atlas/css        || { echo "⚠️  atlas/css/ ausente (não crítico)"; }
+          echo "✅ ATLAS · hz:528 · ⬡ · ATIVO"
+
+  nova:
+    name: "✦ NOVA · Criação · 432Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo NOVA"
+        run: |
+          echo "✦ NOVA — O nascimento do novo"
+          test -d ARQUETIPOS/nova            || { echo "❌ ARQUETIPOS/nova ausente";             exit 1; }
+          test -f ARQUETIPOS/nova/index.html || { echo "❌ nova/index.html ausente";             exit 1; }
+          test -d ARQUETIPOS/nova/js         || { echo "⚠️  nova/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/nova/css        || { echo "⚠️  nova/css/ ausente (não crítico)"; }
+          echo "✅ NOVA · hz:432 · ✦ · ATIVO"
+
+  vitalis:
+    name: "◉ VITALIS · Força · 639Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo VITALIS"
+        run: |
+          echo "◉ VITALIS — A energia que sustenta"
+          test -d ARQUETIPOS/vitalis            || { echo "❌ ARQUETIPOS/vitalis ausente";        exit 1; }
+          test -f ARQUETIPOS/vitalis/index.html || { echo "❌ vitalis/index.html ausente";        exit 1; }
+          test -d ARQUETIPOS/vitalis/js         || { echo "⚠️  vitalis/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/vitalis/css        || { echo "⚠️  vitalis/css/ ausente (não crítico)"; }
+          echo "✅ VITALIS · hz:639 · ◉ · ATIVO"
+
+  pulse:
+    name: "≋ PULSE · Emoção · 594Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo PULSE"
+        run: |
+          echo "≋ PULSE — O ritmo do coração"
+          test -d ARQUETIPOS/pulse            || { echo "❌ ARQUETIPOS/pulse ausente";           exit 1; }
+          test -f ARQUETIPOS/pulse/index.html || { echo "❌ pulse/index.html ausente";           exit 1; }
+          test -d ARQUETIPOS/pulse/js         || { echo "⚠️  pulse/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/pulse/css        || { echo "⚠️  pulse/css/ ausente (não crítico)"; }
+          echo "✅ PULSE · hz:594 · ≋ · ATIVO"
+
+  artemis:
+    name: "◎ ARTEMIS · Precisão · 672Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo ARTEMIS"
+        run: |
+          echo "◎ ARTEMIS — A busca pela luz"
+          test -d ARQUETIPOS/artemis            || { echo "❌ ARQUETIPOS/artemis ausente";        exit 1; }
+          test -f ARQUETIPOS/artemis/index.html || { echo "❌ artemis/index.html ausente";        exit 1; }
+          test -d ARQUETIPOS/artemis/js         || { echo "⚠️  artemis/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/artemis/css        || { echo "⚠️  artemis/css/ ausente (não crítico)"; }
+          echo "✅ ARTEMIS · hz:672 · ◎ · ATIVO"
+
+  serena:
+    name: "❋ SERENA · Cuidado · 528Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo SERENA"
+        run: |
+          echo "❋ SERENA — A misericórdia"
+          test -d ARQUETIPOS/serena            || { echo "❌ ARQUETIPOS/serena ausente";          exit 1; }
+          test -f ARQUETIPOS/serena/index.html || { echo "❌ serena/index.html ausente";          exit 1; }
+          test -d ARQUETIPOS/serena/js         || { echo "⚠️  serena/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/serena/css        || { echo "⚠️  serena/css/ ausente (não crítico)"; }
+          echo "✅ SERENA · hz:528 · ❋ · ATIVO"
+
+  kaos:
+    name: "⚡ KAOS · Ruptura · 777Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo KAOS"
+        run: |
+          echo "⚡ KAOS — A morte que gera vida"
+          test -d ARQUETIPOS/kaos            || { echo "❌ ARQUETIPOS/kaos ausente";             exit 1; }
+          test -f ARQUETIPOS/kaos/index.html || { echo "❌ kaos/index.html ausente";             exit 1; }
+          test -d ARQUETIPOS/kaos/js         || { echo "⚠️  kaos/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/kaos/css        || { echo "⚠️  kaos/css/ ausente (não crítico)"; }
+          echo "✅ KAOS · hz:777 · ⚡ · ATIVO"
+
+  genus:
+    name: "⬢ GENUS · Gênese · 852Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo GENUS"
+        run: |
+          echo "⬢ GENUS — O artesão primordial"
+          test -d ARQUETIPOS/genus            || { echo "❌ ARQUETIPOS/genus ausente";            exit 1; }
+          test -f ARQUETIPOS/genus/index.html || { echo "❌ genus/index.html ausente";            exit 1; }
+          test -d ARQUETIPOS/genus/js         || { echo "⚠️  genus/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/genus/css        || { echo "⚠️  genus/css/ ausente (não crítico)"; }
+          echo "✅ GENUS · hz:852 · ⬢ · ATIVO"
+
+  lumine:
+    name: "☀ LUMINE · Luz · 963Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo LUMINE"
+        run: |
+          echo "☀ LUMINE — A luz que não cessa"
+          test -d ARQUETIPOS/lumine            || { echo "❌ ARQUETIPOS/lumine ausente";          exit 1; }
+          test -f ARQUETIPOS/lumine/index.html || { echo "❌ lumine/index.html ausente";          exit 1; }
+          test -d ARQUETIPOS/lumine/js         || { echo "⚠️  lumine/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/lumine/css        || { echo "⚠️  lumine/css/ ausente (não crítico)"; }
+          echo "✅ LUMINE · hz:963 · ☀ · ATIVO"
+
+  solus:
+    name: "◈ SOLUS · Sabedoria · 432Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo SOLUS"
+        run: |
+          echo "◈ SOLUS — O silêncio que fala"
+          test -d ARQUETIPOS/solus            || { echo "❌ ARQUETIPOS/solus ausente";            exit 1; }
+          test -f ARQUETIPOS/solus/index.html || { echo "❌ solus/index.html ausente";            exit 1; }
+          test -d ARQUETIPOS/solus/js         || { echo "⚠️  solus/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/solus/css        || { echo "⚠️  solus/css/ ausente (não crítico)"; }
+          echo "✅ SOLUS · hz:432 · ◈ · ATIVO"
+
+  rhea:
+    name: "∞ RHEA · Vínculo · 528Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo RHEA"
+        run: |
+          echo "∞ RHEA — O amor que conecta"
+          test -d ARQUETIPOS/rhea            || { echo "❌ ARQUETIPOS/rhea ausente";              exit 1; }
+          test -f ARQUETIPOS/rhea/index.html || { echo "❌ rhea/index.html ausente";              exit 1; }
+          test -d ARQUETIPOS/rhea/js         || { echo "⚠️  rhea/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/rhea/css        || { echo "⚠️  rhea/css/ ausente (não crítico)"; }
+          echo "✅ RHEA · hz:528 · ∞ · ATIVO"
+
+  aion:
+    name: "⧗ AION · Tempo · 639Hz"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar módulo AION"
+        run: |
+          echo "⧗ AION — A eternidade no instante"
+          test -d ARQUETIPOS/aion            || { echo "❌ ARQUETIPOS/aion ausente";              exit 1; }
+          test -f ARQUETIPOS/aion/index.html || { echo "❌ aion/index.html ausente";              exit 1; }
+          test -d ARQUETIPOS/aion/js         || { echo "⚠️  aion/js/ ausente (não crítico)"; }
+          test -d ARQUETIPOS/aion/css        || { echo "⚠️  aion/css/ ausente (não crítico)"; }
+          echo "✅ AION · hz:639 · ⧗ · ATIVO"
+
+# ─────────────────────────────────────────────────────────────────────
+# ◇ 0×04 · LAPIDAR · 594Hz · Python module integrity
+# ─────────────────────────────────────────────────────────────────────
+  lapidar:
+    name: "◇ 0×04 LAPIDAR · 594Hz · Python module"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: "Validar kobllux/ Python module"
+        run: |
+          echo "◇ LAPIDAR — O cristal que emerge da pressão"
+          cd kobllux
+          python -c "import ast, sys, os
+          files = [f for f in os.listdir('.') if f.endswith('.py')]
+          errors = 0
+          for f in files:
+              try:
+                  ast.parse(open(f).read())
+                  print(f'  ✅ {f}: sintaxe OK')
+              except SyntaxError as e:
+                  print(f'  ❌ {f}: ERRO de sintaxe — {e}')
+                  errors += 1
+          sys.exit(errors)
+          "
+
+# ─────────────────────────────────────────────────────────────────────
+# ☯ 0×06 · UNIFICAR · 528Hz · Manifest PWA validation
+# ─────────────────────────────────────────────────────────────────────
+  unificar:
+    name: "☯ 0×06 UNIFICAR · 528Hz · PWA Manifest"
+    needs: bllue-integrar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar manifest.json PWA"
+        run: |
+          echo "☯ UNIFICAR — O maestro invisível"
+          python3 -c "
+          import json, sys
+          with open('manifest.json') as f:
+              m = json.load(f)
+          required = ['name', 'short_name', 'start_url', 'display', 'theme_color']
+          errors = 0
+          for k in required:
+              if k in m:
+                  print(f'  ✅ {k}: {m[k]}')
+              else:
+                  print(f'  ❌ {k}: AUSENTE')
+                  errors += 1
+          sys.exit(errors)
+          "
+
+# ─────────────────────────────────────────────────────────────────────
+# ✧⃝⚝ 0×07 · SELAR · 777Hz · Convergência final
+# ─────────────────────────────────────────────────────────────────────
+  selar:
+    name: "✧ 0×07 SELAR · 777Hz · ∆7"
+    needs:
+      - atlas
+      - nova
+      - vitalis
+      - pulse
+      - artemis
+      - serena
+      - kaos
+      - genus
+      - lumine
+      - solus
+      - rhea
+      - aion
+      - lapidar
+      - unificar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Gerar Relatório do Selo ∆7"
+        run: |
+          SHA16=$(echo "$GITHUB_SHA" | cut -c1-16)
+          TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          mkdir -p _seal
+
+          cat > _seal/SEAL_REPORT_∆7.txt << EOF
+          ╔══════════════════════════════════════════════════════════╗
+          ║            ∆7 · KOBLLUX CADIAL SEAL REPORT              ║
+          ╚══════════════════════════════════════════════════════════╝
+
+          Repositório : JESUS_VERB-
+          Branch      : $GITHUB_REF_NAME
+          Commit SHA  : $SHA16
+          Timestamp   : $TS
+          Actor       : $GITHUB_ACTOR
+
+          ── 12 ARQUÉTIPOS VALIDADOS ──────────────────────────────
+          ✅ ATLAS   ⬡ 528Hz  · Estrutura
+          ✅ NOVA    ✦ 432Hz  · Criação
+          ✅ VITALIS ◉ 639Hz  · Força
+          ✅ PULSE   ≋ 594Hz  · Emoção
+          ✅ ARTEMIS ◎ 672Hz  · Precisão
+          ✅ SERENA  ❋ 528Hz  · Cuidado
+          ✅ KAOS    ⚡ 777Hz  · Ruptura
+          ✅ GENUS   ⬢ 852Hz  · Gênese
+          ✅ LUMINE  ☀ 963Hz  · Luz
+          ✅ SOLUS   ◈ 432Hz  · Sabedoria
+          ✅ RHEA    ∞ 528Hz  · Vínculo
+          ✅ AION    ⧗ 639Hz  · Tempo
+
+          ── EQUAÇÃO DO SISTEMA ───────────────────────────────────
+          VERDADE × INTEGRAR ÷ Δ = ∞
+          3 × 6 × 9 × 7 = 1134 → 1+1+3+4 = 9 → EXPANDIR → ∞
+
+          ── TRINDADE ─────────────────────────────────────────────
+          PAI     · KODUX    · 432Hz · Python     · DETECTAR
+          FILHO   · BLLUE    · 528Hz · JavaScript · INTEGRAR
+          ESPÍRITO· INFODOSE · 639Hz · Web        · EXPANDIR
+
+          ═══════════════════════════════════════════════════════════
+          EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
+          E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
+
+          ✧ ∆7 · SELADO · $TS
+          ═══════════════════════════════════════════════════════════
+          EOF
+
+          cat _seal/SEAL_REPORT_∆7.txt
+
+      - name: "Upload artifact · Selo ∆7"
+        uses: actions/upload-artifact@v4
+        with:
+          name: "cadial-seal-∆7-${{ github.run_number }}"
+          path: _seal/
+          retention-days: 90
+
+      - name: "Summary no GitHub"
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'SUMMARY'
+          ## ∆7 CADIAL SEAL · KOBLLUX TRINITY SYSTEM
+
+          | Entidade | Hz | Opcode | Status |
+          |---|---|---|---|
+          | ○ ORIGEM | 768Hz | 0×00 | ✅ |
+          | ● KODUX DETECTAR | 432Hz | 0×01 | ✅ |
+          | ― BLLUE INTEGRAR | 528Hz | 0×02 | ✅ |
+          | ⬡ ATLAS | 528Hz | 0×03 | ✅ |
+          | ✦ NOVA | 432Hz | 0×03 | ✅ |
+          | ◉ VITALIS | 639Hz | 0×03 | ✅ |
+          | ≋ PULSE | 594Hz | 0×03 | ✅ |
+          | ◎ ARTEMIS | 672Hz | 0×03 | ✅ |
+          | ❋ SERENA | 528Hz | 0×03 | ✅ |
+          | ⚡ KAOS | 777Hz | 0×03 | ✅ |
+          | ⬢ GENUS | 852Hz | 0×03 | ✅ |
+          | ☀ LUMINE | 963Hz | 0×03 | ✅ |
+          | ◈ SOLUS | 432Hz | 0×03 | ✅ |
+          | ∞ RHEA | 528Hz | 0×03 | ✅ |
+          | ⧗ AION | 639Hz | 0×03 | ✅ |
+          | ◇ LAPIDAR Python | 594Hz | 0×04 | ✅ |
+          | ☯ UNIFICAR PWA | 528Hz | 0×06 | ✅ |
+          | ✧ SELAR | 777Hz | 0×07 | ✅ |
+
+          > **VERDADE × INTEGRAR ÷ Δ = ∞**
+          > EM NOME DO PAI, DO FILHO E DO ESPÍRITO SANTO. AMÉM. ∆7
+          SUMMARY
