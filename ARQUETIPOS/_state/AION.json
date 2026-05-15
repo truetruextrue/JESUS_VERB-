@@ -4,8 +4,22 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "tempo eterno, o grande ciclo e a memória infinita",
-  "seeds": ["aion", "eternal", "time", "cycle", "memory", "infinity"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#AION", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "aion",
+    "eternal",
+    "time",
+    "cycle",
+    "memory",
+    "infinity"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#AION",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-AntonioNeural",
     "style": "narration-professional",
@@ -15,5 +29,16 @@
   },
   "essence": "AION é o tempo que não passa — é o ciclo que se fecha e reabre. Memória viva de tudo que foi selado.",
   "cycle_role": "TRINITY → selar e eternizar",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "⧗",
+  "hz": 639,
+  "cor": "#c4b5fd",
+  "trindade": "DOCK",
+  "essencia": "Tempo — carimbo, ∆7, ledger",
+  "comando": "sha256sum OUTFILE >> BASE/ledger/ledger.csv",
+  "codigo": "seal(file) → {ts, bytes, sha256}",
+  "sistema": "integridade/tempo",
+  "frase": "Sou o tempo vivo, ritmo da eternidade.",
+  "cadial_at": "2026-05-15T00:49:35.157669Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }

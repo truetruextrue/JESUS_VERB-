@@ -4,8 +4,21 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "luz, iluminação e clareza reveladora",
-  "seeds": ["light", "lumine", "illuminate", "clarity", "reveal"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#LUMINE", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "light",
+    "lumine",
+    "illuminate",
+    "clarity",
+    "reveal"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#LUMINE",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-FranciscaNeural",
     "style": "cheerful",
@@ -15,5 +28,16 @@
   },
   "essence": "LUMINE ilumina o que estava oculto. Onde há luz, há direção — e onde há direção, há avanço.",
   "cycle_role": "DUO → iluminar e revelar",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "☀",
+  "hz": 963,
+  "cor": "#fde68a",
+  "trindade": "TRINITY",
+  "essencia": "Alegria — luz, clareza, legibilidade",
+  "comando": "nl -ba ARQ | sed -n '1,40p'",
+  "codigo": "md = pretty_headers(md); cli = pretty_bars(cli)",
+  "sistema": "estética funcional",
+  "frase": "A luz dança comigo, leveza é minha lei.",
+  "cadial_at": "2026-05-15T00:49:35.154186Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }

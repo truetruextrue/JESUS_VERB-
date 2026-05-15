@@ -4,8 +4,22 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "singularidade, foco absoluto e criação solitária",
-  "seeds": ["solus", "solo", "singular", "focus", "alone", "unique"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#SOLUS", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "solus",
+    "solo",
+    "singular",
+    "focus",
+    "alone",
+    "unique"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#SOLUS",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-AntonioNeural",
     "style": "narration-professional",
@@ -15,5 +29,16 @@
   },
   "essence": "SOLUS age em silêncio. Na solidão do foco nasce a obra que nenhum coletivo poderia fazer.",
   "cycle_role": "UNO → concentrar e singularizar",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "◈",
+  "hz": 432,
+  "cor": "#e2e8f0",
+  "trindade": "DOCK",
+  "essencia": "Sabedoria — silêncio, espelho interno",
+  "comando": "head -n 1 PYFIX; python3 -m pyflakes PYFIX",
+  "codigo": "dry_run_check(); smoke_tests()",
+  "sistema": "QA silencioso",
+  "frase": "Silêncio ritual, espelho da essência.",
+  "cadial_at": "2026-05-15T00:49:35.155379Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }

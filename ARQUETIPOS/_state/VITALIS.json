@@ -4,8 +4,21 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "seiva orgânica, pulsar em expansão",
-  "seeds": ["vitalis", "life", "grow", "regenerate", "organic"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#VITALIS", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "vitalis",
+    "life",
+    "grow",
+    "regenerate",
+    "organic"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#VITALIS",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-FranciscaNeural",
     "style": "empathetic",
@@ -16,5 +29,16 @@
   },
   "essence": "VITALIS nutre, regenera e expande o organismo vivo. A força vital circula e aprende a cada volta.",
   "cycle_role": "DUO → integrar e nutrir",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "◉",
+  "hz": 639,
+  "cor": "#6fcf97",
+  "trindade": "UNO",
+  "essencia": "Momentum — energia vital em expansão",
+  "comando": "python3 INFODOSE_DUAL_HORUS_v2.py --per-file 4 --max-total 36",
+  "codigo": "while need_more(): process_next()",
+  "sistema": "loop/scheduler",
+  "frase": "Energia vital em expansão harmônica.",
+  "cadial_at": "2026-05-15T00:49:35.143275Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }

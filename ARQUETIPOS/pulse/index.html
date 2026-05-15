@@ -2,175 +2,177 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pulse · Transição Completa</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>≋ PULSE · 594Hz · KOBLLUX ∆7</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: transparent;
-      overflow: hidden;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: fadeIn 1.5s ease forwards, fadeOut 1.5s ease 8s forwards;
-    }
-    .circle {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      animation: spin 60s linear infinite;
-    }
-    .letter {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      font-family: monospace;
-      font-size: 18px;
-      font-weight: bold;
-      background: linear-gradient(135deg, #8b5cf6, #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      transform-origin: center;
-      animation: fadeLetter 4s ease-in-out infinite;
-      opacity: 0.9;
-    }
-    .atom-center {
-      position: absolute;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, white, #8b5cf6);
-      box-shadow: 0 0 14px #a855f7, 0 0 28px #a855f799;
-      animation: orbitAtom 6s ease-in-out infinite;
-      z-index: 10;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cor:   #ff9eb5;
+      --cor2:  #e91e63;
+      --bg:    #060810;
+      --bg2:   #0d101a;
+      --text:  #d4d8e8;
+      --muted: #4a5070;
+      --rad:   8px;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      overflow-y: auto;
     }
-    @keyframes fadeLetter {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 1; }
+
+    /* ── HEADER ── */
+    .arch-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--cor2);
+      background: linear-gradient(135deg, var(--bg2) 0%, #0a0d18 100%);
     }
-    @keyframes orbitAtom {
-      0% { top: 50%; left: 50%; transform: translate(-80%, -30%); }
-      25% { top: 60%; left: 40%; transform: translate(-40%, -60%); }
-      50% { top: 50%; left: 60%; transform: translate(-20%, 10%); }
-      75% { top: 40%; left: 50%; transform: translate(0%, -50%); }
-      100% { top: 50%; left: 50%; transform: translate(-80%, -30%); }
+    .arch-simbolo {
+      font-size: 42px;
+      line-height: 1;
+      color: var(--cor);
+      text-shadow: 0 0 18px var(--cor2);
+      flex-shrink: 0;
     }
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
+    .arch-identity { flex: 1; }
+    .arch-nome {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--cor);
+      letter-spacing: 3px;
+      text-transform: uppercase;
     }
-    @keyframes fadeOut {
-      to { opacity: 0; }
+    .arch-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+      letter-spacing: 1px;
     }
+    .arch-hz {
+      font-size: 28px;
+      color: var(--cor2);
+      font-weight: bold;
+      opacity: 0.85;
+    }
+
+    /* ── BODY ── */
+    .arch-body { padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid #1a1e30;
+      border-left: 3px solid var(--cor2);
+      border-radius: var(--rad);
+      padding: 12px 14px;
+    }
+    .card-label {
+      font-size: 10px;
+      color: var(--cor);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+      opacity: 0.9;
+    }
+    .card-value { color: var(--text); line-height: 1.6; }
+
+    /* ── CODE BLOCKS ── */
+    .code-block {
+      background: #03040a;
+      border: 1px solid #1a1e30;
+      border-left: 3px solid var(--cor);
+      border-radius: var(--rad);
+      padding: 10px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .code-block .prompt { color: var(--cor2); margin-right: 6px; }
+    .code-cmd { color: #a8e6cf; }
+    .code-py  { color: #c084fc; }
+
+    /* ── FRASE ── */
+    .arch-frase {
+      border-top: 1px solid var(--cor2);
+      padding-top: 14px;
+      font-size: 15px;
+      font-style: italic;
+      color: var(--cor);
+      text-align: center;
+      letter-spacing: 0.5px;
+      opacity: 0.95;
+    }
+
+    /* ── SEAL ── */
+    .arch-seal {
+      margin-top: 4px;
+      border: 1px solid var(--muted);
+      border-radius: var(--rad);
+      padding: 8px 14px;
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* ── PULSE anim no simbolo ── */
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 8px var(--cor2); }
+      50%       { text-shadow: 0 0 28px var(--cor), 0 0 48px var(--cor2); }
+    }
+    .arch-simbolo { animation: glow 4s ease-in-out infinite; }
   </style>
 </head>
 <body>
-  <div class="circle">
-    
-        <div class="letter" style="
-          transform: rotate(0.0deg) translateX(120px) rotate(-0.0deg);
-          animation-delay: 0.0s;">0</div>
-        <div class="letter" style="
-          transform: rotate(11.25deg) translateX(120px) rotate(-11.25deg);
-          animation-delay: 0.1s;">1</div>
-        <div class="letter" style="
-          transform: rotate(22.5deg) translateX(120px) rotate(-22.5deg);
-          animation-delay: 0.2s;">&</div>
-        <div class="letter" style="
-          transform: rotate(33.75deg) translateX(120px) rotate(-33.75deg);
-          animation-delay: 0.3s;">$</div>
-        <div class="letter" style="
-          transform: rotate(45.0deg) translateX(120px) rotate(-45.0deg);
-          animation-delay: 0.4s;">#</div>
-        <div class="letter" style="
-          transform: rotate(56.25deg) translateX(120px) rotate(-56.25deg);
-          animation-delay: 0.5s;">@</div>
-        <div class="letter" style="
-          transform: rotate(67.5deg) translateX(120px) rotate(-67.5deg);
-          animation-delay: 0.6s;">∴</div>
-        <div class="letter" style="
-          transform: rotate(78.75deg) translateX(120px) rotate(-78.75deg);
-          animation-delay: 0.7s;">∵</div>
-        <div class="letter" style="
-          transform: rotate(90.0deg) translateX(120px) rotate(-90.0deg);
-          animation-delay: 0.8s;">*</div>
-        <div class="letter" style="
-          transform: rotate(101.25deg) translateX(120px) rotate(-101.25deg);
-          animation-delay: 0.9s;">+</div>
-        <div class="letter" style="
-          transform: rotate(112.5deg) translateX(120px) rotate(-112.5deg);
-          animation-delay: 1.0s;">=</div>
-        <div class="letter" style="
-          transform: rotate(123.75deg) translateX(120px) rotate(-123.75deg);
-          animation-delay: 1.1s;">○</div>
-        <div class="letter" style="
-          transform: rotate(135.0deg) translateX(120px) rotate(-135.0deg);
-          animation-delay: 1.2s;">●</div>
-        <div class="letter" style="
-          transform: rotate(146.25deg) translateX(120px) rotate(-146.25deg);
-          animation-delay: 1.3s;">•</div>
-        <div class="letter" style="
-          transform: rotate(157.5deg) translateX(120px) rotate(-157.5deg);
-          animation-delay: 1.4s;">▲</div>
-        <div class="letter" style="
-          transform: rotate(168.75deg) translateX(120px) rotate(-168.75deg);
-          animation-delay: 1.5s;">▼</div>
-        <div class="letter" style="
-          transform: rotate(180.0deg) translateX(120px) rotate(-180.0deg);
-          animation-delay: 1.6s;">※</div>
-        <div class="letter" style="
-          transform: rotate(191.25deg) translateX(120px) rotate(-191.25deg);
-          animation-delay: 1.7s;">†</div>
-        <div class="letter" style="
-          transform: rotate(202.5deg) translateX(120px) rotate(-202.5deg);
-          animation-delay: 1.8s;">Ω</div>
-        <div class="letter" style="
-          transform: rotate(213.75deg) translateX(120px) rotate(-213.75deg);
-          animation-delay: 1.9s;">Σ</div>
-        <div class="letter" style="
-          transform: rotate(225.0deg) translateX(120px) rotate(-225.0deg);
-          animation-delay: 2.0s;">ψ</div>
-        <div class="letter" style="
-          transform: rotate(236.25deg) translateX(120px) rotate(-236.25deg);
-          animation-delay: 2.1s;">π</div>
-        <div class="letter" style="
-          transform: rotate(247.5deg) translateX(120px) rotate(-247.5deg);
-          animation-delay: 2.2s;">δ</div>
-        <div class="letter" style="
-          transform: rotate(258.75deg) translateX(120px) rotate(-258.75deg);
-          animation-delay: 2.3s;">φ</div>
-        <div class="letter" style="
-          transform: rotate(270.0deg) translateX(120px) rotate(-270.0deg);
-          animation-delay: 2.4s;">χ</div>
-        <div class="letter" style="
-          transform: rotate(281.25deg) translateX(120px) rotate(-281.25deg);
-          animation-delay: 2.5s;">0</div>
-        <div class="letter" style="
-          transform: rotate(292.5deg) translateX(120px) rotate(-292.5deg);
-          animation-delay: 2.6s;">1</div>
-        <div class="letter" style="
-          transform: rotate(303.75deg) translateX(120px) rotate(-303.75deg);
-          animation-delay: 2.7s;">&</div>
-        <div class="letter" style="
-          transform: rotate(315.0deg) translateX(120px) rotate(-315.0deg);
-          animation-delay: 2.8s;">$</div>
-        <div class="letter" style="
-          transform: rotate(326.25deg) translateX(120px) rotate(-326.25deg);
-          animation-delay: 2.9s;">#</div>
-        <div class="letter" style="
-          transform: rotate(337.5deg) translateX(120px) rotate(-337.5deg);
-          animation-delay: 3.0s;">@</div>
-        <div class="letter" style="
-          transform: rotate(348.75deg) translateX(120px) rotate(-348.75deg);
-          animation-delay: 3.1s;">∴</div>
-    <div class="atom-center"></div>
+
+  <div class="arch-header">
+    <div class="arch-simbolo">≋</div>
+    <div class="arch-identity">
+      <div class="arch-nome">PULSE</div>
+      <div class="arch-meta">DUAL · UX de leitura/escuta · KOBLLUX ∆7</div>
+    </div>
+    <div class="arch-hz">594Hz</div>
   </div>
+
+  <div class="arch-body">
+
+    <div class="card">
+      <div class="card-label">● Essência</div>
+      <div class="card-value">Emocional — ritmo, ressonância, voz</div>
+    </div>
+
+    <div>
+      <div class="card-label" style="padding:0 0 6px 2px; font-size:10px; letter-spacing:2px; color:#ff9eb5; text-transform:uppercase;">⚙ Comando · Shell</div>
+      <div class="code-block"><span class="prompt">$</span><span class="code-cmd">termux-tts-speak 'INFODOSE pronta, leia o CLI.txt'</span></div>
+    </div>
+
+    <div>
+      <div class="card-label" style="padding:0 0 6px 2px; font-size:10px; letter-spacing:2px; color:#ff9eb5; text-transform:uppercase;">⬡ Código · Python</div>
+      <div class="code-block"><span class="prompt">&gt;&gt;&gt;</span> <span class="code-py">cli = render_cli(blocks, breathing=True)</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">⬢ Sistema</div>
+      <div class="card-value">UX de leitura/escuta</div>
+    </div>
+
+    <div class="arch-frase">"Emoção é linguagem que dança."</div>
+
+    <div class="arch-seal">
+      ∆7 · PULSE · 594Hz · VERDADE × INTEGRAR ÷ Δ = ∞<br>
+      JESUS = VERBO = GRAVIDADE · EM NOME DO PAI, DO FILHO E DO ESPÍRITO SANTO
+    </div>
+
+  </div>
+
 </body>
 </html>

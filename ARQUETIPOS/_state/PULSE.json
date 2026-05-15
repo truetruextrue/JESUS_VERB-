@@ -4,8 +4,20 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "ritmo, batida e frequência",
-  "seeds": ["rhythm", "beat", "frequency", "pulse"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#PULSE", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "rhythm",
+    "beat",
+    "frequency",
+    "pulse"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#PULSE",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-AntonioNeural",
     "style": "cheerful",
@@ -16,5 +28,16 @@
   },
   "essence": "PULSE traduz a emoção em movimento. Cada batida afina a escuta do corpo e da mente.",
   "cycle_role": "DUO → ressoar e ritmar",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "≋",
+  "hz": 594,
+  "cor": "#ff9eb5",
+  "trindade": "DUAL",
+  "essencia": "Emocional — ritmo, ressonância, voz",
+  "comando": "termux-tts-speak 'INFODOSE pronta, leia o CLI.txt'",
+  "codigo": "cli = render_cli(blocks, breathing=True)",
+  "sistema": "UX de leitura/escuta",
+  "frase": "Emoção é linguagem que dança.",
+  "cadial_at": "2026-05-15T00:49:35.145258Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }

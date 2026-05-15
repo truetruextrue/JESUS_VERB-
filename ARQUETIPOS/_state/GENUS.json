@@ -4,8 +4,21 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "geração, origem e arquétipo primordial",
-  "seeds": ["genus", "origin", "generate", "archetype", "seed"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#GENUS", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "genus",
+    "origin",
+    "generate",
+    "archetype",
+    "seed"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#GENUS",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-AntonioNeural",
     "style": "narration-professional",
@@ -15,5 +28,16 @@
   },
   "essence": "GENUS é a raiz de toda forma. Carrega o código original de cada expressão do sistema.",
   "cycle_role": "TRINITY → gerar e nomear",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "⬢",
+  "hz": 852,
+  "cor": "#94a3b8",
+  "trindade": "TRINITY",
+  "essencia": "Fabricus — forma viva, síntese",
+  "comando": "gera out/INFODOSE_*.md e tags/tags.json",
+  "codigo": "emit_cli(); emit_md(); emit_tags(k=hints+freq)",
+  "sistema": "renderer + tagger",
+  "frase": "Mãos moldam o invisível em forma viva.",
+  "cadial_at": "2026-05-15T00:49:35.152762Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }

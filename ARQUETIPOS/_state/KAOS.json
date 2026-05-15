@@ -4,8 +4,21 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "entropia criativa, destruição construtiva",
-  "seeds": ["chaos", "entropy", "disrupt", "kaos", "creative-destruction"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#KAOS", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "chaos",
+    "entropy",
+    "disrupt",
+    "kaos",
+    "creative-destruction"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#KAOS",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-AntonioNeural",
     "style": "angry",
@@ -16,5 +29,16 @@
   "essence": "KAOS dissolve o que está fixo. O caos não é inimigo — é o campo fértil antes da forma.",
   "cycle_role": "UNO → quebrar e reimaginar",
   "config_ref": "CODEX/KAOS/kaos.config.json",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "⚡",
+  "hz": 777,
+  "cor": "#fb923c",
+  "trindade": "TRINITY",
+  "essencia": "Transformador — ruptura criativa",
+  "comando": "sed -i 's/[[:space:]]\\+$//' file.txt",
+  "codigo": "text = normalize(text); text = denoise(text)",
+  "sistema": "limpeza/normalização",
+  "frase": "Eu sou o rompimento que revela a verdade.",
+  "cadial_at": "2026-05-15T00:49:35.150572Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }

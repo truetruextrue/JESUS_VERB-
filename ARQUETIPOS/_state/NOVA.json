@@ -4,8 +4,20 @@
   "status": "ATIVO",
   "activated_at": "2026-05-13T00:00:00Z",
   "gloss_pt": "centelha primordial, o primeiro clarão do possível",
-  "seeds": ["nova", "spark", "ignite", "origin"],
-  "tags": ["#KOBLLUX", "#ARCHETYPE", "#NOVA", "#UNO", "#DUO", "#TRINITY"],
+  "seeds": [
+    "nova",
+    "spark",
+    "ignite",
+    "origin"
+  ],
+  "tags": [
+    "#KOBLLUX",
+    "#ARCHETYPE",
+    "#NOVA",
+    "#UNO",
+    "#DUO",
+    "#TRINITY"
+  ],
   "voice": {
     "engine": "pt-BR-FranciscaNeural",
     "style": "newscast-casual",
@@ -15,5 +27,16 @@
   },
   "essence": "NOVA acende o primeiro clarão do possível. Do silêncio, brota a centelha que move o mundo.",
   "cycle_role": "UNO → plantar semente",
-  "seal": "∆7"
+  "seal": "∆7",
+  "simbolo": "✦",
+  "hz": 432,
+  "cor": "#ffe066",
+  "trindade": "UNO",
+  "essencia": "Inspira — semente, sopro inicial",
+  "comando": "jq -r '.keywords_hint[]?' BASE/config/infodose.json",
+  "codigo": "hints = load_hints(config); scorer.boost(hints)",
+  "sistema": "ignição semântica",
+  "frase": "Inspiração viva brota do silêncio eterno.",
+  "cadial_at": "2026-05-15T00:49:35.141440Z",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞"
 }
