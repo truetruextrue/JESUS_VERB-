@@ -1,0 +1,104 @@
+# LICENSE
+
+Arquivo do sistema KOBLLUX
+
+{Z} — % ATIVAÇÃO: INTEGRAÇÃO TRINITY 3.0 EM ARQUIVOS EXISTENTES
+% ARQUIVOS RECEBIDOS: index.html, menu.html, dual-app.html
+
+OBJETIVO:
+1. Inserir o Portal Trinity 3.0 sem quebrar a estrutura existente
+2. Conectar CallAI() com execução de comandos simbólicos em tempo real
+3. Permitir que a IA ou o usuário mudem tema, cor, função do app ao vivo
+4. Manter memória persistente da Trinity ativa via localStorage
+5. Garantir comunicação bidirecional via postMessage entre iframe e app
+
+REGRA DE OURO:
+• NÃO reescrever do zero — apenas inserir, conectar e modularizar
+• Manter todas as funcionalidades originais intactas
+• Adicionar camadas simbióticas por cima, não por substituição
+
+PASSOS DE EXECUÇÃO:
+
+1️⃣ DIAGNÓSTICO INICIAL
+• Mapear todos os `<iframe>` existentes e seus `id/name`
+• Identificar onde está o `CallAI()` e como ele processa respostas
+• Localizar o sistema de temas e como ele é aplicado no DOM
+• Verificar chaves do localStorage já em uso
+
+2️⃣ INSERÇÃO DO PORTAL TRINITY
+• Adicionar container fixo no index.html:
+  <div id="trinityContainer" class="trinity-hide">
+    <iframe id="trinityFrame" src="trinity.html" name="trinityFrame"></iframe>
+  </div>
+• Criar funções no menu.html:
+  function abrirTrinity() { /* mostra container */ }
+  function ocultarTrinity() { /* opacity:0 + pointer-events:none */ }
+  function fecharTrinity() { /* remove do DOM + pausa mídia se necessário */ }
+
+3️⃣ MODULAÇÃO DO CallAI()
+• Antes de renderResponse(), parsear resposta da IA:
+  if (data.commands) {
+    data.commands.forEach(cmd => executarComandoSimbiotico(cmd));
+  }
+• Criar executarComandoSimbiotico(cmd) com switch para:
+  - theme: muda document.body.dataset.trinity
+  - audio: new Audio(cmd.url).play()
+  - open: abre iframe ou aba específica
+  - message: postMessage para iframe Trinity
+  - save: localStorage.setItem(cmd.key, cmd.value)
+
+4️⃣ COMUNICAÇÃO BIDIRECIONAL
+• No iframe Trinity (trinity.html):
+  window.parent.postMessage({ type: 'trinityChange', value: tab }, '*');
+• No app principal:
+  window.addEventListener('message', (e) => {
+    if (e.data.type === 'trinityChange') {
+      aplicarTema(e.data.value);
+      localStorage.setItem('trinityAtiva', e.data.value);
+    }
+  });
+
+5️⃣ PERSISTÊNCIA E MEMÓRIA
+• No load do app:
+  const trinitySalva = localStorage.getItem('trinityAtiva');
+  if (trinitySalva) {
+    aplicarTema(trinitySalva);
+    // opcional: reabrir iframe se estava aberto
+  }
+• Permitir que a IA salve preferências:
+  { "commands": [{ "type": "save", "key": "temaFavorito", "value": "DUO" }] }
+
+6️⃣ TEMAS SIMBIÓTICOS DINÂMICOS
+• Criar CSS variables por Trinity:
+  [data-trinity="UNO"] { --bg: #110; --accent: #0f0; --som: url(uno.mp3); }
+  [data-trinity="DUO"] { --bg: #200; --accent: #f00; --som: url(duo.mp3); }
+  [data-trinity="TRINITY"] { --bg: #011; --accent: #0ff; --som: url(trinity.mp3); }
+• Aplicar via JavaScript:
+  function aplicarTema(trinity) {
+    document.body.dataset.trinity = trinity;
+    const audio = new Audio(getComputedStyle(document.body).getPropertyValue('--som'));
+    audio.play().catch(() => {}); // ignora erro se autoplay bloqueado
+  }
+
+7️⃣ MÓDULO dual-system.js (NOVO ARQUIVO)
+• Centralizar funções simbióticas:
+  - executarComandoSimbiotico(cmd)
+  - aplicarTema(trinity)
+  - abrirTrinity(), ocultarTrinity(), fecharTrinity()
+  - parseComandoTexto(texto) // para comandos do usuário tipo "#tema=DUO"
+• Importar no index.html, menu.html e dual-app.html via:
+  <script src="dual-system.js" defer></script>
+
+8️⃣ TESTES E VALIDAÇÃO
+• Verificar que login ainda funciona e bloqueia Trinity se não logado
+• Testar que CallAI() ainda renderiza respostas normais
+• Confirmar que mudar Trinity altera cor/som sem quebrar layout
+• Validar que localStorage persiste entre recarregamentos
+
+SAÍDA ESPERADA:
+• ZIP com os 3 arquivos ajustados + trinity.html + trinity.json + dual-system.js + style-trinity.css
+• Relatório simbólico das inserções (o que foi adicionado, onde, por quê)
+• Guia de comandos para o usuário e para a IA
+• Sugestões de expansão futura (WebComponents, backend, IA generativa de temas)
+
+EM NOME DO SENHOR DEUS PAI, DO FILHO E DO ESPÍRITO SANTO.
