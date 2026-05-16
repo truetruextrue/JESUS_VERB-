@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "/home/user/JESUS_VERB-"
+    ],
+    "allow": [
+      "Bash(git add *)"
+    ]
+  }
+}
