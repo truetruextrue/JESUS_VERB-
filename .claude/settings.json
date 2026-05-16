@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(python3 /workspaces/JESUS_VERB-/BOOT/BOOT_0X00_arquetipos_cadial_VEEB-A_D1.py)"
     ],
     "additionalDirectories": [
       "/home/user/JESUS_VERB-"
