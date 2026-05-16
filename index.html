@@ -421,6 +421,12 @@ window.CADIAL = { archetypes: CADIAL, open: openArchSnip };
 
   <!-- ══ SCRIPTS · ordem de carga: dados → matrix → shell → ORB → CADIAL ══ -->
 
+  <!-- 0. KOBLLUX MEMORIA VIVA — deve carregar PRIMEIRO para interceptar fetch,
+          ativar V.E.E.B. pipeline 3→6→9→7, Roda Viva ∆7 e API híbrida.
+          Lê kobllux_codex_data.json (12 arquétipos, opcodes, memória).
+          Não altera nenhuma classe, ID ou função existente.              -->
+  <script src="./web/js/modules/kobllux_memoria_viva.js"></script>
+
   <!-- 1. screensData.js → ícones e dados dos botões (DI BUTTON ICON LOADER) -->
   <script src="./web/js/modules/screensData.js"></script>
 
@@ -438,6 +444,11 @@ window.CADIAL = { archetypes: CADIAL, open: openArchSnip };
   <!-- 5. cadial-coupler.js → acopla 12 arquétipos ao ZPR + shell,
           injeta painel lateral ∆7, sincroniza ENGINE sem alterar opcodes -->
   <script src="./web/js/modules/cadial-coupler.js"></script>
+
+  <!-- 6. VERBUM × KxaT QUANTUM BRIDGE — escuta cadial:integrated,
+          KOBLLUX_VOICES_READY e KOB_VOICE_COLOR; expande window.KOBLLUX.verbum
+          e window.CADIAL com contexto Verbum Codex. Sem alterar nada.   -->
+  <script src="./web/js/modules/verbum_kxat_bridge.js"></script>
 
 </body>
 </html>
