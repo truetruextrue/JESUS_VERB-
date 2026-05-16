@@ -1,10 +1,11 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ],
     "additionalDirectories": [
       "/home/user/JESUS_VERB-"
-    ],
-    "allow": [
-      "Bash(git add *)"
     ]
   }
 }
