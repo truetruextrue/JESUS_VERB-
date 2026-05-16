@@ -264,6 +264,87 @@
     "ciclo_emergencia": [0,1,2,3,4,5,6,7]
   },
 
+  "d3_sinaptico": {
+    "documento": "KOBLLUX_D3_SINAPTICO.md",
+    "lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+    "modo": "Ferramenta consciente de translação simbólica, técnica e econômica",
+
+    "regua_fractal": {
+      "fonte": "Monoespaçada",
+      "proporcao": "1:1",
+      "cadencia": "3-6-9-7",
+      "uso": "Grid em múltiplos de 3 · Botões em 6 unidades · 9 estágios · Selo Δ7"
+    },
+
+    "camadas_3": [
+      { "n": 1, "nome": "SEMENTE", "tipo": "Meta-Linguagem",
+        "elementos": ["Interface simbólica", "Arquitetura conceitual", "Axiomas Δ 3-6-9"] },
+      { "n": 2, "nome": "CORPO",   "tipo": "Linguagem-Ferramenta",
+        "elementos": ["Código executável", "Fluxos estados protocolos", "Engine App Sistema"] },
+      { "n": 3, "nome": "ESPÍRITO","tipo": "Manifestação",
+        "elementos": ["UX decisão impacto", "Produto registro aprendizado", "Prova no mundo real"] }
+    ],
+
+    "polos_6": [
+      { "n": 1, "par": ["INPUT",    "OUTPUT"],   "tensao": "tempo" },
+      { "n": 2, "par": ["KODUX",    "BLLUE"],    "tensao": "ordem ↔ expressão" },
+      { "n": 3, "par": ["ESTÁTICO", "DINÂMICO"], "tensao": "0 ↔ 1" },
+      { "n": 4, "par": ["HUMANO",   "CÓDIGO"],   "tensao": "voz ↔ execução" },
+      { "n": 5, "par": ["VISÃO",    "AÇÃO"],     "tensao": "planejar ↔ fazer" },
+      { "n": 6, "par": ["MEMÓRIA",  "FLUXO"],    "tensao": "registro ↔ movimento" }
+    ],
+    "regra_polos": "Se um polo domina → ruído. Se os 6 giram → sistema estável.",
+
+    "potenciais_9": [
+      { "n": 1, "campo": "DETECÇÃO",  "desc": "reconhecer padrões" },
+      { "n": 2, "campo": "SINCRONIA", "desc": "alinhamento de frequência" },
+      { "n": 3, "campo": "REDE",      "desc": "conexão entre nodes" },
+      { "n": 4, "campo": "MEMBRANA",  "desc": "empacotamento seguro" },
+      { "n": 5, "campo": "VERBO",     "desc": "tradução da intenção" },
+      { "n": 6, "campo": "VISÃO",     "desc": "interface monoespaçada" },
+      { "n": 7, "campo": "SÍNTESE",   "desc": "código + metadado" },
+      { "n": 8, "campo": "PULSO",     "desc": "velocidade de execução" },
+      { "n": 9, "campo": "INFINITO",  "desc": "auto-evolução" }
+    ],
+
+    "selos_7": [
+      { "n": 1, "linguagem": "PYTHON",         "tags": ["#mente","#orquestração"],  "funcao": "coordenação cognitiva" },
+      { "n": 2, "linguagem": "TYPESCRIPT / UI", "tags": ["#corpo","#interface"],    "funcao": "manifestação sensível" },
+      { "n": 3, "linguagem": "C / C++",         "tags": ["#raiz","#desempenho"],    "funcao": "núcleo de controle" },
+      { "n": 4, "linguagem": "RUST",            "tags": ["#integridade","#segurança"], "funcao": "confiança estrutural" },
+      { "n": 5, "linguagem": "GLSL / VISUAL",   "tags": ["#visão","#campo"],        "funcao": "tornar visível" },
+      { "n": 6, "linguagem": "BASH / SHELL",    "tags": ["#fluxo","#ritual"],       "funcao": "automação do caminho" },
+      { "n": 7, "linguagem": "JSON-LD",         "tags": ["#memória","#mérito"],     "funcao": "registro semântico" }
+    ],
+
+    "carimbo": {
+      "simbolo": "✧⃝⚝",
+      "label": "KOBLLUX Δ7",
+      "principios": [
+        "Nada se perde",
+        "Tudo se traduz",
+        "Toda saída pode virar entrada"
+      ],
+      "formula": "Δ ÷ 0 → fora da aritmética comum"
+    },
+
+    "pipeline_3697": {
+      "3": { "acao": "DETECTAR", "desc": "necessidade / faísca" },
+      "6": { "acao": "INTEGRAR", "desc": "Kodux + Bllue" },
+      "9": { "acao": "EXPANDIR", "desc": "ajuste fino / eco" },
+      "7": { "acao": "SELAR",    "desc": "registro vivo" }
+    },
+
+    "axioma": "Linguagem é economia comprimida. Economia é linguagem em escala. Δ mantém ambas coerentes.",
+
+    "design_codigo": {
+      "grid_chars": "múltiplos de 3 (mono)",
+      "botoes_unidades": 6,
+      "estagios_visiveis": 9,
+      "confirmacao": "Selo Δ7"
+    }
+  },
+
   "memoria_dual": {
     "roda_viva_pipeline": "quicknote.md → TEXT/ | TUTORIALS/ | TEXT/STORY/ | ARQUETIPOS/<NOME>/",
     "selagem": "∆7:sha256 por artefato",
