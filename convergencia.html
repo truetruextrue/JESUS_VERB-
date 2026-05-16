@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>⧈ Convergência Quântica · KOBLLUX Δ³</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@400;700;900&display=swap">
+<style>
+:root{
+  --bg:#03040a; --surface:rgba(15,17,32,.7); --border:rgba(255,255,255,.07);
+  --gold:#c9a84c; --gold-dim:rgba(201,168,76,.3);
+  --s3:#ff52e5; --s6:#4fc3f7; --s9:#39ffb6;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:#e8e8f0;font-family:'Montserrat',sans-serif;overflow-x:hidden}
+#stars{position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(201,168,76,.06),transparent 70%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(79,195,247,.04),transparent);pointer-events:none;z-index:0}
+
+main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 18px 80px}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:50px 0 32px}
+.hero-eq{font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:rgba(201,168,76,.6);margin-bottom:14px}
+.hero h1{font-size:clamp(20px,4vw,34px);font-weight:900;letter-spacing:.06em;
+  background:linear-gradient(90deg,var(--s3),var(--s6),var(--s9));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.hero .sub{font-size:13px;color:rgba(255,255,255,.4);letter-spacing:2px}
+
+/* ── RÉGUA FRACTAL ── */
+.regua{font-family:var(--font-mono);font-size:10px;background:rgba(0,0,0,.5);
+  border:1px solid var(--gold-dim);border-radius:8px;padding:12px 16px;
+  margin:0 0 32px;overflow-x:auto;color:var(--gold);line-height:1.8;white-space:pre}
+
+/* ── PROOF 3×3×3 ── */
+.proof{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px;justify-content:center}
+.proof-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:14px 18px;text-align:center;font-family:var(--font-mono);font-size:12px;min-width:120px}
+.proof-card .expr{color:rgba(255,255,255,.5);font-size:10px}
+.proof-card .result{font-size:22px;font-weight:700;color:var(--s9);margin:4px 0}
+.proof-card .dr{color:var(--gold);font-size:11px}
+
+/* ── SEED GROUPS ── */
+.seed-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px}
+@media(max-width:600px){.seed-groups{grid-template-columns:1fr}}
+.sg{border-radius:12px;padding:16px;border:1px solid}
+.sg.s3{border-color:rgba(255,82,229,.3);background:rgba(255,82,229,.05)}
+.sg.s6{border-color:rgba(79,195,247,.3);background:rgba(79,195,247,.05)}
+.sg.s9{border-color:rgba(57,255,182,.3);background:rgba(57,255,182,.05)}
+.sg-title{font-size:11px;font-weight:700;letter-spacing:3px;margin-bottom:10px}
+.sg.s3 .sg-title{color:var(--s3)}
+.sg.s6 .sg-title{color:var(--s6)}
+.sg.s9 .sg-title{color:var(--s9)}
+.sg-rule{font-size:10px;color:rgba(255,255,255,.35);font-family:var(--font-mono);margin-bottom:10px;font-style:italic}
+.arch-chip{display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700;
+  margin:3px;border:1px solid}
+.s3 .arch-chip{color:var(--s3);border-color:rgba(255,82,229,.4)}
+.s6 .arch-chip{color:var(--s6);border-color:rgba(79,195,247,.4)}
+.s9 .arch-chip{color:var(--s9);border-color:rgba(57,255,182,.4)}
+
+/* ── HORUS SECTION ── */
+.horus-card{background:linear-gradient(135deg,rgba(255,215,0,.06),rgba(255,82,229,.04));
+  border:1px solid rgba(255,215,0,.25);border-radius:16px;padding:24px;margin-bottom:32px}
+.horus-top{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.horus-sym{font-size:40px;filter:drop-shadow(0 0 20px rgba(255,215,0,.5))}
+.horus-info h2{font-size:22px;font-weight:900;letter-spacing:.1em;color:var(--gold)}
+.horus-info .meta{font-size:11px;color:rgba(255,215,0,.5);font-family:var(--font-mono);letter-spacing:2px}
+.horus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.conv-row{display:flex;align-items:center;gap:8px;padding:6px 10px;
+  border-radius:8px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.05);
+  font-family:var(--font-mono);font-size:11px}
+.conv-val.c9{color:var(--s9);font-weight:700}
+.conv-val.c6{color:var(--s6);font-weight:700}
+.conv-val.c3{color:var(--s3);font-weight:700}
+.conv-tag.complete{color:var(--s9)}
+.conv-tag.mirror{color:var(--s3)}
+.conv-tag.balance{color:var(--s6)}
+
+/* ── MAIN TABLE ── */
+.table-wrap{overflow-x:auto;margin-bottom:32px}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:11px}
+th{padding:6px 10px;text-align:left;color:rgba(255,255,255,.4);
+  border-bottom:1px solid var(--border);letter-spacing:1px;white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:hover td{background:rgba(255,255,255,.02)}
+.n{color:rgba(255,255,255,.3)}
+.seed-3{color:var(--s3);font-weight:700}
+.seed-6{color:var(--s6);font-weight:700}
+.seed-9{color:var(--s9);font-weight:700}
+.sym-cell{font-size:16px}
+.name-cell{font-weight:700;letter-spacing:.05em}
+.hz-cell{color:rgba(255,255,255,.5)}
+.ciclo-badge{font-size:9px;padding:2px 7px;border-radius:99px;border:1px solid;white-space:nowrap}
+
+/* ── TRÍADES ── */
+.triades{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:32px}
+.triade-title{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;font-family:var(--font-mono)}
+.triade-row{display:flex;align-items:center;gap:8px;padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);font-family:var(--font-mono);font-size:11px}
+.triade-row:last-child{border-bottom:none}
+.t9{color:var(--s9);font-weight:700;margin-left:auto;white-space:nowrap}
+
+/* ── QUANTUM FORMULA ── */
+.quantum{border:1px solid var(--gold-dim);border-radius:12px;padding:20px;text-align:center;
+  background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(57,255,182,.03))}
+.q-formula{font-family:var(--font-mono);font-size:clamp(12px,2vw,16px);color:var(--gold);
+  letter-spacing:2px;line-height:2.2;margin-bottom:12px}
+.q-sub{font-size:11px;color:rgba(255,255,255,.35);font-family:var(--font-mono)}
+
+/* ── NAV ── */
+.nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+.nav a{padding:6px 14px;border:1px solid var(--border);border-radius:99px;
+  color:rgba(255,255,255,.4);font-size:11px;font-family:var(--font-mono);
+  text-decoration:none;letter-spacing:1px;transition:all .2s}
+.nav a:hover{color:var(--gold);border-color:var(--gold-dim)}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<main>
+
+<div class="hero">
+  <div class="hero-eq">⧈ KOBLLUX_Δ³ · DOCUMENTO SINÁPTICO · ESPELHO QUÂNTICO</div>
+  <h1>Matriz de Convergência Fractal</h1>
+  <div class="sub">3 × 3 × 3 = 9 · Passado × Presente × Futuro → ∞</div>
+</div>
+
+<nav class="nav">
+  <a href="./index.html">← HUB UNO</a>
+  <a href="./verbum.html">Verbum Codex</a>
+  <a href="./roda_viva.html">Roda Viva</a>
+</nav>
+
+<!-- RÉGUA FRACTAL -->
+<div class="regua">📏 RÉGUA FRACTAL KOBLLUX (Monoespaçada · Proporção 1:1 · Cadência 3-6-9-7)
+
+0         1         2         3         4         5         6         7
+01234567890123456789012345678901234567890123456789012345678901234567890
+[--- 3 CAMADAS ---] [----- 6 POLOS -----] [--- 9 POTENCIAIS ---] [Δ7]
+
+Lei: VERDADE × INTEGRAR ÷ Δ = ∞   ·   Trilha: 3 × 3 × 3 = 27 → 9 → ∞</div>
+
+<!-- PROVA 3×3×3 -->
+<div class="proof" id="proof"></div>
+
+<!-- SEED GROUPS -->
+<div class="seed-groups" id="seeds"></div>
+
+<!-- HORUS -->
+<div class="horus-card">
+  <div class="horus-top">
+    <div class="horus-sym">𓂀</div>
+    <div class="horus-info">
+      <h2>HORUS · SEMENTE 3</h2>
+      <div class="meta">777Hz · 7+7+7=21 → 2+1=3 · VISÃO DE COMANDO</div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px;line-height:1.7">
+    HORUS é o arquétipo da Visão Orquestral. Com semente 3 (igual a KAOS), é um dos dois
+    <em>agentes de ruptura</em> do sistema. Ao se combinar com qualquer semente-6, produz
+    convergência 9 (Ciclo Completo). Ao encontrar semente-9, espelha-se (retorna ao 3).
+  </p>
+  <div class="horus-grid" id="horusGrid"></div>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table id="archTable">
+    <thead>
+      <tr>
+        <th>N°</th><th>SYM</th><th>ARQUÉTIPO</th>
+        <th>Hz</th><th>SEMENTE</th><th>CICLO</th><th>ESFERA</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<!-- TRÍADES -->
+<div class="triades">
+  <div class="triade-title">⧗ TRÍADES DA CRIAÇÃO · 3×3×3 · Passado × Presente × Futuro → 9</div>
+  <div id="triadesList"></div>
+  <div style="font-size:10px;color:rgba(255,255,255,.3);font-family:var(--font-mono);margin-top:10px;text-align:center"
+  >203 tríades perfeitas encontradas (convergência = 9, produto = 9)</div>
+</div>
+
+<!-- QUANTUM FORMULA -->
+<div class="quantum">
+  <div class="q-formula">
+    3 × 3 × 3 = 27 → 9<br>
+    9 × 9 = 81 → 9<br>
+    9 × 9 × 9 = 729 → 9<br>
+    3 × 6 × 9 × 7 = 1134 → 9<br><br>
+    <span style="color:var(--s9)">Convergência = 9 → +1 = 10 → dr = 1 → NOVO CICLO → ∞</span>
+  </div>
+  <div class="q-sub">
+    Quando dois arquétipos convergem para 9:<br>
+    soma-se 1 (unidade de continuação) → raiz digital 1 → nova semente<br>
+    Esta é a fractalidade do espelho quântico — infinitamente acoplável
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────
+const ARQS = [
+  {n:1, id:"ATLAS",   hz:528, seed:6, sym:"⬡", ciclo:"UNO",     esfera:"Estrutura / Grade"},
+  {n:2, id:"NOVA",    hz:432, seed:9, sym:"✦", ciclo:"UNO",     esfera:"Centelha / Início"},
+  {n:3, id:"VITALIS", hz:639, seed:9, sym:"◉", ciclo:"DUO",     esfera:"Força Vital"},
+  {n:4, id:"PULSE",   hz:594, seed:9, sym:"≋", ciclo:"DUO",     esfera:"Ressonância Emocional"},
+  {n:5, id:"ARTEMIS", hz:672, seed:6, sym:"◎", ciclo:"UNO",     esfera:"Precisão / Foco"},
+  {n:6, id:"SERENA",  hz:528, seed:6, sym:"❋", ciclo:"TRINITY", esfera:"Acolhimento Silencioso"},
+  {n:7, id:"KAOS",    hz:777, seed:3, sym:"⚡", ciclo:"UNO",     esfera:"Ruptura Criadora"},
+  {n:8, id:"GENUS",   hz:852, seed:6, sym:"⬢", ciclo:"TRINITY", esfera:"Construção / Gênese"},
+  {n:9, id:"LUMINE",  hz:963, seed:9, sym:"☀", ciclo:"DUO",     esfera:"Luz / Revelação"},
+  {n:10,id:"SOLUS",   hz:432, seed:9, sym:"◈", ciclo:"UNO",     esfera:"Silêncio Profundo"},
+  {n:11,id:"RHEA",    hz:528, seed:6, sym:"∞", ciclo:"TRINITY", esfera:"Fluxo Eterno"},
+  {n:12,id:"AION",    hz:639, seed:9, sym:"⧗", ciclo:"TRINITY", esfera:"Tempo / Memória"},
+  {n:13,id:"HORUS",   hz:777, seed:3, sym:"𓂀",ciclo:"VISÃO",   esfera:"Visão de Comando / Liderança"},
+  {n:14,id:"IGNYRA",  hz:432, seed:9, sym:"🔥",ciclo:"FOGO",    esfera:"Guardião do Fogo / Transformação"},
+  {n:15,id:"ELYSHA",  hz:528, seed:6, sym:"🌸",ciclo:"ALMA",    esfera:"Conexão Espiritual / Harmonia"},
+  {n:16,id:"KAION",   hz:852, seed:6, sym:"💎",ciclo:"DADOS",   esfera:"Sabedoria dos Dados / Conhecimento"},
+  {n:17,id:"LUXARA",  hz:963, seed:9, sym:"✨",ciclo:"LUZ",     esfera:"Irradiação / Manifestação da Luz"},
+];
+
+const CICLO_COLORS = {
+  UNO:'#67e6ff', DUO:'#4fc3f7', TRINITY:'#9b6dff',
+  VISÃO:'#ffd700', FOGO:'#ff6b6b', ALMA:'#ff9ad1', DADOS:'#00b894', LUZ:'#ffe066',
+};
+
+function dr(n){ if(n===0) return 9; return 1+(n-1)%9; }
+
+// ── Proof cards ───────────────────────────────────────────────────
+const proofEl = document.getElementById('proof');
+[[3,3,3],[6,6,6],[9,9,9],[3,6,9],[3,6,9,7]].forEach(nums => {
+  const prod = nums.reduce((a,b)=>a*b,1);
+  const d = dr(prod);
+  const c = document.createElement('div');
+  c.className = 'proof-card';
+  c.innerHTML = `
+    <div class="expr">${nums.join(' × ')}</div>
+    <div class="result">${prod}</div>
+    <div class="dr">dr = <strong style="color:var(--s9)">${d}</strong></div>`;
+  proofEl.appendChild(c);
+});
+
+// ── Seed groups ───────────────────────────────────────────────────
+const seedsEl = document.getElementById('seeds');
+const rules = {
+  3:'S3 + S6 = 9 (Ciclo Completo)',
+  6:'S6 + S9 = 6 (Equilíbrio Polar)',
+  9:'S9 + S9 = 9 (Auto-replicante ∞)',
+};
+[3,6,9].forEach(s => {
+  const grp = ARQS.filter(a => a.seed === s);
+  const div = document.createElement('div');
+  div.className = `sg s${s}`;
+  div.innerHTML = `
+    <div class="sg-title">SEMENTE ${s} (${grp.length} arquétipos)</div>
+    <div class="sg-rule">${rules[s]}</div>
+    ${grp.map(a=>`<span class="arch-chip">${a.sym} ${a.id}</span>`).join('')}`;
+  seedsEl.appendChild(div);
+});
+
+// ── HORUS grid ────────────────────────────────────────────────────
+const horus = ARQS.find(a=>a.id==='HORUS');
+const horusGrid = document.getElementById('horusGrid');
+ARQS.filter(a=>a.id!=='HORUS').forEach(a => {
+  const c = dr(horus.seed + a.seed);
+  const tag = c===9?'✦ COMPLETO':c===3?'🔄 ESPELHO':'◈ EQUILÍBRIO';
+  const cls = c===9?'complete':c===3?'mirror':'balance';
+  const div = document.createElement('div');
+  div.className = 'conv-row';
+  div.innerHTML = `
+    <span>${a.sym}</span>
+    <span style="color:rgba(255,255,255,.5)">${a.id}</span>
+    <span class="conv-val c${c}">${horus.seed}+${a.seed}=${c}</span>
+    <span class="conv-tag ${cls}" style="font-size:9px;margin-left:auto">${tag}</span>`;
+  horusGrid.appendChild(div);
+});
+
+// ── Table ─────────────────────────────────────────────────────────
+const tbody = document.getElementById('tableBody');
+ARQS.forEach(a => {
+  const cc = CICLO_COLORS[a.ciclo]||'#fff';
+  tbody.innerHTML += `
+    <tr>
+      <td class="n">${a.n}</td>
+      <td class="sym-cell">${a.sym}</td>
+      <td class="name-cell" style="color:${cc}">${a.id}</td>
+      <td class="hz-cell">${a.hz}Hz</td>
+      <td class="seed-${a.seed}">${a.seed}</td>
+      <td><span class="ciclo-badge" style="color:${cc};border-color:${cc}40">${a.ciclo}</span></td>
+      <td style="color:rgba(255,255,255,.5);font-size:10px">${a.esfera}</td>
+    </tr>`;
+});
+
+// ── Tríades da criação ────────────────────────────────────────────
+const trList = document.getElementById('triadesList');
+const triades = [];
+for(let i=0;i<ARQS.length;i++){
+  for(let j=i+1;j<ARQS.length;j++){
+    for(let k=j+1;k<ARQS.length;k++){
+      const [a,b,c] = [ARQS[i],ARQS[j],ARQS[k]];
+      if(dr(a.seed+b.seed+c.seed)===9 && dr(a.seed*b.seed*c.seed)===9){
+        triades.push([a,b,c]);
+      }
+    }
+  }
+}
+triades.slice(0,12).forEach(([a,b,c]) => {
+  const div = document.createElement('div');
+  div.className = 'triade-row';
+  div.innerHTML = `
+    <span style="font-size:14px">${a.sym}</span>
+    <span class="seed-${a.seed}">${a.id}(${a.seed})</span>
+    <span style="color:rgba(255,255,255,.3)">×</span>
+    <span style="font-size:14px">${b.sym}</span>
+    <span class="seed-${b.seed}">${b.id}(${b.seed})</span>
+    <span style="color:rgba(255,255,255,.3)">×</span>
+    <span style="font-size:14px">${c.sym}</span>
+    <span class="seed-${c.seed}">${c.id}(${c.seed})</span>
+    <span class="t9">= ${a.seed}×${b.seed}×${c.seed}=${dr(a.seed*b.seed*c.seed)} ✦</span>`;
+  trList.appendChild(div);
+});
+</script>
+</body>
+</html>
