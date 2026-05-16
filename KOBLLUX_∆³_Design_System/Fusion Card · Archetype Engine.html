@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Fusion Card · Archetype Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       FUSION CARD · ARCHETYPE ENGINE
+       12 Arquétipos × 13 Opcodes · KOBLLUX ∆³ V.E.E.B.
+       Colapso → orb único flutuante · ring + core + glyph
+       Classes/IDs idênticas ao monolito original
+       ═══════════════════════════════════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff; overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(20,28,55,.9) 0%, rgba(8,10,18,.95) 55%, #000 100%);
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 80px),
+        radial-gradient(circle at 85% 90%, rgba(255,82,229,.05) 0%, transparent 35%);
+    }
+
+    /* ── VARIÁVEIS · alimentadas pelo arquétipo ativo ────────── */
+    :root {
+      --arch-primary:   #38BDF8;
+      --arch-secondary: #7cffb2;
+      --arch-glow:      #38BDF8;
+
+      --neon-cyan:   #00f0ff;
+      --neon-purple: #b829dd;
+      --neon-pink:   #ff00aa;
+      --card-bg:     rgba(10, 15, 30, 0.92);
+      --text-muted:  rgba(255, 255, 255, 0.6);
+    }
+
+    .container {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 100%;
+      padding: 24px;
+      position: relative;
+    }
+    .container::before {
+      content: ""; position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--arch-glow) 0%, transparent 65%);
+      opacity: .14; filter: blur(48px);
+      transition: background 1s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+
+    /* ═══ FUSION CARD ═══ */
+    .fusion-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--arch-primary);
+      border-radius: 22px;
+      backdrop-filter: blur(14px);
+      box-shadow:
+        0 0 36px rgba(255,255,255,.04),
+        0 0 80px rgba(0,0,0,.6),
+        inset 0 0 24px rgba(255,255,255,.03);
+      overflow: hidden;
+      position: relative;
+      transition:
+        max-width  .6s cubic-bezier(.34,1.56,.64,1),
+        width      .6s cubic-bezier(.34,1.56,.64,1),
+        height     .6s cubic-bezier(.34,1.56,.64,1),
+        border-radius .5s cubic-bezier(.4,0,.2,1),
+        border-color  .6s ease,
+        box-shadow    .6s ease;
+    }
+
+    /* ╔ COLAPSADO · APENAS ORB ╗ */
+    .fusion-card.closed {
+      width: 110px; height: 110px;
+      max-width: 110px;
+      border-radius: 50%;
+      background: rgba(8,10,20,.55);
+      border-color: var(--arch-primary);
+      box-shadow:
+        0 0 32px var(--arch-glow),
+        0 0 90px rgba(0,0,0,.7),
+        inset 0 0 0 1px var(--arch-secondary);
+      cursor: pointer;
+      animation: orbFloat 4s ease-in-out infinite;
+    }
+    .fusion-card.closed .card-header,
+    .fusion-card.closed .card-body,
+    .fusion-card.closed .small-preview,
+    .fusion-card.closed .drag-handle,
+    .fusion-card.closed .orb-menu-trigger,
+    .fusion-card.closed .arch-counter,
+    .fusion-card.closed .arch-meta-strip { opacity: 0; pointer-events: none; }
+
+    .fusion-card.closed .collapsed-orb {
+      opacity: 1; pointer-events: auto;
+      transform: translate(-50%,-50%) scale(1);
+    }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-10px); }
+    }
+
+    .collapsed-orb {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%) scale(.5);
+      width: 86px; height: 86px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s .15s ease, transform .55s cubic-bezier(.34,1.56,.64,1) .12s;
+      display: grid; place-items: center;
+    }
+    .collapsed-orb .arch-orb { width: 100%; height: 100%; }
+
+    /* ═══ ARCH-ORB · canônico ═══ */
+    .arch-orb {
+      position: relative;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.20), transparent 55%),
+        radial-gradient(circle at 50% 50%, var(--arch-secondary) 0%, #0a0a18 80%);
+      box-shadow:
+        inset 0 0 22px rgba(0,0,0,.6),
+        inset 0 0 0 2px var(--arch-primary),
+        0 0 26px var(--arch-primary),
+        0 0 6px var(--arch-secondary);
+      transition: background .6s ease, box-shadow .6s ease;
+      overflow: hidden;
+    }
+    /* anel externo girando */
+    .arch-orb::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 1px dashed var(--arch-primary);
+      opacity: .65;
+      animation: archRing 6s linear infinite;
+    }
+    /* núcleo pulsando + rotação inversa */
+    .arch-orb::after {
+      content: "";
+      position: absolute;
+      inset: 18%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, var(--arch-secondary) 0%, transparent 55%),
+        radial-gradient(circle at 65% 65%, var(--arch-primary) 0%, var(--arch-secondary) 70%);
+      box-shadow: 0 0 22px var(--arch-primary);
+      animation: archCore 4s cubic-bezier(.4,0,.6,1) infinite;
+    }
+    @keyframes archRing {
+      0%   { transform: rotate(0deg);   opacity: .65; }
+      50%  { opacity: .25; }
+      100% { transform: rotate(360deg); opacity: .65; }
+    }
+    @keyframes archCore {
+      0%,100% { transform: scale(1)    rotate(0deg); }
+      50%     { transform: scale(1.10) rotate(-180deg); }
+    }
+    .arch-orb .glyph {
+      position: relative; z-index: 3;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,.95);
+      text-shadow: 0 0 10px var(--arch-primary), 0 0 22px var(--arch-secondary);
+      pointer-events: none;
+      font-size: 18px;
+      font-weight: 700;
+      animation: glyphFloat 4s ease-in-out infinite;
+    }
+    @keyframes glyphFloat {
+      0%,100% { transform: translateY(0); opacity: 1; }
+      50%     { transform: translateY(-2px); opacity: .82; }
+    }
+
+    /* ═══ HEADER ═══ */
+    .card-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      position: relative;
+      transition: opacity .3s ease;
+    }
+    .avatar-slot {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      flex-shrink: 0; cursor: pointer;
+      position: relative;
+      transition: transform .3s ease;
+    }
+    .avatar-slot:hover { transform: scale(1.07); }
+
+    .text-block { flex: 1; min-width: 0; }
+    .greeting-row {
+      display: flex; align-items: baseline;
+      gap: 8px; margin-bottom: 2px;
+    }
+    .txt-thin {
+      font-weight: 200; font-size: 0.95rem;
+      opacity: 0.65; color: #fff;
+    }
+    .txt-heavy {
+      font-weight: 800; font-size: 1.4rem;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, var(--arch-primary), var(--arch-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: background .4s ease;
+    }
+    .brand-dual {
+      font-weight: 900; font-size: 1.8rem;
+      letter-spacing: 4px; line-height: 1;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple) 35%, var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .clock-widget {
+      text-align: right;
+      padding: 8px 10px;
+      background: rgba(0,0,0,.4);
+      border-radius: 10px;
+      min-width: 76px;
+      border: 1px solid rgba(255,255,255,.05);
+    }
+    .time-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem; font-weight: 700;
+      color: rgba(255,255,255,.55);
+      letter-spacing: 2px;
+    }
+    .status-led {
+      display: inline-block; margin-top: 4px;
+      font-size: 0.62rem;
+      font-weight: 700; letter-spacing: 1px;
+      color: var(--neon-pink);
+      background: rgba(255,0,170,.18);
+      padding: 2px 8px;
+      border-radius: 99px;
+      box-shadow: 0 0 12px rgba(255,0,170,.35);
+    }
+    .hud-menu-btn {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #fff; cursor: pointer;
+      display: grid; place-items: center;
+      transition: all .25s ease;
+    }
+    .hud-menu-btn:hover {
+      background: rgba(0,240,255,.18);
+      border-color: var(--neon-cyan);
+    }
+
+    /* ── ARCHETYPE META-STRIP (logo abaixo do header) ── */
+    .arch-meta-strip {
+      display: flex; align-items: center;
+      padding: 10px 20px;
+      gap: 10px;
+      background: rgba(0,0,0,.25);
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: opacity .3s ease;
+    }
+    .arch-meta-strip .opcode {
+      color: var(--arch-primary);
+      font-weight: 700;
+    }
+    .arch-meta-strip .verb {
+      color: #fff;
+      font-weight: 600;
+    }
+    .arch-meta-strip .geom {
+      color: var(--arch-secondary);
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .arch-meta-strip .freq {
+      margin-left: auto;
+      color: rgba(255,255,255,.5);
+    }
+    .arch-meta-strip .dim {
+      color: rgba(255,255,255,.35);
+      font-size: .65rem;
+    }
+
+    /* ── ARCH COUNTER ── */
+    .arch-counter {
+      position: absolute;
+      top: 6px; right: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: rgba(255,255,255,.32);
+      letter-spacing: 1.5px;
+      pointer-events: none;
+    }
+
+    /* ── PREVIEW (compat) ── */
+    .small-preview {
+      display: none;
+      padding: 14px 20px;
+      align-items: center; gap: 12px;
+      cursor: pointer;
+      background: rgba(0,0,0,.2);
+    }
+    .mini-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0; position: relative;
+    }
+    .small-text {
+      flex: 1;
+      font-size: 0.9rem; color: var(--text-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ident-badge {
+      font-size: 0.72rem;
+      color: var(--arch-primary);
+      background: rgba(255,255,255,.06);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .drag-handle {
+      height: 4px; width: 56px;
+      background: rgba(255,255,255,.1);
+      border-radius: 2px;
+      margin: 10px auto 8px;
+      cursor: grab;
+    }
+    .orb-menu-trigger {
+      position: absolute;
+      top: 18px; right: 70px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,.4);
+      cursor: pointer;
+      letter-spacing: 2px;
+      transition: color .25s ease;
+    }
+    .orb-menu-trigger:hover { color: var(--arch-primary); }
+
+    /* ═══ BODY ═══ */
+    .card-body {
+      padding: 18px 20px 22px;
+      max-height: 64vh;
+      overflow-y: auto;
+      transition: opacity .3s ease;
+    }
+    .card-body::-webkit-scrollbar { width: 4px; }
+    .card-body::-webkit-scrollbar-thumb { background: var(--arch-primary); border-radius: 2px; }
+
+    .input-wrapper { margin-bottom: 16px; }
+    .cyber-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(0,0,0,.5);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem; font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all .3s ease;
+    }
+    .cyber-input:focus {
+      outline: none;
+      border-color: var(--arch-primary);
+      box-shadow: 0 0 22px rgba(255,255,255,.08);
+    }
+
+    /* ── ARCHETYPE NAV (prev/next) ── */
+    .arch-nav {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 14px;
+    }
+    .arch-nav button {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.1);
+      color: #fff; cursor: pointer;
+      display: grid; place-items: center;
+      transition: all .25s ease;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+    .arch-nav button:hover {
+      border-color: var(--arch-primary);
+      color: var(--arch-primary);
+      box-shadow: 0 0 14px var(--arch-primary);
+    }
+    .arch-nav .pill {
+      flex: 1;
+      padding: 9px 14px;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .arch-nav .pill .arch-name {
+      font-weight: 700;
+      color: #fff;
+    }
+    .arch-nav .pill .arch-desc {
+      color: rgba(255,255,255,.5);
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: none;
+      margin-left: auto;
+    }
+
+    /* ── COLOR STRIP (12 chips) ── */
+    .arch-strip {
+      display: flex; gap: 6px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .arch-chip {
+      flex: 0 0 auto;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,.1);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      position: relative;
+    }
+    .arch-chip:hover {
+      transform: scale(1.22);
+      box-shadow: 0 0 12px currentColor;
+    }
+    .arch-chip.active {
+      border-color: #fff;
+      box-shadow: 0 0 18px currentColor, inset 0 0 6px rgba(255,255,255,.6);
+      transform: scale(1.22);
+    }
+
+    /* ── ACCORDION ── */
+    .activation-wrap { margin-bottom: 12px; }
+    .activation-toggle {
+      display: flex; align-items: center;
+      padding: 14px 16px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .activation-toggle:hover {
+      background: rgba(0,0,0,.55);
+      border-color: rgba(255,255,255,.12);
+    }
+    .activation-card {
+      margin-top: 10px;
+      padding: 16px;
+      background: rgba(0,0,0,.45);
+      border-radius: 12px;
+      border-left: 3px solid var(--arch-primary);
+      animation: slideDown .35s ease;
+    }
+    .activation-hidden { display: none; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .activation-pre {
+      background: rgba(0,0,0,.5);
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      color: var(--arch-primary);
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 10px 0;
+      max-height: 140px;
+      overflow-y: auto;
+      line-height: 1.55;
+    }
+    .trigger-btn {
+      padding: 9px 16px;
+      background: transparent;
+      border: 1px solid var(--arch-primary);
+      border-radius: 6px;
+      color: var(--arch-primary);
+      font-weight: 600; cursor: pointer;
+      transition: all .25s ease;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+    .trigger-btn:hover {
+      background: var(--arch-primary);
+      color: #000;
+      box-shadow: 0 0 18px var(--arch-primary);
+    }
+    .activation-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: transparent;
+      border: 1px solid var(--arch-primary);
+      letter-spacing: 1px;
+      color: var(--arch-primary);
+    }
+
+    /* ── SYSTEM CARD INTERIOR ── */
+    .section-title {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,.4);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+    #infodoseNameInput, #apiKeyInput {
+      width: 100%; margin-bottom: 10px;
+      padding: 14px 16px;
+      background: rgba(0,0,0,.6);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 10px;
+      color: #fff; font-size: 1rem;
+    }
+    #infodoseNameInput:focus, #apiKeyInput:focus {
+      outline: none;
+      border-color: var(--arch-primary);
+    }
+    .model-toggle select {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(0,0,0,.6);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 10px;
+      color: #fff; font-size: 1rem;
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 44px;
+    }
+    .panel-divider {
+      margin: 10px 0;
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    #saveSystemBtn {
+      width: 100%; margin-top: 14px;
+      padding: 16px;
+      background: var(--neon-cyan);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all .3s ease;
+      box-shadow: 0 0 24px rgba(0,240,255,.4);
+    }
+    #saveSystemBtn:hover {
+      box-shadow: 0 0 36px rgba(0,240,255,.7);
+      transform: translateY(-1px);
+    }
+
+    /* ── MODE BUTTONS ── */
+    .stat-lbl {
+      margin-bottom: 8px;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,.4);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+    .mode-btn {
+      flex: 1;
+      padding: 12px;
+      background: rgba(0,0,0,.4);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all .25s ease;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+    }
+    .mode-btn.active-mode {
+      background: var(--arch-primary);
+      color: #000;
+      border-color: var(--arch-primary);
+      box-shadow: 0 0 18px var(--arch-primary);
+    }
+    .mode-btn:hover:not(.active-mode) {
+      border-color: var(--arch-primary);
+      color: var(--arch-primary);
+    }
+
+    /* ═══ MODAIS ═══ */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.75);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; animation: modalIn .3s ease; }
+    @keyframes modalIn { from { opacity: 0; } to { opacity: 1; } }
+    .keys-card {
+      width: 100%; max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--arch-primary);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 0 40px var(--arch-primary);
+      animation: modalUp .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes modalUp {
+      from { transform: translateY(20px) scale(.95); opacity: 0; }
+      to   { transform: translateY(0)   scale(1);   opacity: 1; }
+    }
+    .keys-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .key-list {
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,.5);
+      min-height: 50px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .form-grid input {
+      padding: 10px 12px;
+      background: rgba(0,0,0,.5);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px;
+      color: #fff; font-size: 0.85rem;
+    }
+    .small-btn {
+      padding: 7px 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      color: #fff; cursor: pointer;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 1px;
+      transition: all .2s ease;
+    }
+    .small-btn:hover { background: rgba(255,255,255,.12); }
+    .small-btn.danger {
+      background: rgba(255,0,170,.15);
+      border-color: var(--neon-pink);
+      color: var(--neon-pink);
+    }
+    .small-btn.active-btn {
+      background: var(--arch-primary);
+      color: #000;
+      border-color: var(--arch-primary);
+    }
+    .vault-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 16px;
+      display: grid; place-items: center;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--arch-primary);
+      border-radius: 50%;
+      color: var(--arch-primary);
+      box-shadow: 0 0 24px var(--arch-primary);
+    }
+
+    .stagger-item { animation: fadeInUp .4s ease forwards; opacity: 0; }
+    .stagger-item:nth-child(1) { animation-delay: .08s; }
+    .stagger-item:nth-child(2) { animation-delay: .16s; }
+    .stagger-item:nth-child(3) { animation-delay: .24s; }
+    .stagger-item:nth-child(4) { animation-delay: .32s; }
+    .stagger-item:nth-child(5) { animation-delay: .40s; }
+    .stagger-item:nth-child(6) { animation-delay: .48s; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║  CARD                                        ║
+       ╚══════════════════════════════════════════════╝ -->
+  <div class="container">
+    <div class="fusion-card" id="mainCard">
+
+      <!-- ORB COLAPSADO (visível só em .closed) -->
+      <div class="collapsed-orb" id="collapsedOrb" title="Expandir card">
+        <div class="arch-orb"><span class="glyph" id="collapsedGlyph">⧉</span></div>
+      </div>
+
+      <!-- archetype counter -->
+      <div class="arch-counter" id="archCounter">01/12</div>
+
+      <!-- HEADER -->
+      <div class="card-header" id="cardHeader">
+        <div class="avatar-slot" id="avatarTarget" title="Gerenciar Chaves (Cofre)">
+          <div class="arch-orb"><span class="glyph" id="avatarGlyph">―</span></div>
+        </div>
+        <div class="text-block">
+          <div class="greeting-row">
+            <span class="txt-thin" id="lblHello">Oi,</span>
+            <span class="txt-heavy" id="lblName">Convidado</span>
+          </div>
+          <div class="brand-dual">DUAL</div>
+        </div>
+        <div class="clock-widget">
+          <div class="time-display" id="clockTime">00:00</div>
+          <span class="status-led">ONLINE</span>
+        </div>
+        <button class="hud-menu-btn" id="hudMenuBtn" title="Menu Rápido">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+
+      <!-- META-STRIP do arquétipo -->
+      <div class="arch-meta-strip" id="archMetaStrip">
+        <span class="geom" id="metaGeom">―</span>
+        <span class="opcode" id="metaOpcode">0x02</span>
+        <span class="verb"   id="metaVerb">INTEGRAR</span>
+        <span class="freq"   id="metaFreq">528Hz</span>
+        <span class="dim"    id="metaDim">D2·Plano</span>
+      </div>
+
+      <!-- PREVIEW (compat) -->
+      <div class="small-preview" id="smallPreview" title="Gerenciar Chaves">
+        <div class="mini-avatar" id="smallMiniAvatar"><div class="arch-orb"></div></div>
+        <div class="small-text" id="smallText">Aguardando ativação...</div>
+        <div class="ident-badge" id="smallIdent">--</div>
+      </div>
+
+      <div class="drag-handle"></div>
+      <div class="orb-menu-trigger" id="orbMenuTrigger" title="Menu Rápido">●●●</div>
+
+      <!-- BODY -->
+      <div class="card-body" id="cardBody">
+
+        <!-- Arquétipo Navegador -->
+        <div class="arch-nav stagger-item">
+          <button id="archPrev" title="Arquétipo anterior">◀</button>
+          <div class="pill">
+            <span class="arch-name" id="archName">ATLAS</span>
+            <span class="arch-desc" id="archDesc">Estrutura &amp; Governo</span>
+          </div>
+          <button id="archNext" title="Próximo arquétipo">▶</button>
+        </div>
+
+        <!-- Strip cromática (12 chips) -->
+        <div class="arch-strip stagger-item" id="archStrip"></div>
+
+        <!-- Input User -->
+        <div class="input-wrapper stagger-item">
+          <input type="text" class="cyber-input" id="inputUser" placeholder="Identifique-se..." autocomplete="off">
+        </div>
+
+        <!-- Ativação ASCII -->
+        <div class="activation-wrap stagger-item">
+          <div class="activation-toggle" onclick="toggleSection('activationCard')">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--arch-primary);box-shadow:0 0 10px var(--arch-primary)"></div>
+              <strong style="letter-spacing:1px;font-size:.9rem">Ativação ASCII</strong>
+            </div>
+            <div style="margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.4);letter-spacing:1px">BASE v1</div>
+          </div>
+          <div id="activationCard" class="activation-card activation-hidden">
+            <div style="display:flex;align-items:flex-start;gap:10px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="mini-avatar" id="actMiniAvatar" style="width:36px;height:36px"><div class="arch-orb"></div></div>
+                <div>
+                  <div style="font-weight:700">CÉREBRO</div>
+                  <div style="font-size:0.78rem;opacity:0.6"><span id="actName">User</span></div>
+                </div>
+              </div>
+              <div class="activation-badge" id="actBadge" style="margin-left:auto">v:--</div>
+            </div>
+            <pre id="actPre" class="activation-pre">[ATLAS] Aguardando ativação...</pre>
+            <div class="activation-controls" style="display:flex;gap:8px;margin-top:8px">
+              <button class="trigger-btn" id="copyActBtn">COPIAR</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM & NEURAL -->
+        <div class="activation-wrap stagger-item">
+          <div class="activation-toggle" onclick="toggleSection('systemCard')">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--neon-purple);box-shadow:0 0 10px var(--neon-purple)"></div>
+              <strong style="letter-spacing:1px;font-size:.9rem">SYSTEM &amp; NEURAL</strong>
+            </div>
+            <div style="margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.4);letter-spacing:1px">CONFIG</div>
+          </div>
+          <div id="systemCard" class="activation-card activation-hidden">
+            <div class="section-title">IDENTIDADE DA INFODOSE</div>
+            <input type="text" id="infodoseNameInput" placeholder="Nome: World System...">
+
+            <div class="section-title" style="margin-top:12px">CONEXÃO NEURAL (SK)</div>
+            <input type="password" id="apiKeyInput" placeholder="sk-or-..." autocomplete="off">
+
+            <div class="model-toggle">
+              <select id="modelSelect">
+                <option value="" disabled selected>Selecione Modelo</option>
+                <option value="nvidia/nemotron-3-nano-30b-a3b:free">NemoTron (Free)</option>
+                <option value="allenai/molmo-2-8b:free">MolMo (Free)</option>
+                <option value="mistralai/devstral-2512:free">DevStral</option>
+                <option value="openai/gpt-oss-120b:free">OSS120b</option>
+              </select>
+            </div>
+
+            <div class="panel-divider"></div>
+            <button id="saveSystemBtn">SALVAR CONFIGURAÇÃO</button>
+          </div>
+        </div>
+
+        <!-- MODE -->
+        <div class="stagger-item" style="margin-top:8px">
+          <div class="stat-lbl">INTERFACE MODE</div>
+          <div style="display:flex;gap:8px">
+            <button class="mode-btn active-mode" id="btnModeCard" onclick="setMode('card')">CARD</button>
+            <button class="mode-btn" id="btnModeOrb"  onclick="setMode('orb')">ORB</button>
+            <button class="mode-btn" id="btnModeHud"  onclick="setMode('hud')">HUD</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- KEYS MANAGER MODAL -->
+  <div id="keysModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card" role="dialog">
+      <div class="keys-header">
+        <div>
+          <div id="keysTitle" style="font-weight:800;font-size:1.1rem;color:var(--arch-primary);letter-spacing:1px">USER KEYS MANAGER</div>
+          <div style="color:rgba(255,255,255,.5);font-size:.82rem;margin-top:4px">Gerencie suas chaves API com segurança local (Cofre).</div>
+        </div>
+        <button id="closeKeysBtn" class="small-btn">✕</button>
+      </div>
+      <div class="key-list" id="keyList">Nenhuma chave cadastrada.</div>
+      <div class="form-section" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)">
+        <div class="form-grid">
+          <input id="keyNameInput" placeholder="Nome (ex: Principal)">
+          <input id="keyTokenInput" type="password" placeholder="Token / ESK">
+        </div>
+        <button id="addKeyBtn" class="small-btn" style="width:100%;margin-top:10px">ADICIONAR CHAVE</button>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:space-between;margin-top:14px;border-top:1px solid rgba(255,255,255,.05);padding-top:12px">
+        <div style="font-size:.7rem;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px">
+          <i data-lucide="shield-check" style="width:14px"></i>
+          <span id="vaultStatusText">Cofre Aberto</span>
+        </div>
+        <button id="lockVaultBtn" class="small-btn danger">BLOQUEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VAULT UNLOCK MODAL -->
+  <div id="vaultModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card">
+      <div class="vault-icon"><i data-lucide="lock" style="width:24px;height:24px"></i></div>
+      <h3 style="margin:0 0 8px 0;font-weight:800;text-align:center;letter-spacing:1px">ACESSO AO COFRE</h3>
+      <p style="margin:0 0 14px 0;font-size:.88rem;color:rgba(255,255,255,.5);text-align:center">Seus dados estão criptografados. Digite a senha para desbloquear.</p>
+      <input type="password" id="vaultPassInput" class="cyber-input" style="text-align:center;margin-bottom:12px" placeholder="Senha...">
+      <div style="display:flex;gap:8px;justify-content:center">
+         <button id="vaultCancelBtn" class="small-btn">Cancelar</button>
+         <button id="vaultUnlockBtn" class="small-btn active-btn">DESBLOQUEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // ═══════════════════════════════════════════════════════════
+  // [KOBLLUX ∆³ · OPCODES]  fonte canônica
+  // ═══════════════════════════════════════════════════════════
+  const KOBLLUX_OPCODES = {
+    '0x00': { nome: 'INICIAR',     freq: 396, geom: '○', cor: '#b978ff', dim: 'D0·Ponto'   },
+    '0x01': { nome: 'PULSAR',      freq: 432, geom: '●', cor: '#67e6ff', dim: 'D1·Linha'   },
+    '0x02': { nome: 'INTEGRAR',    freq: 528, geom: '―', cor: '#7cffb2', dim: 'D2·Plano'   },
+    '0x03': { nome: 'EXPANDIR',    freq: 639, geom: '▢', cor: '#4de0ff', dim: 'D3·Volume'  },
+    '0x04': { nome: 'DISSOLVER',   freq: 594, geom: '◇', cor: '#ff9ad1', dim: 'D2·Trans'   },
+    '0x05': { nome: 'CONVERGIR',   freq: 672, geom: '⧉', cor: '#ff7a00', dim: 'D∩·Foco'    },
+    '0x06': { nome: 'CRISTALIZAR', freq: 741, geom: '☯', cor: '#a8ff78', dim: 'D3·Rede'    },
+    '0x07': { nome: 'SELAR',       freq: 777, geom: '✧', cor: '#ffd700', dim: 'D3·Tetrae'  },
+    '0x08': { nome: 'TESTEMUNHAR', freq: 852, geom: '◉', cor: '#00b894', dim: 'D∞·Círculo' },
+    '0x09': { nome: 'MANIFESTAR',  freq: 963, geom: '♾', cor: '#6c5ce7', dim: 'S²·Esfera'  },
+    '0x0A': { nome: 'EQUILIBRAR',  freq: 528, geom: '⚖', cor: '#74b9ff', dim: 'SO(2)'     },
+    '0x0B': { nome: 'RESSONAR',    freq: 432, geom: '◎', cor: '#ff52e5', dim: 'Ondas·1D'   },
+    '0x0C': { nome: 'CONCLUIR',    freq: 999, geom: '♾', cor: '#f2c94c', dim: 'T²·Toro'    }
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // [ARCHETYPES_DB] · 12 arquétipos canônicos
+  //   primary = cor original do arquétipo
+  //   secondary = cor do opcode mapeado (KOBLLUX_OPCODES[opcode].cor)
+  // ═══════════════════════════════════════════════════════════
+  const ARCHETYPES_DB = [
+    { id: 'ATLAS',   name: 'ATLAS',   desc: 'Estrutura & Governo',    opcode: '0x02', primary: '#38BDF8', drk: 'A ordem externa reflete a clareza interna.' },
+    { id: 'NOVA',    name: 'NOVA',    desc: 'Inovação & Fluxo',       opcode: '0x01', primary: '#F97316', drk: 'O erro é apenas um dado não processado.' },
+    { id: 'VITALIS', name: 'VITALIS', desc: 'Energia & Ação',         opcode: '0x03', primary: '#22C55E', drk: 'O corpo sabe antes da mente duvidar.' },
+    { id: 'PULSE',   name: 'PULSE',   desc: 'Ritmo & Emoção',         opcode: '0x0B', primary: '#EC4899', drk: 'Sinta a batida do caos e dance com ela.' },
+    { id: 'ARTEMIS', name: 'ARTEMIS', desc: 'Foco & Caça',            opcode: '0x05', primary: '#A855F7', drk: 'Defina o alvo. O resto é apenas ruído.' },
+    { id: 'SERENA',  name: 'SERENA',  desc: 'Paz & Harmonia',         opcode: '0x0A', primary: '#7DD3FC', drk: 'No centro do furacão, existe um ponto imóvel.' },
+    { id: 'KAOS',    name: 'KAOS',    desc: 'Mudança & Entropia',     opcode: '0x04', primary: '#FACC15', drk: 'Quebre o padrão hoje. Amanhã nasce o novo.' },
+    { id: 'GENUS',   name: 'GENUS',   desc: 'Criação & Arte',         opcode: '0x09', primary: '#E5E7EB', drk: 'A excelência habita nos detalhes.' },
+    { id: 'LUMINE',  name: 'LUMINE',  desc: 'Brilho & Carisma',       opcode: '0x07', primary: '#FDE047', drk: 'Irradie sem medo.' },
+    { id: 'SOLUS',   name: 'SOLUS',   desc: 'Vazio & Verdade',        opcode: '0x08', primary: '#0EA5E9', drk: 'O silêncio revela mais que mil estímulos.' },
+    { id: 'RHEA',    name: 'RHEA',    desc: 'Cuidado & Raiz',         opcode: '0x06', primary: '#16A34A', drk: 'Nutra a raiz e o fruto virá.' },
+    { id: 'HORUS',   name: 'HORUS',   desc: 'Visão & Estratégia',     opcode: '0x0C', primary: '#5500FF', drk: 'Observe o todo antes de agir.' }
+  ];
+
+  // ═══════════════════════════════════════════════════════════
+  // [STATE]
+  // ═══════════════════════════════════════════════════════════
+  let currentArchIdx = 0;
+  const STATE = {
+    get archetype() { return ARCHETYPES_DB[currentArchIdx]; }
+  };
+
+  const $  = sel => document.querySelector(sel);
+  const $$ = sel => document.querySelectorAll(sel);
+
+  // ═══════════════════════════════════════════════════════════
+  // [ARCHETYPE ENGINE] · aplica cores + opcode + meta-strip
+  // ═══════════════════════════════════════════════════════════
+  function applyArchetype(idx) {
+    currentArchIdx = (idx + ARCHETYPES_DB.length) % ARCHETYPES_DB.length;
+    const a = ARCHETYPES_DB[currentArchIdx];
+    const op = KOBLLUX_OPCODES[a.opcode];
+
+    document.documentElement.style.setProperty('--arch-primary',   a.primary);
+    document.documentElement.style.setProperty('--arch-secondary', op.cor);
+    document.documentElement.style.setProperty('--arch-glow',      a.primary);
+
+    $('#archName').textContent  = a.name;
+    $('#archDesc').textContent  = a.desc;
+    $('#archCounter').textContent = String(currentArchIdx + 1).padStart(2, '0') + '/' + String(ARCHETYPES_DB.length).padStart(2, '0');
+
+    $('#metaOpcode').textContent = a.opcode;
+    $('#metaVerb').textContent   = op.nome;
+    $('#metaGeom').textContent   = op.geom;
+    $('#metaFreq').textContent   = op.freq + 'Hz';
+    $('#metaDim').textContent    = op.dim;
+
+    $('#avatarGlyph').textContent   = op.geom;
+    $('#collapsedGlyph').textContent = op.geom;
+
+    // Activation seed
+    const userName = localStorage.getItem('di_userName') || 'Convidado';
+    $('#actPre').textContent =
+      `[${a.name}·${a.opcode}·${op.nome}·${op.freq}Hz·${op.dim}]\n` +
+      `> ${a.drk}\n` +
+      `> bind ${userName} → ${a.id}.activate()\n` +
+      `> S(${a.id}) = Σbᵢ·2^(i-1)  ·  geom: ${op.geom}\n` +
+      `> primary:${a.primary}  · opcode:${op.cor}`;
+    $('#actBadge').textContent = `${a.opcode}·${op.geom}`;
+
+    // active chip
+    $$('#archStrip .arch-chip').forEach((el, i) => {
+      el.classList.toggle('active', i === currentArchIdx);
+    });
+
+    // persist
+    localStorage.setItem('di_activeArchetype', a.id);
+    console.log(`[KOBLLUX] ${a.name} → ${a.opcode} ${op.nome} ${op.geom} ${op.freq}Hz · ${op.dim}`);
+  }
+
+  function nextArchetype() { applyArchetype(currentArchIdx + 1); }
+  function prevArchetype() { applyArchetype(currentArchIdx - 1); }
+
+  // ═══════════════════════════════════════════════════════════
+  // [STRIP CROMÁTICA] · 12 chips
+  // ═══════════════════════════════════════════════════════════
+  function buildStrip() {
+    const strip = $('#archStrip');
+    strip.innerHTML = '';
+    ARCHETYPES_DB.forEach((a, i) => {
+      const chip = document.createElement('div');
+      chip.className = 'arch-chip';
+      chip.style.background = `radial-gradient(circle at 35% 35%, ${a.primary}, ${KOBLLUX_OPCODES[a.opcode].cor})`;
+      chip.style.color = a.primary;
+      chip.title = `${a.name} · ${a.opcode} ${KOBLLUX_OPCODES[a.opcode].nome}`;
+      chip.addEventListener('click', () => applyArchetype(i));
+      strip.appendChild(chip);
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [NAME SYNC] · di_syncNameUI
+  // ═══════════════════════════════════════════════════════════
+  function di_syncNameUI(name) {
+    const safe = (name || '').trim() || 'Convidado';
+    localStorage.setItem('di_userName', safe);
+    localStorage.setItem('userName', safe);
+    $('#lblName').textContent  = safe;
+    $('#actName').textContent  = safe;
+    $('#smallText').textContent = safe;
+    $('#smallIdent').textContent = 'Principal';
+    // re-renderiza seed
+    applyArchetype(currentArchIdx);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [TOGGLES]
+  // ═══════════════════════════════════════════════════════════
+  function toggleSection(id) {
+    const el = $('#' + id);
+    if (!el) return;
+    const hidden = el.classList.contains('activation-hidden');
+    $$('.activation-card').forEach(c => c.classList.add('activation-hidden'));
+    if (hidden) el.classList.remove('activation-hidden');
+  }
+  function setMode(mode) {
+    $$('.mode-btn').forEach(b => b.classList.remove('active-mode'));
+    $('#btnMode' + mode.charAt(0).toUpperCase() + mode.slice(1))?.classList.add('active-mode');
+
+    const card = $('#mainCard');
+    if (mode === 'orb') {
+      card.classList.add('closed');
+    } else {
+      card.classList.remove('closed');
+    }
+    console.log('[KOBLLUX] Modo: ' + mode);
+  }
+  function toggleCard() {
+    const card = $('#mainCard');
+    const wasClosed = card.classList.contains('closed');
+    card.classList.toggle('closed', !wasClosed);
+    if (wasClosed) {
+      // reabriu — sincroniza botão mode
+      $$('.mode-btn').forEach(b => b.classList.remove('active-mode'));
+      $('#btnModeCard').classList.add('active-mode');
+      setTimeout(() => $('#inputUser')?.focus(), 300);
+    } else {
+      $$('.mode-btn').forEach(b => b.classList.remove('active-mode'));
+      $('#btnModeOrb').classList.add('active-mode');
+    }
+  }
+  function openModal(id)  { $(id)?.classList.add('active'); }
+  function closeModal(id) { $(id)?.classList.remove('active'); }
+
+  function updateClock() {
+    const now = new Date();
+    $('#clockTime').textContent = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+  setInterval(updateClock, 1000); updateClock();
+
+  // ═══════════════════════════════════════════════════════════
+  // [BOOT]
+  // ═══════════════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.lucide) lucide.createIcons();
+
+    buildStrip();
+
+    const savedArch = localStorage.getItem('di_activeArchetype');
+    const idx = ARCHETYPES_DB.findIndex(a => a.id === savedArch);
+    applyArchetype(idx >= 0 ? idx : 0);
+
+    const savedName = localStorage.getItem('di_userName') || localStorage.getItem('userName');
+    di_syncNameUI(savedName || 'Convidado');
+
+    $('#inputUser')?.addEventListener('input', e => di_syncNameUI(e.target.value));
+    $('#infodoseNameInput')?.addEventListener('input', e => di_syncNameUI(e.target.value));
+
+    $('#archPrev')?.addEventListener('click', prevArchetype);
+    $('#archNext')?.addEventListener('click', nextArchetype);
+
+    // orb colapsado → reabre
+    $('#collapsedOrb')?.addEventListener('click', toggleCard);
+    // avatar header → cofre
+    $('#avatarTarget')?.addEventListener('click', () => openModal('#keysModal'));
+
+    // duplo clique no header colapsa
+    $('#cardHeader')?.addEventListener('dblclick', toggleCard);
+
+    $('#closeKeysBtn')?.addEventListener('click', () => closeModal('#keysModal'));
+    $('#lockVaultBtn')?.addEventListener('click', () => {
+      closeModal('#keysModal'); openModal('#vaultModal');
+    });
+    $('#vaultCancelBtn')?.addEventListener('click', () => closeModal('#vaultModal'));
+    $('#vaultUnlockBtn')?.addEventListener('click', () => {
+      closeModal('#vaultModal');
+      console.log('[KOBLLUX] Cofre desbloqueado');
+    });
+
+    $('#copyActBtn')?.addEventListener('click', async () => {
+      const text = $('#actPre')?.textContent || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const btn = $('#copyActBtn');
+        const original = btn.textContent;
+        btn.textContent = 'COPIADO!';
+        setTimeout(() => btn.textContent = original, 1500);
+      } catch (e) { console.error(e); }
+    });
+
+    $('#saveSystemBtn')?.addEventListener('click', () => {
+      const name  = $('#infodoseNameInput')?.value;
+      const key   = $('#apiKeyInput')?.value;
+      const model = $('#modelSelect')?.value;
+      console.log('[KOBLLUX] Config salva:', { name, key: key ? '***' : '', model });
+      const btn = $('#saveSystemBtn');
+      const original = btn.textContent;
+      btn.textContent = '✓ SALVO';
+      setTimeout(() => btn.textContent = original, 1400);
+    });
+
+    // teclado: ←/→ navega arquétipos · espaço colapsa
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input, textarea, select')) return;
+      if (e.key === 'ArrowRight') { nextArchetype(); e.preventDefault(); }
+      if (e.key === 'ArrowLeft')  { prevArchetype(); e.preventDefault(); }
+      if (e.key === ' ')          { toggleCard();     e.preventDefault(); }
+    });
+
+    setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 100);
+  });
+
+  // expor API
+  window.KOBLLUX_CARD = {
+    applyArchetype, nextArchetype, prevArchetype,
+    toggleCard, toggleSection, setMode,
+    di_syncNameUI, openModal, closeModal,
+    ARCHETYPES_DB, KOBLLUX_OPCODES
+  };
+  </script>
+</body>
+</html>

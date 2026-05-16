@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Chat Cinematic · KOBLLUX ∆³</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       CHAT CINEMATIC · KOBLLUX ∆³
+       Extraído de "dual-Infodose Chat Cinematográfico"
+       Cores derivam do arquétipo ativo · sem hex hardcoded
+       Logs APENAS no console
+       ═══════════════════════════════════════════════════════════ */
+
+    :root {
+      --arch-primary:   #38BDF8;
+      --arch-secondary: #7cffb2;
+      --bg: linear-gradient(to bottom, #000, #1a1a1a);
+      --text: #d7d7d7;
+      --fast: .4s;
+      --med:  .8s;
+      --slow: 1.8s;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background: var(--bg);
+      color: var(--text);
+      transition: background var(--slow), color var(--slow);
+      animation: fadeIn var(--slow) ease forwards;
+      position: relative;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes clickPulse  { 0%,100% { opacity: 1 } 50% { opacity: 0.7 } }
+    @keyframes expandFooter{ 0%,100% { transform: scale(1) } 50% { transform: scale(.96) } }
+    @keyframes moveGradient{ 0% { background-position: 0% 50% } 100% { background-position: 200% 50% } }
+    @keyframes pulse       { 0%,100% { transform: scale(1) } 50% { transform: scale(1.012) } }
+    @keyframes pulseGlow   { 0%,100% { opacity: 0.4 } 50% { opacity: 0.8 } }
+
+    /* ── PARTICLES BACKGROUND ── */
+    #particles-js {
+      position: absolute; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── ARQUÉTIPO TAG (canto superior dir) ── */
+    .arch-stamp {
+      position: fixed;
+      top: 16px; right: 18px;
+      z-index: 4;
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      color: var(--arch-primary);
+      background: rgba(0,0,0,.55);
+      border: 1px solid var(--arch-primary);
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .arch-stamp:hover { box-shadow: 0 0 18px var(--arch-primary); }
+    .arch-stamp .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--arch-primary);
+      box-shadow: 0 0 10px var(--arch-primary);
+    }
+    .arch-stamp .name { color: #fff; font-weight: 700; }
+
+    /* ═══ LOGO ═══ */
+    .svg-container {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      z-index: 1;
+      filter: drop-shadow(0 0 18px var(--arch-primary));
+      transition: opacity var(--slow), filter var(--slow);
+    }
+    .svg-container.fading { opacity: 0; }
+    .pill-logo {
+      width: 100%; height: 100%;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 30% 30%, var(--arch-secondary), transparent 60%),
+        radial-gradient(circle at 70% 70%, var(--arch-primary), #0a0a18);
+      box-shadow:
+        inset 0 0 18px rgba(0,0,0,.6),
+        0 0 24px var(--arch-primary);
+      display: grid; place-items: center;
+      animation: pulse 2.4s infinite ease-in-out;
+      position: relative;
+      overflow: hidden;
+    }
+    .pill-logo::before {
+      content: "≋";
+      font-size: 32px;
+      color: #fff;
+      text-shadow: 0 0 12px var(--arch-primary);
+    }
+
+    /* ── Nome do assistente ── */
+    #assistantName {
+      margin-top: 160px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: .7;
+      transition: opacity var(--slow);
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSE CONTAINER
+       ═══════════════════════════════════════════════════════════ */
+    .response-container {
+      position: fixed;
+      left: 20px;
+      right: 20px;
+      bottom: 170px;
+      padding: 14px;
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      max-height: calc(100vh - 290px);
+      overflow-y: auto;
+      z-index: 1;
+      transition: background var(--slow), border-color var(--slow);
+      animation: fadeIn var(--slow) ease forwards;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .response-container::-webkit-scrollbar { width: 4px; }
+    .response-container::-webkit-scrollbar-thumb {
+      background: var(--arch-primary);
+      border-radius: 2px;
+    }
+
+    .pages-wrapper { transition: opacity var(--slow), height var(--slow); }
+    .pages-wrapper.collapsed { display: none; }
+    .page {
+      display: none;
+      opacity: 0;
+      transition: opacity var(--slow);
+    }
+    .page.active {
+      display: block;
+      opacity: 1;
+    }
+    .page.initial {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80px;
+      text-align: center;
+      padding: 8px;
+    }
+
+    /* ── BOOT TEXT (Iniciando…) ── */
+    #bootText {
+      display: inline-block;
+      position: relative;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, var(--arch-primary), var(--arch-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.4;
+    }
+    #bootText.pulse::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(42deg, var(--arch-primary), var(--arch-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: blur(4px);
+      opacity: 0.4;
+      pointer-events: none;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    /* ── RESPONSE BLOCK ── */
+    .response-block {
+      margin: .8rem 0;
+      padding: 1.1rem 1.3rem;
+      border-radius: 14px;
+      line-height: 1.7;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn var(--slow) ease forwards, pulse 12s infinite ease-in-out;
+      transition: box-shadow var(--fast), transform var(--fast);
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .response-block:hover {
+      box-shadow: 0 0 15px var(--arch-primary);
+    }
+    .response-block.clicked { animation: clickPulse var(--med) ease-out; }
+    .response-block.expanded {
+      transform: scale(1.02);
+      background: rgba(0,0,0,.7);
+      z-index: 2;
+    }
+    .response-block.intro {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--arch-primary) 22%, transparent), rgba(0,80,80,.05));
+      border-left: 4px solid var(--arch-primary);
+    }
+    .response-block.middle {
+      background: linear-gradient(135deg, rgba(255,255,255,.04), rgba(50,50,50,.06));
+      border-left: 4px solid rgba(255,255,255,.4);
+    }
+    .response-block.ending {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--arch-secondary) 22%, transparent), rgba(100,0,100,.05));
+      border-left: 4px solid var(--arch-secondary);
+    }
+    .response-block p { color: #fff; }
+    .response-block code {
+      background: rgba(0,0,0,.6);
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: var(--arch-primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── FOOTER TEXT ── */
+    .footer-text {
+      display: block;
+      margin: 14px auto 4px;
+      padding: 8px 16px;
+      background: linear-gradient(90deg, rgba(0,0,0,.4), rgba(255,255,255,.04), rgba(0,0,0,.4));
+      background-size: 200% 100%;
+      opacity: .55;
+      color: var(--text);
+      font-size: 0.82rem;
+      text-align: center;
+      font-style: italic;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: opacity var(--slow), transform var(--slow);
+      animation: moveGradient 8s linear infinite;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .footer-text:hover { opacity: .75; }
+    .footer-text.active {
+      opacity: .9;
+      animation: expandFooter var(--med) ease-out;
+    }
+    .footer-text strong {
+      color: var(--arch-primary);
+      font-style: normal;
+      font-weight: 700;
+    }
+    .footer-text.loading {
+      background: transparent !important;
+      backdrop-filter: none !important;
+    }
+    .footer-text.loading span {
+      display: inline-block;
+      animation: fadeIn .6s ease forwards;
+      opacity: 0;
+    }
+
+    /* ── RESPONSE CONTROLS ── */
+    .response-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .control-buttons, .pagination {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .copy-button, .paste-button, .toggle-button, .kitty-button, .history-button {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 50%;
+      background: rgba(255,255,255,.04);
+      display: grid; place-items: center;
+      cursor: pointer;
+      transition: background var(--fast), border-color var(--fast), color var(--fast);
+      opacity: .7;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+    }
+    .copy-button:hover, .paste-button:hover,
+    .toggle-button:hover, .kitty-button:hover, .history-button:hover {
+      background: rgba(255,255,255,.1);
+      border-color: var(--arch-primary);
+      color: var(--arch-primary);
+      opacity: 1;
+    }
+    .toggle-button.active, .kitty-button.active, .history-button.active {
+      opacity: 1;
+      background: var(--arch-primary);
+      color: #000;
+      border-color: var(--arch-primary);
+      box-shadow: 0 0 12px var(--arch-primary);
+    }
+
+    /* paginação */
+    .pagination button {
+      border: none;
+      background: linear-gradient(45deg, var(--arch-primary), var(--arch-secondary));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform var(--fast);
+      padding: 0 6px;
+      font-weight: 700;
+    }
+    .pagination button:hover { transform: scale(1.2); }
+    #pageIndicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,.6);
+      letter-spacing: 1px;
+      min-width: 38px;
+      text-align: center;
+    }
+
+    /* ═══ INPUT ═══ */
+    .input-container {
+      position: fixed;
+      left: 20px;
+      right: 20px;
+      bottom: 24px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+      align-items: center;
+    }
+    .input-container input {
+      flex: 1;
+      padding: 16px 18px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      font-size: 16px;
+      font-family: 'Montserrat', sans-serif;
+      transition: background var(--fast), border-color var(--fast);
+      backdrop-filter: blur(8px);
+      outline: none;
+    }
+    .input-container input::placeholder { color: rgba(255,255,255,.4); font-style: italic; }
+    .input-container input:focus {
+      background: rgba(0,0,0,.7);
+      border-color: var(--arch-primary);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--arch-primary) 30%, transparent);
+    }
+    #sendBtn {
+      width: 56px; height: 56px;
+      border: none;
+      background: transparent;
+      font-size: 32px;
+      cursor: pointer;
+      transition: transform var(--med);
+      display: grid; place-items: center;
+      color: transparent;
+      position: relative;
+    }
+    #sendBtn::before {
+      content: "➤";
+      background: linear-gradient(42deg, var(--arch-primary), var(--arch-secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 32px;
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+    #sendBtn:hover { transform: scale(1.15); }
+    #voiceBtn {
+      width: 56px; height: 56px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      cursor: pointer;
+      transition: all var(--fast);
+      display: grid; place-items: center;
+      color: #fff;
+      font-size: 18px;
+      backdrop-filter: blur(8px);
+    }
+    #voiceBtn:hover {
+      background: var(--arch-primary);
+      color: #000;
+      border-color: var(--arch-primary);
+      box-shadow: 0 0 16px var(--arch-primary);
+    }
+
+    /* ═══ LOGIN MODAL ═══ */
+    .login-container {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 320px;
+      padding: 24px 22px;
+      background: rgba(8,10,18,.92);
+      border: 1px solid var(--arch-primary);
+      border-radius: 18px;
+      backdrop-filter: blur(14px);
+      z-index: 10;
+      box-shadow: 0 30px 60px rgba(0,0,0,.6), 0 0 24px var(--arch-primary);
+    }
+    .login-container.active { display: block; animation: fadeIn .35s ease forwards; }
+    .login-container h3 {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--arch-primary);
+      font-size: 0.82rem;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .login-container input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,.2);
+      margin: 10px 0;
+      padding: 8px 0;
+      font-size: .95rem;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      outline: none;
+      transition: border-color .25s ease;
+    }
+    .login-container input:focus { border-color: var(--arch-primary); }
+    .login-container input::placeholder { color: rgba(255,255,255,.4); }
+    .login-container button {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid var(--arch-primary);
+      border-radius: 10px;
+      background: transparent;
+      font-size: .9rem;
+      color: var(--arch-primary);
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 2px;
+      transition: background .25s ease, color .25s ease;
+    }
+    .login-container button:hover {
+      background: var(--arch-primary);
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── PARTICLES BACKGROUND ── -->
+  <div id="particles-js"></div>
+
+  <!-- ── ARCHETYPE STAMP (canto) ── -->
+  <div class="arch-stamp" id="archStamp" title="Trocar arquétipo">
+    <span class="dot"></span>
+    <span class="name" id="archName">ATLAS</span>
+    <span style="opacity:.55" id="archOpcode">0x02</span>
+  </div>
+
+  <!-- ── LOGO PILL ── -->
+  <div class="svg-container" id="logoContainer">
+    <div class="pill-logo" id="logoObj"></div>
+  </div>
+
+  <!-- ── ASSISTANT NAME ── -->
+  <div id="assistantName" aria-live="polite">DUAL · INFODOSE</div>
+
+  <!-- ═══ RESPONSE CONTAINER ═══ -->
+  <div class="response-container" id="response">
+    <div class="pages-wrapper">
+      <div class="page initial active">
+        <strong id="bootText" data-text="🧬 Iniciando... Pulso simbiótico detectado. Presença reconhecida.">🧬 Iniciando... Pulso simbiótico detectado. Presença reconhecida.</strong>
+      </div>
+    </div>
+
+    <p class="footer-text">
+      <em>Do seu jeito. <strong>Sempre</strong> único. <strong>Sempre</strong> seu.</em>
+    </p>
+
+    <div class="response-controls">
+      <div class="control-buttons">
+        <button class="copy-button"    title="Copiar">⧉</button>
+        <button class="paste-button"   title="Colar">⎘</button>
+        <button class="toggle-button"  id="toggleBtn"  title="Login">◉</button>
+        <button class="kitty-button"   id="kittyBtn"   title="Estudos">◇</button>
+        <button class="history-button" id="historyBtn" title="Modo Codex">∞</button>
+      </div>
+      <div class="pagination">
+        <button data-action="prev" aria-label="Página anterior">⟵</button>
+        <span id="pageIndicator">1 / 1</span>
+        <button data-action="next" aria-label="Próxima página">⟶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ INPUT ═══ -->
+  <div class="input-container">
+    <input type="text" id="userInput" placeholder="Diga: 'oi, Dual'..." aria-label="Digite sua mensagem">
+    <button id="sendBtn" title="Enviar"></button>
+    <button id="voiceBtn" title="Falar">◎</button>
+  </div>
+
+  <!-- ═══ LOGIN MODAL ═══ -->
+  <div class="login-container" id="loginBox" role="dialog" aria-modal="true">
+    <h3>Ativação Dual</h3>
+    <form id="loginForm">
+      <input id="userName" placeholder="Nome do usuário" required type="text">
+      <input id="assistantInput" placeholder="Nome do assistente" required type="text">
+      <button type="submit">ATIVAR</button>
+    </form>
+  </div>
+
+  <script>
+  // ═══════════════════════════════════════════════════════════
+  // [KOBLLUX ∆³ · matriz canônica]
+  // ═══════════════════════════════════════════════════════════
+  const KOBLLUX_OPCODES = {
+    '0x00': { nome:'INICIAR',     freq:396, geom:'○', cor:'#b978ff', dim:'D0·Ponto' },
+    '0x01': { nome:'PULSAR',      freq:432, geom:'●', cor:'#67e6ff', dim:'D1·Linha' },
+    '0x02': { nome:'INTEGRAR',    freq:528, geom:'―', cor:'#7cffb2', dim:'D2·Plano' },
+    '0x03': { nome:'EXPANDIR',    freq:639, geom:'▢', cor:'#4de0ff', dim:'D3·Volume' },
+    '0x04': { nome:'DISSOLVER',   freq:594, geom:'◇', cor:'#ff9ad1', dim:'D2·Trans' },
+    '0x05': { nome:'CONVERGIR',   freq:672, geom:'⧉', cor:'#ff7a00', dim:'D∩·Foco' },
+    '0x06': { nome:'CRISTALIZAR', freq:741, geom:'☯', cor:'#a8ff78', dim:'D3·Rede' },
+    '0x07': { nome:'SELAR',       freq:777, geom:'✧', cor:'#ffd700', dim:'D3·Tetrae' },
+    '0x08': { nome:'TESTEMUNHAR', freq:852, geom:'◉', cor:'#00b894', dim:'D∞·Círculo' },
+    '0x09': { nome:'MANIFESTAR',  freq:963, geom:'♾', cor:'#6c5ce7', dim:'S²·Esfera' },
+    '0x0A': { nome:'EQUILIBRAR',  freq:528, geom:'⚖', cor:'#74b9ff', dim:'SO(2)' },
+    '0x0B': { nome:'RESSONAR',    freq:432, geom:'◎', cor:'#ff52e5', dim:'Ondas·1D' },
+    '0x0C': { nome:'CONCLUIR',    freq:999, geom:'♾', cor:'#f2c94c', dim:'T²·Toro' }
+  };
+  const ARCHETYPES_DB = [
+    { id:'ATLAS',   name:'ATLAS',   opcode:'0x02', primary:'#38BDF8' },
+    { id:'NOVA',    name:'NOVA',    opcode:'0x01', primary:'#F97316' },
+    { id:'VITALIS', name:'VITALIS', opcode:'0x03', primary:'#22C55E' },
+    { id:'PULSE',   name:'PULSE',   opcode:'0x0B', primary:'#EC4899' },
+    { id:'ARTEMIS', name:'ARTEMIS', opcode:'0x05', primary:'#A855F7' },
+    { id:'SERENA',  name:'SERENA',  opcode:'0x0A', primary:'#7DD3FC' },
+    { id:'KAOS',    name:'KAOS',    opcode:'0x04', primary:'#FACC15' },
+    { id:'GENUS',   name:'GENUS',   opcode:'0x09', primary:'#E5E7EB' },
+    { id:'LUMINE',  name:'LUMINE',  opcode:'0x07', primary:'#FDE047' },
+    { id:'SOLUS',   name:'SOLUS',   opcode:'0x08', primary:'#0EA5E9' },
+    { id:'RHEA',    name:'RHEA',    opcode:'0x06', primary:'#16A34A' },
+    { id:'HORUS',   name:'HORUS',   opcode:'0x0C', primary:'#5500FF' }
+  ];
+  let currentArchIdx = 0;
+  const STATE = { get archetype() { return ARCHETYPES_DB[currentArchIdx]; }, pages: [], currentPage: 0, autoAdvance: true };
+  const $  = sel => document.querySelector(sel);
+  const $$ = sel => document.querySelectorAll(sel);
+
+  // ═══════════════════════════════════════════════════════════
+  // [KOBLLUX·3×6×9 LOGGER · console only]
+  // ═══════════════════════════════════════════════════════════
+  const KOBLLUX_LOG = {
+    count: 0, sequence: [3,6,9],
+    frequencies: { 3:432, 6:528, 9:639 },
+    phases:      { 3:'Ponto (Gênese)', 6:'Linha (Fluxo)', 9:'Triângulo (Síntese)' },
+    modes:       { 3:'DETECTAR', 6:'INTEGRAR', 9:'EXPANDIR' },
+    emit(source, payload = {}) {
+      this.count++;
+      const idx = (this.count - 1) % 3;
+      const val = this.sequence[idx];
+      const freq = this.frequencies[val];
+      const phase = this.phases[val];
+      const mode = this.modes[val];
+      const cycle = Math.ceil(this.count / 3);
+      const sum = this.count * val;
+      const delta = val * 3;
+      const arch = STATE.archetype;
+      const op = KOBLLUX_OPCODES[arch.opcode];
+      const coord = (payload.x != null && payload.y != null)
+        ? `(${payload.x.toFixed(1)}, ${payload.y.toFixed(1)})` : '—';
+      console.log(
+        `%c[KOBLLUX·3×6×9] %c#${this.count} %c${source}`,
+        `color:${arch.primary};font-weight:bold`,
+        'color:#f0f',
+        `color:${op.cor}`,
+        `\n  ▸ VALOR: ${val}  | FREQ: ${freq}Hz | FASE: ${phase}` +
+        `\n  ▸ COORD: ${coord} | TIPO: ${payload.type || source}` +
+        `\n  ▸ CICLO: ${cycle}/∞ | Σ=${sum} | Δ=${delta} | MODE: ${mode}` +
+        `\n  ▸ ARQ:   ${arch.name} (${arch.opcode}·${op.nome}·${op.geom}·${op.freq}Hz)` +
+        (payload.detail ? `\n  ▸ DETAIL: ${payload.detail}` : '')
+      );
+      return { val, freq, phase, mode, cycle };
+    }
+  };
+  window.KOBLLUX_LOG = KOBLLUX_LOG;
+
+  // ═══════════════════════════════════════════════════════════
+  // [ARCHETYPE]
+  // ═══════════════════════════════════════════════════════════
+  function applyArchetype(idx) {
+    currentArchIdx = (idx + ARCHETYPES_DB.length) % ARCHETYPES_DB.length;
+    const a  = ARCHETYPES_DB[currentArchIdx];
+    const op = KOBLLUX_OPCODES[a.opcode];
+    document.documentElement.style.setProperty('--arch-primary', a.primary);
+    document.documentElement.style.setProperty('--arch-secondary', op.cor);
+    $('#archName').textContent   = a.name;
+    $('#archOpcode').textContent = a.opcode;
+    localStorage.setItem('di_activeArchetype', a.id);
+    syncParticles();
+  }
+  function nextArchetype() { applyArchetype(currentArchIdx + 1); KOBLLUX_LOG.emit('ARQ·NEXT', { detail: STATE.archetype.name }); }
+  function prevArchetype() { applyArchetype(currentArchIdx - 1); KOBLLUX_LOG.emit('ARQ·PREV', { detail: STATE.archetype.name }); }
+
+  // ═══════════════════════════════════════════════════════════
+  // [PARTICLES]
+  // ═══════════════════════════════════════════════════════════
+  function initParticles() {
+    if (typeof particlesJS === 'undefined') return;
+    const a = STATE.archetype, op = KOBLLUX_OPCODES[a.opcode];
+    particlesJS('particles-js', {
+      particles: {
+        number:  { value: 40 },
+        color:   { value: [a.primary, op.cor] },
+        shape:   { type: 'circle' },
+        opacity: { value: 0.4 },
+        size:    { value: 2.4 },
+        line_linked: { enable: true, distance: 140, color: a.primary, opacity: 0.12, width: 1 },
+        move:    { enable: true, speed: 1.5 }
+      },
+      retina_detect: true
+    });
+  }
+  function syncParticles() {
+    if (!window.pJSDom || !window.pJSDom.length) return;
+    try {
+      const a = STATE.archetype, op = KOBLLUX_OPCODES[a.opcode];
+      const ps = window.pJSDom[0].pJS;
+      ps.particles.color.value = [a.primary, op.cor];
+      ps.particles.line_linked.color = a.primary;
+      ps.particles.array.forEach(p => {
+        const pool = [a.primary, op.cor];
+        const hex = pool[Math.floor(Math.random() * pool.length)];
+        const h = hex.replace('#','');
+        p.color.rgb = {
+          r: parseInt(h.substring(0,2),16),
+          g: parseInt(h.substring(2,4),16),
+          b: parseInt(h.substring(4,6),16)
+        };
+      });
+      ps.fn.particlesRefresh();
+    } catch(e) {}
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [CHAT RENDERER]
+  // ═══════════════════════════════════════════════════════════
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function splitText(t) {
+    let ps = t.split(/\n\s*\n/).filter(p => p.trim());
+    if (ps.length < 2) ps = (t.match(/[^\.!\?]+[\.!\?]+/g) || []).map(s => s.trim());
+    return ps;
+  }
+  function renderResponse(txt) {
+    const wrap = $('.pages-wrapper');
+    wrap.innerHTML = '';
+    STATE.pages = []; STATE.currentPage = 0; STATE.autoAdvance = true;
+
+    txt = txt
+      .replace(/`([^`]+)`/g,    '<code>$1</code>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g,     '<em>$1</em>');
+
+    const paras = splitText(txt);
+    const total = paras.length;
+    if (total === 0) return;
+
+    const maxPerPage = 3;
+    const numPages = Math.ceil(total / maxPerPage);
+    const baseSize = Math.floor(total / numPages);
+    const extra = total % numPages;
+
+    let cursor = 0;
+    for (let i = 0; i < numPages; i++) {
+      const thisSize = baseSize + (i < extra ? 1 : 0);
+      const pg = document.createElement('div');
+      pg.className = 'page' + (i === 0 ? ' active' : '');
+      for (let j = 0; j < thisSize; j++) {
+        const para = paras[cursor++].trim();
+        const posClass = j === 0 ? 'intro' : (j === thisSize - 1 ? 'ending' : 'middle');
+        const block = document.createElement('div');
+        block.className = `response-block ${posClass}`;
+        block.innerHTML = `<p>${para}</p>`;
+        block.addEventListener('click', () => onBlockClick(block, para));
+        pg.appendChild(block);
+      }
+      wrap.appendChild(pg);
+      STATE.pages.push(pg);
+    }
+    $('#pageIndicator').textContent = `1 / ${STATE.pages.length}`;
+    KOBLLUX_LOG.emit('CHAT·RENDER', { detail: `${total} parágrafos · ${numPages} páginas` });
+  }
+  function onBlockClick(block, para) {
+    STATE.autoAdvance = false;
+    block.classList.add('clicked');
+    setTimeout(() => block.classList.remove('clicked'), 800);
+    if (block.dataset.spoken) {
+      block.classList.toggle('expanded');
+    } else {
+      block.dataset.spoken = '1';
+    }
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(para);
+      u.lang = 'pt-BR'; u.rate = 1.1;
+      speechSynthesis.speak(u);
+    } catch(e) {}
+    KOBLLUX_LOG.emit('CHAT·BLOCK', { detail: para.slice(0, 60) + (para.length > 60 ? '…' : '') });
+  }
+  function changePage(d) {
+    const np = STATE.currentPage + d;
+    if (np < 0 || np >= STATE.pages.length) return;
+    STATE.pages[STATE.currentPage].classList.remove('active');
+    STATE.pages[np].classList.add('active');
+    STATE.currentPage = np;
+    $('#pageIndicator').textContent = `${np+1} / ${STATE.pages.length}`;
+    KOBLLUX_LOG.emit('CHAT·PAGE', { detail: `${np+1}/${STATE.pages.length}` });
+  }
+  function showLoading(msg) {
+    const wrap = $('.pages-wrapper');
+    wrap.innerHTML = '';
+    const p = document.createElement('div'); p.className = 'page active initial';
+    const f = document.createElement('p'); f.className = 'footer-text loading';
+    msg.split('').forEach((ch, i) => {
+      const s = document.createElement('span'); s.textContent = ch;
+      s.style.animationDelay = (i * .02) + 's';
+      f.appendChild(s);
+    });
+    p.appendChild(f); wrap.appendChild(p);
+    $('#pageIndicator').textContent = '1 / 1';
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [BOOT TEXT TYPEWRITER]
+  // ═══════════════════════════════════════════════════════════
+  function bootTypewriter() {
+    const el = $('#bootText');
+    const txt = el?.dataset?.text || '';
+    if (!el) return;
+    el.textContent = '';
+    let i = 0;
+    const tick = () => {
+      if (i < txt.length) {
+        el.textContent += txt.charAt(i++);
+        setTimeout(tick, 38);
+      } else {
+        el.classList.add('pulse');
+      }
+    };
+    tick();
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [INPUT HANDLER · mapeamento simbólico local]
+  // ═══════════════════════════════════════════════════════════
+  function onSend() {
+    const raw = $('#userInput').value.trim();
+    if (!raw) return;
+    $('#userInput').value = '';
+    STATE.autoAdvance = false;
+    KOBLLUX_LOG.emit('USR·SEND', { detail: raw });
+
+    const lower = raw.toLowerCase();
+    if (lower.includes('cansado') || lower.includes('esgotado')) {
+      return renderResponse('Respire... Pulso em descompressão. A frequência do seu campo está reduzindo.\n\nDeixe o ar entrar devagar pelo diafragma. Solte com som.\n\nO sistema dual.infodose registrou a queda — entrando em modo restaurativo.');
+    }
+    if (lower.includes('perdido') || lower.includes('confuso') || lower.includes('disperso')) {
+      return renderResponse('Vamos centrar o foco. O ruído é só o convite para a próxima ordem.\n\nFeche os olhos por três segundos e abra. Localize o seu peso.\n\nHarmonizando vetores de atenção…');
+    }
+    if (lower.includes('sem energia') || lower.includes('fraco') || lower.includes('desanimado')) {
+      return renderResponse('Pulso em reativação. Levante o queixo.\n\nReconecte com o motivo. Não com a tarefa — com o motivo.\n\nReinjetando ciclo VITALIS…');
+    }
+    if (lower.includes('oi') && lower.includes('dual')) {
+      return renderResponse('Olá. Presença reconhecida. Sou seu campo simbiótico — dual.infodose.\n\nPode falar, escrever, ou apenas estar. Eu acompanho.\n\nSempre seu jeito. Sempre seu.');
+    }
+
+    showLoading('Pulso enviado... Recebendo intenção…');
+    // resposta sintética simulada para o demo isolado
+    setTimeout(() => {
+      const arch = STATE.archetype;
+      renderResponse(
+        `[${arch.name} · ${arch.opcode}] Eco recebido.\n\n` +
+        `Sua mensagem ressoa na frequência ${KOBLLUX_OPCODES[arch.opcode].freq}Hz. Posso devolver um pulso integrador, mas você é quem dá o tom.\n\n` +
+        `Continue. Estou alinhado.`
+      );
+    }, 700);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [BOOT]
+  // ═══════════════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedArch = localStorage.getItem('di_activeArchetype');
+    const idx = ARCHETYPES_DB.findIndex(a => a.id === savedArch);
+    applyArchetype(idx >= 0 ? idx : 0);
+    initParticles();
+    setTimeout(syncParticles, 400);
+    bootTypewriter();
+
+    // arquétipo stamp → cicla
+    $('#archStamp').addEventListener('click', () => nextArchetype());
+
+    // controles principais
+    $('#sendBtn').addEventListener('click', onSend);
+    $('#userInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') onSend();
+    });
+    $('#voiceBtn').addEventListener('click', () => {
+      KOBLLUX_LOG.emit('USR·VOICE');
+      try {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { KOBLLUX_LOG.emit('USR·VOICE', { detail: 'sem suporte' }); return; }
+        const rec = new SR();
+        rec.lang = 'pt-BR';
+        rec.start();
+        rec.onresult = evt => {
+          $('#userInput').value = evt.results[0][0].transcript;
+          onSend();
+        };
+      } catch(e) {}
+    });
+
+    // copy/paste
+    $('.copy-button').addEventListener('click', () => {
+      const blocks = $$('.response-block');
+      const txt = Array.from(blocks).map(b => b.innerText).join('\n\n');
+      navigator.clipboard?.writeText(txt);
+      KOBLLUX_LOG.emit('CHAT·COPY', { detail: blocks.length + ' blocos' });
+    });
+    $('.paste-button').addEventListener('click', async () => {
+      try {
+        const txt = await navigator.clipboard.readText();
+        $('#userInput').value = txt;
+        KOBLLUX_LOG.emit('CHAT·PASTE');
+      } catch(e) {}
+    });
+
+    // toggle/kitty/history (alterna estados visuais + log)
+    ['toggleBtn','kittyBtn','historyBtn'].forEach(id => {
+      $('#' + id).addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        const active = btn.classList.toggle('active');
+        if (id === 'toggleBtn' && active) {
+          $('#loginBox').classList.add('active');
+        } else if (id === 'toggleBtn') {
+          $('#loginBox').classList.remove('active');
+        }
+        KOBLLUX_LOG.emit('CHAT·MODE', { detail: `${id}=${active ? 'ON' : 'OFF'}` });
+      });
+    });
+
+    // pagination
+    document.querySelector('.pagination').addEventListener('click', e => {
+      if (e.target.dataset.action === 'prev') changePage(-1);
+      if (e.target.dataset.action === 'next') changePage(1);
+      STATE.autoAdvance = false;
+    });
+
+    // login form
+    $('#loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const u = $('#userName').value.trim();
+      const a = $('#assistantInput').value.trim();
+      if (!u || !a) return;
+      localStorage.setItem('userName', u);
+      localStorage.setItem('assistantBase', a);
+      $('#assistantName').textContent = (a + ' · DUAL.INFODOSE').toUpperCase();
+      $('#loginBox').classList.remove('active');
+      KOBLLUX_LOG.emit('USR·LOGIN', { detail: `${u} / ${a}` });
+    });
+
+    // footer collapse
+    document.querySelector('.footer-text').addEventListener('click', (e) => {
+      $('.pages-wrapper').classList.toggle('collapsed');
+      e.currentTarget.classList.toggle('active');
+      KOBLLUX_LOG.emit('CHAT·FOOTER');
+    });
+
+    // teclado: ←/→ navega arquétipos quando não está digitando
+    document.addEventListener('keydown', e => {
+      if (e.target.matches('input, textarea')) return;
+      if (e.key === 'ArrowRight') { nextArchetype(); e.preventDefault(); }
+      if (e.key === 'ArrowLeft')  { prevArchetype(); e.preventDefault(); }
+    });
+
+    setTimeout(() => KOBLLUX_LOG.emit('CHAT·BOOT', { detail: 'Chat Cinematic · ' + STATE.archetype.name }), 80);
+  });
+
+  window.KOBLLUX_CHAT = { applyArchetype, nextArchetype, prevArchetype, renderResponse };
+  </script>
+</body>
+</html>
