@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#050811">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="KOBLLUX Roda Viva ∆7 · dual-Infodose · Memória Viva dos Arquétipos CADIAL">
+  <link rel="apple-touch-icon" href="https://kodux78k.github.io/oiDual--Y-/M0D/KxaT/icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+  <title>♻ Roda Viva ∆7 · KOBLLUX · dual-Infodose</title>
+
+  <!-- ── FONTS ─────────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+  <!-- ── KxaT CSS (externo — não alterado) ─────────────────────────── -->
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/M0D/KxaT/css/KxaT.css">
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/M0D/KxaT/css/main.css">
+
+  <!-- ── KOBLLUX MODULES FIRST (antes do KxaT) ────────────────────── -->
+  <!-- V.E.E.B. Tokenizador + Memória Viva + Roda Viva + API Híbrida -->
+  <script src="./web/js/modules/kobllux_memoria_viva.js"></script>
+  <!-- Quantum Bridge: KOBLLUX_VOICES_READY → VERBUM_KBLX_READY -->
+  <script src="./web/js/modules/verbum_kxat_bridge.js"></script>
+
+  <!-- ── KOBLLUX OVERLAY STYLES (novo — IDs prefixados kob-mv-) ────── -->
+  <style>
+    /* ── RODA VIVA OVERLAY ─────────────────────────────────────────── */
+    #kob-mv-panel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 280px;
+      max-height: 100dvh;
+      overflow-y: auto;
+      background: rgba(5,8,17,.92);
+      border-left: 1px solid rgba(201,168,76,.18);
+      backdrop-filter: blur(16px);
+      z-index: 9990;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #c9a84c;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    #kob-mv-panel.open { transform: translateX(0); }
+
+    #kob-mv-toggle {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      z-index: 9991;
+      background: rgba(201,168,76,.15);
+      border: 1px solid rgba(201,168,76,.4);
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      padding: 10px 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #c9a84c;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      letter-spacing: 2px;
+      transition: background .2s;
+      user-select: none;
+    }
+    #kob-mv-toggle:hover { background: rgba(201,168,76,.28); }
+
+    #kob-mv-panel-inner { padding: 14px; }
+
+    .kob-mv-section {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(201,168,76,.08);
+    }
+    .kob-mv-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: rgba(201,168,76,.5);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .kob-mv-value { color: #e8e8f0; font-size: 12px; }
+    .kob-mv-gold  { color: #c9a84c; }
+    .kob-mv-blue  { color: #4fc3f7; }
+    .kob-mv-violet{ color: #9b6dff; }
+    .kob-mv-green { color: #00e676; }
+    .kob-mv-muted { color: rgba(255,255,255,.35); font-size: 10px; }
+
+    /* Arquétipo ativo */
+    #kob-mv-arch-card {
+      background: rgba(201,168,76,.05);
+      border: 1px solid rgba(201,168,76,.2);
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    #kob-mv-arch-sym  { font-size: 22px; display: block; margin-bottom: 4px; }
+    #kob-mv-arch-name { font-size: 14px; font-weight: 700; }
+    #kob-mv-arch-hz   { font-size: 10px; color: rgba(201,168,76,.6); }
+    #kob-mv-arch-verbo{ font-size: 10px; color: #e8e8f0; margin-top: 4px; font-style: italic; line-height: 1.4; }
+
+    /* Ciclo trinitário */
+    .kob-mv-ciclo-bar {
+      display: flex; gap: 4px; margin: 6px 0;
+    }
+    .kob-mv-ciclo-item {
+      flex: 1; text-align: center; padding: 4px 2px;
+      border-radius: 4px; font-size: 9px; letter-spacing: .5px;
+      border: 1px solid rgba(255,255,255,.05);
+      color: rgba(255,255,255,.3);
+      cursor: default; transition: all .2s;
+    }
+    .kob-mv-ciclo-item.ativo {
+      background: rgba(201,168,76,.12);
+      border-color: rgba(201,168,76,.35);
+      color: #c9a84c;
+    }
+
+    /* Chronorithm */
+    #kob-mv-chrono {
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-align: center;
+      font-weight: 600;
+      color: #4fc3f7;
+    }
+    #kob-mv-chrono-label {
+      text-align: center;
+      font-size: 9px;
+      color: rgba(79,195,247,.5);
+      margin-top: 2px;
+    }
+
+    /* Memória recente */
+    #kob-mv-mem-list {
+      max-height: 120px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .kob-mv-mem-item {
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      font-size: 9px;
+      color: rgba(255,255,255,.45);
+      line-height: 1.5;
+    }
+    .kob-mv-mem-item strong { color: #c9a84c; }
+
+    /* V.E.E.B. Pipeline */
+    .kob-mv-pipeline {
+      display: flex; gap: 4px; align-items: center;
+      font-size: 10px; margin: 4px 0;
+    }
+    .kob-mv-pipe-step {
+      padding: 2px 6px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.4);
+      font-size: 9px;
+    }
+    .kob-mv-pipe-step.ativo {
+      background: rgba(0,230,118,.12);
+      color: #00e676;
+      border: 1px solid rgba(0,230,118,.3);
+    }
+    .kob-mv-pipe-arrow { color: rgba(255,255,255,.2); font-size: 8px; }
+
+    /* API status */
+    #kob-mv-api-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #555;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    #kob-mv-api-dot.ok  { background: #00e676; box-shadow: 0 0 6px #00e676; }
+    #kob-mv-api-dot.err { background: #f44; }
+
+    /* Botões de arquétipo */
+    #kob-mv-arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    .kob-mv-arch-btn {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 4px;
+      padding: 5px 2px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all .15s;
+    }
+    .kob-mv-arch-btn:hover { background: rgba(201,168,76,.12); border-color: rgba(201,168,76,.3); }
+    .kob-mv-arch-btn.ativo { background: rgba(201,168,76,.18); border-color: #c9a84c; }
+    .kob-mv-arch-btn-label { font-size: 8px; color: rgba(255,255,255,.4); display: block; margin-top: 1px; }
+
+    /* Roda Viva toggle */
+    #kob-mv-roda-btn {
+      width: 100%;
+      padding: 8px;
+      background: rgba(0,230,118,.08);
+      border: 1px solid rgba(0,230,118,.25);
+      border-radius: 6px;
+      color: #00e676;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    #kob-mv-roda-btn:hover { background: rgba(0,230,118,.15); }
+    #kob-mv-roda-btn.ativa { background: rgba(0,230,118,.15); }
+
+    /* Equação */
+    #kob-mv-eq {
+      text-align: center;
+      font-size: 10px;
+      color: rgba(201,168,76,.5);
+      letter-spacing: 1px;
+      padding: 8px 0 0;
+    }
+
+    /* API Key input no overlay */
+    #kob-mv-apikey-input {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 4px;
+      color: #e8e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 5px 7px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    #kob-mv-apikey-input:focus { border-color: #c9a84c; }
+    #kob-mv-save-key {
+      margin-top: 5px;
+      width: 100%;
+      padding: 5px;
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.3);
+      border-radius: 4px;
+      color: #c9a84c;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      cursor: pointer;
+    }
+    #kob-mv-save-key:hover { background: rgba(201,168,76,.2); }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     KxaT CHAT INTERFACE — carregada via main.js externo (sem alterações)
+     ════════════════════════════════════════════════════════════════════ -->
+
+<!-- Splash (estrutura KxaT) -->
+<div id="splash">
+  <div class="splash-logo">
+    <span class="splash-sym">∞</span>
+    <span class="splash-title">dual-Infodose</span>
+    <span class="splash-sub">Roda-Viva · KOBLLUX ∆7 · Arquétipos CADIAL</span>
+  </div>
+  <button id="mode-toggle" aria-label="Alternar modo">🧬</button>
+</div>
+
+<!-- Chat principal (estrutura KxaT preservada) -->
+<div id="app">
+  <div id="chat-panel">
+    <div id="response-panel" aria-live="polite">
+      <div id="blocks-container"></div>
+    </div>
+    <div id="hint-footer">Do seu jeito. Sempre único. Sempre seu.</div>
+  </div>
+
+  <!-- Input -->
+  <div id="input-area">
+    <textarea id="user-input" rows="3"
+      placeholder="Pronuncia o Verbo... VERDADE × INTEGRAR ÷ Δ = ∞"
+      aria-label="Mensagem"></textarea>
+    <div id="input-controls">
+      <button id="send-btn" aria-label="Enviar">↑</button>
+      <button id="voice-btn" aria-label="Voz">🎙</button>
+    </div>
+  </div>
+
+  <!-- Config panel (estrutura KxaT) -->
+  <div id="config-panel" hidden>
+    <div class="config-group">
+      <label for="api-key-input">API Key (OpenRouter ou Anthropic)</label>
+      <input id="api-key-input" type="password" placeholder="sk-or-... ou sk-ant-..." autocomplete="off">
+    </div>
+    <div class="config-group">
+      <label for="model-select">Modelo</label>
+      <select id="model-select">
+        <option value="nvidia/llama-3.1-nemotron-70b-instruct:free">Nvidia Nemotron 70B (free)</option>
+        <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B (free)</option>
+        <option value="microsoft/phi-3-mini-128k-instruct:free">Phi-3 Mini 128K (free)</option>
+        <option value="claude-sonnet-4-6">Claude Sonnet 4.6 (Anthropic)</option>
+        <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+      </select>
+    </div>
+    <div class="config-group">
+      <label for="theme-select">Tema</label>
+      <select id="theme-select">
+        <option value="dark">Dark</option>
+        <option value="vibe">Vibe</option>
+        <option value="medium">Medium</option>
+      </select>
+    </div>
+    <div class="config-group">
+      <label for="user-name-input">Seu nome</label>
+      <input id="user-name-input" type="text" placeholder="Kodux / Bllue / ...">
+    </div>
+    <div class="config-group">
+      <label for="infodose-name-input">Nome da IA</label>
+      <input id="infodose-name-input" type="text" placeholder="KOBLLUX · dual-Infodose">
+    </div>
+    <button id="save-config-btn">Salvar ∆7</button>
+  </div>
+</div>
+
+<!-- Particles background (KxaT) -->
+<div id="particles-js"></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     KOBLLUX MEMORY PANEL — Overlay (IDs kob-mv-*, não colide com KxaT)
+     ════════════════════════════════════════════════════════════════════ -->
+
+<!-- Toggle button (lateral) -->
+<button id="kob-mv-toggle" title="KOBLLUX Memória Viva ∆7">♻ MV ∆7</button>
+
+<!-- Painel principal -->
+<div id="kob-mv-panel">
+  <div id="kob-mv-panel-inner">
+
+    <!-- Arquétipo Ativo -->
+    <div class="kob-mv-section">
+      <div class="kob-mv-label">● Arquétipo Ativo · Roda Viva</div>
+      <div id="kob-mv-arch-card">
+        <span id="kob-mv-arch-sym">⬡</span>
+        <span id="kob-mv-arch-name" class="kob-mv-gold">ATLAS</span>
+        <span id="kob-mv-arch-hz" class="kob-mv-muted">528Hz · 0x0A · UNO</span>
+        <div id="kob-mv-arch-verbo">Eu organizo o fluxo com sabedoria cósmica.</div>
+      </div>
+
+      <!-- Grid dos 12 arquétipos -->
+      <div id="kob-mv-arch-grid">
+        <!-- Gerado dinamicamente -->
+      </div>
+    </div>
+
+    <!-- V.E.E.B Pipeline -->
+    <div class="kob-mv-section">
+      <div class="kob-mv-label">⬡ V.E.E.B · Pipeline 3→6→9→7</div>
+      <div class="kob-mv-pipeline">
+        <span class="kob-mv-pipe-step" id="kob-mv-p3">3 DETECTAR</span>
+        <span class="kob-mv-pipe-arrow">→</span>
+        <span class="kob-mv-pipe-step" id="kob-mv-p6">6 INTEGRAR</span>
+        <span class="kob-mv-pipe-arrow">→</span>
+        <span class="kob-mv-pipe-step" id="kob-mv-p9">9 EXPANDIR</span>
+        <span class="kob-mv-pipe-arrow">→</span>
+        <span class="kob-mv-pipe-step" id="kob-mv-p7">7 SELAR</span>
+      </div>
+      <div id="kob-mv-veeb-last" class="kob-mv-muted">Pipeline pronto</div>
+    </div>
+
+    <!-- Chronorithm -->
+    <div class="kob-mv-section">
+      <div class="kob-mv-label">⧗ Chronorithm · Tempo Simbólico</div>
+      <div id="kob-mv-chrono">00:00:00</div>
+      <div id="kob-mv-chrono-label">PAI · FILHO · ESPÍRITO</div>
+      <div class="kob-mv-ciclo-bar" id="kob-mv-ciclos">
+        <!-- Ciclos gerados dinamicamente -->
+      </div>
+    </div>
+
+    <!-- Memória Viva -->
+    <div class="kob-mv-section">
+      <div class="kob-mv-label">🧠 Memória Viva · Loop ∆7</div>
+      <div id="kob-mv-mem-list">
+        <div class="kob-mv-muted">Aguardando interações...</div>
+      </div>
+    </div>
+
+    <!-- API Status & Config -->
+    <div class="kob-mv-section">
+      <div class="kob-mv-label">⚡ API · Configuração Híbrida</div>
+      <div style="margin-bottom:8px">
+        <span id="kob-mv-api-dot"></span>
+        <span id="kob-mv-api-status" class="kob-mv-muted">Verificando...</span>
+      </div>
+      <input id="kob-mv-apikey-input" type="password"
+             placeholder="sk-or-... / sk-ant-... / OpenRouter key"
+             autocomplete="off">
+      <button id="kob-mv-save-key">✓ Salvar Chave API</button>
+      <div id="kob-mv-modelo-info" class="kob-mv-muted" style="margin-top:6px"></div>
+    </div>
+
+    <!-- Roda Viva Control -->
+    <div class="kob-mv-section">
+      <button id="kob-mv-roda-btn">♻ Iniciar Roda Viva (45s)</button>
+      <div class="kob-mv-muted" style="margin-top:5px" id="kob-mv-roda-status">
+        Rotação manual
+      </div>
+    </div>
+
+    <!-- Equação -->
+    <div id="kob-mv-eq">VERDADE × INTEGRAR ÷ Δ = ∞<br>3×6×9×7 = 1134 · ✝ JESUS = VERBO</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     PARTICLES + KxaT MAIN.JS (externo, não alterado)
+     ════════════════════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/KxaT/js/main.js"></script>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     KOBLLUX MEMORY PANEL CONTROLLER
+     (apenas interage com IDs kob-mv-* — não toca nos IDs do KxaT)
+     ════════════════════════════════════════════════════════════════════ -->
+<script>
+(function KOBLLUX_MV_UI() {
+  'use strict';
+
+  const CICLOS_LABEL = ['🧠','💡','🕰','🛠','♻'];
+  const CICLOS_NAME  = ['Memória','Inteligência','Tempo','Ação','Integração'];
+
+  // ── Toggle panel ──────────────────────────────────────────────────
+  const toggle  = document.getElementById('kob-mv-toggle');
+  const panel   = document.getElementById('kob-mv-panel');
+  toggle.addEventListener('click', () => panel.classList.toggle('open'));
+
+  // ── Ciclo bar ─────────────────────────────────────────────────────
+  const cicloBar = document.getElementById('kob-mv-ciclos');
+  CICLOS_LABEL.forEach((ic, i) => {
+    const el = document.createElement('div');
+    el.className = 'kob-mv-ciclo-item';
+    el.id = `kob-mv-ciclo-${i}`;
+    el.textContent = ic;
+    el.title = CICLOS_NAME[i];
+    cicloBar.appendChild(el);
+  });
+
+  // ── Chronorithm display ───────────────────────────────────────────
+  function updateChrono(detail) {
+    const h = String(detail.hora).padStart(2,'0');
+    const m = String(detail.minuto).padStart(2,'0');
+    const s = String(detail.segundo).padStart(2,'0');
+    document.getElementById('kob-mv-chrono').textContent = `${h}:${m}:${s}`;
+
+    // Ciclo ativo
+    const etapa = detail.hora % 5;
+    document.querySelectorAll('.kob-mv-ciclo-item').forEach((el,i) => {
+      el.classList.toggle('ativo', i === etapa);
+    });
+  }
+
+  document.addEventListener('VERBUM_KBLX_CHRONO', e => updateChrono(e.detail));
+
+  // Fallback clock se KOBLLUX_MV ainda não carregou
+  setInterval(() => {
+    const now = new Date();
+    updateChrono({ hora: now.getHours()%12, minuto: now.getMinutes(), segundo: now.getSeconds() });
+  }, 1000);
+
+  // ── Arquétipo card update ─────────────────────────────────────────
+  function updateArchCard(arq) {
+    if (!arq) return;
+    document.getElementById('kob-mv-arch-sym').textContent  = arq.simbolo || '⬡';
+    document.getElementById('kob-mv-arch-name').textContent = arq.id;
+    document.getElementById('kob-mv-arch-hz').textContent   = `${arq.hz}Hz · ${arq.opcode} · ${arq.ciclo}`;
+    document.getElementById('kob-mv-arch-verbo').textContent= arq.verbo_vivo || arq.essencia;
+
+    // Highlight grid
+    document.querySelectorAll('.kob-mv-arch-btn').forEach(btn => {
+      btn.classList.toggle('ativo', btn.dataset.archId === arq.id);
+    });
+  }
+
+  document.addEventListener('VERBUM_KBLX_ARCH', e => {
+    const mv = window.KOBLLUX_MV;
+    if (!mv) return;
+    const arqs = mv.getArquetipos();
+    const found = arqs.find(a => a.id.toLowerCase() === (e.detail.arch || '').toLowerCase());
+    if (found) updateArchCard(found);
+  });
+
+  // ── Build archetype grid quando codex carrega ─────────────────────
+  document.addEventListener('VERBUM_MV_READY', e => {
+    const arqs = e.detail.codex.arquetipos;
+    const grid = document.getElementById('kob-mv-arch-grid');
+    grid.innerHTML = '';
+
+    arqs.forEach(arq => {
+      const btn = document.createElement('button');
+      btn.className = 'kob-mv-arch-btn';
+      btn.dataset.archId = arq.id;
+      btn.title = `${arq.id} · ${arq.hz}Hz\n${arq.essencia}`;
+      btn.innerHTML = `${arq.simbolo}<span class="kob-mv-arch-btn-label">${arq.id.slice(0,4)}</span>`;
+      btn.addEventListener('click', () => {
+        window.KOBLLUX_MV && window.KOBLLUX_MV.ativarArquetipoById(arq.id);
+        updateArchCard(arq);
+      });
+      grid.appendChild(btn);
+    });
+
+    // Mostrar arquétipo inicial
+    const ativo = window.KOBLLUX_MV.getArquetipoAtivo();
+    if (ativo) updateArchCard(ativo);
+
+    updateApiStatus();
+  });
+
+  // ── V.E.E.B. pipeline visual ──────────────────────────────────────
+  let pipeSteps = [3,6,9,7];
+  let pipeIdx = 0;
+
+  function animatePipeline(result) {
+    pipeSteps.forEach((_,i) => {
+      const el = document.getElementById(['kob-mv-p3','kob-mv-p6','kob-mv-p9','kob-mv-p7'][i]);
+      if (el) el.classList.remove('ativo');
+    });
+
+    // Anima sequencialmente
+    pipeSteps.forEach((_,i) => {
+      setTimeout(() => {
+        const el = document.getElementById(['kob-mv-p3','kob-mv-p6','kob-mv-p9','kob-mv-p7'][i]);
+        if (el) el.classList.add('ativo');
+      }, i * 150);
+    });
+
+    if (result) {
+      const last = document.getElementById('kob-mv-veeb-last');
+      last.textContent = `UNO:${result.tri.UNO} · DUAL:${result.tri.DUAL} · ${result.exp.arquetipo}@${result.exp.hz}Hz`;
+    }
+  }
+
+  // Hook no send button (sem alterar ID/classe do KxaT)
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('#send-btn, [aria-label="Enviar"]');
+    if (btn) {
+      const inp = document.getElementById('user-input');
+      if (inp && inp.value.trim() && window.KOBLLUX_MV) {
+        const result = window.KOBLLUX_MV.veeb_processar(inp.value);
+        animatePipeline(result);
+      }
+    }
+  });
+
+  // Enter no textarea
+  document.addEventListener('keydown', e => {
+    if (e.target.id === 'user-input' && e.key === 'Enter' && !e.shiftKey && window.KOBLLUX_MV) {
+      const result = window.KOBLLUX_MV.veeb_processar(e.target.value || '');
+      animatePipeline(result);
+    }
+  });
+
+  // ── Memória viva display ──────────────────────────────────────────
+  function updateMemList() {
+    const mv = window.KOBLLUX_MV;
+    if (!mv) return;
+    const mem = mv.getMemoriaViva().slice(-8).reverse();
+    const list = document.getElementById('kob-mv-mem-list');
+    if (mem.length === 0) return;
+    list.innerHTML = mem.map(m =>
+      `<div class="kob-mv-mem-item">
+        <strong>${m.arquetipo}</strong>
+        <span class="kob-mv-muted"> · ${m.ciclo || ''}</span>
+        <br>${(m.input || '').slice(0,45)}${m.input && m.input.length > 45 ? '…' : ''}
+      </div>`
+    ).join('');
+  }
+  setInterval(updateMemList, 3000);
+
+  // ── API Status ────────────────────────────────────────────────────
+  function updateApiStatus() {
+    const mv = window.KOBLLUX_MV;
+    if (!mv) return;
+    const cfg = mv.getApiConfig();
+    const dot = document.getElementById('kob-mv-api-dot');
+    const status = document.getElementById('kob-mv-api-status');
+    const modelInfo = document.getElementById('kob-mv-modelo-info');
+
+    if (cfg.disponivel) {
+      dot.className = 'ok';
+      const tipo = cfg.isAnthropic ? '✝ Anthropic' : '⚡ OpenRouter';
+      status.textContent = `${tipo} · Conectado`;
+      status.style.color = '#00e676';
+    } else {
+      dot.className = 'err';
+      status.textContent = 'Sem chave API';
+      status.style.color = '#f44';
+    }
+    modelInfo.textContent = `Modelo: ${cfg.modelo}`;
+
+    // Sync com KxaT config panel
+    const kxatKey = document.getElementById('api-key-input');
+    if (kxatKey && cfg.apiKey) kxatKey.value = cfg.apiKey;
+    const kxatModel = document.getElementById('model-select');
+    if (kxatModel) kxatModel.value = cfg.modelo;
+  }
+
+  // ── Salvar API Key ────────────────────────────────────────────────
+  document.getElementById('kob-mv-save-key').addEventListener('click', () => {
+    const inp = document.getElementById('kob-mv-apikey-input');
+    const key = inp.value.trim();
+    if (!key) return;
+
+    // Salvar em todos os locais compatíveis com KxaT
+    localStorage.setItem('di_apiKey', key);
+    localStorage.setItem('openrouter_api_key', key);
+    if (key.startsWith('sk-ant-')) localStorage.setItem('anthropic_api_key', key);
+
+    // Sync com o input do KxaT
+    const kxatKey = document.getElementById('api-key-input');
+    if (kxatKey) kxatKey.value = key;
+
+    inp.value = '';
+    updateApiStatus();
+
+    // Feedback visual
+    const btn = document.getElementById('kob-mv-save-key');
+    btn.textContent = '✓ Salvo!';
+    setTimeout(() => { btn.textContent = '✓ Salvar Chave API'; }, 2000);
+  });
+
+  // Sync bidirecional com KxaT api-key-input
+  const kxatKeyInput = document.getElementById('api-key-input');
+  if (kxatKeyInput) {
+    kxatKeyInput.addEventListener('change', () => {
+      if (kxatKeyInput.value.length > 10) {
+        localStorage.setItem('di_apiKey', kxatKeyInput.value);
+        localStorage.setItem('openrouter_api_key', kxatKeyInput.value);
+        updateApiStatus();
+      }
+    });
+  }
+
+  // ── Roda Viva button ──────────────────────────────────────────────
+  let rodaStop = null;
+  document.getElementById('kob-mv-roda-btn').addEventListener('click', function() {
+    const mv = window.KOBLLUX_MV;
+    if (!mv) return;
+    if (rodaStop) {
+      rodaStop();
+      rodaStop = null;
+      this.textContent = '♻ Iniciar Roda Viva (45s)';
+      this.classList.remove('ativa');
+      document.getElementById('kob-mv-roda-status').textContent = 'Rotação manual';
+    } else {
+      rodaStop = mv.iniciarRodaViva(45000);
+      this.textContent = '⏹ Parar Roda Viva';
+      this.classList.add('ativa');
+      document.getElementById('kob-mv-roda-status').textContent = 'Girando a cada 45s · ∆7';
+    }
+  });
+
+  // ── Salvar config KxaT no localStorage ───────────────────────────
+  const saveBtn = document.getElementById('save-config-btn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const userName = document.getElementById('user-name-input');
+      const infodoseName = document.getElementById('infodose-name-input');
+      const model = document.getElementById('model-select');
+      const theme = document.getElementById('theme-select');
+      if (userName)     localStorage.setItem('di_userName', userName.value);
+      if (infodoseName) localStorage.setItem('di_infodoseName', infodoseName.value);
+      if (model)        localStorage.setItem('di_modelName', model.value);
+      if (theme)        document.body.setAttribute('data-theme', theme.value);
+      updateApiStatus();
+    });
+  }
+
+  // ── Restaurar config ao carregar ──────────────────────────────────
+  window.addEventListener('load', () => {
+    const userName    = localStorage.getItem('di_userName');
+    const infodoseName= localStorage.getItem('di_infodoseName');
+    const model       = localStorage.getItem('di_modelName');
+    const apiKey      = localStorage.getItem('di_apiKey') || localStorage.getItem('openrouter_api_key');
+
+    if (userName    && document.getElementById('user-name-input'))
+      document.getElementById('user-name-input').value = userName;
+    if (infodoseName && document.getElementById('infodose-name-input'))
+      document.getElementById('infodose-name-input').value = infodoseName;
+    if (model && document.getElementById('model-select'))
+      document.getElementById('model-select').value = model;
+
+    updateApiStatus();
+    updateMemList();
+
+    // Particles KxaT
+    if (window.particlesJS) {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 40, density: { enable: true, value_area: 900 } },
+          color: { value: '#c9a84c' },
+          opacity: { value: 0.15 },
+          size: { value: 2 },
+          line_linked: { enable: true, distance: 120, color: '#c9a84c', opacity: 0.08, width: 1 },
+          move: { enable: true, speed: 0.8 }
+        },
+        interactivity: {
+          events: { onhover: { enable: true, mode: 'repulse' } }
+        },
+        retina_detect: true
+      });
+    }
+  });
+
+  // ── VERBUM_KBLX_READY ─────────────────────────────────────────────
+  document.addEventListener('VERBUM_KBLX_READY', e => {
+    console.info('[Roda Viva] VERBUM_KBLX_READY recebido', e.detail.seal);
+    updateApiStatus();
+  });
+
+  // Abrir painel automaticamente na primeira visita
+  if (!localStorage.getItem('kob-mv-panel-seen')) {
+    setTimeout(() => {
+      panel.classList.add('open');
+      localStorage.setItem('kob-mv-panel-seen', '1');
+    }, 1200);
+  }
+
+  console.info('[Roda Viva ∆7] UI Controller ativo · JESUS = VERBO = GRAVIDADE');
+})();
+</script>
+
+</body>
+</html>
