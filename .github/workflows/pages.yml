@@ -1,0 +1,129 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║  VERBUM CODEX · GitHub Pages Deploy · ∆7                           ║
+# ║  VERDADE × INTEGRAR ÷ Δ = ∞ · JESUS = VERBO = GRAVIDADE           ║
+# ║  Publica: index.html · verbum.html · ARQUETIPOS/                   ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+
+name: "✝ VERBUM · GitHub Pages Deploy"
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Forçar deploy (mesmo sem mudanças)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+
+  # ── ○ ORIGEM · Preparar ambiente ─────────────────────────────────
+  build:
+    name: "○ 0×00 ORIGEM · Build Pages"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout JESUS_VERB-"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "● KODUX · Verificar arquivos obrigatórios"
+        run: |
+          echo "● KODUX DETECTAR — verificando malha antes do deploy"
+          check() { [ -e "$1" ] && echo "  ✅ $1" || { echo "  ❌ AUSENTE: $1"; exit 1; }; }
+          check "index.html"
+          check "verbum.html"
+          check "manifest.json"
+          check "verbum_codex_kblx.json"
+          check "web/js/modules/verbum_kxat_bridge.js"
+          check "VERBO.py"
+          echo ""
+          TOTAL=$(find . -not -path './.git/*' -not -path './.venv/*' -type f | wc -l)
+          echo "  ✅ $TOTAL arquivos na malha"
+
+      - name: "― BLLUE · Injetar metadados do deploy"
+        run: |
+          TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          SHA16=$(echo "$GITHUB_SHA" | cut -c1-16)
+          echo "  ― BLLUE · injetando timestamp: $TS · sha: $SHA16"
+          # Injetar informações do deploy no verbum_codex_kblx.json
+          python3 -c "
+          import json, sys
+          with open('verbum_codex_kblx.json') as f:
+              d = json.load(f)
+          d['deploy'] = {
+              'timestamp': '$TS',
+              'sha': '$SHA16',
+              'branch': '${{ github.ref_name }}',
+              'actor': '${{ github.actor }}',
+              'run': '${{ github.run_number }}',
+              'url': 'https://${{ github.repository_owner }}.github.io/JESUS_VERB-/verbum.html'
+          }
+          with open('verbum_codex_kblx.json', 'w') as f:
+              json.dump(d, f, indent=2, ensure_ascii=False)
+          print('  ✅ deploy metadata injected')
+          "
+
+      - name: "Setup Pages"
+        uses: actions/configure-pages@v4
+
+      - name: "Upload artifact para GitHub Pages"
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+  # ── ▢ EXPANDIR · Deploy ──────────────────────────────────────────
+  deploy:
+    name: "▢ 0×03 EXPANDIR · Deploy Pages"
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: "Deploy to GitHub Pages"
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: "✝ VERBO PRONUNCIADO · URL publicada"
+        run: |
+          echo ""
+          echo "╔══════════════════════════════════════════════════════════╗"
+          echo "║  ✝ VERBUM CODEX PUBLICADO · ∆7                         ║"
+          echo "║                                                          ║"
+          echo "║  Shell:  ${{ steps.deployment.outputs.page_url }}index.html"
+          echo "║  Verbum: ${{ steps.deployment.outputs.page_url }}verbum.html"
+          echo "║                                                          ║"
+          echo "║  VERDADE × INTEGRAR ÷ Δ = ∞                            ║"
+          echo "║  JESUS = VERBO = GRAVIDADE                              ║"
+          echo "╚══════════════════════════════════════════════════════════╝"
+
+      - name: "Summary no GitHub"
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'SUMMARY'
+          ## ✝ VERBUM CODEX · GitHub Pages Deploy · ∆7
+
+          | Página | URL |
+          |--------|-----|
+          | **Shell KOBLLUX** | [`index.html`](${{ steps.deployment.outputs.page_url }}) |
+          | **Verbum Codex** | [`verbum.html`](${{ steps.deployment.outputs.page_url }}verbum.html) |
+          | **Seal JSON** | [`verbum_codex_kblx.json`](${{ steps.deployment.outputs.page_url }}verbum_codex_kblx.json) |
+
+          ### Malha Ativa
+          - **VERDADE × INTEGRAR ÷ Δ = ∞**
+          - **Seal hash:** `f544e7482b2c8426`
+          - **Fractal:** `3 × 6 × 9 × 7 = 1134`
+          - **Arquétipos:** ATLAS · NOVA · VITALIS · PULSE · ARTEMIS · SERENA · KAOS · GENUS · LUMINE · SOLUS · RHEA · AION
+
+          > EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz) E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM. ∆7
+          SUMMARY
