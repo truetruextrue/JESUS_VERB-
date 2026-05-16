@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><!--
+  KOBLLUX DNA · fusion-card-blueprint-0x05-convergir · index.html
+  Opcode: 0x00 INICIAR ○ 396Hz · V.E.E.B. B·D8
+  Fractal: 3×6×9×7=1134 · S=Σbᵢ·2^(i-1) · VERDADE×INTEGRAR÷Δ=∞
+  Boot: bootloader→indexdb→icons→dna→main
+--><link rel="stylesheet" href="./css/main.css">
+  <meta charset="utf-8">
+  <title>Fusion Card · Blueprint [0x05 CONVERGIR]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;900&amp;family=JetBrains+Mono:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="./css/0x00_iniciar_B_D8.css">
+<link rel="manifest" href="./0x02_integrar_E_D4_manifest.webmanifest"></head>
+<body>
+
+  <!-- ╔════════════════════════════════════════════════════════╗
+       ║  TOPBAR                                                ║
+       ╚════════════════════════════════════════════════════════╝ -->
+  <div class="bp-topbar">
+    <div class="bp-mark">
+      <span class="glyph">⧉</span>
+      <span>FUSION CARD</span>
+      <span class="accent">·</span>
+      <span style="color:var(--muted)">BLUEPRINT</span>
+    </div>
+    <div class="bp-crumb">
+      <b>0x05 · CONVERGIR</b> &nbsp;·&nbsp; rastrear · separar · preservar classes/IDs
+    </div>
+    <div class="bp-eq">VERDADE × INTEGRAR ÷ Δ = ∞</div>
+  </div>
+
+  <!-- ╔════════════════════════════════════════════════════════╗
+       ║  GRID                                                  ║
+       ╚════════════════════════════════════════════════════════╝ -->
+  <div class="bp-grid">
+
+    <!-- ─── STAGE ───────────────────────────────────────────── -->
+    <div class="bp-stage">
+      <div class="bp-stage-meta">
+        <div class="bp-stage-chip live">● LIVE</div>
+        <div class="bp-stage-chip id">#mainCard</div>
+        <div class="bp-stage-chip">.fusion-card</div>
+        <div class="bp-stage-chip">420 × auto</div>
+      </div>
+      <div class="bp-stage-frame">
+        <iframe class="bp-iframe" src="Fusion Card · Core Isolado.html" title="fusion-card-live"></iframe>
+      </div>
+      <div class="bp-controls">
+        <button class="bp-ctrl" onclick="bpCall('toggleCard')">⊙ Toggle Card</button>
+        <button class="bp-ctrl" onclick="bpCall('openKeys')">✧ Cofre</button>
+        <button class="bp-ctrl" onclick="bpReload()">↻ Reset</button>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:var(--fs-d2);color:var(--muted-3);letter-spacing:.15em;text-transform:uppercase;line-height:1.6">
+        clique no avatar → abre keysModal &nbsp;·&nbsp; ●●● → menu orbital<br>
+        avatar/preview e card-body trocam segundo <code style="color:var(--cor-0x07)">.closed</code>
+      </div>
+    </div>
+
+    <!-- ─── TRACKER ─────────────────────────────────────────── -->
+    <div class="bp-tracker">
+
+      <!-- INTRO -->
+      <div class="bp-intro">
+        <h1>Rastreamento <b>·</b> Core Isolado</h1>
+        <p>
+          Extração cirúrgica do objeto <b>fusion-card</b> a partir do monolito integrado
+          (<code>Fusion Card // Core Controller</code>). Todos os identificadores e classes
+          foram preservados na íntegra; o ecossistema externo
+          (player Kodux, drawer cockpit, KxTsK shell, archetype engine, particles)
+          foi expurgado. Resultado: card autônomo, idêntico em <em>shape</em> e
+          comportamento, pronto para reintegração.
+        </p>
+        <div class="eqline">Δ³ · Ponto → Linha → Plano · 3×6×9×7 = 1134</div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x00 · SHELL
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x00">
+        <div class="cluster-head">
+          <div class="cluster-glyph">○</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x00</span><span class="verb">INICIAR</span><span class="freq">396 Hz · D0 · Ponto</span></div>
+            <div class="cluster-title">SHELL · container externo + card root</div>
+          </div>
+          <div class="cluster-route">body &gt; .container &gt; #mainCard</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.container</span></div>
+            <div class="el-key"><code class="purple">.container</code></div>
+            <div class="el-desc">Wrapper flex full-viewport · centraliza o card na tela inicial</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.fusion-card</span><span class="hash">#mainCard</span></div>
+            <div class="el-key"><code>#mainCard</code> · <code class="cyan">.fusion-card</code></div>
+            <div class="el-desc">Card root · glassmorphism + glow ciano · alterna estado via classe <b>.closed</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x01 · HEADER
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x01">
+        <div class="cluster-head">
+          <div class="cluster-glyph">●</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x01</span><span class="verb">PULSAR</span><span class="freq">432 Hz · D1 · Linha</span></div>
+            <div class="cluster-title">HEADER · identidade · saudação · relógio · HUD</div>
+          </div>
+          <div class="cluster-route">#mainCard &gt; #cardHeader</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.card-header</span><span class="hash">#cardHeader</span></div>
+            <div class="el-key"><code>#cardHeader</code></div>
+            <div class="el-desc">Container flex do header · 5 slots (avatar · texto · clock · hud-btn)</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.avatar-slot</span><span class="hash">#avatarTarget</span></div>
+            <div class="el-key"><code>#avatarTarget</code></div>
+            <div class="el-desc">Avatar 64×64 · recebe SVG de <b>makeOrbAvatar(name,64)</b> · clique → <b>#keysModal</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.text-block</span></div>
+            <div class="el-key"><code class="purple">.text-block</code></div>
+            <div class="el-desc">Container da saudação + brand</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.greeting-row</span></div>
+            <div class="el-key"><code class="purple">.greeting-row</code></div>
+            <div class="el-desc">Linha "Oi, [nome]" · flex baseline</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">span</span><span class="dot">.txt-thin</span><span class="hash">#lblHello</span></div>
+            <div class="el-key"><code>#lblHello</code></div>
+            <div class="el-desc">"Oi," — texto fixo leve (weight 200)</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">span</span><span class="dot">.txt-heavy</span><span class="hash">#lblName</span></div>
+            <div class="el-key"><code>#lblName</code></div>
+            <div class="el-desc">Nome do usuário · gradient ciano→roxo · sincronizado por <b>di_syncNameUI()</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.brand-dual</span></div>
+            <div class="el-key"><code class="purple">.brand-dual</code></div>
+            <div class="el-desc">Logotipo "DUAL" · gradient roxo→rosa · estático</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.clock-widget</span></div>
+            <div class="el-key"><code class="purple">.clock-widget</code></div>
+            <div class="el-desc">Widget temporal · contém #clockTime + .status-led</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.time-display</span><span class="hash">#clockTime</span></div>
+            <div class="el-key"><code>#clockTime</code></div>
+            <div class="el-desc">HH:MM mono · atualizado por <b>updateClock()</b> a 1Hz</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">span</span><span class="dot">.status-led</span></div>
+            <div class="el-key"><code class="purple">.status-led</code></div>
+            <div class="el-desc">Pill rosa "ONLINE" · indicador estático de presença</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="dot">.hud-menu-btn</span><span class="hash">#hudMenuBtn</span></div>
+            <div class="el-key"><code>#hudMenuBtn</code></div>
+            <div class="el-desc">Botão menu rápido · ícone Lucide <code>menu</code> · handler livre</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x02 · PREVIEW (estado fechado)
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x02">
+        <div class="cluster-head">
+          <div class="cluster-glyph">―</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x02</span><span class="verb">INTEGRAR</span><span class="freq">528 Hz · D2 · Plano</span></div>
+            <div class="cluster-title">PREVIEW · projeção compacta quando <code style="color:var(--cor-0x07);font-family:var(--font-mono)">.closed</code></div>
+          </div>
+          <div class="cluster-route">#mainCard &gt; #smallPreview</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.small-preview</span><span class="hash">#smallPreview</span></div>
+            <div class="el-key"><code>#smallPreview</code></div>
+            <div class="el-desc">Linha colapsada · só visível em <b>.closed</b> · clique → <b>toggleCard()</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.mini-avatar</span><span class="hash">#smallMiniAvatar</span></div>
+            <div class="el-key"><code>#smallMiniAvatar</code></div>
+            <div class="el-desc">Orb 36 (renderizado em 24) · seed = nome do usuário</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.small-text</span><span class="hash">#smallText</span></div>
+            <div class="el-key"><code>#smallText</code></div>
+            <div class="el-desc">Eco do nome ativo · "Aguardando ativação..." quando vazio</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.ident-badge</span><span class="hash">#smallIdent</span></div>
+            <div class="el-key"><code>#smallIdent</code></div>
+            <div class="el-desc">Badge da chave ativa · "--" quando sem chave</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.drag-handle</span></div>
+            <div class="el-key"><code class="purple">.drag-handle</code></div>
+            <div class="el-desc">Barra de arrasto · habilita reposicionamento absoluto do card via mouse</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.orb-menu-trigger</span><span class="hash">#orbMenuTrigger</span></div>
+            <div class="el-key"><code>#orbMenuTrigger</code></div>
+            <div class="el-desc">Pontos "●●●" no canto superior direito · gancho p/ menu orbital externo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x03 · BODY ROOT
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x03">
+        <div class="cluster-head">
+          <div class="cluster-glyph">▢</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x03</span><span class="verb">EXPANDIR</span><span class="freq">639 Hz · D3 · Volume</span></div>
+            <div class="cluster-title">BODY · superfície expansível · scroll + accordion</div>
+          </div>
+          <div class="cluster-route">#mainCard &gt; #cardBody</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.card-body</span><span class="hash">#cardBody</span></div>
+            <div class="el-key"><code>#cardBody</code></div>
+            <div class="el-desc">Container scrollável (max 600px) · colapsa para 0 quando <b>.closed</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.input-wrapper</span></div>
+            <div class="el-key"><code class="purple">.input-wrapper</code> · <code class="purple">.stagger-item</code></div>
+            <div class="el-desc">Slot do input principal · primeiro item da fade-in cascade</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">input</span><span class="dot">.cyber-input</span><span class="hash">#inputUser</span></div>
+            <div class="el-key"><code>#inputUser</code></div>
+            <div class="el-desc">Campo "Identifique-se..." · <b>input</b> event → <b>di_syncNameUI()</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x05 · ATIVAÇÃO ASCII
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x05">
+        <div class="cluster-head">
+          <div class="cluster-glyph">⧉</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x05</span><span class="verb">CONVERGIR</span><span class="freq">672 Hz · D∩ · Foco</span></div>
+            <div class="cluster-title">ATIVAÇÃO ASCII · accordion · seed do CÉREBRO</div>
+          </div>
+          <div class="cluster-route">#cardBody &gt; .activation-wrap[1]</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.activation-wrap</span></div>
+            <div class="el-key"><code class="purple">.activation-wrap</code></div>
+            <div class="el-desc">Wrapper do par toggle + card-do-accordion</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.activation-toggle</span></div>
+            <div class="el-key"><code class="purple">.activation-toggle</code></div>
+            <div class="el-desc">Cabeçalho clicável · "Ativação ASCII · BASE v1" · onclick=<b>toggleSection('activationCard')</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.activation-card</span><span class="hash">#activationCard</span></div>
+            <div class="el-key"><code>#activationCard</code></div>
+            <div class="el-desc">Painel expandido · começa com <b>.activation-hidden</b> · borda esquerda ciano</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.mini-avatar</span><span class="hash">#actMiniAvatar</span></div>
+            <div class="el-key"><code>#actMiniAvatar</code></div>
+            <div class="el-desc">Orb 36 · acompanha nome via <b>di_syncNameUI()</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">span</span><span class="hash">#actName</span></div>
+            <div class="el-key"><code>#actName</code></div>
+            <div class="el-desc">Eco do nome no painel "CÉREBRO"</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.activation-badge</span><span class="hash">#actBadge</span></div>
+            <div class="el-key"><code>#actBadge</code></div>
+            <div class="el-desc">Badge ciano · mostra <b>key:Nome</b> ou <b>v:--</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">pre</span><span class="dot">.activation-pre</span><span class="hash">#actPre</span></div>
+            <div class="el-key"><code>#actPre</code></div>
+            <div class="el-desc">Bloco mono do seed ASCII · scroll vertical · alvo do botão COPIAR</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="dot">.trigger-btn</span><span class="hash">#copyActBtn</span></div>
+            <div class="el-key"><code>#copyActBtn</code></div>
+            <div class="el-desc">Clipboard write · feedback "COPIADO!" por 1.5s</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x06 · SYSTEM & NEURAL
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x06">
+        <div class="cluster-head">
+          <div class="cluster-glyph">☯</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x06</span><span class="verb">CRISTALIZAR</span><span class="freq">741 Hz · D3 · Rede</span></div>
+            <div class="cluster-title">SYSTEM &amp; NEURAL · config · identidade · chave · modelo</div>
+          </div>
+          <div class="cluster-route">#cardBody &gt; .activation-wrap[2]</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.activation-card</span><span class="hash">#systemCard</span></div>
+            <div class="el-key"><code>#systemCard</code></div>
+            <div class="el-desc">Painel CONFIG · accordion controlado pelo mesmo <b>toggleSection</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">input</span><span class="hash">#infodoseNameInput</span></div>
+            <div class="el-key"><code>#infodoseNameInput</code></div>
+            <div class="el-desc">Campo "IDENTIDADE DA INFODOSE" · <b>input</b> event → <b>di_syncNameUI()</b> (espelha #inputUser)</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">input</span><span class="hash">#apiKeyInput</span></div>
+            <div class="el-key"><code>#apiKeyInput</code></div>
+            <div class="el-desc">Campo password · placeholder <b>sk-or-...</b> · CONEXÃO NEURAL</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">select</span><span class="hash">#modelSelect</span></div>
+            <div class="el-key"><code>#modelSelect</code></div>
+            <div class="el-desc">Dropdown modelos · NemoTron · MolMo · DevStral · OSS120b</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="hash">#saveSystemBtn</span></div>
+            <div class="el-key"><code>#saveSystemBtn</code></div>
+            <div class="el-desc">"SALVAR CONFIGURAÇÃO" · console.log + alert · payload {name, key:***, model}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x0A · MODE SELECTOR
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x0A">
+        <div class="cluster-head">
+          <div class="cluster-glyph">⚖</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x0A</span><span class="verb">EQUILIBRAR</span><span class="freq">528 Hz · SO(2)</span></div>
+            <div class="cluster-title">MODE SELECTOR · CARD · ORB · HUD</div>
+          </div>
+          <div class="cluster-route">#cardBody &gt; .stagger-item[last]</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="dot">.mode-btn.active-mode</span><span class="hash">#btnModeCard</span></div>
+            <div class="el-key"><code>#btnModeCard</code></div>
+            <div class="el-desc">Modo Padrão · estado inicial <b>.active-mode</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="dot">.mode-btn</span><span class="hash">#btnModeOrb</span></div>
+            <div class="el-key"><code>#btnModeOrb</code></div>
+            <div class="el-desc">Modo Flutuante · onclick=<b>setMode('orb')</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="dot">.mode-btn</span><span class="hash">#btnModeHud</span></div>
+            <div class="el-key"><code>#btnModeHud</code></div>
+            <div class="el-desc">Barra de Topo · onclick=<b>setMode('hud')</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x07 · MODAIS (isolados, irmãos de #mainCard)
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x07">
+        <div class="cluster-head">
+          <div class="cluster-glyph">✧</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x07</span><span class="verb">SELAR</span><span class="freq">777 Hz · D3 · Tetraedro</span></div>
+            <div class="cluster-title">MODAIS · keysModal · vaultModal (overlay full-screen)</div>
+          </div>
+          <div class="cluster-route">body &gt; #keysModal · #vaultModal</div>
+        </div>
+        <div class="el-table">
+          <div class="el-row head"><div>Tag · Seletor</div><div>id / classe</div><div>Função</div></div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.modal-overlay</span><span class="hash">#keysModal</span></div>
+            <div class="el-key"><code>#keysModal</code></div>
+            <div class="el-desc">Overlay · ativa com <b>.active</b> · aberto via clique em <b>#avatarTarget</b></div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="hash">#keysTitle</span></div>
+            <div class="el-key"><code>#keysTitle</code></div>
+            <div class="el-desc">"USER KEYS MANAGER" · título ciano</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="hash">#closeKeysBtn</span></div>
+            <div class="el-key"><code>#closeKeysBtn</code></div>
+            <div class="el-desc">Fecha o modal (X)</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.key-list</span><span class="hash">#keyList</span></div>
+            <div class="el-key"><code>#keyList</code></div>
+            <div class="el-desc">Container da lista de chaves (render externo)</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">input</span><span class="hash">#keyNameInput</span></div>
+            <div class="el-key"><code>#keyNameInput</code></div>
+            <div class="el-desc">Nome da chave nova</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">input</span><span class="hash">#keyTokenInput</span></div>
+            <div class="el-key"><code>#keyTokenInput</code></div>
+            <div class="el-desc">Token/ESK password</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="hash">#addKeyBtn</span></div>
+            <div class="el-key"><code>#addKeyBtn</code></div>
+            <div class="el-desc">Adiciona chave à lista</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">span</span><span class="hash">#vaultStatusText</span></div>
+            <div class="el-key"><code>#vaultStatusText</code></div>
+            <div class="el-desc">"Cofre Aberto" · estado lógico</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="hash">#lockVaultBtn</span></div>
+            <div class="el-key"><code>#lockVaultBtn</code></div>
+            <div class="el-desc">Fecha #keysModal e abre #vaultModal</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">div</span><span class="dot">.modal-overlay</span><span class="hash">#vaultModal</span></div>
+            <div class="el-key"><code>#vaultModal</code></div>
+            <div class="el-desc">Tela de desbloqueio (senha) · gate antes do keysModal</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">input</span><span class="hash">#vaultPassInput</span></div>
+            <div class="el-key"><code>#vaultPassInput</code></div>
+            <div class="el-desc">Campo senha · centered text</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="hash">#vaultCancelBtn</span></div>
+            <div class="el-key"><code>#vaultCancelBtn</code></div>
+            <div class="el-desc">Cancela / fecha vault</div>
+          </div>
+          <div class="el-row">
+            <div class="el-tag"><span class="tag">button</span><span class="hash">#vaultUnlockBtn</span></div>
+            <div class="el-key"><code>#vaultUnlockBtn</code></div>
+            <div class="el-desc">Confirma · console.log "Cofre desbloqueado"</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CLUSTER 0x0B · JS CONTROLLERS
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x0B">
+        <div class="cluster-head">
+          <div class="cluster-glyph">◎</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x0B</span><span class="verb">RESSONAR</span><span class="freq">432 Hz · Ondas · 1D</span></div>
+            <div class="cluster-title">CONTROLLERS · funções globais expostas em <code style="color:var(--cor-0x07);font-family:var(--font-mono)">window.KOBLLUX_CARD</code></div>
+          </div>
+          <div class="cluster-route">&lt;script&gt; inline · DOMContentLoaded</div>
+        </div>
+
+        <div class="js-grid">
+          <div class="js-card">
+            <div class="sig">makeOrbAvatar(name, size = 36)</div>
+            <div class="desc">Gera SVG determinístico (seed = soma charCodes) com dois stops HSL.
+            Renderiza orb em 32×32 viewBox · 3 círculos (glow / core / ring).</div>
+            <div class="triggers">trigger: di_syncNameUI()</div>
+          </div>
+          <div class="js-card">
+            <div class="sig">di_syncNameUI(name)</div>
+            <div class="desc">Single source of truth para o nome. Persiste em <b>localStorage.di_userName</b> + <b>userName</b>,
+            propaga em <b>#lblName · #actName · #smallText</b> e regenera os três orbs.</div>
+            <div class="triggers">trigger: #inputUser input · #infodoseNameInput input · boot</div>
+          </div>
+          <div class="js-card">
+            <div class="sig">toggleSection(id)</div>
+            <div class="desc">Accordion exclusivo · fecha todos <b>.activation-card</b> e reabre o alvo se estava oculto.</div>
+            <div class="triggers">trigger: .activation-toggle onclick</div>
+          </div>
+          <div class="js-card">
+            <div class="sig">setMode(mode)</div>
+            <div class="desc">Troca o botão <b>.active-mode</b> entre #btnModeCard / Orb / Hud.
+            Loga apenas — mudança de modo é tratada externamente.</div>
+            <div class="triggers">trigger: .mode-btn onclick</div>
+          </div>
+          <div class="js-card">
+            <div class="sig">toggleCard()</div>
+            <div class="desc">Alterna <b>.closed</b> no #mainCard. Quando reabre, foca <b>#inputUser</b> após 300ms.</div>
+            <div class="triggers">trigger: #smallPreview click</div>
+          </div>
+          <div class="js-card">
+            <div class="sig">updateClock()</div>
+            <div class="desc">Atualiza <b>#clockTime</b> em pt-BR HH:MM · loop <b>setInterval 1000ms</b>.</div>
+            <div class="triggers">trigger: boot + interval</div>
+          </div>
+          <div class="js-card">
+            <div class="sig">openModal(id) · closeModal(id)</div>
+            <div class="desc">Toggle de <b>.active</b> em <b>.modal-overlay</b>. Stateless — sem trap de foco / scroll-lock.</div>
+            <div class="triggers">trigger: #avatarTarget · #closeKeysBtn · #lockVaultBtn · #vault*Btn</div>
+          </div>
+          <div class="js-card">
+            <div class="sig">.drag-handle mousedown</div>
+            <div class="desc">Handler inline · habilita drag absoluto do #mainCard via offsets.
+            Sem touch · sem snap · sem clamp de viewport.</div>
+            <div class="triggers">trigger: pointer drag</div>
+          </div>
+        </div>
+        <div class="legend">
+          <div class="lg"><span class="sw" style="background:var(--cor-0x07)"></span>API global expostab</div>
+          <div class="lg"><span class="sw" style="background:var(--cor-0x01)"></span>id selector</div>
+          <div class="lg"><span class="sw" style="background:var(--cor-0x09)"></span>class selector</div>
+          <div class="lg"><span class="sw" style="background:var(--cor-0x0B)"></span>controller</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           STATES TABLE
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x0A">
+        <div class="cluster-head">
+          <div class="cluster-glyph">⊙</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x0A</span><span class="verb">EQUILIBRAR</span><span class="freq">estado · classe · efeito</span></div>
+            <div class="cluster-title">ESTADOS · classes que mudam visibilidade/comportamento</div>
+          </div>
+          <div class="cluster-route">classList toggles</div>
+        </div>
+        <div class="state-table">
+          <div class="h">Classe</div><div class="h">Aplicada em</div><div class="h">Efeito</div>
+          <div class="cls">.closed</div><div>#mainCard</div><div>Colapsa #cardBody (max-height 0) · mostra #smallPreview</div>
+          <div class="cls">.activation-hidden</div><div>#activationCard · #systemCard</div><div>display:none — fechado no accordion</div>
+          <div class="cls">.active-mode</div><div>.mode-btn</div><div>Botão atual highlighted (bg ciano · texto preto)</div>
+          <div class="cls">.active</div><div>.modal-overlay</div><div>display:flex — modal visível</div>
+          <div class="cls">.stagger-item</div><div>filhos do #cardBody</div><div>fadeInUp em cascata (100/200/300/400ms)</div>
+          <div class="cls">.danger</div><div>.small-btn (#lockVaultBtn)</div><div>variante rosa (#ff00aa) — ação destrutiva</div>
+          <div class="cls">.active-btn</div><div>.small-btn (#vaultUnlockBtn)</div><div>CTA ciano sólido em modal</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           EVENT FLOW · ciclo de vida típico
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x03">
+        <div class="cluster-head">
+          <div class="cluster-glyph">◇</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x03</span><span class="verb">EXPANDIR</span><span class="freq">linha temporal</span></div>
+            <div class="cluster-title">FLUXO · do boot ao primeiro nome digitado</div>
+          </div>
+          <div class="cluster-route">DOMContentLoaded → input → render</div>
+        </div>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="n">01 · BOOT</div>
+            <div class="ev">DOMContentLoaded</div>
+            <div class="ar">lucide.createIcons() · lê localStorage · chama <b>di_syncNameUI(saved||'Convidado')</b></div>
+          </div>
+          <div class="flow-step">
+            <div class="n">02 · SYNC</div>
+            <div class="ev">di_syncNameUI</div>
+            <div class="ar">Popula <b>#lblName · #actName · #smallText</b> · regenera 3 orbs · escreve localStorage</div>
+          </div>
+          <div class="flow-step">
+            <div class="n">03 · CLOCK</div>
+            <div class="ev">setInterval 1s</div>
+            <div class="ar">updateClock() atualiza <b>#clockTime</b> em HH:MM pt-BR</div>
+          </div>
+          <div class="flow-step">
+            <div class="n">04 · INPUT</div>
+            <div class="ev">#inputUser · input</div>
+            <div class="ar">Cada tecla → di_syncNameUI(value) → propaga em todos os slots</div>
+          </div>
+          <div class="flow-step">
+            <div class="n">05 · ACCORDION</div>
+            <div class="ev">.activation-toggle · click</div>
+            <div class="ar">toggleSection('activationCard'|'systemCard') · exclusivo</div>
+          </div>
+          <div class="flow-step">
+            <div class="n">06 · VAULT</div>
+            <div class="ev">#avatarTarget · click</div>
+            <div class="ar">openModal('#keysModal') · #lockVaultBtn → fecha keys + abre vault</div>
+          </div>
+          <div class="flow-step">
+            <div class="n">07 · MODE</div>
+            <div class="ev">.mode-btn · click</div>
+            <div class="ar">setMode(card|orb|hud) · troca classe <b>.active-mode</b></div>
+          </div>
+          <div class="flow-step">
+            <div class="n">08 · CLOSE</div>
+            <div class="ev">manual · classList.toggle</div>
+            <div class="ar">.closed em #mainCard → #cardBody colapsa · #smallPreview entra · clique no preview reabre</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           SCOPE · o que NÃO faz parte do card (purgado)
+           ═══════════════════════════════════════════════════════ -->
+      <div class="cluster" data-op="0x00">
+        <div class="cluster-head">
+          <div class="cluster-glyph">◇</div>
+          <div class="cluster-meta">
+            <div class="cluster-opcode"><span class="hex">0x04</span><span class="verb">DISSOLVER</span><span class="freq">594 Hz · D2 · Trans</span></div>
+            <div class="cluster-title">FORA DO ESCOPO · sistemas externos purgados na isolação</div>
+          </div>
+          <div class="cluster-route">monolito → escória</div>
+        </div>
+        <div class="excluded">
+          <div class="ex-chip"><b>#kodux-widget</b> · player Soundcloud/YouTube</div>
+          <div class="ex-chip"><b>#drawerProfile</b> · cockpit solar drawer</div>
+          <div class="ex-chip"><b>#kxtsk-shell</b> · KOB launcher · win-manager</div>
+          <div class="ex-chip"><b>#symbolBar</b> · HUD inteligente arquétipos</div>
+          <div class="ex-chip"><b>#arch-overlay</b> · overlay troca de voz</div>
+          <div class="ex-chip"><b>#particles-js</b> · backdrop de partículas</div>
+          <div class="ex-chip"><b>#bg-fake-custom</b> · gerador de background</div>
+          <div class="ex-chip"><b>#main-orb</b> / .tts-orb-mini · orb TTS</div>
+          <div class="ex-chip"><b>#kblx-panel</b> · long-press URL editor</div>
+          <div class="ex-chip"><b>.kob-tts-dock</b> · dock idle</div>
+          <div class="ex-chip"><b>#modeIndicator</b> · indicador modo solar</div>
+          <div class="ex-chip">scripts externos · kob-LVb · ss5 · 0RB-0S17 · kobllluxv30 · kodbrain-66</div>
+          <div class="ex-chip">stylesheets CDN · ss5 · kob-aura · pulsar · iFSw-fix · KxTsK-unified</div>
+          <div class="ex-chip"><b>ARCHETYPES[]</b> · 17 arquétipos de voz</div>
+        </div>
+      </div>
+
+      <!-- footer -->
+      <div style="padding: 14px 4px; font-family: var(--font-mono); font-size: var(--fs-d2); color: var(--muted-3); letter-spacing: 0.22em; text-transform: uppercase; text-align: right;">
+        [0x07 SELAR] · CORE ISOLADO · KOBLLUX ∆³ · §∞§≈Ω
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x05_frame_E_D6.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_frame_B_D4.js"></script><!-- ORCH L7 · ORQUESTRADOR --><script src="./js/L7_0x0B_block-2_E2_D4.js"></script>
+
+
+</body></html>
