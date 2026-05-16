@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><title>Rhea</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+:root{ --acc:#ffd3a6; --acc2:#ffb1b1; --ok:#e6ffd1; --speed:6.2s; }
+html,body{height:100%}
+body{margin:0;background:#0a0b13;color:#ecf0ff;font:16px/1.4 system-ui;overflow:hidden}
+.stage{position:fixed;inset:0;display:grid;place-items:center}
+.core{width:260px;height:260px;border-radius:50%;background:radial-gradient(circle at 30% 30%, var(--ok), var(--acc) 60%, transparent 62%),conic-gradient(var(--acc), var(--acc2), var(--ok), var(--acc));filter:drop-shadow(0 0 24px var(--acc)) drop-shadow(0 0 42px var(--acc2));animation:spin var(--speed) linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.label{position:fixed; inset:auto 0 22px; text-align:center; opacity:.95; font-weight:800}
+</style>
+<body>
+  <div class="stage"><div class="core"></div></div>
+  <div class="label">Ritual • Rhea</div>
+<script>
+(function(){ const ARCH='rhea'; parent.postMessage({type:'arch:ready',arch:ARCH},'*');
+window.addEventListener('message', ev=>{ const m=ev.data; if(!m||typeof m!=='object') return; if(m.type==='voices:update') window.__hubVoices = m.voices || {}; if(m.type==='arch:speak'&&m.arch===ARCH){ const u=new SpeechSynthesisUtterance(m.text||''); const v=(window.__hubVoices||{})[ARCH]||''; const vs=speechSynthesis.getVoices(); const f=vs.find(x=>x.name===v||x.name.toLowerCase().includes(v.toLowerCase())); if(f) u.voice=f; speechSynthesis.cancel(); speechSynthesis.speak(u); parent.postMessage({type:'arch:played',arch:ARCH,text:m.text},'*'); } });
+})();
+</script>
+</body>
+</html>
