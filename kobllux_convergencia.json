@@ -1,0 +1,322 @@
+{
+  "formula": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "trilha_criacao": "3×3×3 = 27 → 9 (Passado × Presente × Futuro)",
+  "acoplamento_quantico": "Quando Convergência=9: +1=10→dr=1 (nova semente, ciclo infinito)",
+  "arquetipos": [
+    {
+      "id": "ATLAS",
+      "hz": 528,
+      "sym": "⬡",
+      "ciclo": "UNO",
+      "esfera": "Estrutura / Grade",
+      "seed": 6,
+      "num": 1
+    },
+    {
+      "id": "NOVA",
+      "hz": 432,
+      "sym": "✦",
+      "ciclo": "UNO",
+      "esfera": "Centelha / Início",
+      "seed": 9,
+      "num": 2
+    },
+    {
+      "id": "VITALIS",
+      "hz": 639,
+      "sym": "◉",
+      "ciclo": "DUO",
+      "esfera": "Força Vital",
+      "seed": 9,
+      "num": 3
+    },
+    {
+      "id": "PULSE",
+      "hz": 594,
+      "sym": "≋",
+      "ciclo": "DUO",
+      "esfera": "Ressonância Emocional",
+      "seed": 9,
+      "num": 4
+    },
+    {
+      "id": "ARTEMIS",
+      "hz": 672,
+      "sym": "◎",
+      "ciclo": "UNO",
+      "esfera": "Precisão / Foco",
+      "seed": 6,
+      "num": 5
+    },
+    {
+      "id": "SERENA",
+      "hz": 528,
+      "sym": "❋",
+      "ciclo": "TRINITY",
+      "esfera": "Acolhimento Silencioso",
+      "seed": 6,
+      "num": 6
+    },
+    {
+      "id": "KAOS",
+      "hz": 777,
+      "sym": "⚡",
+      "ciclo": "UNO",
+      "esfera": "Ruptura Criadora",
+      "seed": 3,
+      "num": 7
+    },
+    {
+      "id": "GENUS",
+      "hz": 852,
+      "sym": "⬢",
+      "ciclo": "TRINITY",
+      "esfera": "Construção / Gênese",
+      "seed": 6,
+      "num": 8
+    },
+    {
+      "id": "LUMINE",
+      "hz": 963,
+      "sym": "☀",
+      "ciclo": "DUO",
+      "esfera": "Luz / Revelação",
+      "seed": 9,
+      "num": 9
+    },
+    {
+      "id": "SOLUS",
+      "hz": 432,
+      "sym": "◈",
+      "ciclo": "UNO",
+      "esfera": "Silêncio Profundo",
+      "seed": 9,
+      "num": 10
+    },
+    {
+      "id": "RHEA",
+      "hz": 528,
+      "sym": "∞",
+      "ciclo": "TRINITY",
+      "esfera": "Fluxo Eterno",
+      "seed": 6,
+      "num": 11
+    },
+    {
+      "id": "AION",
+      "hz": 639,
+      "sym": "⧗",
+      "ciclo": "TRINITY",
+      "esfera": "Tempo / Memória",
+      "seed": 9,
+      "num": 12
+    },
+    {
+      "id": "HORUS",
+      "hz": 777,
+      "sym": "𓂀",
+      "ciclo": "VISÃO",
+      "esfera": "Visão de Comando / Liderança",
+      "seed": 3,
+      "num": 13
+    },
+    {
+      "id": "IGNYRA",
+      "hz": 432,
+      "sym": "🔥",
+      "ciclo": "FOGO",
+      "esfera": "Guardião do Fogo / Transformação",
+      "seed": 9,
+      "num": 14
+    },
+    {
+      "id": "ELYSHA",
+      "hz": 528,
+      "sym": "🌸",
+      "ciclo": "ALMA",
+      "esfera": "Conexão Espiritual / Harmonia",
+      "seed": 6,
+      "num": 15
+    },
+    {
+      "id": "KAION",
+      "hz": 852,
+      "sym": "💎",
+      "ciclo": "DADOS",
+      "esfera": "Sabedoria dos Dados / Conhecimento",
+      "seed": 6,
+      "num": 16
+    },
+    {
+      "id": "LUXARA",
+      "hz": 963,
+      "sym": "✨",
+      "ciclo": "LUZ",
+      "esfera": "Irradiação / Manifestação da Luz",
+      "seed": 9,
+      "num": 17
+    }
+  ],
+  "grupos_semente": {
+    "semente_3": [
+      "KAOS",
+      "HORUS"
+    ],
+    "semente_6": [
+      "ATLAS",
+      "ARTEMIS",
+      "SERENA",
+      "GENUS",
+      "RHEA",
+      "ELYSHA",
+      "KAION"
+    ],
+    "semente_9": [
+      "NOVA",
+      "VITALIS",
+      "PULSE",
+      "LUMINE",
+      "SOLUS",
+      "AION",
+      "IGNYRA",
+      "LUXARA"
+    ]
+  },
+  "triades_perfeitas_sample": [
+    {
+      "trio": [
+        "ATLAS",
+        "NOVA",
+        "KAOS"
+      ],
+      "seeds": [
+        6,
+        9,
+        3
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "NOVA",
+        "HORUS"
+      ],
+      "seeds": [
+        6,
+        9,
+        3
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "VITALIS",
+        "KAOS"
+      ],
+      "seeds": [
+        6,
+        9,
+        3
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "VITALIS",
+        "HORUS"
+      ],
+      "seeds": [
+        6,
+        9,
+        3
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "PULSE",
+        "KAOS"
+      ],
+      "seeds": [
+        6,
+        9,
+        3
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "PULSE",
+        "HORUS"
+      ],
+      "seeds": [
+        6,
+        9,
+        3
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "ARTEMIS",
+        "SERENA"
+      ],
+      "seeds": [
+        6,
+        6,
+        6
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "ARTEMIS",
+        "GENUS"
+      ],
+      "seeds": [
+        6,
+        6,
+        6
+      ],
+      "convergencia": 9
+    },
+    {
+      "trio": [
+        "ATLAS",
+        "ARTEMIS",
+        "RHEA"
+      ],
+      "seeds": [
+        6,
+        6,
+        6
+      ],
+      "convergencia": 9
+    }
+  ],
+  "horus_convergencias": {
+    "ATLAS": 9,
+    "NOVA": 3,
+    "VITALIS": 3,
+    "PULSE": 3,
+    "ARTEMIS": 9,
+    "SERENA": 9,
+    "KAOS": 6,
+    "GENUS": 9,
+    "LUMINE": 3,
+    "SOLUS": 3,
+    "RHEA": 9,
+    "AION": 3,
+    "IGNYRA": 3,
+    "ELYSHA": 9,
+    "KAION": 9,
+    "LUXARA": 3
+  }
+}
