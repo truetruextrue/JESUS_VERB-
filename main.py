@@ -2,24 +2,16 @@
 # -*- coding: utf-8 -*-
 
 """
-KOBLLUX TRINITY SYSTEM
-main.py - Arquivo main.py do sistema
+KOBLLUX TRINITY SYSTEM · main.py
+Ponto de entrada unificado — delega ao VERBO central.
 """
 
 import sys
+from pathlib import Path
 
-class Main:
-    def __init__(self):
-        self.nome = "main"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+sys.path.insert(0, str(Path(__file__).parent))
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+from VERBO import cli
 
 if __name__ == "__main__":
-    obj = Main()
-    print(obj.ativar())
+    cli()
