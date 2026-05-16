@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>SymbolBar · Drag + Carrossel [KOBLLUX ∆³]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       SYMBOL BAR · KOBLLUX ∆³  (drag livre + carrossel)
+       Logs APENAS no console (sem readout visível na tela)
+       ═══════════════════════════════════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(20,28,55,.9) 0%, rgba(6,8,14,.95) 55%, #000 100%);
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 80px),
+        repeating-linear-gradient(0deg,  rgba(255,255,255,.012) 0 1px, transparent 1px 80px),
+        radial-gradient(circle at 85% 90%, rgba(255,82,229,.06) 0%, transparent 35%);
+      z-index: 0;
+    }
+
+    :root {
+      --arch-primary:   #38BDF8;
+      --arch-secondary: #7cffb2;
+      --neon-cyan:      #00f0ff;
+      --neon-pink:      #ff00aa;
+
+      --bar-bg:         rgba(8, 10, 18, 0.85);
+      --bar-border:     rgba(255, 255, 255, 0.08);
+      --btn-size:       54px;
+      --btn-gap:        12px;
+
+      /* shrink (régua de 3 botões) */
+      --slot-h:         var(--btn-size);
+      --shrunk-slots:   3;
+    }
+
+    /* ── HUD READOUT do arquétipo (canto superior · sutil) ── */
+    .stage-label {
+      position: fixed;
+      top: 18px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,.35);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .stage-label b { color: var(--arch-primary); font-weight: 700; }
+
+    /* ╔══════════════════════════════════════════╗
+       ║  SYMBOL BAR                              ║
+       ╚══════════════════════════════════════════╝ */
+    .symbol-bar {
+      position: fixed;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 8px;
+      background: var(--bar-bg);
+      border: 1px solid var(--bar-border);
+      backdrop-filter: blur(20px);
+      box-shadow:
+        0 16px 40px rgba(0,0,0,.6),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      border-radius: 36px;
+      transition:
+        height .45s cubic-bezier(.34,1.56,.64,1),
+        width  .45s cubic-bezier(.34,1.56,.64,1),
+        padding .35s ease,
+        gap .35s ease,
+        border-radius .35s ease,
+        background .35s ease,
+        opacity .45s ease,
+        filter .45s ease;
+      will-change: transform, height, width;
+      cursor: grab;
+    }
+    .symbol-bar.is-horizontal {
+      flex-direction: row;
+      padding: 8px 12px;
+      gap: 10px;
+      border-radius: 36px;
+    }
+    .symbol-bar.dragging {
+      cursor: grabbing;
+      transition: none !important;
+      box-shadow:
+        0 30px 60px rgba(0,0,0,.7),
+        0 0 24px var(--arch-primary),
+        0 0 0 1px var(--arch-primary) inset;
+    }
+
+    /* ── GRIP (handle visível para arrasto · só estética) ── */
+    .bar-grip {
+      width: 28px; height: 4px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.15);
+      flex-shrink: 0;
+      pointer-events: none;
+      transition: background .25s ease, width .35s ease, height .35s ease;
+    }
+    .symbol-bar.is-horizontal .bar-grip {
+      width: 4px; height: 28px;
+    }
+    .symbol-bar.shrunk .bar-grip { background: var(--arch-primary); }
+
+    /* ── TRACK (container dos botões · vira carrossel em shrunk) ── */
+    .bar-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--btn-gap);
+      overflow: hidden;
+      transition: all .45s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+    }
+    .symbol-bar.is-horizontal .bar-track {
+      flex-direction: row;
+    }
+
+    /* ── SHRUNK · só 3 slots visíveis · carrossel ── */
+    .symbol-bar.shrunk {
+      padding: 10px 6px;
+      gap: 8px;
+      border-radius: 28px;
+      background: rgba(8, 10, 18, 0.92);
+      border-color: var(--arch-primary);
+      box-shadow:
+        0 16px 40px rgba(0,0,0,.6),
+        0 0 18px var(--arch-primary);
+    }
+    .symbol-bar.shrunk .bar-track {
+      max-height: calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+      max-width:  calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+    }
+    .symbol-bar.shrunk.is-horizontal .bar-track {
+      max-height: var(--slot-h);
+      max-width:  calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+    }
+    .symbol-bar.shrunk:not(.is-horizontal) .bar-track {
+      max-height: calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+      max-width:  var(--slot-h);
+    }
+    .symbol-bar.shrunk .hud-info,
+    .symbol-bar.shrunk .arch-tag-label { display: none; }
+
+    /* indicador de carrossel (página atual / total) */
+    .carousel-dots {
+      display: none;
+      gap: 4px;
+      padding-top: 4px;
+    }
+    .symbol-bar.shrunk .carousel-dots { display: flex; }
+    .symbol-bar.is-horizontal.shrunk .carousel-dots { padding: 0 0 0 4px; }
+    .carousel-dots .dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      transition: background .2s ease, transform .2s ease;
+    }
+    .carousel-dots .dot.active {
+      background: var(--arch-primary);
+      transform: scale(1.4);
+      box-shadow: 0 0 8px var(--arch-primary);
+    }
+
+    /* ── BOTÕES ── */
+    .symbol-wrap {
+      display: flex;
+      align-items: center; justify-content: center;
+      flex-shrink: 0;
+      width: var(--btn-size);
+      height: var(--btn-size);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;
+    }
+    .symbol-button {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--bar-border);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      display: grid; place-items: center;
+      transition:
+        background .2s ease, color .2s ease,
+        border-color .2s ease, transform .2s ease,
+        box-shadow .25s ease;
+      position: relative;
+    }
+    .symbol-button:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--arch-primary);
+      color: var(--arch-primary);
+      transform: scale(1.08);
+      box-shadow: 0 0 14px var(--arch-primary);
+    }
+    .symbol-button:active { transform: scale(.94); }
+
+    /* main toggle */
+    .symbol-button.main-toggle {
+      color: var(--arch-primary);
+      border-color: var(--arch-primary);
+      box-shadow: 0 0 14px var(--arch-primary);
+    }
+    .symbol-button.main-toggle::before {
+      content: "";
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--arch-primary);
+      opacity: .25;
+      animation: togglePulse 3s ease-in-out infinite;
+    }
+    @keyframes togglePulse {
+      0%,100% { transform: scale(1);    opacity: .25; }
+      50%     { transform: scale(1.18); opacity: 0;   }
+    }
+
+    /* btn-arch · orb central */
+    #btn-arch {
+      padding: 0;
+      background: transparent;
+      border-color: var(--arch-secondary);
+      box-shadow: 0 0 18px var(--arch-primary);
+    }
+    #btn-arch:hover {
+      box-shadow: 0 0 26px var(--arch-primary), 0 0 8px var(--arch-secondary);
+    }
+    .orb-microphone-container {
+      width: 100%; height: 100%;
+      display: grid; place-items: center;
+      position: relative;
+    }
+    .tts-orb-mini {
+      width: 86%; height: 86%;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(circle at 50% 50%, var(--arch-secondary) 0%, #0a0a18 80%);
+      box-shadow:
+        inset 0 0 16px rgba(0,0,0,.6),
+        inset 0 0 0 2px var(--arch-primary);
+      overflow: hidden;
+      position: relative;
+    }
+    .tts-orb-mini::before {
+      content: ""; position: absolute; inset: -2px;
+      border-radius: 50%;
+      border: 1px dashed var(--arch-primary);
+      opacity: .6;
+      animation: archRing 6s linear infinite;
+    }
+    .orb {
+      width: 56%; height: 56%;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      position: relative;
+    }
+    .orb-core {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, var(--arch-secondary), transparent 60%),
+        radial-gradient(circle at 70% 70%, var(--arch-primary), var(--arch-secondary));
+      box-shadow:
+        0 0 18px var(--arch-primary),
+        0 0 36px rgba(120,227,255,.4);
+      animation: orbSpin 6s linear infinite;
+    }
+    @keyframes orbSpin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes archRing {
+      0%   { transform: rotate(0deg);   opacity: .6; }
+      50%  { opacity: .25; }
+      100% { transform: rotate(360deg); opacity: .6; }
+    }
+    @keyframes orbPulse {
+      from { transform: scale(1); }
+      to   { transform: scale(1.15); }
+    }
+    .symbol-bar.speaking #main-orb .orb-core {
+      animation:
+        orbSpin 2s linear infinite,
+        orbPulse 0.5s ease-in-out infinite alternate;
+    }
+
+    /* HUD STATUS */
+    .hud-info {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      color: var(--arch-primary);
+      text-transform: uppercase;
+      text-align: center;
+      padding: 6px 4px 2px;
+      max-width: 84px;
+      line-height: 1.4;
+      opacity: .85;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      pointer-events: none;
+    }
+    .symbol-bar:not(.is-horizontal) .hud-info {
+      border-top: 1px solid var(--bar-border);
+      margin-top: 4px;
+      padding-top: 8px;
+    }
+    .symbol-bar.is-horizontal .hud-info {
+      max-width: none;
+      padding: 4px 10px;
+      border-left: 1px solid var(--bar-border);
+    }
+
+    /* archetype tag */
+    .arch-tag-label {
+      position: absolute;
+      top: -6px; right: -6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 1px;
+      color: #000;
+      background: var(--arch-primary);
+      padding: 2px 6px;
+      border-radius: 99px;
+      box-shadow: 0 0 10px var(--arch-primary);
+      pointer-events: none;
+    }
+
+    /* idle */
+    .symbol-bar.idle {
+      opacity: .35;
+      filter: saturate(.5);
+    }
+    .symbol-bar.idle:hover { opacity: 1; filter: none; }
+
+    /* tooltip */
+    .symbol-button[data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      top: 50%; left: calc(100% + 8px);
+      transform: translateY(-50%);
+      padding: 4px 8px;
+      background: rgba(0,0,0,.9);
+      color: var(--arch-primary);
+      font-size: 0.62rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1.5px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .symbol-bar.is-horizontal .symbol-button[data-tip]:hover::after {
+      top: calc(100% + 6px); left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* hint flutuante de "arraste-me" */
+    .drag-hint {
+      position: fixed;
+      bottom: 18px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,.35);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+      animation: hintFade 6s ease-in-out forwards;
+    }
+    @keyframes hintFade {
+      0%,30%,70% { opacity: .55; }
+      100%       { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage-label">SYMBOLBAR · <b id="archLabel">ATLAS</b></div>
+  <div class="drag-hint">arraste · solte no topo ou rodapé para encolher · deslize na régua</div>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║  SYMBOL BAR (drag livre · auto-shrink)       ║
+       ╚══════════════════════════════════════════════╝ -->
+  <div class="symbol-bar" id="symbolBar" style="left:16px;top:50%;transform:translateY(-50%);">
+
+    <!-- archetype tag canto -->
+    <span class="arch-tag-label" id="archTag">0x02</span>
+
+    <!-- grip -->
+    <div class="bar-grip"></div>
+
+    <!-- track com botões -->
+    <div class="bar-track" id="barTrack">
+
+      <div class="symbol-wrap">
+        <button class="symbol-button main-toggle" id="toggleBtn" data-tip="Menu Principal">≡</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-prev" data-tip="Anterior">◀</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-play" data-tip="Play / Pause">▶</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-next" data-tip="Próximo">▶▶</button>
+      </div>
+
+      <!-- ORB CENTRAL -->
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-arch" data-tip="Orb · Arquétipo">
+          <div class="orb-microphone-container">
+            <div class="tts-orb-mini">
+              <div class="orb" id="main-orb">
+                <div class="orb-core"></div>
+              </div>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="phi"  data-tip="Φ · DBZP"     data-url="https://kodux78k.github.io/oiDual--Y-/M0D/DBZP/">Φ</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="viv"  data-tip="꩜ · 78FFD"    data-url="https://kodux78k.github.io/oiDual--Y-/M0D/78FFD/">꩜</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="home" data-tip="◌ · idHome"   data-url="https://kodux78k.github.io/oiDual-idHome/">◌</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="doc"  data-tip="◘ · info-Doc" data-url="https://kodux78k.github.io/info-Doc/index.html">◘</button>
+      </div>
+
+    </div>
+
+    <!-- dots de carrossel (só em shrunk) -->
+    <div class="carousel-dots" id="carouselDots"></div>
+
+    <!-- HUD STATUS -->
+    <div class="hud-info" id="hudStatus">KOBLLUX · ORB NEXUS</div>
+  </div>
+
+  <script>
+  // ═══════════════════════════════════════════════════════════
+  // [KOBLLUX ∆³ · OPCODES + ARCHETYPES]
+  // ═══════════════════════════════════════════════════════════
+  const KOBLLUX_OPCODES = {
+    '0x00': { nome:'INICIAR',     freq:396, geom:'○', cor:'#b978ff', dim:'D0·Ponto' },
+    '0x01': { nome:'PULSAR',      freq:432, geom:'●', cor:'#67e6ff', dim:'D1·Linha' },
+    '0x02': { nome:'INTEGRAR',    freq:528, geom:'―', cor:'#7cffb2', dim:'D2·Plano' },
+    '0x03': { nome:'EXPANDIR',    freq:639, geom:'▢', cor:'#4de0ff', dim:'D3·Volume' },
+    '0x04': { nome:'DISSOLVER',   freq:594, geom:'◇', cor:'#ff9ad1', dim:'D2·Trans' },
+    '0x05': { nome:'CONVERGIR',   freq:672, geom:'⧉', cor:'#ff7a00', dim:'D∩·Foco' },
+    '0x06': { nome:'CRISTALIZAR', freq:741, geom:'☯', cor:'#a8ff78', dim:'D3·Rede' },
+    '0x07': { nome:'SELAR',       freq:777, geom:'✧', cor:'#ffd700', dim:'D3·Tetrae' },
+    '0x08': { nome:'TESTEMUNHAR', freq:852, geom:'◉', cor:'#00b894', dim:'D∞·Círculo' },
+    '0x09': { nome:'MANIFESTAR',  freq:963, geom:'♾', cor:'#6c5ce7', dim:'S²·Esfera' },
+    '0x0A': { nome:'EQUILIBRAR',  freq:528, geom:'⚖', cor:'#74b9ff', dim:'SO(2)' },
+    '0x0B': { nome:'RESSONAR',    freq:432, geom:'◎', cor:'#ff52e5', dim:'Ondas·1D' },
+    '0x0C': { nome:'CONCLUIR',    freq:999, geom:'♾', cor:'#f2c94c', dim:'T²·Toro' }
+  };
+  const ARCHETYPES_DB = [
+    { id:'ATLAS',   name:'ATLAS',   opcode:'0x02', primary:'#38BDF8' },
+    { id:'NOVA',    name:'NOVA',    opcode:'0x01', primary:'#F97316' },
+    { id:'VITALIS', name:'VITALIS', opcode:'0x03', primary:'#22C55E' },
+    { id:'PULSE',   name:'PULSE',   opcode:'0x0B', primary:'#EC4899' },
+    { id:'ARTEMIS', name:'ARTEMIS', opcode:'0x05', primary:'#A855F7' },
+    { id:'SERENA',  name:'SERENA',  opcode:'0x0A', primary:'#7DD3FC' },
+    { id:'KAOS',    name:'KAOS',    opcode:'0x04', primary:'#FACC15' },
+    { id:'GENUS',   name:'GENUS',   opcode:'0x09', primary:'#E5E7EB' },
+    { id:'LUMINE',  name:'LUMINE',  opcode:'0x07', primary:'#FDE047' },
+    { id:'SOLUS',   name:'SOLUS',   opcode:'0x08', primary:'#0EA5E9' },
+    { id:'RHEA',    name:'RHEA',    opcode:'0x06', primary:'#16A34A' },
+    { id:'HORUS',   name:'HORUS',   opcode:'0x0C', primary:'#5500FF' }
+  ];
+
+  let currentArchIdx = 0;
+  const STATE = { get archetype() { return ARCHETYPES_DB[currentArchIdx]; } };
+  const $  = sel => document.querySelector(sel);
+  const $$ = sel => document.querySelectorAll(sel);
+
+  // ═══════════════════════════════════════════════════════════
+  // [KOBLLUX·3×6×9 LOGGER]  · APENAS CONSOLE (interno)
+  // ═══════════════════════════════════════════════════════════
+  const KOBLLUX_LOG = {
+    count: 0,
+    sequence: [3, 6, 9],
+    frequencies: { 3:432, 6:528, 9:639 },
+    phases:      { 3:'Ponto (Gênese)', 6:'Linha (Fluxo)', 9:'Triângulo (Síntese)' },
+    modes:       { 3:'DETECTAR', 6:'INTEGRAR', 9:'EXPANDIR' },
+    emit(source, payload = {}) {
+      this.count++;
+      const idx   = (this.count - 1) % 3;
+      const val   = this.sequence[idx];
+      const freq  = this.frequencies[val];
+      const phase = this.phases[val];
+      const mode  = this.modes[val];
+      const cycle = Math.ceil(this.count / 3);
+      const sum   = this.count * val;
+      const delta = val * 3;
+      const arch  = STATE.archetype;
+      const op    = KOBLLUX_OPCODES[arch.opcode];
+      const coord = (payload.x != null && payload.y != null)
+        ? `(${payload.x.toFixed(1)}, ${payload.y.toFixed(1)})` : '—';
+      const detail = payload.detail || '';
+      console.log(
+        `%c[KOBLLUX·3×6×9] %c#${this.count} %c${source}`,
+        `color:${arch.primary};font-weight:bold`,
+        'color:#f0f',
+        `color:${op.cor}`,
+        `\n  ▸ VALOR: ${val}  | FREQ: ${freq}Hz | FASE: ${phase}` +
+        `\n  ▸ COORD: ${coord} | TIPO: ${payload.type || source}` +
+        `\n  ▸ CICLO: ${cycle}/∞ | Σ=${sum} | Δ=${delta} | MODE: ${mode}` +
+        `\n  ▸ ARQ:   ${arch.name} (${arch.opcode}·${op.nome}·${op.geom}·${op.freq}Hz)` +
+        (detail ? `\n  ▸ DETAIL: ${detail}` : '')
+      );
+      return { val, freq, phase, mode, cycle };
+    }
+  };
+  window.KOBLLUX_LOG = KOBLLUX_LOG;
+
+  // ═══════════════════════════════════════════════════════════
+  // [ARCHETYPE]
+  // ═══════════════════════════════════════════════════════════
+  function applyArchetype(idx) {
+    currentArchIdx = (idx + ARCHETYPES_DB.length) % ARCHETYPES_DB.length;
+    const a  = ARCHETYPES_DB[currentArchIdx];
+    const op = KOBLLUX_OPCODES[a.opcode];
+    document.documentElement.style.setProperty('--arch-primary', a.primary);
+    document.documentElement.style.setProperty('--arch-secondary', op.cor);
+    $('#archLabel').textContent = `${a.name} · ${a.opcode} ${op.nome}`;
+    $('#archTag').textContent   = a.opcode;
+    $('#hudStatus').textContent = `KOBLLUX · ${a.name}`;
+    localStorage.setItem('di_activeArchetype', a.id);
+  }
+  function nextArchetype() { applyArchetype(currentArchIdx + 1); KOBLLUX_LOG.emit('ARQ·NEXT', { detail: STATE.archetype.name }); }
+  function prevArchetype() { applyArchetype(currentArchIdx - 1); KOBLLUX_LOG.emit('ARQ·PREV', { detail: STATE.archetype.name }); }
+
+  // ═══════════════════════════════════════════════════════════
+  // [BAR · DRAG livre + shrink automático nas bordas]
+  // ═══════════════════════════════════════════════════════════
+  const BAR = {
+    el: null,
+    track: null,
+    isDragging: false,
+    moved: false,
+    startX: 0, startY: 0,
+    offsetX: 0, offsetY: 0,
+    EDGE_THRESHOLD: 110,    // px da borda para shrink
+    carouselIdx: 0,
+    carouselPages: 0,
+    SHRUNK_SLOTS: 3,
+    totalSlots: 0,
+
+    init() {
+      this.el    = $('#symbolBar');
+      this.track = $('#barTrack');
+      this.totalSlots = $$('#barTrack .symbol-wrap').length;
+      this.carouselPages = Math.max(1, Math.ceil(this.totalSlots / this.SHRUNK_SLOTS));
+      this.buildDots();
+
+      // arrasta na barra mas NÃO nos botões
+      this.el.addEventListener('pointerdown', this.onPointerDown.bind(this));
+      window.addEventListener('pointermove', this.onPointerMove.bind(this));
+      window.addEventListener('pointerup',   this.onPointerUp.bind(this));
+      window.addEventListener('pointercancel', this.onPointerUp.bind(this));
+      window.addEventListener('resize', () => this.applyDock());
+
+      // posição inicial logo após boot
+      this.placeAt(window.innerWidth * 0.06, window.innerHeight * 0.5);
+      this.applyDock();
+    },
+
+    buildDots() {
+      const dots = $('#carouselDots');
+      dots.innerHTML = '';
+      for (let i = 0; i < this.carouselPages; i++) {
+        const d = document.createElement('span');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        dots.appendChild(d);
+      }
+    },
+
+    onPointerDown(e) {
+      // ignora clique dentro de botão (só drag no chrome)
+      if (e.target.closest('.symbol-button')) return;
+      this.isDragging = true;
+      this.moved = false;
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+      const rect = this.el.getBoundingClientRect();
+      this.offsetX = e.clientX - rect.left;
+      this.offsetY = e.clientY - rect.top;
+      this.el.classList.add('dragging');
+      this.el.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+    },
+
+    onPointerMove(e) {
+      if (!this.isDragging) return;
+      const dx = e.clientX - this.startX;
+      const dy = e.clientY - this.startY;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) this.moved = true;
+
+      const x = e.clientX - this.offsetX;
+      const y = e.clientY - this.offsetY;
+      // posiciona sem transform (drag livre)
+      this.el.style.left = x + 'px';
+      this.el.style.top  = y + 'px';
+      this.el.style.right = 'auto';
+      this.el.style.bottom = 'auto';
+      this.el.style.transform = 'none';
+
+      // pré-visualiza orientação durante drag
+      this.previewOrientation(x, y);
+    },
+
+    onPointerUp(e) {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      this.el.classList.remove('dragging');
+      this.el.releasePointerCapture?.(e.pointerId);
+
+      if (this.moved) {
+        this.applyDock();
+        KOBLLUX_LOG.emit('BAR·DRAG', {
+          x: e.clientX, y: e.clientY,
+          detail: this.el.classList.contains('shrunk') ? 'shrunk' : 'full'
+        });
+      }
+    },
+
+    previewOrientation(x, y) {
+      // se está próximo do topo ou rodapé → horizontal
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const rect = this.el.getBoundingClientRect();
+      const nearTop    = y < this.EDGE_THRESHOLD;
+      const nearBottom = (y + rect.height) > (h - this.EDGE_THRESHOLD);
+      const horizontal = nearTop || nearBottom;
+      this.el.classList.toggle('is-horizontal', horizontal);
+      this.el.classList.toggle('shrunk', nearTop || nearBottom);
+    },
+
+    applyDock() {
+      const rect = this.el.getBoundingClientRect();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      const nearTop    = rect.top < this.EDGE_THRESHOLD;
+      const nearBottom = rect.bottom > (h - this.EDGE_THRESHOLD);
+      const horizontal = nearTop || nearBottom;
+      const shrunk     = nearTop || nearBottom;
+
+      this.el.classList.toggle('is-horizontal', horizontal);
+      this.el.classList.toggle('shrunk', shrunk);
+
+      // se shrunk, ajusta para offset 0 do carrossel
+      if (shrunk) {
+        this.carouselIdx = 0;
+        this.updateCarousel();
+      } else {
+        // restaura translate dos slots
+        this.track.style.transform = '';
+      }
+
+      // clamp à viewport
+      const clampedLeft = Math.max(8, Math.min(w - rect.width  - 8, rect.left));
+      const clampedTop  = Math.max(8, Math.min(h - rect.height - 8, rect.top));
+      this.el.style.left = clampedLeft + 'px';
+      this.el.style.top  = clampedTop  + 'px';
+      this.el.style.transform = 'none';
+    },
+
+    // ── Carrossel no modo shrunk ──
+    updateCarousel() {
+      const offset = this.carouselIdx * this.SHRUNK_SLOTS;
+      const slotPx = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--slot-h')) || 54;
+      const gap    = 12;
+      const step   = (slotPx + gap) * this.SHRUNK_SLOTS;
+      if (this.el.classList.contains('is-horizontal')) {
+        this.track.style.transform = `translateX(-${offset * (slotPx + gap)}px)`;
+      } else {
+        this.track.style.transform = `translateY(-${offset * (slotPx + gap)}px)`;
+      }
+      // atualiza dots
+      $$('#carouselDots .dot').forEach((d, i) => d.classList.toggle('active', i === this.carouselIdx));
+      KOBLLUX_LOG.emit('BAR·CAROUSEL', { detail: `page ${this.carouselIdx + 1}/${this.carouselPages}` });
+    },
+
+    cycleCarousel(dir) {
+      if (!this.el.classList.contains('shrunk')) return;
+      this.carouselIdx = (this.carouselIdx + dir + this.carouselPages) % this.carouselPages;
+      this.updateCarousel();
+    },
+
+    placeAt(x, y) {
+      this.el.style.left = x + 'px';
+      this.el.style.top  = y + 'px';
+      this.el.style.right = 'auto';
+      this.el.style.bottom = 'auto';
+      this.el.style.transform = 'none';
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // [SWIPE no track quando shrunk → carrossel]
+  // ═══════════════════════════════════════════════════════════
+  function bindCarouselSwipe() {
+    const track = $('#barTrack');
+    let sx = 0, sy = 0, swiping = false;
+    track.addEventListener('pointerdown', (e) => {
+      if (!BAR.el.classList.contains('shrunk')) return;
+      if (e.target.closest('.symbol-button')) return; // botões priorizam click
+      swiping = true;
+      sx = e.clientX; sy = e.clientY;
+    });
+    track.addEventListener('pointerup', (e) => {
+      if (!swiping) return;
+      swiping = false;
+      const dx = e.clientX - sx;
+      const dy = e.clientY - sy;
+      const horiz = BAR.el.classList.contains('is-horizontal');
+      const delta = horiz ? dx : dy;
+      if (Math.abs(delta) > 30) {
+        BAR.cycleCarousel(delta < 0 ? 1 : -1);
+      }
+    });
+    track.addEventListener('pointercancel', () => swiping = false);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [LONG PRESS · orb central]
+  // ═══════════════════════════════════════════════════════════
+  function bindLongPress(el, onShort, onLong, ms = 550) {
+    let timer = null, fired = false;
+    const start = (e) => {
+      fired = false;
+      timer = setTimeout(() => { fired = true; onLong?.(e); }, ms);
+    };
+    const cancel = () => clearTimeout(timer);
+    const end = (e) => {
+      cancel();
+      if (!fired) onShort?.(e);
+    };
+    el.addEventListener('pointerdown',  start);
+    el.addEventListener('pointerup',    end);
+    el.addEventListener('pointerleave', cancel);
+    el.addEventListener('pointercancel',cancel);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [IDLE]
+  // ═══════════════════════════════════════════════════════════
+  let idleTimer = null;
+  function resetIdle() {
+    BAR.el?.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => BAR.el?.classList.add('idle'), 4000);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [BOOT]
+  // ═══════════════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedArch = localStorage.getItem('di_activeArchetype');
+    const idx = ARCHETYPES_DB.findIndex(a => a.id === savedArch);
+    applyArchetype(idx >= 0 ? idx : 0);
+
+    BAR.init();
+    bindCarouselSwipe();
+
+    // botões
+    $('#toggleBtn').addEventListener('click', () => {
+      KOBLLUX_LOG.emit('BAR·TOGGLE');
+      // toggle manual shrunk
+      const wasShrunk = BAR.el.classList.contains('shrunk');
+      BAR.el.classList.toggle('shrunk');
+      if (!wasShrunk) { BAR.carouselIdx = 0; BAR.updateCarousel(); }
+      else            { BAR.track.style.transform = ''; }
+    });
+
+    bindLongPress(
+      $('#btn-arch'),
+      () => {
+        const log = KOBLLUX_LOG.emit('ORB·RESSONA');
+        BAR.el.classList.add('speaking');
+        setTimeout(() => BAR.el.classList.remove('speaking'), 900);
+        if (log.val === 9) nextArchetype();
+      },
+      () => nextArchetype()
+    );
+
+    $('#btn-prev').addEventListener('click', () => { KOBLLUX_LOG.emit('PLAY·PREV'); prevArchetype(); });
+    $('#btn-play').addEventListener('click', (e) => {
+      const btn = e.currentTarget;
+      const playing = btn.dataset.playing === '1';
+      btn.dataset.playing = playing ? '0' : '1';
+      btn.textContent = playing ? '▶' : '∥∥';
+      KOBLLUX_LOG.emit('PLAY·TOGGLE', { detail: playing ? 'PAUSE' : 'PLAY' });
+    });
+    $('#btn-next').addEventListener('click', () => { KOBLLUX_LOG.emit('PLAY·NEXT'); nextArchetype(); });
+
+    $$('.symbol-button[data-id]').forEach(b => {
+      b.addEventListener('click', () => {
+        KOBLLUX_LOG.emit('NAV·' + b.dataset.id.toUpperCase(), { detail: b.dataset.url });
+      });
+    });
+
+    ['pointerdown','pointermove','touchstart','mousemove','keydown','scroll']
+      .forEach(ev => document.addEventListener(ev, resetIdle, { passive: true }));
+    resetIdle();
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input, textarea, select')) return;
+      if (e.key === 'ArrowRight') {
+        if (BAR.el.classList.contains('shrunk')) BAR.cycleCarousel(1);
+        else nextArchetype();
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowLeft')  {
+        if (BAR.el.classList.contains('shrunk')) BAR.cycleCarousel(-1);
+        else prevArchetype();
+        e.preventDefault();
+      }
+    });
+
+    setTimeout(() => KOBLLUX_LOG.emit('BAR·BOOT', { detail: 'drag livre · shrink em bordas · carrossel' }), 80);
+  });
+
+  // expor API
+  window.KOBLLUX_BAR = {
+    applyArchetype, nextArchetype, prevArchetype,
+    ARCHETYPES_DB, KOBLLUX_OPCODES,
+    BAR
+  };
+  </script>
+</body>
+</html>

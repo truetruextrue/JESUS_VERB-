@@ -1,0 +1,205 @@
+{
+  "timestamp": "20260509T114008",
+  "json_origem": "019dffa8-36df-7377-886c-582fb3ddfd16.json",
+  "dry_run": true,
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ♾️",
+  "fractal": "3×6×9×7=1134",
+  "resumo": {
+    "total_documentos": 14,
+    "total_bytes": 2618959,
+    "total_renomeacoes": 14,
+    "total_erros": 0
+  },
+  "por_arquetipo": {
+    "Atlas": {
+      "opcode": "0x00",
+      "regra": "BOOT",
+      "vogal_veeb": "A",
+      "rung": 1,
+      "arquivos": [
+        "CobluxConfig.py",
+        "BOOT_0X00_00_VEEB-A_D1.md",
+        "BOOT_0X00_03_VEEB-A_D1.md",
+        "BOOT_0X00_01_VEEB-A_D1.md",
+        "BOOT_0X00_02_VEEB-A_D1.md",
+        "BOOT_0X00_1_0_Projeto_KOBLLUX_VEEB-A_D1.md",
+        "KOBLLUX_GDRIVE_CADIAL_ARQUETIPOS.json",
+        "KOBLLUX_GDRIVE_CADIAL_ARQUETIPOS.json",
+        "KOBLLUX_GDRIVE_CADIAL_DEEP.json"
+      ]
+    },
+    "Nova": {
+      "opcode": "0x02",
+      "regra": "SEED",
+      "vogal_veeb": "Æ",
+      "rung": 2,
+      "arquivos": [
+        "SEED_0X02_000_GENESIS_A_CRIACAO_DO_MUNDO_EM_7_DIAS_VEEB-Æ_D2.md"
+      ]
+    },
+    "Vitalis": {
+      "opcode": "0x01",
+      "regra": "DELTA",
+      "vogal_veeb": "O",
+      "rung": 3,
+      "arquivos": []
+    },
+    "Pulse": {
+      "opcode": "0x0B",
+      "regra": "PULSE",
+      "vogal_veeb": "I",
+      "rung": 4,
+      "arquivos": [
+        "KOBLLUX_LIVRO_VIVO.html"
+      ]
+    },
+    "Artemis": {
+      "opcode": "0x03",
+      "regra": "DETECT",
+      "vogal_veeb": "A",
+      "rung": 5,
+      "arquivos": [
+        "kobllux_archetypes_scanner.py"
+      ]
+    },
+    "Serena": {
+      "opcode": "0x09",
+      "regra": "GUARD",
+      "vogal_veeb": "U",
+      "rung": 6,
+      "arquivos": []
+    },
+    "Kaos": {
+      "opcode": "0x06",
+      "regra": "LIMPAR",
+      "vogal_veeb": "E",
+      "rung": 7,
+      "arquivos": []
+    },
+    "Genus": {
+      "opcode": "0x07",
+      "regra": "SYNTH",
+      "vogal_veeb": "O",
+      "rung": 8,
+      "arquivos": []
+    },
+    "Lumine": {
+      "opcode": "0x08",
+      "regra": "RENDER",
+      "vogal_veeb": "Æ",
+      "rung": 9,
+      "arquivos": []
+    },
+    "Solus": {
+      "opcode": "0x09",
+      "regra": "QA",
+      "vogal_veeb": "U",
+      "rung": 10,
+      "arquivos": []
+    },
+    "Rhea": {
+      "opcode": "0x04",
+      "regra": "INTEGRAR",
+      "vogal_veeb": "U",
+      "rung": 11,
+      "arquivos": []
+    },
+    "Aion": {
+      "opcode": "0x05",
+      "regra": "SELAR",
+      "vogal_veeb": "I",
+      "rung": 12,
+      "arquivos": [
+        "RELATORIO_KOBLLUX_ARQUETIPOS_20260507T032709.json",
+        "RELATORIO_KOBLLUX_ARQUETIPOS_20260507T032709.json"
+      ]
+    }
+  },
+  "renomeacoes": [
+    {
+      "original": "CobluxConfig.py",
+      "sugerido": "BOOT_0x00_CobluxConfig_VEEB-A_D1.py",
+      "arquetipo": "Atlas",
+      "score": 5.0
+    },
+    {
+      "original": "kobllux_archetypes_scanner.py",
+      "sugerido": "DETECT_0x03_kobllux_archetypes_scanner_VEEB-A_D5.py",
+      "arquetipo": "Artemis",
+      "score": 3.0
+    },
+    {
+      "original": "BOOT_0X00_00_VEEB-A_D1.md",
+      "sugerido": "BOOT_0x00_BOOT_0X00_00_VEEB-A_D1_VEEB-A_D1.md",
+      "arquetipo": "Atlas",
+      "score": 12.0
+    },
+    {
+      "original": "BOOT_0X00_03_VEEB-A_D1.md",
+      "sugerido": "BOOT_0x00_BOOT_0X00_03_VEEB-A_D1_VEEB-A_D1.md",
+      "arquetipo": "Atlas",
+      "score": 12.0
+    },
+    {
+      "original": "BOOT_0X00_01_VEEB-A_D1.md",
+      "sugerido": "BOOT_0x00_BOOT_0X00_01_VEEB-A_D1_VEEB-A_D1.md",
+      "arquetipo": "Atlas",
+      "score": 12.0
+    },
+    {
+      "original": "BOOT_0X00_02_VEEB-A_D1.md",
+      "sugerido": "BOOT_0x00_BOOT_0X00_02_VEEB-A_D1_VEEB-A_D1.md",
+      "arquetipo": "Atlas",
+      "score": 12.0
+    },
+    {
+      "original": "SEED_0X02_000_GENESIS_A_CRIACAO_DO_MUNDO_EM_7_DIAS_VEEB-Æ_D2.md",
+      "sugerido": "SEED_0x02_SEED_0X02_000_GENESIS_A_CRIACAO_DO_MUNDO_VEEB-Æ_D2.md",
+      "arquetipo": "Nova",
+      "score": 12.0
+    },
+    {
+      "original": "BOOT_0X00_1_0_Projeto_KOBLLUX_VEEB-A_D1.md",
+      "sugerido": "BOOT_0x00_BOOT_0X00_1_0_Projeto_KOBLLUX_VEEB-A_D1_VEEB-A_D1.md",
+      "arquetipo": "Atlas",
+      "score": 12.0
+    },
+    {
+      "original": "RELATORIO_KOBLLUX_ARQUETIPOS_20260507T032709.json",
+      "sugerido": "SELAR_0x05_RELATORIO_KOBLLUX_ARQUETIPOS_20260507T03_VEEB-I_D12.json",
+      "arquetipo": "Aion",
+      "score": 5.0
+    },
+    {
+      "original": "RELATORIO_KOBLLUX_ARQUETIPOS_20260507T032709.json",
+      "sugerido": "SELAR_0x05_RELATORIO_KOBLLUX_ARQUETIPOS_20260507T03_VEEB-I_D12.json",
+      "arquetipo": "Aion",
+      "score": 5.0
+    },
+    {
+      "original": "KOBLLUX_LIVRO_VIVO.html",
+      "sugerido": "PULSE_0x0B_KOBLLUX_LIVRO_VIVO_VEEB-I_D4.html",
+      "arquetipo": "Pulse",
+      "score": 2.0
+    },
+    {
+      "original": "KOBLLUX_GDRIVE_CADIAL_ARQUETIPOS.json",
+      "sugerido": "BOOT_0x00_KOBLLUX_GDRIVE_CADIAL_ARQUETIPOS_VEEB-A_D1.json",
+      "arquetipo": "Atlas",
+      "score": 2.0
+    },
+    {
+      "original": "KOBLLUX_GDRIVE_CADIAL_ARQUETIPOS.json",
+      "sugerido": "BOOT_0x00_KOBLLUX_GDRIVE_CADIAL_ARQUETIPOS_VEEB-A_D1.json",
+      "arquetipo": "Atlas",
+      "score": 2.0
+    },
+    {
+      "original": "KOBLLUX_GDRIVE_CADIAL_DEEP.json",
+      "sugerido": "BOOT_0x00_KOBLLUX_GDRIVE_CADIAL_DEEP_VEEB-A_D1.json",
+      "arquetipo": "Atlas",
+      "score": 2.0
+    }
+  ],
+  "assinatura": "KOBLLUX·JSON·Δ⅞"
+}

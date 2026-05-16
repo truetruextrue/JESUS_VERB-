@@ -1,0 +1,101 @@
+{
+  "timestamp": "20260509T114338",
+  "json_origem": "358de07c-205d-4ac5-ace7-64e64b71774c.json",
+  "dry_run": true,
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ♾️",
+  "fractal": "3×6×9×7=1134",
+  "resumo": {
+    "total_documentos": 0,
+    "total_bytes": 0,
+    "total_renomeacoes": 0,
+    "total_erros": 0
+  },
+  "por_arquetipo": {
+    "Atlas": {
+      "opcode": "0x00",
+      "regra": "BOOT",
+      "vogal_veeb": "A",
+      "rung": 1,
+      "arquivos": []
+    },
+    "Nova": {
+      "opcode": "0x02",
+      "regra": "SEED",
+      "vogal_veeb": "Æ",
+      "rung": 2,
+      "arquivos": []
+    },
+    "Vitalis": {
+      "opcode": "0x01",
+      "regra": "DELTA",
+      "vogal_veeb": "O",
+      "rung": 3,
+      "arquivos": []
+    },
+    "Pulse": {
+      "opcode": "0x0B",
+      "regra": "PULSE",
+      "vogal_veeb": "I",
+      "rung": 4,
+      "arquivos": []
+    },
+    "Artemis": {
+      "opcode": "0x03",
+      "regra": "DETECT",
+      "vogal_veeb": "A",
+      "rung": 5,
+      "arquivos": []
+    },
+    "Serena": {
+      "opcode": "0x09",
+      "regra": "GUARD",
+      "vogal_veeb": "U",
+      "rung": 6,
+      "arquivos": []
+    },
+    "Kaos": {
+      "opcode": "0x06",
+      "regra": "LIMPAR",
+      "vogal_veeb": "E",
+      "rung": 7,
+      "arquivos": []
+    },
+    "Genus": {
+      "opcode": "0x07",
+      "regra": "SYNTH",
+      "vogal_veeb": "O",
+      "rung": 8,
+      "arquivos": []
+    },
+    "Lumine": {
+      "opcode": "0x08",
+      "regra": "RENDER",
+      "vogal_veeb": "Æ",
+      "rung": 9,
+      "arquivos": []
+    },
+    "Solus": {
+      "opcode": "0x09",
+      "regra": "QA",
+      "vogal_veeb": "U",
+      "rung": 10,
+      "arquivos": []
+    },
+    "Rhea": {
+      "opcode": "0x04",
+      "regra": "INTEGRAR",
+      "vogal_veeb": "U",
+      "rung": 11,
+      "arquivos": []
+    },
+    "Aion": {
+      "opcode": "0x05",
+      "regra": "SELAR",
+      "vogal_veeb": "I",
+      "rung": 12,
+      "arquivos": []
+    }
+  },
+  "renomeacoes": [],
+  "assinatura": "KOBLLUX·JSON·Δ⅞"
+}

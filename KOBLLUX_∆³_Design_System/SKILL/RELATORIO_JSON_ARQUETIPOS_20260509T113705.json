@@ -1,0 +1,165 @@
+{
+  "timestamp": "20260509T113705",
+  "json_origem": "019dff7a-7f45-765c-a8af-8c0cf48e26f1.json",
+  "dry_run": true,
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ♾️",
+  "fractal": "3×6×9×7=1134",
+  "resumo": {
+    "total_documentos": 8,
+    "total_bytes": 314702,
+    "total_renomeacoes": 8,
+    "total_erros": 0
+  },
+  "por_arquetipo": {
+    "Atlas": {
+      "opcode": "0x00",
+      "regra": "BOOT",
+      "vogal_veeb": "A",
+      "rung": 1,
+      "arquivos": [
+        "kobllux_core.py",
+        "BOOT_0X00_CobluxConfig_VEEB-A_D1_FIXED.py"
+      ]
+    },
+    "Nova": {
+      "opcode": "0x02",
+      "regra": "SEED",
+      "vogal_veeb": "Æ",
+      "rung": 2,
+      "arquivos": []
+    },
+    "Vitalis": {
+      "opcode": "0x01",
+      "regra": "DELTA",
+      "vogal_veeb": "O",
+      "rung": 3,
+      "arquivos": [
+        "ss5_copy.js"
+      ]
+    },
+    "Pulse": {
+      "opcode": "0x0B",
+      "regra": "PULSE",
+      "vogal_veeb": "I",
+      "rung": 4,
+      "arquivos": []
+    },
+    "Artemis": {
+      "opcode": "0x03",
+      "regra": "DETECT",
+      "vogal_veeb": "A",
+      "rung": 5,
+      "arquivos": [
+        "DETECT_0X03_kobllux_archetypes_scanner_VEEB-A_D5.py"
+      ]
+    },
+    "Serena": {
+      "opcode": "0x09",
+      "regra": "GUARD",
+      "vogal_veeb": "U",
+      "rung": 6,
+      "arquivos": [
+        "GUARD_0X09_feeling-decor-ZPR_VEEB-U_D6.html"
+      ]
+    },
+    "Kaos": {
+      "opcode": "0x06",
+      "regra": "LIMPAR",
+      "vogal_veeb": "E",
+      "rung": 7,
+      "arquivos": []
+    },
+    "Genus": {
+      "opcode": "0x07",
+      "regra": "SYNTH",
+      "vogal_veeb": "O",
+      "rung": 8,
+      "arquivos": []
+    },
+    "Lumine": {
+      "opcode": "0x08",
+      "regra": "RENDER",
+      "vogal_veeb": "Æ",
+      "rung": 9,
+      "arquivos": [
+        "Claude prompting guide.md"
+      ]
+    },
+    "Solus": {
+      "opcode": "0x09",
+      "regra": "QA",
+      "vogal_veeb": "U",
+      "rung": 10,
+      "arquivos": [
+        "KOBLLUX_ARQUETIPOS_RELATORIO_20260508.md"
+      ]
+    },
+    "Rhea": {
+      "opcode": "0x04",
+      "regra": "INTEGRAR",
+      "vogal_veeb": "U",
+      "rung": 11,
+      "arquivos": []
+    },
+    "Aion": {
+      "opcode": "0x05",
+      "regra": "SELAR",
+      "vogal_veeb": "I",
+      "rung": 12,
+      "arquivos": [
+        "RELATORIO_KOBLLUX_ARQUETIPOS_20260508T000614.json"
+      ]
+    }
+  },
+  "renomeacoes": [
+    {
+      "original": "Claude prompting guide.md",
+      "sugerido": "RENDER_0x08_Claude_prompting_guide_VEEB-Æ_D9.md",
+      "arquetipo": "Lumine",
+      "score": 3.0
+    },
+    {
+      "original": "KOBLLUX_ARQUETIPOS_RELATORIO_20260508.md",
+      "sugerido": "QA_0x09_KOBLLUX_ARQUETIPOS_RELATORIO_20260508_VEEB-U_D10.md",
+      "arquetipo": "Solus",
+      "score": 5.0
+    },
+    {
+      "original": "RELATORIO_KOBLLUX_ARQUETIPOS_20260508T000614.json",
+      "sugerido": "SELAR_0x05_RELATORIO_KOBLLUX_ARQUETIPOS_20260508T00_VEEB-I_D12.json",
+      "arquetipo": "Aion",
+      "score": 5.0
+    },
+    {
+      "original": "DETECT_0X03_kobllux_archetypes_scanner_VEEB-A_D5.py",
+      "sugerido": "DETECT_0x03_DETECT_0X03_kobllux_archetypes_scanner_V_VEEB-A_D5.py",
+      "arquetipo": "Artemis",
+      "score": 13.0
+    },
+    {
+      "original": "GUARD_0X09_feeling-decor-ZPR_VEEB-U_D6.html",
+      "sugerido": "GUARD_0x09_GUARD_0X09_feeling-decor-ZPR_VEEB-U_D6_VEEB-U_D6.html",
+      "arquetipo": "Serena",
+      "score": 10.0
+    },
+    {
+      "original": "kobllux_core.py",
+      "sugerido": "BOOT_0x00_kobllux_core_VEEB-A_D1.py",
+      "arquetipo": "Atlas",
+      "score": 2.0
+    },
+    {
+      "original": "BOOT_0X00_CobluxConfig_VEEB-A_D1_FIXED.py",
+      "sugerido": "BOOT_0x00_BOOT_0X00_CobluxConfig_VEEB-A_D1_FIXED_VEEB-A_D1.py",
+      "arquetipo": "Atlas",
+      "score": 15.0
+    },
+    {
+      "original": "ss5_copy.js",
+      "sugerido": "DELTA_0x01_ss5_copy_VEEB-O_D3.js",
+      "arquetipo": "Vitalis",
+      "score": 2.0
+    }
+  ],
+  "assinatura": "KOBLLUX·JSON·Δ⅞"
+}
