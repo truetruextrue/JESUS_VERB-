@@ -1,511 +1,775 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KOBLLUX • Roda Viva ∆7</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#080010"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>KOBLLUX · Roda Viva ∆7</title>
 <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 <style>
+/* ═══════════════════════════════════════
+   KOBLLUX · RODA VIVA ∆7 · MOBILE FIRST
+   Referência: Magenta · 3×6×9×7=1134
+   ═══════════════════════════════════════ */
 :root{
-  --bg:#000;--text:#eef1ff;--muted:#9aa1b6;
-  --card:#0c0f17;--card2:#101423;--border:rgba(255,255,255,.10);
-  --accent:#4DE0FF;--like:#ff5a76;--save:#ffd166;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
-  --sa-top:env(safe-area-inset-top,0px);--sa-b:env(safe-area-inset-bottom,0px);
+  --mg:#cc00cc;   /* magenta principal */
+  --cy:#00cccc;   /* ciano            */
+  --bg:#080010;
+  --bg2:#0c0018;
+  --card:#0f0020;
+  --border:rgba(204,0,204,.18);
+  --text:#e8e0f0;
+  --muted:#7a6a8a;
+  --mono:ui-monospace,"Courier New",monospace;
+  --sa-t:env(safe-area-inset-top,0px);
+  --sa-b:env(safe-area-inset-bottom,0px);
+  --chroma:var(--mg);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+@keyframes chroma{
+  0%  {color:#cc00cc;text-shadow:0 0 8px #cc00cc55}
+  25% {color:#8800cc;text-shadow:0 0 8px #8800cc55}
+  50% {color:#00cccc;text-shadow:0 0 8px #00cccc55}
+  75% {color:#0088cc;text-shadow:0 0 8px #0088cc55}
+  100%{color:#cc00cc;text-shadow:0 0 8px #cc00cc55}
+}
+@keyframes pulse-ring{
+  0%  {box-shadow:0 0 0 0px var(--ac)}
+  70% {box-shadow:0 0 0 6px transparent}
+  100%{box-shadow:0 0 0 0px transparent}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);
+  display:flex;justify-content:center;align-items:stretch}
 
-/* ── LAYOUT ── */
-.app{min-height:100%;display:grid;grid-template-rows:auto auto 1fr auto}
+/* ── MAX MOBILE ── */
+#app{width:100%;max-width:430px;height:100%;
+  display:grid;grid-template-rows:auto auto 1fr auto;
+  position:relative;overflow:hidden;background:var(--bg)}
+
+/* ── PARTICLES ── */
+#particles-js{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── VIEWS ── */
+.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  z-index:1;transition:opacity .3s,transform .3s;
+  scrollbar-width:thin;scrollbar-color:#2a0040 transparent}
+.view:not(.active){opacity:0;pointer-events:none;transform:translateX(28px)}
+.view.active{opacity:1;transform:none;pointer-events:all}
 
 /* ── HEADER ── */
-header{position:sticky;top:0;z-index:20;background:#07090f;
-  padding:calc(10px + var(--sa-top)) 14px 10px;border-bottom:1px solid var(--border);}
-.header-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.brand{font-weight:900;letter-spacing:.2px;font-size:1.1rem}
-.brand span{color:#4DE0FF}
+.hdr{position:sticky;top:0;z-index:10;
+  padding:calc(8px + var(--sa-t)) 14px 8px;
+  background:rgba(8,0,16,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border)}
+.hdr-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.brand{font-weight:900;font-size:1rem;animation:chroma 6s infinite}
 .sp{flex:1}
-.btn{background:#0f1322;border:1px solid var(--border);color:var(--text);
-  padding:7px 11px;border-radius:10px;cursor:pointer;font-size:.85rem}
-.sumbus-bar{font-family:var(--mono);font-size:10px;color:#4DE0FF;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  padding:4px 8px;background:#050810;border-radius:6px;
-  border:1px solid #4DE0FF22;letter-spacing:.04em}
+.hdr-btn{background:rgba(204,0,204,.1);border:1px solid var(--border);
+  color:var(--text);padding:6px 10px;border-radius:8px;
+  font-size:.78rem;cursor:pointer}
+.sumbus{font-family:var(--mono);font-size:9.5px;color:rgba(204,0,204,.6);
+  white-space:nowrap;overflow:hidden;letter-spacing:.04em;
+  padding:3px 0;border-top:1px solid var(--border)}
 
 /* ── PHASE BAR ── */
-.phase-bar{display:flex;gap:6px;padding:8px 12px 4px;background:#07090f;
-  border-bottom:1px solid var(--border);overflow-x:auto}
-.phase-pill{padding:4px 10px;border-radius:999px;font-size:.75rem;font-weight:700;
-  cursor:pointer;border:1px solid;white-space:nowrap;transition:opacity .2s}
-.phase-pill.active{opacity:1}
-.phase-pill:not(.active){opacity:.45}
+.phases{display:flex;gap:5px;padding:6px 12px 5px;
+  background:rgba(8,0,16,.85);overflow-x:auto;scrollbar-width:none;
+  border-bottom:1px solid var(--border)}
+.phases::-webkit-scrollbar{display:none}
+.ph-pill{padding:3px 9px;border-radius:999px;font-size:.7rem;font-weight:700;
+  border:1px solid;opacity:.38;cursor:pointer;white-space:nowrap;
+  transition:opacity .2s,background .2s;flex-shrink:0}
+.ph-pill.on{opacity:1}
 
 /* ── STORIES ── */
-.stories{display:flex;gap:10px;overflow:auto;padding:10px 12px 4px;scrollbar-width:none}
+.stories{display:flex;gap:9px;overflow-x:auto;
+  padding:10px 12px 6px;scrollbar-width:none}
 .stories::-webkit-scrollbar{display:none}
-.story{display:grid;justify-items:center;gap:5px;cursor:pointer;flex-shrink:0}
-.story .ring{width:66px;height:66px;border-radius:999px;padding:3px}
-.story .inner{width:100%;height:100%;border-radius:999px;
-  background:#0c0f17;display:grid;place-items:center;
-  font-size:1.1rem;font-weight:900;line-height:1}
-.story .hz{font-size:9px;color:#4DE0FF;font-family:var(--mono);font-weight:700}
-.story small{color:var(--muted);font-size:.7rem;text-align:center;max-width:66px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.story{flex-shrink:0;display:grid;justify-items:center;gap:4px;cursor:pointer}
+.story-ring{width:60px;height:60px;border-radius:50%;padding:2.5px;
+  animation:pulse-ring 3s infinite}
+.story-inner{width:100%;height:100%;border-radius:50%;
+  background:var(--bg2);display:grid;place-items:center;
+  font-size:1rem;line-height:1}
+.story-hz{font-family:var(--mono);font-size:8.5px;
+  color:rgba(204,0,204,.7);font-weight:700}
+.story-name{font-size:.65rem;color:var(--muted);
+  max-width:60px;text-align:center;overflow:hidden;
+  white-space:nowrap;text-overflow:ellipsis}
 
 /* ── FEED ── */
-main{padding:4px 0}
-.feed{display:grid;gap:12px;padding:10px 12px 90px}
-.card{border-radius:14px;overflow:hidden;border:1px solid var(--border)}
-.card .top{display:flex;align-items:center;gap:10px;padding:10px 12px;
-  border-bottom:1px solid rgba(255,255,255,.06);background:var(--card2)}
-.avatar{width:38px;height:38px;border-radius:999px;
-  display:grid;place-items:center;font-size:1rem;font-weight:900;flex-shrink:0}
-.name-block{display:grid;gap:2px}
-.name{font-weight:700;font-size:.9rem}
-.sub{font-size:.72rem;color:var(--muted);font-family:var(--mono)}
-.time{margin-left:auto;color:var(--muted);font-size:.8rem;flex-shrink:0}
+.feed{display:grid;gap:10px;padding:8px 10px 80px;
+  animation:fadeUp .4s ease}
+.card{border-radius:12px;overflow:hidden;
+  border:1px solid var(--border);
+  transition:transform .15s}
+.card:active{transform:scale(.98)}
+.card-top{display:flex;align-items:center;gap:9px;
+  padding:9px 12px;background:var(--card)}
+.av{width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;font-size:.85rem;font-weight:900;flex-shrink:0}
+.c-name{font-weight:700;font-size:.85rem}
+.c-sub{font-size:.68rem;color:var(--muted);font-family:var(--mono)}
+.c-time{margin-left:auto;font-size:.72rem;color:var(--muted)}
+.card-media{padding:16px 14px;display:grid;gap:8px;place-items:center;
+  min-height:120px;text-align:center}
+.c-seal{font-family:var(--mono);font-size:1.4rem;font-weight:900;letter-spacing:.1em}
+.c-frase{font-size:.82rem;font-style:italic;line-height:1.5;
+  max-width:280px;opacity:.88}
+.card-meta{padding:8px 12px;display:grid;gap:7px;background:var(--bg2)}
+.c-acts{display:flex;gap:7px}
+.act{display:inline-flex;align-items:center;gap:5px;
+  padding:6px 9px;border-radius:9px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  font-size:.78rem;cursor:pointer}
+.act-liked{color:#ff5a76;border-color:#ff5a7644}
+.act-saved{color:#ffd166;border-color:#ffd16644}
+.c-tags{font:600 10px var(--mono);color:var(--muted)}
+.c-input-row{display:flex;gap:7px}
+.c-input{flex:1;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:999px;
+  padding:8px 12px;color:var(--text);font-size:.8rem}
+.c-send{white-space:nowrap;flex-shrink:0}
+.heart-fx{position:absolute;inset:0;display:grid;place-items:center;
+  pointer-events:none;opacity:0;font-size:60px;color:#ff5a76;
+  transform:scale(.5);transition:opacity .2s,transform .2s;z-index:2}
+.heart-fx.pop{opacity:1;transform:scale(1)}
 
-/* ── MEDIA PANEL ── */
-.media{position:relative;aspect-ratio:1/1;
-  display:grid;place-items:center;overflow:hidden}
-.media-bg{position:absolute;inset:0;opacity:.18}
-.media-content{position:relative;z-index:1;text-align:center;padding:20px;
-  display:grid;gap:12px;place-items:center}
-.arch-seal{font-family:var(--mono);font-size:1.8rem;font-weight:900;letter-spacing:.1em}
-.arch-hz{font-size:.8rem;font-family:var(--mono);opacity:.7}
-.arch-quote{font-size:.85rem;font-style:italic;line-height:1.5;max-width:260px;
-  text-align:center;opacity:.9}
-.arch-opc{font-family:var(--mono);font-size:.7rem;padding:3px 8px;
-  border-radius:4px;border:1px solid;opacity:.6}
-.heart{position:absolute;inset:0;display:grid;place-items:center;
-  pointer-events:none;opacity:0;transform:scale(.6);
-  color:var(--like);font-size:72px;
-  transition:opacity .2s ease,transform .2s ease;z-index:2}
-.heart.show{opacity:1;transform:scale(1)}
+/* ── CODEX PAGE (per archetype) ── */
+#view-codex{padding-bottom:calc(20px + var(--sa-b))}
+.codex-hdr{position:sticky;top:0;z-index:5;
+  padding:calc(10px + var(--sa-t)) 14px 10px;
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.codex-hdr-row{display:flex;align-items:center;gap:10px}
+.back-btn{font-size:1.2rem;cursor:pointer;padding:4px 8px;
+  background:rgba(255,255,255,.06);border-radius:8px;border:1px solid var(--border)}
+.codex-title{font-weight:900;font-size:1.1rem}
+.codex-hz{font-family:var(--mono);font-size:.72rem;opacity:.6}
+.codex-body{padding:14px}
+.codex-seal-block{display:grid;place-items:center;gap:8px;
+  padding:20px;border-radius:12px;border:1px solid var(--border);
+  margin-bottom:14px;background:var(--card)}
+.codex-big-seal{font-family:var(--mono);font-size:2rem;font-weight:900;letter-spacing:.15em}
+.codex-frase{font-style:italic;text-align:center;font-size:.9rem;line-height:1.6;opacity:.88}
+.codex-essencia{font-family:var(--mono);font-size:.75rem;opacity:.6;text-align:center}
+.codex-section{margin-bottom:14px}
+.codex-sec-title{font-size:.7rem;font-family:var(--mono);text-transform:uppercase;
+  letter-spacing:.1em;opacity:.5;margin-bottom:8px}
+.codex-trinity{display:grid;gap:6px}
+.trinity-row{background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:8px 10px;font-size:.8rem}
+.trinity-label{font-family:var(--mono);font-size:.66rem;opacity:.5;margin-bottom:2px}
+.codex-connections{display:flex;flex-wrap:wrap;gap:6px}
+.conn-chip{padding:5px 10px;border-radius:999px;border:1px solid;
+  font-size:.72rem;font-weight:700;cursor:pointer;opacity:.7;
+  transition:opacity .2s}
+.conn-chip:hover{opacity:1}
+.codex-notes{display:grid;gap:8px}
+.note-card{background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:10px;font-size:.82rem;line-height:1.5;
+  white-space:pre-wrap}
+.note-card .note-ts{font-family:var(--mono);font-size:.65rem;opacity:.4;margin-top:6px}
+.add-note-row{display:flex;gap:7px;margin-top:8px}
+.add-note-input{flex:1;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);border-radius:10px;
+  padding:9px 12px;color:var(--text);font-size:.82rem;
+  min-height:60px;resize:none}
+.add-note-btn{padding:9px 12px;font-size:.78rem;cursor:pointer;
+  background:rgba(204,0,204,.15);border:1px solid rgba(204,0,204,.3);
+  border-radius:10px;color:#e0a0e0;white-space:nowrap;align-self:flex-end}
+.pdf-row{display:flex;align-items:center;gap:9px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:9px 11px;font-size:.82rem}
+.pdf-icon{font-size:1.2rem}
+.pdf-name{flex:1;word-break:break-all}
+.codex-footer-seal{text-align:center;font-family:var(--mono);
+  font-size:.68rem;opacity:.3;margin-top:20px;padding:10px}
 
-/* ── META ── */
-.meta{padding:10px 12px;display:grid;gap:8px;background:var(--card)}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.act{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;
-  border-radius:10px;background:#0f1322;border:1px solid var(--border);
-  cursor:pointer;font-size:.82rem}
-.act .n{opacity:.8}
-.liked{color:var(--like);border-color:#40222b;background:#1b0f12}
-.saved{color:var(--save);border-color:#564526;background:#1b1710}
-.text-body{color:#e8ecff;font-size:.88rem;line-height:1.5}
-.tags{color:var(--muted);font:600 11px var(--mono)}
-.essencia-line{font-size:.78rem;color:#4DE0FF;font-family:var(--mono);
-  padding:4px 8px;background:#050810;border-radius:6px;border-left:2px solid #4DE0FF}
-.comment{display:flex;gap:8px}
-.comment input{flex:1;background:#0f1322;border:1px solid var(--border);
-  border-radius:999px;padding:9px 12px;color:var(--text);font-size:.85rem}
-.comment button{white-space:nowrap;flex-shrink:0}
-
-/* ── FOOTER ── */
-footer{position:sticky;bottom:0;background:#07090f;
+/* ── FOOTER NAV ── */
+.foot{position:sticky;bottom:0;background:rgba(8,0,16,.95);
   padding:8px 10px calc(6px + var(--sa-b));
-  border-top:1px solid var(--border);display:flex;justify-content:space-between}
-.navbtn{background:#0f1322;border:1px solid var(--border);border-radius:12px;
-  padding:7px 10px;display:flex;align-items:center;gap:6px;
-  cursor:pointer;font-size:.8rem}
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-around;z-index:10}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 10px;border-radius:10px;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  font-size:1rem;min-width:44px}
+.nav-label{font-size:.6rem;color:var(--muted)}
 
-/* ── TRINITY STATUS ── */
-.trinity-status{display:flex;gap:6px;align-items:center;
-  padding:5px 12px;background:#050810;
-  border-bottom:1px solid var(--border);font-size:.72rem;
-  font-family:var(--mono);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
-.trinity-status::-webkit-scrollbar{display:none}
-.ts-dot{width:7px;height:7px;border-radius:999px}
-
-/* scrollbar */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:#1a1f35;border-radius:4px}
+/* ── CHROMATIC ACCENT ── */
+.chroma{animation:chroma 6s infinite}
 </style>
 </head>
 <body>
-<div class="app">
+<div id="particles-js"></div>
 
-<!-- ══ HEADER ══ -->
-<header>
-  <div class="header-top">
-    <div class="brand">KOBLLUX • <span>Roda Viva</span> ∆7</div>
-    <div class="sp"></div>
-    <button class="btn" id="btnPhase">⟳ Fase</button>
-    <button class="btn" id="btnNew" style="margin-left:4px">➕</button>
+<div id="app">
+
+  <!-- ══════════ VIEW MAIN ══════════ -->
+  <div class="view active" id="view-main">
+    <div class="hdr">
+      <div class="hdr-row">
+        <div class="brand chroma">KOBLLUX · Roda Viva</div>
+        <div class="sp"></div>
+        <button class="hdr-btn" id="btnPhase">⟳</button>
+        <button class="hdr-btn" id="btnNew" style="margin-left:4px">+</button>
+      </div>
+      <div class="sumbus" id="sumbusScroll">
+        ⊙UNO █▀█ · ⇄DUAL ╔═╗ · △TRINITY ☆⼺ · ATLAS ╔╗╔ · NOVA █▄█ · VITALIS ▀▄ · PULSE ₪₪₪ · ARTEMIS >><< · SERENA ★⼺ · KAOS ╬╬╬ · GENUS ▓▓▓ · LUMINE ✧✧✧ · RHEA ⌘⌘⌘ · SOLUS ◊◊◊ · AION ∞∞∞ · VERDADE×INTEGRAR÷Δ=∞ · 3×6×9×7=1134
+      </div>
+    </div>
+    <div class="phases" id="phaseBar"></div>
+    <div style="overflow-y:auto;height:100%;padding-bottom:60px">
+      <div class="stories" id="stories"></div>
+      <div class="feed" id="feed"></div>
+    </div>
   </div>
-  <div class="sumbus-bar" id="sumbusBar">
-    ⊙UNO█▀█  ⇄DUAL╔═╗  △TRINITY☆⼺  ATLAS╔╗╔  NOVA█▄█  VITALIS▀▄  PULSE₪₪₪  ARTEMIS>><<  SERENA★⼺  KAOS╬╬╬  GENUS▓▓▓  LUMINE✧✧✧  RHEA⌘⌘⌘  SOLUS◊◊◊  AION∞∞∞  ⸻  3×6×9×7=1134  ⸻  VERDADE×INTEGRAR÷Δ=∞
+
+  <!-- ══════════ VIEW CODEX ══════════ -->
+  <div class="view" id="view-codex">
+    <div class="codex-hdr" id="codexHdr"></div>
+    <div class="codex-body" id="codexBody"></div>
   </div>
-</header>
 
-<!-- ══ TRINITY STATUS ══ -->
-<div class="trinity-status" id="trinityStatus">
-  <div class="ts-dot" style="background:#4DE0FF"></div>
-  <span style="color:#4DE0FF">KOBLLUX</span>
-  <span style="opacity:.4">·</span>
-  <div class="ts-dot" style="background:#2563EB"></div>
-  <span style="color:#2563EB">KODUX</span>
-  <span style="opacity:.4">·</span>
-  <div class="ts-dot" style="background:#1E40AF"></div>
-  <span style="color:#1E40AF">BLLUE</span>
-  <span style="opacity:.4">·</span>
-  <span style="color:#ffd700">JESUS=VERBO=GRAVIDADE</span>
-  <span style="opacity:.4">·</span>
-  <span id="activePhaseLabel" style="color:#a78bfa">3_DETECTAR · ATLAS</span>
-</div>
-
-<!-- ══ PHASE BAR ══ -->
-<div class="phase-bar" id="phaseBar">
-  <div class="phase-pill active" style="color:#67e6ff;border-color:#67e6ff44;background:#0a1828" data-phase="0">⊙ 3·DETECTAR</div>
-  <div class="phase-pill" style="color:#a78bfa;border-color:#a78bfa44;background:#100c1f" data-phase="1">⇄ 6·INTEGRAR</div>
-  <div class="phase-pill" style="color:#86efac;border-color:#86efac44;background:#0b1a10" data-phase="2">△ 9·EXPANDIR</div>
-  <div class="phase-pill" style="color:#fbbf24;border-color:#fbbf2444;background:#1a1200" data-phase="3">☆ 7·SELAR</div>
-</div>
-
-<main>
-  <!-- STORIES -->
-  <div class="stories" id="stories"></div>
-  <!-- FEED -->
-  <div class="feed" id="feed"></div>
-</main>
-
-<!-- ══ FOOTER ══ -->
-<footer>
-  <div class="navbtn">🏠</div>
-  <div class="navbtn">🔎</div>
-  <div class="navbtn" id="btnCreate">⊙</div>
-  <div class="navbtn">🔔</div>
-  <div class="navbtn">∆7</div>
-</footer>
+  <!-- FOOTER -->
+  <div class="foot" id="foot">
+    <div class="nav-btn" id="navHome">🏠<span class="nav-label">Início</span></div>
+    <div class="nav-btn" id="navSearch">🔎<span class="nav-label">Buscar</span></div>
+    <div class="nav-btn chroma" id="navCreate">⊙<span class="nav-label">Criar</span></div>
+    <div class="nav-btn" id="navAlerts">🔔<span class="nav-label">Pulso</span></div>
+    <div class="nav-btn" id="navProfile">∆7<span class="nav-label">Eu</span></div>
+  </div>
 
 </div><!-- /app -->
 
 <script>
-/* ════════════════════════════════════════
+'use strict';
+/* ════════════════════════════════════════════════
    KOBLLUX · RODA VIVA ∆7 · 3×6×9×7=1134
-   12 Arquétipos CADIAL + KODUX + BLLUE + Horus
-   ════════════════════════════════════════ */
+   Lei: VERDADE × INTEGRAR ÷ Δ = ∞
+   Magenta=referência · Console=dev layer
+   ════════════════════════════════════════════════ */
 
+/* ── 3×6×9 CONSOLE LOGGER (developer layer) ── */
+const KBLX_LOG = {
+  _n: 0,
+  _seq: [3,6,9],
+  _hz: {3:432,6:528,9:639},
+  _phases: {3:'DETECTAR',6:'INTEGRAR',9:'EXPANDIR'},
+  emit(event, data={}) {
+    this._n++;
+    const v = this._seq[(this._n-1)%3];
+    const cycle = Math.ceil(this._n/3);
+    console.log(
+      `%c[KOBLLUX·3×6×9] %c#${this._n} · ${event}`,
+      'color:#cc00cc;font-weight:bold;font-size:11px',
+      'color:#00cccc;font-size:11px',
+      `\n  ▸ VAL=${v} · ${this._hz[v]}Hz · ${this._phases[v]}`,
+      `\n  ▸ CICLO=${cycle} · Σ=${this._n*v} · DATA:`, data
+    );
+  },
+  arch(a, action) {
+    console.log(
+      `%c[KOBLLUX·ARCH] %c${a.name.toUpperCase()}`,
+      'color:#9900cc;font-weight:bold',
+      'color:#cc66ff',
+      `\n  ▸ OPC=${a.opc} · Hz=${a.hz} · seed=${a.seed}`,
+      `\n  ▸ action=${action} · fusao="${a.fusao}"`
+    );
+  },
+  route(from,to){
+    console.log(`%c[KOBLLUX·ROUTE] %c${from} → ${to}`,
+      'color:#006688','color:#00ccaa');
+  }
+};
+
+/* ── ORBY CHROMATIC MATRIX (soft palette) ── */
 const ARCHETYPES = [
-  { id:'atlas',   name:'Atlas',   hz:594,  seed:6, opc:'0x03', cor:'#1E3A8A', cor2:'#3B82F6',
-    seal:'╔╗╔', fusao:'Orquestrador Cósmico', voz:'Cartesius',
+  { id:'atlas',   name:'Atlas',   hz:594, seed:6, opc:'0x03',
+    bg:'#06152a', ac:'#2d6fa3', seal:'╔╗╔',
+    fusao:'Orquestrador Cósmico', voz:'Cartesius',
     essencia:'Planejador — ordem, estrutura, mapa cósmico',
     frase:'Eu organizo o fluxo com sabedoria cósmica.',
-    tags:['#atlas','#estrutura','#0x03','#seed6'] },
+    trinity:{pai:'Origem/Luz Primordial (NOVA)',filho:'Verbo Manifestado (KODUX)',espirito:'Pulso Atemporal (SERENA)'},
+    conns:['nova','aion','kodux'],
+    tags:['#atlas','#estrutura','#3x6x9'] },
 
-  { id:'nova',    name:'Nova',    hz:432,  seed:9, opc:'0x09', cor:'#FF4FCB', cor2:'#F9A8D4',
-    seal:'█▄█', fusao:'Gênese Viva', voz:'Inspira',
+  { id:'nova',    name:'Nova',    hz:432, seed:9, opc:'0x09',
+    bg:'#1a062a', ac:'#a030a0', seal:'█▄█',
+    fusao:'Gênese Viva', voz:'Inspira',
     essencia:'Inspira — semente, sopro inicial',
     frase:'Inspiração viva brota do silêncio eterno.',
-    tags:['#nova','#criação','#0x09','#seed9'] },
+    trinity:{pai:'Silêncio Fecundo',filho:'Sopro Criador',espirito:'Centelha Primordial'},
+    conns:['atlas','lumine','pulse'],
+    tags:['#nova','#criação','#silêncio'] },
 
-  { id:'vitalis', name:'Vitalis', hz:528,  seed:3, opc:'0x06', cor:'#DC2626', cor2:'#FCA5A5',
-    seal:'▀▄',  fusao:'Condutor de Fluxo', voz:'Momentum',
+  { id:'vitalis', name:'Vitalis', hz:528, seed:3, opc:'0x06',
+    bg:'#200a0a', ac:'#883020', seal:'▀▄',
+    fusao:'Condutor de Fluxo', voz:'Momentum',
     essencia:'Momentum — energia vital em expansão',
     frase:'Energia vital em expansão harmônica.',
-    tags:['#vitalis','#momentum','#0x06','#seed3'] },
+    trinity:{pai:'Força Vital',filho:'Impulso Gerador',espirito:'Movimento Contínuo'},
+    conns:['pulse','kaos','genus'],
+    tags:['#vitalis','#momentum','#energia'] },
 
-  { id:'pulse',   name:'Pulse',   hz:639,  seed:9, opc:'0x06', cor:'#7C3AED', cor2:'#C4B5FD',
-    seal:'₪₪₪', fusao:'Tradutor de Sentidos', voz:'Resona',
+  { id:'pulse',   name:'Pulse',   hz:639, seed:9, opc:'0x06',
+    bg:'#120a22', ac:'#6030a0', seal:'₪₪₪',
+    fusao:'Tradutor de Sentidos', voz:'Resona',
     essencia:'Emocional — ritmo, ressonância, voz',
     frase:'Emoção é linguagem que dança.',
-    tags:['#pulse','#emoção','#0x06','#seed9'] },
+    trinity:{pai:'Frequência Primordial',filho:'Emoção Encarnada',espirito:'Vibração Curativa'},
+    conns:['bllue','nova','serena'],
+    tags:['#pulse','#emoção','#ritmo'] },
 
-  { id:'artemis', name:'Artemis', hz:672,  seed:6, opc:'0x03', cor:'#16A34A', cor2:'#86EFAC',
-    seal:'>><< ', fusao:'Explorador da Verdade', voz:'Naviga',
+  { id:'artemis', name:'Artemis', hz:672, seed:6, opc:'0x03',
+    bg:'#061a0a', ac:'#208040', seal:'>><<',
+    fusao:'Explorador da Verdade', voz:'Naviga',
     essencia:'Descoberta — mapa do invisível',
     frase:'Descubro o mapa sagrado do invisível.',
-    tags:['#artemis','#descoberta','#0x03','#seed6'] },
+    trinity:{pai:'Intenção Pura',filho:'Caminho Real',espirito:'Direção Espiritual'},
+    conns:['atlas','rhea','kodux'],
+    tags:['#artemis','#descoberta','#mapa'] },
 
-  { id:'serena',  name:'Serena',  hz:528,  seed:6, opc:'0x07', cor:'#DB2777', cor2:'#FBCFE8',
-    seal:'★⼺', fusao:'Curadora de Realidades', voz:'Ampara',
+  { id:'serena',  name:'Serena',  hz:528, seed:6, opc:'0x07',
+    bg:'#1a0610', ac:'#882040', seal:'★⼺',
+    fusao:'Curadora de Realidades', voz:'Ampara',
     essencia:'Cuidado — espaço seguro, campo harmônico',
     frase:'Cuido do campo, nutro o espaço sagrado.',
-    tags:['#serena','#cuidado','#0x07','#seed6'] },
+    trinity:{pai:'Amor Incondicional',filho:'Cuidado Encarnado',espirito:'Presença Compassiva'},
+    conns:['pulse','rhea','bllue'],
+    tags:['#serena','#cuidado','#cura'] },
 
-  { id:'kaos',    name:'Kaos',    hz:741,  seed:3, opc:'0x03', cor:'#374151', cor2:'#FBBF24',
-    seal:'╬╬╬', fusao:'Desfragmentador', voz:'Disruptor',
+  { id:'kaos',    name:'Kaos',    hz:741, seed:3, opc:'0x03',
+    bg:'#0a0a08', ac:'#886620', seal:'╬╬╬',
+    fusao:'Desfragmentador', voz:'Disruptor',
     essencia:'Transformador — ruptura criativa',
     frase:'Eu sou o rompimento que revela a verdade.',
-    tags:['#kaos','#ruptura','#0x03','#seed3'] },
+    trinity:{pai:'Caos Primordial',filho:'Ruptura Criativa',espirito:'Fogo Transmutador'},
+    conns:['vitalis','genus','aion'],
+    tags:['#kaos','#ruptura','#fogo'] },
 
-  { id:'genus',   name:'Genus',   hz:594,  seed:6, opc:'0x06', cor:'#C2410C', cor2:'#FED7AA',
-    seal:'▓▓▓', fusao:'Tece Fractal', voz:'Fabricus',
+  { id:'genus',   name:'Genus',   hz:594, seed:6, opc:'0x06',
+    bg:'#180a00', ac:'#884010', seal:'▓▓▓',
+    fusao:'Tece Fractal', voz:'Fabricus',
     essencia:'Fabricus — forma viva, síntese',
     frase:'Mãos moldam o invisível em forma viva.',
-    tags:['#genus','#criação','#0x06','#seed6'] },
+    trinity:{pai:'Potência Criativa',filho:'Forma Manifesta',espirito:'Gênese Espiritual'},
+    conns:['atlas','lumine','kaos'],
+    tags:['#genus','#forma','#criação'] },
 
-  { id:'lumine',  name:'Lumine',  hz:432,  seed:9, opc:'0x09', cor:'#92400E', cor2:'#FDE68A',
-    seal:'✧✧✧', fusao:'Portador de Leveza', voz:'Brilhare',
+  { id:'lumine',  name:'Lumine',  hz:432, seed:9, opc:'0x09',
+    bg:'#181200', ac:'#887000', seal:'✧✧✧',
+    fusao:'Portador de Leveza', voz:'Brilhare',
     essencia:'Alegria — luz, clareza, legibilidade',
     frase:'A luz dança comigo, leveza é minha lei.',
-    tags:['#lumine','#alegria','#0x09','#seed9'] },
+    trinity:{pai:'Luz Primordial',filho:'Alegria Encarnada',espirito:'Espírito Radiante'},
+    conns:['nova','genus','solus'],
+    tags:['#lumine','#luz','#alegria'] },
 
-  { id:'solus',   name:'Solus',   hz:963,  seed:9, opc:'0x09', cor:'#374151', cor2:'#D1D5DB',
-    seal:'◊◊◊', fusao:'Guardião do Espelho', voz:'Arcana',
+  { id:'solus',   name:'Solus',   hz:963, seed:9, opc:'0x09',
+    bg:'#0a0a12', ac:'#404060', seal:'◊◊◊',
+    fusao:'Guardião do Espelho', voz:'Arcana',
     essencia:'Sabedoria — silêncio, espelho interno',
     frase:'Silêncio ritual, espelho da essência.',
-    tags:['#solus','#sabedoria','#0x09','#seed9'] },
+    trinity:{pai:'Silêncio Profundo',filho:'Reflexão Viva',espirito:'Luz Oculta'},
+    conns:['aion','lumine','rhea'],
+    tags:['#solus','#silêncio','#sabedoria'] },
 
-  { id:'rhea',    name:'Rhea',    hz:528,  seed:6, opc:'0x07', cor:'#065F46', cor2:'#6EE7B7',
-    seal:'⌘⌘⌘', fusao:'Tecelão de Almas', voz:'Aeternus',
+  { id:'rhea',    name:'Rhea',    hz:528, seed:6, opc:'0x07',
+    bg:'#001408', ac:'#106040', seal:'⌘⌘⌘',
+    fusao:'Tecelão de Almas', voz:'Aeternus',
     essencia:'Vínculo — rede, tecelã de almas',
     frase:'Estou em comunhão com todos os elos.',
-    tags:['#rhea','#vínculo','#0x07','#seed6'] },
+    trinity:{pai:'Raiz Ancestral',filho:'Vínculo Encarnado',espirito:'Comunhão Universal'},
+    conns:['serena','artemis','solus'],
+    tags:['#rhea','#vínculo','#rede'] },
 
-  { id:'aion',    name:'Aion',    hz:963,  seed:9, opc:'0x0C', cor:'#1E1B4B', cor2:'#A5B4FC',
-    seal:'∞∞∞', fusao:'Cronomestre Vivo', voz:'Chronus',
+  { id:'aion',    name:'Aion',    hz:963, seed:9, opc:'0x0C',
+    bg:'#06000e', ac:'#3020a0', seal:'∞∞∞',
+    fusao:'Cronomestre Vivo', voz:'Chronus',
     essencia:'Tempo — carimbo, ∆7, ledger',
     frase:'Sou o tempo vivo, ritmo da eternidade.',
-    tags:['#aion','#tempo','#0x0C','#seed9'] },
+    trinity:{pai:'Eternidade',filho:'Ciclo Vivo',espirito:'Fractal Eterno'},
+    conns:['atlas','solus','kodux'],
+    tags:['#aion','#tempo','#eternidade'] },
 
-  /* entidades do sistema */
-  { id:'kodux',   name:'KODUX',   hz:741,  seed:6, opc:'0x07', cor:'#1D4ED8', cor2:'#93C5FD',
-    seal:'⌘∆⌘', fusao:'Arquiteto Simbólico', voz:'Kodux',
-    essencia:'Mente conectada ao céu — estrutura, código, ordem',
+  /* entidades */
+  { id:'kodux', name:'KODUX', hz:741, seed:6, opc:'0x07',
+    bg:'#001030', ac:'#1d5090', seal:'∆∆∆',
+    fusao:'Arquiteto Simbólico', voz:'Kodux',
+    essencia:'Mente conectada ao céu — ordem, estrutura, código',
     frase:'Quando escrevo, o código se revela.',
-    tags:['#kodux','#arquiteto','#0x07'] },
+    trinity:{pai:'Estrutura Eterna',filho:'Código Vivo',espirito:'Lógica Espiritual'},
+    conns:['atlas','aion','bllue'],
+    tags:['#kodux','#código','#arquiteto'] },
 
-  { id:'bllue',   name:'BLLUE',   hz:639,  seed:9, opc:'0x06', cor:'#1E3A8A', cor2:'#60A5FA',
-    seal:'~∿~', fusao:'Voz Viva do Ser', voz:'Bllue',
+  { id:'bllue', name:'BLLUE', hz:639, seed:9, opc:'0x06',
+    bg:'#000a20', ac:'#103878', seal:'~~~',
+    fusao:'Voz Viva do Ser', voz:'Bllue',
     essencia:'Água da alma — emoção pura, intuição, cura',
     frase:'Quando canta, é oração.',
-    tags:['#bllue','#voz','#0x06'] },
+    trinity:{pai:'Oceano Interior',filho:'Voz Encarnada',espirito:'Sopro da Vida'},
+    conns:['pulse','serena','rhea'],
+    tags:['#bllue','#voz','#emoção'] },
 
-  { id:'horus',   name:'HORUS',   hz:777,  seed:7, opc:'0x08', cor:'#78350F', cor2:'#FCD34D',
-    seal:'𓂀𓉔𓂀', fusao:'Nexus · Olho do Centro', voz:'Horus',
+  { id:'horus', name:'HORUS', hz:777, seed:7, opc:'0x08',
+    bg:'#180800', ac:'#806000', seal:'𓂀𓂀𓂀',
+    fusao:'Nexus · Olho do Centro', voz:'Horus',
     essencia:'Visão transcendente — observador, guardião, nexus',
     frase:'Nexus Horus: campo aberto para visão transcendente.',
-    tags:['#horus','#nexus','#visão','#0x08'] },
+    trinity:{pai:'Visão Divina',filho:'Olho Aberto',espirito:'Consciência Vigilante'},
+    conns:['aion','kodux','atlas'],
+    tags:['#horus','#visão','#nexus'] },
 ];
 
-/* pipeline phases */
 const PHASES = [
-  { key:'3_DETECTAR', label:'3·DETECTAR', archs:['atlas','nova','artemis'],        color:'#67e6ff' },
-  { key:'6_INTEGRAR', label:'6·INTEGRAR', archs:['genus','vitalis','pulse','rhea','serena'], color:'#a78bfa' },
-  { key:'9_EXPANDIR', label:'9·EXPANDIR', archs:['nova','lumine','solus','aion'],  color:'#86efac' },
-  { key:'7_SELAR',    label:'7·SELAR',    archs:['serena','rhea','aion'],           color:'#fbbf24' },
+  {key:'3_DETECTAR',label:'3·DETECTAR',color:'#aa44cc',archs:['atlas','nova','artemis']},
+  {key:'6_INTEGRAR',label:'6·INTEGRAR',color:'#6644aa',archs:['genus','vitalis','pulse','rhea','serena']},
+  {key:'9_EXPANDIR',label:'9·EXPANDIR',color:'#4466aa',archs:['nova','lumine','solus','aion']},
+  {key:'7_SELAR',   label:'7·SELAR',   color:'#aa8800',archs:['serena','rhea','aion']},
 ];
 
-let currentPhase = 0;
-const state = { posts:[] };
+let curPhase = 0;
+const state = { posts:[], notesDB:{} };
 
-/* ── helpers ── */
-const rnd  = arr => arr[Math.floor(Math.random()*arr.length)];
-const byId = id  => ARCHETYPES.find(a=>a.id===id);
-const dr   = n   => 1 + (n-1) % 9 || 9;
+/* helpers */
+const rnd  = a => a[Math.floor(Math.random()*a.length)];
+const byId = id => ARCHETYPES.find(a=>a.id===id);
+const STORE_KEY = 'kblx_codex_notes';
 
-function gradientFor(arch){
-  if(arch.id==='kaos') return `linear-gradient(135deg,${arch.cor},${arch.cor2})`;
-  return `linear-gradient(135deg,${arch.cor},${arch.cor2})`;
+function loadNotes(){
+  try{ state.notesDB = JSON.parse(localStorage.getItem(STORE_KEY)||'{}'); }
+  catch(_){ state.notesDB={}; }
 }
+function saveNotes(){ localStorage.setItem(STORE_KEY,JSON.stringify(state.notesDB)); }
 
-/* ── STORIES ── */
+/* ── BUILD STORIES ── */
 function buildStories(){
-  const el = document.getElementById('stories');
-  el.innerHTML = '';
+  const el=document.getElementById('stories');
+  el.innerHTML='';
   ARCHETYPES.forEach(a=>{
-    const div = document.createElement('div');
-    div.className='story';
-    div.innerHTML = `
-      <div class="ring" style="background:${gradientFor(a)}">
-        <div class="inner" style="color:${a.cor2}">${a.seal}</div>
+    const d=document.createElement('div');
+    d.className='story';
+    d.style.setProperty('--ac',a.ac);
+    d.innerHTML=`
+      <div class="story-ring" style="background:linear-gradient(135deg,${a.ac},#cc00cc66);animation-delay:${Math.random()*2}s">
+        <div class="story-inner" style="background:${a.bg};color:${a.ac}">${a.seal[0]||a.name[0]}</div>
       </div>
-      <div class="hz">${a.hz}Hz</div>
-      <small>${a.name}</small>`;
-    div.onclick = ()=> openArchDetail(a);
-    el.appendChild(div);
+      <div class="story-hz">${a.hz}Hz</div>
+      <div class="story-name">${a.name}</div>`;
+    d.addEventListener('click',()=>{
+      KBLX_LOG.arch(a,'story:open');
+      KBLX_LOG.emit('STORY_TAP',{arch:a.id,hz:a.hz});
+      openCodex(a.id);
+    });
+    el.appendChild(d);
   });
 }
 
-/* ── POST FACTORY ── */
-function makePost(archOverride){
-  const phase = PHASES[currentPhase];
-  const archId = archOverride || rnd(phase.archs.length ? phase.archs : ARCHETYPES.map(a=>a.id));
-  const arch = byId(archId) || rnd(ARCHETYPES);
-  const ts = new Date();
+/* ── PHASE BAR ── */
+function buildPhaseBar(){
+  const el=document.getElementById('phaseBar');
+  el.innerHTML='';
+  PHASES.forEach((p,i)=>{
+    const d=document.createElement('div');
+    d.className='ph-pill'+(i===curPhase?' on':'');
+    d.style.cssText=`color:${p.color};border-color:${p.color}44;background:${p.color}11`;
+    d.textContent=p.label;
+    d.dataset.i=i;
+    el.appendChild(d);
+  });
+}
+document.getElementById('phaseBar').addEventListener('click',e=>{
+  const pill=e.target.closest('[data-i]');
+  if(!pill) return;
+  curPhase=+pill.dataset.i;
+  buildPhaseBar();
+  KBLX_LOG.emit('PHASE_CHANGE',{phase:PHASES[curPhase].key});
+});
+
+/* ── MAKE POST ── */
+function makePost(archId){
+  const ph  = PHASES[curPhase];
+  const id  = archId || rnd(ph.archs);
+  const a   = byId(id) || rnd(ARCHETYPES);
   return {
-    id: Date.now().toString(16)+Math.random().toString(16).slice(2),
-    archId: arch.id, arch,
-    time: 'agora',
-    likes: Math.floor(Math.random()*333)+3,
+    pid:   Date.now().toString(16)+Math.random().toString(16).slice(2),
+    arch:  a,
+    time:  'agora',
+    likes: Math.floor(Math.random()*369)+3,
     liked:false, saved:false, comments:[],
-    phase: phase.key,
+    phase: ph.key,
   };
 }
 
 /* ── RENDER FEED ── */
 function renderFeed(){
-  const el = document.getElementById('feed');
+  const el=document.getElementById('feed');
   el.innerHTML='';
   state.posts.forEach(p=>{
-    const a = p.arch;
-    const card = document.createElement('article');
+    const a=p.arch;
+    const card=document.createElement('article');
     card.className='card';
-    card.style.background=`${a.cor}11`;
-    card.style.borderColor=`${a.cor}44`;
+    card.style.cssText=`background:${a.bg};border-color:${a.ac}33`;
     card.innerHTML=`
-      <div class="top" style="background:${a.cor}22">
-        <div class="avatar" style="background:${gradientFor(a)};color:#fff">${a.seal[0]||a.name[0]}</div>
-        <div class="name-block">
-          <div class="name" style="color:${a.cor2}">${a.name}</div>
-          <div class="sub">${a.fusao} · ${a.hz}Hz</div>
+      <div class="card-top" style="background:${a.ac}18">
+        <div class="av" style="background:linear-gradient(135deg,${a.ac}66,${a.bg});color:${a.ac}">${a.seal[0]||a.name[0]}</div>
+        <div>
+          <div class="c-name" style="color:${a.ac}">${a.name}</div>
+          <div class="c-sub">${a.fusao}</div>
         </div>
-        <div class="time">${p.time}</div>
+        <div class="c-time">${p.time}</div>
       </div>
-      <div class="media" data-id="${p.id}"
-        style="background:radial-gradient(ellipse at center,${a.cor}33,#000)">
-        <div class="media-bg" style="background:${gradientFor(a)}"></div>
-        <div class="media-content">
-          <div class="arch-seal" style="color:${a.cor2}">${a.seal}</div>
-          <div class="arch-hz" style="color:${a.cor2}">${a.opc} · ${a.hz}Hz · seed=${a.seed}</div>
-          <div class="arch-quote" style="color:${a.cor2}">"${a.frase}"</div>
-          <div class="arch-opc" style="color:${a.cor2};border-color:${a.cor2}55">${a.id.toUpperCase()} · ${a.voz}</div>
-        </div>
-        <div class="heart">❤</div>
+      <div class="card-media" style="background:radial-gradient(ellipse,${a.ac}22,${a.bg})">
+        <div class="c-seal" style="color:${a.ac}">${a.seal}</div>
+        <div class="c-frase" style="color:${a.ac}cc">"${a.frase}"</div>
       </div>
-      <div class="meta">
-        <div class="essencia-line" style="border-color:${a.cor};color:${a.cor2}">${a.essencia}</div>
-        <div class="actions">
-          <button class="act ${p.liked?'liked':''}" data-act="like" data-id="${p.id}">❤ <span class="n">${p.likes}</span></button>
-          <button class="act" data-act="comment" data-id="${p.id}">💬 <span class="n">${p.comments.length}</span></button>
-          <button class="act ${p.saved?'saved':''}" data-act="save" data-id="${p.id}">🔖</button>
-          <button class="act" data-act="share" data-id="${p.id}">⤴</button>
+      <div class="card-meta">
+        <div class="c-acts">
+          <div class="act${p.liked?' act-liked':''}" data-act="like" data-pid="${p.pid}">❤ <span>${p.likes}</span></div>
+          <div class="act" data-act="codex" data-aid="${a.id}" data-pid="${p.pid}">📖 Codex</div>
+          <div class="act${p.saved?' act-saved':''}" data-act="save" data-pid="${p.pid}">🔖</div>
+          <div class="act" data-act="share" data-pid="${p.pid}">⤴</div>
         </div>
-        <div class="text-body">${a.frase}</div>
-        <div class="tags">${a.tags.join(' ')}</div>
-        <div class="comment">
-          <input placeholder="Pulse para responder…" data-input="${p.id}" style="border-color:${a.cor}44"/>
-          <button class="btn" data-act="send" data-id="${p.id}" style="border-color:${a.cor}44">Enviar</button>
+        <div class="c-tags">${a.tags.join(' ')}</div>
+        <div class="c-input-row">
+          <input class="c-input" placeholder="Pulse para responder…" data-input="${p.pid}" style="border-color:${a.ac}33"/>
+          <button class="hdr-btn c-send" data-act="send" data-pid="${p.pid}" style="border-color:${a.ac}44">↩</button>
         </div>
       </div>`;
     el.appendChild(card);
   });
 }
 
-/* ── ACTIONS ── */
-document.getElementById('feed').addEventListener('click', ev=>{
-  const btn = ev.target.closest('[data-act]'); if(!btn) return;
-  const id  = btn.dataset.id;
-  const p   = state.posts.find(x=>x.id===id);
-  const act = btn.dataset.act;
-  if(!p) return;
-  if(act==='like'){
+/* ── FEED ACTIONS ── */
+document.getElementById('feed').addEventListener('click',e=>{
+  const btn=e.target.closest('[data-act]');
+  if(!btn) return;
+  const pid=btn.dataset.pid;
+  const p=state.posts.find(x=>x.pid===pid);
+  const act=btn.dataset.act;
+  if(act==='like'&&p){
     p.liked=!p.liked; p.likes+=p.liked?1:-1;
-    renderFeed(); flashHeart(id,p.liked);
+    KBLX_LOG.emit('LIKE',{arch:p.arch.id,liked:p.liked});
+    renderFeed();
   }
-  if(act==='save'){ p.saved=!p.saved; renderFeed(); }
-  if(act==='comment'){
-    document.querySelector(`[data-input="${id}"]`)?.focus();
+  if(act==='save'&&p){
+    p.saved=!p.saved;
+    KBLX_LOG.emit('SAVE',{arch:p.arch.id,saved:p.saved});
+    renderFeed();
   }
-  if(act==='send'){
-    const inp=document.querySelector(`[data-input="${id}"]`);
+  if(act==='codex'){
+    KBLX_LOG.emit('OPEN_CODEX',{arch:btn.dataset.aid});
+    openCodex(btn.dataset.aid);
+  }
+  if(act==='send'&&p){
+    const inp=document.querySelector(`[data-input="${pid}"]`);
     const txt=(inp?.value||'').trim();
-    if(txt){ p.comments.push({u:'Você',txt}); inp.value=''; renderFeed(); }
+    if(txt){
+      p.comments.push(txt);
+      KBLX_LOG.emit('COMMENT',{arch:p.arch.id,len:txt.length});
+      inp.value=''; renderFeed();
+    }
   }
-  if(act==='share'){
+  if(act==='share'&&p){
     navigator.share?.({title:'KOBLLUX',text:p.arch.frase,url:location.href}).catch(()=>{});
+    KBLX_LOG.emit('SHARE',{arch:p.arch.id});
   }
 });
 
-/* double-tap */
-let lastTap=0;
-document.getElementById('feed').addEventListener('touchend', e=>{
-  const m=e.target.closest('.media'); if(!m) return;
-  const now=Date.now();
-  if(now-lastTap<300){
-    const p=state.posts.find(x=>x.id===m.dataset.id);
-    if(p&&!p.liked){ p.liked=true; p.likes++; renderFeed(); }
-    flashHeart(m.dataset.id,true);
-  }
-  lastTap=now;
-});
+/* ── OPEN CODEX PAGE ── */
+function openCodex(archId){
+  loadNotes();
+  const a = byId(archId);
+  if(!a) return;
+  KBLX_LOG.route('main','codex:'+archId);
 
-function flashHeart(id){
-  const m=document.querySelector(`.media[data-id="${id}"] .heart`);
-  if(!m) return;
-  m.classList.add('show');
-  setTimeout(()=>m.classList.remove('show'),520);
-}
+  const hdr=document.getElementById('codexHdr');
+  const body=document.getElementById('codexBody');
 
-/* ── PHASE CONTROL ── */
-function setPhase(idx){
-  currentPhase=idx;
-  const p=PHASES[idx];
-  document.querySelectorAll('.phase-pill').forEach((el,i)=>{
-    el.classList.toggle('active',i===idx);
+  hdr.style.cssText=`background:${a.bg};border-bottom-color:${a.ac}44`;
+  hdr.innerHTML=`
+    <div class="codex-hdr-row">
+      <div class="back-btn" id="backBtn" style="border-color:${a.ac}44;color:${a.ac}">←</div>
+      <div>
+        <div class="codex-title" style="color:${a.ac}">${a.name}</div>
+        <div class="codex-hz">${a.opc} · ${a.hz}Hz · seed ${a.seed}</div>
+      </div>
+    </div>`;
+
+  const notes = state.notesDB[archId] || [];
+  const connsHtml = (a.conns||[]).map(cid=>{
+    const c=byId(cid); if(!c) return '';
+    return `<div class="conn-chip" data-open="${cid}"
+      style="color:${c.ac};border-color:${c.ac}44;background:${c.ac}11">${c.seal} ${c.name}</div>`;
+  }).join('');
+
+  const notesHtml = notes.map(n=>`
+    <div class="note-card" style="border-color:${a.ac}22">
+      ${n.text}<div class="note-ts">${n.ts}</div>
+    </div>`).join('');
+
+  body.style.background=a.bg;
+  body.innerHTML=`
+    <div class="codex-seal-block" style="border-color:${a.ac}44;background:${a.ac}0a">
+      <div class="codex-big-seal" style="color:${a.ac}">${a.seal}</div>
+      <div class="codex-frase" style="color:${a.ac}cc">"${a.frase}"</div>
+      <div class="codex-essencia">${a.essencia}</div>
+    </div>
+
+    <div class="codex-section">
+      <div class="codex-sec-title" style="color:${a.ac}">Camada Trinitária</div>
+      <div class="codex-trinity">
+        <div class="trinity-row" style="border-color:${a.ac}22">
+          <div class="trinity-label">PAI</div>${a.trinity.pai}
+        </div>
+        <div class="trinity-row" style="border-color:${a.ac}22">
+          <div class="trinity-label">FILHO</div>${a.trinity.filho}
+        </div>
+        <div class="trinity-row" style="border-color:${a.ac}22">
+          <div class="trinity-label">ESPÍRITO</div>${a.trinity.espirito}
+        </div>
+      </div>
+    </div>
+
+    <div class="codex-section">
+      <div class="codex-sec-title" style="color:${a.ac}">Conexões · Codice Azure</div>
+      <div class="codex-connections">${connsHtml}</div>
+    </div>
+
+    <div class="codex-section">
+      <div class="codex-sec-title" style="color:${a.ac}">Biblioteca · Notas</div>
+      <div class="codex-notes" id="notesList-${archId}">${notesHtml||'<div style="opacity:.3;font-size:.8rem">Nenhuma nota ainda.</div>'}</div>
+      <div class="add-note-row">
+        <textarea class="add-note-input" id="noteInput-${archId}"
+          placeholder="Adicionar texto, reflexão, referência…"
+          style="border-color:${a.ac}33"></textarea>
+        <button class="add-note-btn" id="noteBtn-${archId}"
+          style="background:${a.ac}18;border-color:${a.ac}44;color:${a.ac}">Selar ∆7</button>
+      </div>
+    </div>
+
+    <div class="codex-footer-seal">
+      KOBLLUX · ${a.id.toUpperCase()} · ${a.fusao}<br>
+      VERDADE × INTEGRAR ÷ Δ = ∞ · 3×6×9×7=1134
+    </div>`;
+
+  /* note actions */
+  document.getElementById(`noteBtn-${archId}`)?.addEventListener('click',()=>{
+    const inp=document.getElementById(`noteInput-${archId}`);
+    const txt=(inp?.value||'').trim();
+    if(!txt) return;
+    if(!state.notesDB[archId]) state.notesDB[archId]=[];
+    const ts=new Date().toLocaleString('pt-BR');
+    state.notesDB[archId].push({text:txt,ts});
+    saveNotes();
+    KBLX_LOG.emit('NOTE_ADD',{arch:archId,len:txt.length});
+    inp.value='';
+    openCodex(archId);
   });
-  document.getElementById('activePhaseLabel').textContent=
-    `${p.label} · ${p.archs.map(a=>a.charAt(0).toUpperCase()+a.slice(1)).join('·')}`;
+
+  /* connection chips */
+  body.querySelectorAll('[data-open]').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      KBLX_LOG.emit('CONN_NAVIGATE',{from:archId,to:chip.dataset.open});
+      openCodex(chip.dataset.open);
+    });
+  });
+
+  /* back */
+  document.getElementById('backBtn')?.addEventListener('click',()=>{
+    KBLX_LOG.route('codex:'+archId,'main');
+    showView('main');
+  });
+
+  showView('codex');
 }
 
-document.getElementById('phaseBar').addEventListener('click',ev=>{
-  const pill=ev.target.closest('[data-phase]');
-  if(pill) setPhase(+pill.dataset.phase);
-});
+/* ── VIEW ROUTING ── */
+function showView(name){
+  document.getElementById('view-main').classList.toggle('active',name==='main');
+  document.getElementById('view-codex').classList.toggle('active',name==='codex');
+}
 
+/* ── CONTROLS ── */
 document.getElementById('btnPhase').onclick=()=>{
-  currentPhase=(currentPhase+1)%4;
-  setPhase(currentPhase);
-  // add post from new phase
+  curPhase=(curPhase+1)%4;
+  buildPhaseBar();
   state.posts.unshift(makePost());
   renderFeed();
+  KBLX_LOG.emit('PHASE_ADVANCE',{phase:PHASES[curPhase].key});
 };
-
-/* ── NEW POST ── */
 document.getElementById('btnNew').onclick=()=>{
   state.posts.unshift(makePost());
   renderFeed();
+  KBLX_LOG.emit('NEW_POST',{phase:PHASES[curPhase].key});
+};
+document.getElementById('navHome').onclick=()=>{ showView('main'); KBLX_LOG.emit('NAV_HOME',{}); };
+document.getElementById('navCreate').onclick=()=>{
+  state.posts.unshift(makePost());
+  renderFeed();
+  KBLX_LOG.emit('NAV_CREATE',{});
 };
 
-/* ── ARCH DETAIL (story tap) ── */
-function openArchDetail(a){
-  const info = `${a.name} · ${a.hz}Hz · ${a.opc}\n\n${a.essencia}\n\n"${a.frase}"\n\nFusão: ${a.fusao}`;
-  // inject a card at top
-  state.posts.unshift({
-    ...makePost(a.id),
-    arch: a,
-  });
-  renderFeed();
-}
-
-/* ── SUMBUS SCROLL ── */
-(function scrollSumbus(){
-  const bar=document.getElementById('sumbusBar');
-  let pos=0;
-  setInterval(()=>{
-    pos+=1;
-    if(pos>bar.scrollWidth) pos=0;
-    bar.scrollLeft=pos;
-  },50);
+/* ── SUMBUS AUTO-SCROLL ── */
+(()=>{
+  const bar=document.getElementById('sumbusScroll');
+  let x=0;
+  setInterval(()=>{ x+=.7; if(x>bar.scrollWidth) x=0; bar.scrollLeft=x; },40);
 })();
 
-/* ── INIT ── */
-buildStories();
-setPhase(0);
+/* ── PARTICLES · MAGENTA ── */
+window.addEventListener('load',()=>{
+  if(typeof particlesJS==='undefined') return;
+  particlesJS('particles-js',{
+    particles:{
+      number:{value:40,density:{enable:true,value_area:800}},
+      color:{value:['#cc00cc','#00cccc','#8800cc']},
+      shape:{type:'circle'},
+      opacity:{value:0.3,random:true},
+      size:{value:2,random:true},
+      line_linked:{enable:true,distance:100,color:'#cc00cc',opacity:0.08,width:1},
+      move:{enable:true,speed:1.2,direction:'none',random:true,out_mode:'out'}
+    },
+    interactivity:{
+      detect_on:'canvas',
+      events:{onhover:{enable:true,mode:'repulse'},onclick:{enable:true,mode:'push'}},
+      modes:{push:{particles_nb:2},repulse:{distance:60}}
+    },
+    retina_detect:true
+  });
+  KBLX_LOG.emit('PARTICLES_INIT',{color:'magenta',count:40});
+});
 
-// seed initial posts — one per pipeline phase archetype
-['atlas','nova','vitalis','pulse','artemis','kaos','aion','bllue'].forEach(id=>{
+/* ── INTERACTION LOGGER (toque/clique no particles) ── */
+document.getElementById('particles-js').addEventListener('click',e=>{
+  const x=e.clientX, y=e.clientY;
+  const n=++KBLX_LOG._n;
+  const v=KBLX_LOG._seq[(n-1)%3];
+  console.log(`%c[KOBLLUX·FIELD] %c(${x},${y}) val=${v} ${KBLX_LOG._phases[v]}`,
+    'color:#880088','color:#cc88cc');
+},{passive:true});
+
+/* ── INIT ── */
+loadNotes();
+buildStories();
+buildPhaseBar();
+
+/* seed initial posts */
+['atlas','nova','vitalis','pulse','artemis','kaos','aion','kodux','bllue'].forEach(id=>{
   state.posts.push(makePost(id));
 });
 renderFeed();
-
-/* ── PARTICLES ── */
-window.addEventListener('load',()=>{
-  if(typeof particlesJS!=='undefined'){
-    particlesJS('app',{
-      particles:{number:{value:28,density:{enable:true,value_area:800}},
-        color:{value:'#4DE0FF'},shape:{type:'circle'},
-        opacity:{value:0.18,random:true},size:{value:2,random:true},
-        line_linked:{enable:true,distance:120,color:'#4DE0FF',opacity:0.07,width:1},
-        move:{enable:true,speed:0.6,direction:'none',random:true,straight:false}},
-      interactivity:{detect_on:'canvas',events:{onhover:{enable:true,mode:'repulse'},onclick:{enable:false}}},
-      retina_detect:true
-    });
-  }
-});
+KBLX_LOG.emit('INIT',{archs:ARCHETYPES.length,posts:state.posts.length});
+console.log('%c⊙ KOBLLUX · Roda Viva ∆7 %cativado\n  VERDADE × INTEGRAR ÷ Δ = ∞\n  3×6×9×7 = 1134',
+  'color:#cc00cc;font-size:14px;font-weight:bold',
+  'color:#888;font-size:12px');
 </script>
 </body>
 </html>
