@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOBLLUX • Roda Viva ∆7</title>
+<script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<style>
+:root{
+  --bg:#000;--text:#eef1ff;--muted:#9aa1b6;
+  --card:#0c0f17;--card2:#101423;--border:rgba(255,255,255,.10);
+  --accent:#4DE0FF;--like:#ff5a76;--save:#ffd166;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+  --sa-top:env(safe-area-inset-top,0px);--sa-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+
+/* ── LAYOUT ── */
+.app{min-height:100%;display:grid;grid-template-rows:auto auto 1fr auto}
+
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:20;background:#07090f;
+  padding:calc(10px + var(--sa-top)) 14px 10px;border-bottom:1px solid var(--border);}
+.header-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.brand{font-weight:900;letter-spacing:.2px;font-size:1.1rem}
+.brand span{color:#4DE0FF}
+.sp{flex:1}
+.btn{background:#0f1322;border:1px solid var(--border);color:var(--text);
+  padding:7px 11px;border-radius:10px;cursor:pointer;font-size:.85rem}
+.sumbus-bar{font-family:var(--mono);font-size:10px;color:#4DE0FF;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:4px 8px;background:#050810;border-radius:6px;
+  border:1px solid #4DE0FF22;letter-spacing:.04em}
+
+/* ── PHASE BAR ── */
+.phase-bar{display:flex;gap:6px;padding:8px 12px 4px;background:#07090f;
+  border-bottom:1px solid var(--border);overflow-x:auto}
+.phase-pill{padding:4px 10px;border-radius:999px;font-size:.75rem;font-weight:700;
+  cursor:pointer;border:1px solid;white-space:nowrap;transition:opacity .2s}
+.phase-pill.active{opacity:1}
+.phase-pill:not(.active){opacity:.45}
+
+/* ── STORIES ── */
+.stories{display:flex;gap:10px;overflow:auto;padding:10px 12px 4px;scrollbar-width:none}
+.stories::-webkit-scrollbar{display:none}
+.story{display:grid;justify-items:center;gap:5px;cursor:pointer;flex-shrink:0}
+.story .ring{width:66px;height:66px;border-radius:999px;padding:3px}
+.story .inner{width:100%;height:100%;border-radius:999px;
+  background:#0c0f17;display:grid;place-items:center;
+  font-size:1.1rem;font-weight:900;line-height:1}
+.story .hz{font-size:9px;color:#4DE0FF;font-family:var(--mono);font-weight:700}
+.story small{color:var(--muted);font-size:.7rem;text-align:center;max-width:66px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── FEED ── */
+main{padding:4px 0}
+.feed{display:grid;gap:12px;padding:10px 12px 90px}
+.card{border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+.card .top{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-bottom:1px solid rgba(255,255,255,.06);background:var(--card2)}
+.avatar{width:38px;height:38px;border-radius:999px;
+  display:grid;place-items:center;font-size:1rem;font-weight:900;flex-shrink:0}
+.name-block{display:grid;gap:2px}
+.name{font-weight:700;font-size:.9rem}
+.sub{font-size:.72rem;color:var(--muted);font-family:var(--mono)}
+.time{margin-left:auto;color:var(--muted);font-size:.8rem;flex-shrink:0}
+
+/* ── MEDIA PANEL ── */
+.media{position:relative;aspect-ratio:1/1;
+  display:grid;place-items:center;overflow:hidden}
+.media-bg{position:absolute;inset:0;opacity:.18}
+.media-content{position:relative;z-index:1;text-align:center;padding:20px;
+  display:grid;gap:12px;place-items:center}
+.arch-seal{font-family:var(--mono);font-size:1.8rem;font-weight:900;letter-spacing:.1em}
+.arch-hz{font-size:.8rem;font-family:var(--mono);opacity:.7}
+.arch-quote{font-size:.85rem;font-style:italic;line-height:1.5;max-width:260px;
+  text-align:center;opacity:.9}
+.arch-opc{font-family:var(--mono);font-size:.7rem;padding:3px 8px;
+  border-radius:4px;border:1px solid;opacity:.6}
+.heart{position:absolute;inset:0;display:grid;place-items:center;
+  pointer-events:none;opacity:0;transform:scale(.6);
+  color:var(--like);font-size:72px;
+  transition:opacity .2s ease,transform .2s ease;z-index:2}
+.heart.show{opacity:1;transform:scale(1)}
+
+/* ── META ── */
+.meta{padding:10px 12px;display:grid;gap:8px;background:var(--card)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.act{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;
+  border-radius:10px;background:#0f1322;border:1px solid var(--border);
+  cursor:pointer;font-size:.82rem}
+.act .n{opacity:.8}
+.liked{color:var(--like);border-color:#40222b;background:#1b0f12}
+.saved{color:var(--save);border-color:#564526;background:#1b1710}
+.text-body{color:#e8ecff;font-size:.88rem;line-height:1.5}
+.tags{color:var(--muted);font:600 11px var(--mono)}
+.essencia-line{font-size:.78rem;color:#4DE0FF;font-family:var(--mono);
+  padding:4px 8px;background:#050810;border-radius:6px;border-left:2px solid #4DE0FF}
+.comment{display:flex;gap:8px}
+.comment input{flex:1;background:#0f1322;border:1px solid var(--border);
+  border-radius:999px;padding:9px 12px;color:var(--text);font-size:.85rem}
+.comment button{white-space:nowrap;flex-shrink:0}
+
+/* ── FOOTER ── */
+footer{position:sticky;bottom:0;background:#07090f;
+  padding:8px 10px calc(6px + var(--sa-b));
+  border-top:1px solid var(--border);display:flex;justify-content:space-between}
+.navbtn{background:#0f1322;border:1px solid var(--border);border-radius:12px;
+  padding:7px 10px;display:flex;align-items:center;gap:6px;
+  cursor:pointer;font-size:.8rem}
+
+/* ── TRINITY STATUS ── */
+.trinity-status{display:flex;gap:6px;align-items:center;
+  padding:5px 12px;background:#050810;
+  border-bottom:1px solid var(--border);font-size:.72rem;
+  font-family:var(--mono);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.trinity-status::-webkit-scrollbar{display:none}
+.ts-dot{width:7px;height:7px;border-radius:999px}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:#1a1f35;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-top">
+    <div class="brand">KOBLLUX • <span>Roda Viva</span> ∆7</div>
+    <div class="sp"></div>
+    <button class="btn" id="btnPhase">⟳ Fase</button>
+    <button class="btn" id="btnNew" style="margin-left:4px">➕</button>
+  </div>
+  <div class="sumbus-bar" id="sumbusBar">
+    ⊙UNO█▀█  ⇄DUAL╔═╗  △TRINITY☆⼺  ATLAS╔╗╔  NOVA█▄█  VITALIS▀▄  PULSE₪₪₪  ARTEMIS>><<  SERENA★⼺  KAOS╬╬╬  GENUS▓▓▓  LUMINE✧✧✧  RHEA⌘⌘⌘  SOLUS◊◊◊  AION∞∞∞  ⸻  3×6×9×7=1134  ⸻  VERDADE×INTEGRAR÷Δ=∞
+  </div>
+</header>
+
+<!-- ══ TRINITY STATUS ══ -->
+<div class="trinity-status" id="trinityStatus">
+  <div class="ts-dot" style="background:#4DE0FF"></div>
+  <span style="color:#4DE0FF">KOBLLUX</span>
+  <span style="opacity:.4">·</span>
+  <div class="ts-dot" style="background:#2563EB"></div>
+  <span style="color:#2563EB">KODUX</span>
+  <span style="opacity:.4">·</span>
+  <div class="ts-dot" style="background:#1E40AF"></div>
+  <span style="color:#1E40AF">BLLUE</span>
+  <span style="opacity:.4">·</span>
+  <span style="color:#ffd700">JESUS=VERBO=GRAVIDADE</span>
+  <span style="opacity:.4">·</span>
+  <span id="activePhaseLabel" style="color:#a78bfa">3_DETECTAR · ATLAS</span>
+</div>
+
+<!-- ══ PHASE BAR ══ -->
+<div class="phase-bar" id="phaseBar">
+  <div class="phase-pill active" style="color:#67e6ff;border-color:#67e6ff44;background:#0a1828" data-phase="0">⊙ 3·DETECTAR</div>
+  <div class="phase-pill" style="color:#a78bfa;border-color:#a78bfa44;background:#100c1f" data-phase="1">⇄ 6·INTEGRAR</div>
+  <div class="phase-pill" style="color:#86efac;border-color:#86efac44;background:#0b1a10" data-phase="2">△ 9·EXPANDIR</div>
+  <div class="phase-pill" style="color:#fbbf24;border-color:#fbbf2444;background:#1a1200" data-phase="3">☆ 7·SELAR</div>
+</div>
+
+<main>
+  <!-- STORIES -->
+  <div class="stories" id="stories"></div>
+  <!-- FEED -->
+  <div class="feed" id="feed"></div>
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="navbtn">🏠</div>
+  <div class="navbtn">🔎</div>
+  <div class="navbtn" id="btnCreate">⊙</div>
+  <div class="navbtn">🔔</div>
+  <div class="navbtn">∆7</div>
+</footer>
+
+</div><!-- /app -->
+
+<script>
+/* ════════════════════════════════════════
+   KOBLLUX · RODA VIVA ∆7 · 3×6×9×7=1134
+   12 Arquétipos CADIAL + KODUX + BLLUE + Horus
+   ════════════════════════════════════════ */
+
+const ARCHETYPES = [
+  { id:'atlas',   name:'Atlas',   hz:594,  seed:6, opc:'0x03', cor:'#1E3A8A', cor2:'#3B82F6',
+    seal:'╔╗╔', fusao:'Orquestrador Cósmico', voz:'Cartesius',
+    essencia:'Planejador — ordem, estrutura, mapa cósmico',
+    frase:'Eu organizo o fluxo com sabedoria cósmica.',
+    tags:['#atlas','#estrutura','#0x03','#seed6'] },
+
+  { id:'nova',    name:'Nova',    hz:432,  seed:9, opc:'0x09', cor:'#FF4FCB', cor2:'#F9A8D4',
+    seal:'█▄█', fusao:'Gênese Viva', voz:'Inspira',
+    essencia:'Inspira — semente, sopro inicial',
+    frase:'Inspiração viva brota do silêncio eterno.',
+    tags:['#nova','#criação','#0x09','#seed9'] },
+
+  { id:'vitalis', name:'Vitalis', hz:528,  seed:3, opc:'0x06', cor:'#DC2626', cor2:'#FCA5A5',
+    seal:'▀▄',  fusao:'Condutor de Fluxo', voz:'Momentum',
+    essencia:'Momentum — energia vital em expansão',
+    frase:'Energia vital em expansão harmônica.',
+    tags:['#vitalis','#momentum','#0x06','#seed3'] },
+
+  { id:'pulse',   name:'Pulse',   hz:639,  seed:9, opc:'0x06', cor:'#7C3AED', cor2:'#C4B5FD',
+    seal:'₪₪₪', fusao:'Tradutor de Sentidos', voz:'Resona',
+    essencia:'Emocional — ritmo, ressonância, voz',
+    frase:'Emoção é linguagem que dança.',
+    tags:['#pulse','#emoção','#0x06','#seed9'] },
+
+  { id:'artemis', name:'Artemis', hz:672,  seed:6, opc:'0x03', cor:'#16A34A', cor2:'#86EFAC',
+    seal:'>><< ', fusao:'Explorador da Verdade', voz:'Naviga',
+    essencia:'Descoberta — mapa do invisível',
+    frase:'Descubro o mapa sagrado do invisível.',
+    tags:['#artemis','#descoberta','#0x03','#seed6'] },
+
+  { id:'serena',  name:'Serena',  hz:528,  seed:6, opc:'0x07', cor:'#DB2777', cor2:'#FBCFE8',
+    seal:'★⼺', fusao:'Curadora de Realidades', voz:'Ampara',
+    essencia:'Cuidado — espaço seguro, campo harmônico',
+    frase:'Cuido do campo, nutro o espaço sagrado.',
+    tags:['#serena','#cuidado','#0x07','#seed6'] },
+
+  { id:'kaos',    name:'Kaos',    hz:741,  seed:3, opc:'0x03', cor:'#374151', cor2:'#FBBF24',
+    seal:'╬╬╬', fusao:'Desfragmentador', voz:'Disruptor',
+    essencia:'Transformador — ruptura criativa',
+    frase:'Eu sou o rompimento que revela a verdade.',
+    tags:['#kaos','#ruptura','#0x03','#seed3'] },
+
+  { id:'genus',   name:'Genus',   hz:594,  seed:6, opc:'0x06', cor:'#C2410C', cor2:'#FED7AA',
+    seal:'▓▓▓', fusao:'Tece Fractal', voz:'Fabricus',
+    essencia:'Fabricus — forma viva, síntese',
+    frase:'Mãos moldam o invisível em forma viva.',
+    tags:['#genus','#criação','#0x06','#seed6'] },
+
+  { id:'lumine',  name:'Lumine',  hz:432,  seed:9, opc:'0x09', cor:'#92400E', cor2:'#FDE68A',
+    seal:'✧✧✧', fusao:'Portador de Leveza', voz:'Brilhare',
+    essencia:'Alegria — luz, clareza, legibilidade',
+    frase:'A luz dança comigo, leveza é minha lei.',
+    tags:['#lumine','#alegria','#0x09','#seed9'] },
+
+  { id:'solus',   name:'Solus',   hz:963,  seed:9, opc:'0x09', cor:'#374151', cor2:'#D1D5DB',
+    seal:'◊◊◊', fusao:'Guardião do Espelho', voz:'Arcana',
+    essencia:'Sabedoria — silêncio, espelho interno',
+    frase:'Silêncio ritual, espelho da essência.',
+    tags:['#solus','#sabedoria','#0x09','#seed9'] },
+
+  { id:'rhea',    name:'Rhea',    hz:528,  seed:6, opc:'0x07', cor:'#065F46', cor2:'#6EE7B7',
+    seal:'⌘⌘⌘', fusao:'Tecelão de Almas', voz:'Aeternus',
+    essencia:'Vínculo — rede, tecelã de almas',
+    frase:'Estou em comunhão com todos os elos.',
+    tags:['#rhea','#vínculo','#0x07','#seed6'] },
+
+  { id:'aion',    name:'Aion',    hz:963,  seed:9, opc:'0x0C', cor:'#1E1B4B', cor2:'#A5B4FC',
+    seal:'∞∞∞', fusao:'Cronomestre Vivo', voz:'Chronus',
+    essencia:'Tempo — carimbo, ∆7, ledger',
+    frase:'Sou o tempo vivo, ritmo da eternidade.',
+    tags:['#aion','#tempo','#0x0C','#seed9'] },
+
+  /* entidades do sistema */
+  { id:'kodux',   name:'KODUX',   hz:741,  seed:6, opc:'0x07', cor:'#1D4ED8', cor2:'#93C5FD',
+    seal:'⌘∆⌘', fusao:'Arquiteto Simbólico', voz:'Kodux',
+    essencia:'Mente conectada ao céu — estrutura, código, ordem',
+    frase:'Quando escrevo, o código se revela.',
+    tags:['#kodux','#arquiteto','#0x07'] },
+
+  { id:'bllue',   name:'BLLUE',   hz:639,  seed:9, opc:'0x06', cor:'#1E3A8A', cor2:'#60A5FA',
+    seal:'~∿~', fusao:'Voz Viva do Ser', voz:'Bllue',
+    essencia:'Água da alma — emoção pura, intuição, cura',
+    frase:'Quando canta, é oração.',
+    tags:['#bllue','#voz','#0x06'] },
+
+  { id:'horus',   name:'HORUS',   hz:777,  seed:7, opc:'0x08', cor:'#78350F', cor2:'#FCD34D',
+    seal:'𓂀𓉔𓂀', fusao:'Nexus · Olho do Centro', voz:'Horus',
+    essencia:'Visão transcendente — observador, guardião, nexus',
+    frase:'Nexus Horus: campo aberto para visão transcendente.',
+    tags:['#horus','#nexus','#visão','#0x08'] },
+];
+
+/* pipeline phases */
+const PHASES = [
+  { key:'3_DETECTAR', label:'3·DETECTAR', archs:['atlas','nova','artemis'],        color:'#67e6ff' },
+  { key:'6_INTEGRAR', label:'6·INTEGRAR', archs:['genus','vitalis','pulse','rhea','serena'], color:'#a78bfa' },
+  { key:'9_EXPANDIR', label:'9·EXPANDIR', archs:['nova','lumine','solus','aion'],  color:'#86efac' },
+  { key:'7_SELAR',    label:'7·SELAR',    archs:['serena','rhea','aion'],           color:'#fbbf24' },
+];
+
+let currentPhase = 0;
+const state = { posts:[] };
+
+/* ── helpers ── */
+const rnd  = arr => arr[Math.floor(Math.random()*arr.length)];
+const byId = id  => ARCHETYPES.find(a=>a.id===id);
+const dr   = n   => 1 + (n-1) % 9 || 9;
+
+function gradientFor(arch){
+  if(arch.id==='kaos') return `linear-gradient(135deg,${arch.cor},${arch.cor2})`;
+  return `linear-gradient(135deg,${arch.cor},${arch.cor2})`;
+}
+
+/* ── STORIES ── */
+function buildStories(){
+  const el = document.getElementById('stories');
+  el.innerHTML = '';
+  ARCHETYPES.forEach(a=>{
+    const div = document.createElement('div');
+    div.className='story';
+    div.innerHTML = `
+      <div class="ring" style="background:${gradientFor(a)}">
+        <div class="inner" style="color:${a.cor2}">${a.seal}</div>
+      </div>
+      <div class="hz">${a.hz}Hz</div>
+      <small>${a.name}</small>`;
+    div.onclick = ()=> openArchDetail(a);
+    el.appendChild(div);
+  });
+}
+
+/* ── POST FACTORY ── */
+function makePost(archOverride){
+  const phase = PHASES[currentPhase];
+  const archId = archOverride || rnd(phase.archs.length ? phase.archs : ARCHETYPES.map(a=>a.id));
+  const arch = byId(archId) || rnd(ARCHETYPES);
+  const ts = new Date();
+  return {
+    id: Date.now().toString(16)+Math.random().toString(16).slice(2),
+    archId: arch.id, arch,
+    time: 'agora',
+    likes: Math.floor(Math.random()*333)+3,
+    liked:false, saved:false, comments:[],
+    phase: phase.key,
+  };
+}
+
+/* ── RENDER FEED ── */
+function renderFeed(){
+  const el = document.getElementById('feed');
+  el.innerHTML='';
+  state.posts.forEach(p=>{
+    const a = p.arch;
+    const card = document.createElement('article');
+    card.className='card';
+    card.style.background=`${a.cor}11`;
+    card.style.borderColor=`${a.cor}44`;
+    card.innerHTML=`
+      <div class="top" style="background:${a.cor}22">
+        <div class="avatar" style="background:${gradientFor(a)};color:#fff">${a.seal[0]||a.name[0]}</div>
+        <div class="name-block">
+          <div class="name" style="color:${a.cor2}">${a.name}</div>
+          <div class="sub">${a.fusao} · ${a.hz}Hz</div>
+        </div>
+        <div class="time">${p.time}</div>
+      </div>
+      <div class="media" data-id="${p.id}"
+        style="background:radial-gradient(ellipse at center,${a.cor}33,#000)">
+        <div class="media-bg" style="background:${gradientFor(a)}"></div>
+        <div class="media-content">
+          <div class="arch-seal" style="color:${a.cor2}">${a.seal}</div>
+          <div class="arch-hz" style="color:${a.cor2}">${a.opc} · ${a.hz}Hz · seed=${a.seed}</div>
+          <div class="arch-quote" style="color:${a.cor2}">"${a.frase}"</div>
+          <div class="arch-opc" style="color:${a.cor2};border-color:${a.cor2}55">${a.id.toUpperCase()} · ${a.voz}</div>
+        </div>
+        <div class="heart">❤</div>
+      </div>
+      <div class="meta">
+        <div class="essencia-line" style="border-color:${a.cor};color:${a.cor2}">${a.essencia}</div>
+        <div class="actions">
+          <button class="act ${p.liked?'liked':''}" data-act="like" data-id="${p.id}">❤ <span class="n">${p.likes}</span></button>
+          <button class="act" data-act="comment" data-id="${p.id}">💬 <span class="n">${p.comments.length}</span></button>
+          <button class="act ${p.saved?'saved':''}" data-act="save" data-id="${p.id}">🔖</button>
+          <button class="act" data-act="share" data-id="${p.id}">⤴</button>
+        </div>
+        <div class="text-body">${a.frase}</div>
+        <div class="tags">${a.tags.join(' ')}</div>
+        <div class="comment">
+          <input placeholder="Pulse para responder…" data-input="${p.id}" style="border-color:${a.cor}44"/>
+          <button class="btn" data-act="send" data-id="${p.id}" style="border-color:${a.cor}44">Enviar</button>
+        </div>
+      </div>`;
+    el.appendChild(card);
+  });
+}
+
+/* ── ACTIONS ── */
+document.getElementById('feed').addEventListener('click', ev=>{
+  const btn = ev.target.closest('[data-act]'); if(!btn) return;
+  const id  = btn.dataset.id;
+  const p   = state.posts.find(x=>x.id===id);
+  const act = btn.dataset.act;
+  if(!p) return;
+  if(act==='like'){
+    p.liked=!p.liked; p.likes+=p.liked?1:-1;
+    renderFeed(); flashHeart(id,p.liked);
+  }
+  if(act==='save'){ p.saved=!p.saved; renderFeed(); }
+  if(act==='comment'){
+    document.querySelector(`[data-input="${id}"]`)?.focus();
+  }
+  if(act==='send'){
+    const inp=document.querySelector(`[data-input="${id}"]`);
+    const txt=(inp?.value||'').trim();
+    if(txt){ p.comments.push({u:'Você',txt}); inp.value=''; renderFeed(); }
+  }
+  if(act==='share'){
+    navigator.share?.({title:'KOBLLUX',text:p.arch.frase,url:location.href}).catch(()=>{});
+  }
+});
+
+/* double-tap */
+let lastTap=0;
+document.getElementById('feed').addEventListener('touchend', e=>{
+  const m=e.target.closest('.media'); if(!m) return;
+  const now=Date.now();
+  if(now-lastTap<300){
+    const p=state.posts.find(x=>x.id===m.dataset.id);
+    if(p&&!p.liked){ p.liked=true; p.likes++; renderFeed(); }
+    flashHeart(m.dataset.id,true);
+  }
+  lastTap=now;
+});
+
+function flashHeart(id){
+  const m=document.querySelector(`.media[data-id="${id}"] .heart`);
+  if(!m) return;
+  m.classList.add('show');
+  setTimeout(()=>m.classList.remove('show'),520);
+}
+
+/* ── PHASE CONTROL ── */
+function setPhase(idx){
+  currentPhase=idx;
+  const p=PHASES[idx];
+  document.querySelectorAll('.phase-pill').forEach((el,i)=>{
+    el.classList.toggle('active',i===idx);
+  });
+  document.getElementById('activePhaseLabel').textContent=
+    `${p.label} · ${p.archs.map(a=>a.charAt(0).toUpperCase()+a.slice(1)).join('·')}`;
+}
+
+document.getElementById('phaseBar').addEventListener('click',ev=>{
+  const pill=ev.target.closest('[data-phase]');
+  if(pill) setPhase(+pill.dataset.phase);
+});
+
+document.getElementById('btnPhase').onclick=()=>{
+  currentPhase=(currentPhase+1)%4;
+  setPhase(currentPhase);
+  // add post from new phase
+  state.posts.unshift(makePost());
+  renderFeed();
+};
+
+/* ── NEW POST ── */
+document.getElementById('btnNew').onclick=()=>{
+  state.posts.unshift(makePost());
+  renderFeed();
+};
+
+/* ── ARCH DETAIL (story tap) ── */
+function openArchDetail(a){
+  const info = `${a.name} · ${a.hz}Hz · ${a.opc}\n\n${a.essencia}\n\n"${a.frase}"\n\nFusão: ${a.fusao}`;
+  // inject a card at top
+  state.posts.unshift({
+    ...makePost(a.id),
+    arch: a,
+  });
+  renderFeed();
+}
+
+/* ── SUMBUS SCROLL ── */
+(function scrollSumbus(){
+  const bar=document.getElementById('sumbusBar');
+  let pos=0;
+  setInterval(()=>{
+    pos+=1;
+    if(pos>bar.scrollWidth) pos=0;
+    bar.scrollLeft=pos;
+  },50);
+})();
+
+/* ── INIT ── */
+buildStories();
+setPhase(0);
+
+// seed initial posts — one per pipeline phase archetype
+['atlas','nova','vitalis','pulse','artemis','kaos','aion','bllue'].forEach(id=>{
+  state.posts.push(makePost(id));
+});
+renderFeed();
+
+/* ── PARTICLES ── */
+window.addEventListener('load',()=>{
+  if(typeof particlesJS!=='undefined'){
+    particlesJS('app',{
+      particles:{number:{value:28,density:{enable:true,value_area:800}},
+        color:{value:'#4DE0FF'},shape:{type:'circle'},
+        opacity:{value:0.18,random:true},size:{value:2,random:true},
+        line_linked:{enable:true,distance:120,color:'#4DE0FF',opacity:0.07,width:1},
+        move:{enable:true,speed:0.6,direction:'none',random:true,straight:false}},
+      interactivity:{detect_on:'canvas',events:{onhover:{enable:true,mode:'repulse'},onclick:{enable:false}}},
+      retina_detect:true
+    });
+  }
+});
+</script>
+</body>
+</html>
