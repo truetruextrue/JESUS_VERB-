@@ -6,7 +6,10 @@
       "Bash(python3 /workspaces/JESUS_VERB-/BOOT/BOOT_0X00_arquetipos_cadial_VEEB-A_D1.py)",
       "Bash(python3 -c \"import json; d=json.load\\(open\\('kobllux_codex_data.json'\\)\\); print\\(list\\(d.keys\\(\\)\\)\\)\")",
       "Bash(python3 roda_viva_council.py --no-color \"UNO 0x03 DETECTAR · 12 arquétipos CADIAL Atlas Nova Vitalis Pulse Artemis Serena Kaos Genus Lumine Solus Rhea Aion · espelho_input · KOBLLUX KODUX BLLUE Horus · pipeline 3697 · prompts visuais vozes gemini · lei VERDADE × INTEGRAR ÷ Δ = ∞\")",
-      "Bash(python3 kobllux_veeb_story.py --explicar kobllux_archetypes_full.json --no-color --titulo \"12 Arquétipos CADIAL · Espelho UNO\")"
+      "Bash(python3 kobllux_veeb_story.py --explicar kobllux_archetypes_full.json --no-color --titulo \"12 Arquétipos CADIAL · Espelho UNO\")",
+      "Bash(python3 kobllux_sumbus_generator.py --modo power)",
+      "Bash(python3 kobllux_sumbus_generator.py --modo oi_dual)",
+      "Bash(python3 kobllux_sumbus_generator.py --modo 78k)"
     ],
     "additionalDirectories": [
       "/home/user/JESUS_VERB-"
