@@ -1,0 +1,398 @@
+/* ═══════════════════════════════════════════════════════════
+   0x00 · INICIAR · B · D8 · CSS
+   ═══════════════════════════════════════════════════════════
+   Arquivo   : symbolbar-drag-carrossel-kobllux/css/0x00_iniciar_B_D8.css
+   Opcode    : 0x00 · 396Hz
+   V.E.E.B.  : Base · ponto zero · S=Σbᵢ·2^(i-1) · identidade do sistema
+   KOBLLUX   : VERDADE×INTEGRAR÷Δ=∞ · S=Σbᵢ·2^(i-1)
+═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+       SYMBOL BAR · KOBLLUX ∆³  (drag livre + carrossel)
+       Logs APENAS no console (sem readout visível na tela)
+       ═══════════════════════════════════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(20,28,55,.9) 0%, rgba(6,8,14,.95) 55%, #000 100%);
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 80px),
+        repeating-linear-gradient(0deg,  rgba(255,255,255,.012) 0 1px, transparent 1px 80px),
+        radial-gradient(circle at 85% 90%, rgba(255,82,229,.06) 0%, transparent 35%);
+      z-index: 0;
+    }
+
+    :root {
+      --arch-primary:   #38BDF8;
+      --arch-secondary: #7cffb2;
+      --neon-cyan:      #00f0ff;
+      --neon-pink:      #ff00aa;
+
+      --bar-bg:         rgba(8, 10, 18, 0.85);
+      --bar-border:     rgba(255, 255, 255, 0.08);
+      --btn-size:       54px;
+      --btn-gap:        12px;
+
+      /* shrink (régua de 3 botões) */
+      --slot-h:         var(--btn-size);
+      --shrunk-slots:   3;
+    }
+
+    /* ── HUD READOUT do arquétipo (canto superior · sutil) ── */
+    .stage-label {
+      position: fixed;
+      top: 18px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,.35);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .stage-label b { color: var(--arch-primary); font-weight: 700; }
+
+    /* ╔══════════════════════════════════════════╗
+       ║  SYMBOL BAR                              ║
+       ╚══════════════════════════════════════════╝ */
+    .symbol-bar {
+      position: fixed;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 8px;
+      background: var(--bar-bg);
+      border: 1px solid var(--bar-border);
+      backdrop-filter: blur(20px);
+      box-shadow:
+        0 16px 40px rgba(0,0,0,.6),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      border-radius: 36px;
+      transition:
+        height .45s cubic-bezier(.34,1.56,.64,1),
+        width  .45s cubic-bezier(.34,1.56,.64,1),
+        padding .35s ease,
+        gap .35s ease,
+        border-radius .35s ease,
+        background .35s ease,
+        opacity .45s ease,
+        filter .45s ease;
+      will-change: transform, height, width;
+      cursor: grab;
+    }
+    .symbol-bar.is-horizontal {
+      flex-direction: row;
+      padding: 8px 12px;
+      gap: 10px;
+      border-radius: 36px;
+    }
+    .symbol-bar.dragging {
+      cursor: grabbing;
+      transition: none !important;
+      box-shadow:
+        0 30px 60px rgba(0,0,0,.7),
+        0 0 24px var(--arch-primary),
+        0 0 0 1px var(--arch-primary) inset;
+    }
+
+    /* ── GRIP (handle visível para arrasto · só estética) ── */
+    .bar-grip {
+      width: 28px; height: 4px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.15);
+      flex-shrink: 0;
+      pointer-events: none;
+      transition: background .25s ease, width .35s ease, height .35s ease;
+    }
+    .symbol-bar.is-horizontal .bar-grip {
+      width: 4px; height: 28px;
+    }
+    .symbol-bar.shrunk .bar-grip { background: var(--arch-primary); }
+
+    /* ── TRACK (container dos botões · vira carrossel em shrunk) ── */
+    .bar-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--btn-gap);
+      overflow: hidden;
+      transition: all .45s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+    }
+    .symbol-bar.is-horizontal .bar-track {
+      flex-direction: row;
+    }
+
+    /* ── SHRUNK · só 3 slots visíveis · carrossel ── */
+    .symbol-bar.shrunk {
+      padding: 10px 6px;
+      gap: 8px;
+      border-radius: 28px;
+      background: rgba(8, 10, 18, 0.92);
+      border-color: var(--arch-primary);
+      box-shadow:
+        0 16px 40px rgba(0,0,0,.6),
+        0 0 18px var(--arch-primary);
+    }
+    .symbol-bar.shrunk .bar-track {
+      max-height: calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+      max-width:  calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+    }
+    .symbol-bar.shrunk.is-horizontal .bar-track {
+      max-height: var(--slot-h);
+      max-width:  calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+    }
+    .symbol-bar.shrunk:not(.is-horizontal) .bar-track {
+      max-height: calc((var(--slot-h) + var(--btn-gap)) * var(--shrunk-slots) - var(--btn-gap));
+      max-width:  var(--slot-h);
+    }
+    .symbol-bar.shrunk .hud-info,
+    .symbol-bar.shrunk .arch-tag-label { display: none; }
+
+    /* indicador de carrossel (página atual / total) */
+    .carousel-dots {
+      display: none;
+      gap: 4px;
+      padding-top: 4px;
+    }
+    .symbol-bar.shrunk .carousel-dots { display: flex; }
+    .symbol-bar.is-horizontal.shrunk .carousel-dots { padding: 0 0 0 4px; }
+    .carousel-dots .dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      transition: background .2s ease, transform .2s ease;
+    }
+    .carousel-dots .dot.active {
+      background: var(--arch-primary);
+      transform: scale(1.4);
+      box-shadow: 0 0 8px var(--arch-primary);
+    }
+
+    /* ── BOTÕES ── */
+    .symbol-wrap {
+      display: flex;
+      align-items: center; justify-content: center;
+      flex-shrink: 0;
+      width: var(--btn-size);
+      height: var(--btn-size);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;
+    }
+    .symbol-button {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--bar-border);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      display: grid; place-items: center;
+      transition:
+        background .2s ease, color .2s ease,
+        border-color .2s ease, transform .2s ease,
+        box-shadow .25s ease;
+      position: relative;
+    }
+    .symbol-button:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--arch-primary);
+      color: var(--arch-primary);
+      transform: scale(1.08);
+      box-shadow: 0 0 14px var(--arch-primary);
+    }
+    .symbol-button:active { transform: scale(.94); }
+
+    /* main toggle */
+    .symbol-button.main-toggle {
+      color: var(--arch-primary);
+      border-color: var(--arch-primary);
+      box-shadow: 0 0 14px var(--arch-primary);
+    }
+    .symbol-button.main-toggle::before {
+      content: "";
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--arch-primary);
+      opacity: .25;
+      animation: togglePulse 3s ease-in-out infinite;
+    }
+    @keyframes togglePulse {
+      0%,100% { transform: scale(1);    opacity: .25; }
+      50%     { transform: scale(1.18); opacity: 0;   }
+    }
+
+    /* btn-arch · orb central */
+    #btn-arch {
+      padding: 0;
+      background: transparent;
+      border-color: var(--arch-secondary);
+      box-shadow: 0 0 18px var(--arch-primary);
+    }
+    #btn-arch:hover {
+      box-shadow: 0 0 26px var(--arch-primary), 0 0 8px var(--arch-secondary);
+    }
+    .orb-microphone-container {
+      width: 100%; height: 100%;
+      display: grid; place-items: center;
+      position: relative;
+    }
+    .tts-orb-mini {
+      width: 86%; height: 86%;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(circle at 50% 50%, var(--arch-secondary) 0%, #0a0a18 80%);
+      box-shadow:
+        inset 0 0 16px rgba(0,0,0,.6),
+        inset 0 0 0 2px var(--arch-primary);
+      overflow: hidden;
+      position: relative;
+    }
+    .tts-orb-mini::before {
+      content: ""; position: absolute; inset: -2px;
+      border-radius: 50%;
+      border: 1px dashed var(--arch-primary);
+      opacity: .6;
+      animation: archRing 6s linear infinite;
+    }
+    .orb {
+      width: 56%; height: 56%;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      position: relative;
+    }
+    .orb-core {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, var(--arch-secondary), transparent 60%),
+        radial-gradient(circle at 70% 70%, var(--arch-primary), var(--arch-secondary));
+      box-shadow:
+        0 0 18px var(--arch-primary),
+        0 0 36px rgba(120,227,255,.4);
+      animation: orbSpin 6s linear infinite;
+    }
+    @keyframes orbSpin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes archRing {
+      0%   { transform: rotate(0deg);   opacity: .6; }
+      50%  { opacity: .25; }
+      100% { transform: rotate(360deg); opacity: .6; }
+    }
+    @keyframes orbPulse {
+      from { transform: scale(1); }
+      to   { transform: scale(1.15); }
+    }
+    .symbol-bar.speaking #main-orb .orb-core {
+      animation:
+        orbSpin 2s linear infinite,
+        orbPulse 0.5s ease-in-out infinite alternate;
+    }
+
+    /* HUD STATUS */
+    .hud-info {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      color: var(--arch-primary);
+      text-transform: uppercase;
+      text-align: center;
+      padding: 6px 4px 2px;
+      max-width: 84px;
+      line-height: 1.4;
+      opacity: .85;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      pointer-events: none;
+    }
+    .symbol-bar:not(.is-horizontal) .hud-info {
+      border-top: 1px solid var(--bar-border);
+      margin-top: 4px;
+      padding-top: 8px;
+    }
+    .symbol-bar.is-horizontal .hud-info {
+      max-width: none;
+      padding: 4px 10px;
+      border-left: 1px solid var(--bar-border);
+    }
+
+    /* archetype tag */
+    .arch-tag-label {
+      position: absolute;
+      top: -6px; right: -6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 1px;
+      color: #000;
+      background: var(--arch-primary);
+      padding: 2px 6px;
+      border-radius: 99px;
+      box-shadow: 0 0 10px var(--arch-primary);
+      pointer-events: none;
+    }
+
+    /* idle */
+    .symbol-bar.idle {
+      opacity: .35;
+      filter: saturate(.5);
+    }
+    .symbol-bar.idle:hover { opacity: 1; filter: none; }
+
+    /* tooltip */
+    .symbol-button[data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      top: 50%; left: calc(100% + 8px);
+      transform: translateY(-50%);
+      padding: 4px 8px;
+      background: rgba(0,0,0,.9);
+      color: var(--arch-primary);
+      font-size: 0.62rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1.5px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .symbol-bar.is-horizontal .symbol-button[data-tip]:hover::after {
+      top: calc(100% + 6px); left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* hint flutuante de "arraste-me" */
+    .drag-hint {
+      position: fixed;
+      bottom: 18px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,.35);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+      animation: hintFade 6s ease-in-out forwards;
+    }
+    @keyframes hintFade {
+      0%,30%,70% { opacity: .55; }
+      100%       { opacity: 0; }
+    }

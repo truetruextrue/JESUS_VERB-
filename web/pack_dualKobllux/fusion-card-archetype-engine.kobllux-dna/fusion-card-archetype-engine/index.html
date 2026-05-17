@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><!--
+  KOBLLUX DNA · fusion-card-archetype-engine · index.html
+  Opcode: 0x00 INICIAR ○ 396Hz · V.E.E.B. B·D8
+  Fractal: 3×6×9×7=1134 · S=Σbᵢ·2^(i-1) · VERDADE×INTEGRAR÷Δ=∞
+  Boot: bootloader→indexdb→icons→dna→main
+--><link rel="stylesheet" href="./css/main.css">
+  <meta charset="utf-8">
+  <title>Fusion Card · Archetype Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;800;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="./css/0x00_iniciar_B_D8.css">
+<link rel="manifest" href="./0x02_integrar_E_D4_manifest.webmanifest"></head>
+<body>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║  CARD                                        ║
+       ╚══════════════════════════════════════════════╝ -->
+  <div class="container">
+    <div class="fusion-card" id="mainCard">
+
+      <!-- ORB COLAPSADO (visível só em .closed) -->
+      <div class="collapsed-orb" id="collapsedOrb" title="Expandir card">
+        <div class="arch-orb"><span class="glyph" id="collapsedGlyph">⧉</span></div>
+      </div>
+
+      <!-- archetype counter -->
+      <div class="arch-counter" id="archCounter">01/12</div>
+
+      <!-- HEADER -->
+      <div class="card-header" id="cardHeader">
+        <div class="avatar-slot" id="avatarTarget" title="Gerenciar Chaves (Cofre)">
+          <div class="arch-orb"><span class="glyph" id="avatarGlyph">―</span></div>
+        </div>
+        <div class="text-block">
+          <div class="greeting-row">
+            <span class="txt-thin" id="lblHello">Oi,</span>
+            <span class="txt-heavy" id="lblName">Convidado</span>
+          </div>
+          <div class="brand-dual">DUAL</div>
+        </div>
+        <div class="clock-widget">
+          <div class="time-display" id="clockTime">00:00</div>
+          <span class="status-led">ONLINE</span>
+        </div>
+        <button class="hud-menu-btn" id="hudMenuBtn" title="Menu Rápido">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+
+      <!-- META-STRIP do arquétipo -->
+      <div class="arch-meta-strip" id="archMetaStrip">
+        <span class="geom" id="metaGeom">―</span>
+        <span class="opcode" id="metaOpcode">0x02</span>
+        <span class="verb" id="metaVerb">INTEGRAR</span>
+        <span class="freq" id="metaFreq">528Hz</span>
+        <span class="dim" id="metaDim">D2·Plano</span>
+      </div>
+
+      <!-- PREVIEW (compat) -->
+      <div class="small-preview" id="smallPreview" title="Gerenciar Chaves">
+        <div class="mini-avatar" id="smallMiniAvatar"><div class="arch-orb"></div></div>
+        <div class="small-text" id="smallText">Aguardando ativação...</div>
+        <div class="ident-badge" id="smallIdent">--</div>
+      </div>
+
+      <div class="drag-handle"></div>
+      <div class="orb-menu-trigger" id="orbMenuTrigger" title="Menu Rápido">●●●</div>
+
+      <!-- BODY -->
+      <div class="card-body" id="cardBody">
+
+        <!-- Arquétipo Navegador -->
+        <div class="arch-nav stagger-item">
+          <button id="archPrev" title="Arquétipo anterior">◀</button>
+          <div class="pill">
+            <span class="arch-name" id="archName">ATLAS</span>
+            <span class="arch-desc" id="archDesc">Estrutura &amp; Governo</span>
+          </div>
+          <button id="archNext" title="Próximo arquétipo">▶</button>
+        </div>
+
+        <!-- Strip cromática (12 chips) -->
+        <div class="arch-strip stagger-item" id="archStrip"></div>
+
+        <!-- Input User -->
+        <div class="input-wrapper stagger-item">
+          <input type="text" class="cyber-input" id="inputUser" placeholder="Identifique-se..." autocomplete="off">
+        </div>
+
+        <!-- Ativação ASCII -->
+        <div class="activation-wrap stagger-item">
+          <div class="activation-toggle" onclick="toggleSection('activationCard')">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--arch-primary);box-shadow:0 0 10px var(--arch-primary)"></div>
+              <strong style="letter-spacing:1px;font-size:.9rem">Ativação ASCII</strong>
+            </div>
+            <div style="margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.4);letter-spacing:1px">BASE v1</div>
+          </div>
+          <div id="activationCard" class="activation-card activation-hidden">
+            <div style="display:flex;align-items:flex-start;gap:10px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="mini-avatar" id="actMiniAvatar" style="width:36px;height:36px"><div class="arch-orb"></div></div>
+                <div>
+                  <div style="font-weight:700">CÉREBRO</div>
+                  <div style="font-size:0.78rem;opacity:0.6"><span id="actName">User</span></div>
+                </div>
+              </div>
+              <div class="activation-badge" id="actBadge" style="margin-left:auto">v:--</div>
+            </div>
+            <pre id="actPre" class="activation-pre">[ATLAS] Aguardando ativação...</pre>
+            <div class="activation-controls" style="display:flex;gap:8px;margin-top:8px">
+              <button class="trigger-btn" id="copyActBtn">COPIAR</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM & NEURAL -->
+        <div class="activation-wrap stagger-item">
+          <div class="activation-toggle" onclick="toggleSection('systemCard')">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--neon-purple);box-shadow:0 0 10px var(--neon-purple)"></div>
+              <strong style="letter-spacing:1px;font-size:.9rem">SYSTEM &amp; NEURAL</strong>
+            </div>
+            <div style="margin-left:auto;font-size:.78rem;color:rgba(255,255,255,.4);letter-spacing:1px">CONFIG</div>
+          </div>
+          <div id="systemCard" class="activation-card activation-hidden">
+            <div class="section-title">IDENTIDADE DA INFODOSE</div>
+            <input type="text" id="infodoseNameInput" placeholder="Nome: World System...">
+
+            <div class="section-title" style="margin-top:12px">CONEXÃO NEURAL (SK)</div>
+            <input type="password" id="apiKeyInput" placeholder="sk-or-..." autocomplete="off">
+
+            <div class="model-toggle">
+              <select id="modelSelect">
+                <option value="" disabled="" selected="">Selecione Modelo</option>
+                <option value="nvidia/nemotron-3-nano-30b-a3b:free">NemoTron (Free)</option>
+                <option value="allenai/molmo-2-8b:free">MolMo (Free)</option>
+                <option value="mistralai/devstral-2512:free">DevStral</option>
+                <option value="openai/gpt-oss-120b:free">OSS120b</option>
+              </select>
+            </div>
+
+            <div class="panel-divider"></div>
+            <button id="saveSystemBtn">SALVAR CONFIGURAÇÃO</button>
+          </div>
+        </div>
+
+        <!-- MODE -->
+        <div class="stagger-item" style="margin-top:8px">
+          <div class="stat-lbl">INTERFACE MODE</div>
+          <div style="display:flex;gap:8px">
+            <button class="mode-btn active-mode" id="btnModeCard" onclick="setMode('card')">CARD</button>
+            <button class="mode-btn" id="btnModeOrb" onclick="setMode('orb')">ORB</button>
+            <button class="mode-btn" id="btnModeHud" onclick="setMode('hud')">HUD</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- KEYS MANAGER MODAL -->
+  <div id="keysModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card" role="dialog">
+      <div class="keys-header">
+        <div>
+          <div id="keysTitle" style="font-weight:800;font-size:1.1rem;color:var(--arch-primary);letter-spacing:1px">USER KEYS MANAGER</div>
+          <div style="color:rgba(255,255,255,.5);font-size:.82rem;margin-top:4px">Gerencie suas chaves API com segurança local (Cofre).</div>
+        </div>
+        <button id="closeKeysBtn" class="small-btn">✕</button>
+      </div>
+      <div class="key-list" id="keyList">Nenhuma chave cadastrada.</div>
+      <div class="form-section" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)">
+        <div class="form-grid">
+          <input id="keyNameInput" placeholder="Nome (ex: Principal)">
+          <input id="keyTokenInput" type="password" placeholder="Token / ESK">
+        </div>
+        <button id="addKeyBtn" class="small-btn" style="width:100%;margin-top:10px">ADICIONAR CHAVE</button>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:space-between;margin-top:14px;border-top:1px solid rgba(255,255,255,.05);padding-top:12px">
+        <div style="font-size:.7rem;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px">
+          <i data-lucide="shield-check" style="width:14px"></i>
+          <span id="vaultStatusText">Cofre Aberto</span>
+        </div>
+        <button id="lockVaultBtn" class="small-btn danger">BLOQUEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VAULT UNLOCK MODAL -->
+  <div id="vaultModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card">
+      <div class="vault-icon"><i data-lucide="lock" style="width:24px;height:24px"></i></div>
+      <h3 style="margin:0 0 8px 0;font-weight:800;text-align:center;letter-spacing:1px">ACESSO AO COFRE</h3>
+      <p style="margin:0 0 14px 0;font-size:.88rem;color:rgba(255,255,255,.5);text-align:center">Seus dados estão criptografados. Digite a senha para desbloquear.</p>
+      <input type="password" id="vaultPassInput" class="cyber-input" style="text-align:center;margin-bottom:12px" placeholder="Senha...">
+      <div style="display:flex;gap:8px;justify-content:center">
+         <button id="vaultCancelBtn" class="small-btn">Cancelar</button>
+         <button id="vaultUnlockBtn" class="small-btn active-btn">DESBLOQUEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_block-0_B_D3.js"></script><!-- ORCH L0 · DADOS_PUROS --><script src="./js/L0_0x07_kobllux-opcodes_B_D3.js"></script><!-- ORCH L0 · DADOS_PUROS --><script src="./js/L0_0x01_archetypes-db_V_D5.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x0A_currentarchidx_E_D5.js"></script><!-- ORCH L2 · REGISTRO --><script src="./js/L2_0x0B_a_E2_D4.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_nextarchetype_B_D8-2.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x0A_strip_E_D5-2.js"></script><!-- ORCH L2 · REGISTRO --><script src="./js/L2_0x09_safe_V_D6.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_el_B_D8-3.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x08_card_E2_D3.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x0C_card_E2_D7.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x0C_openmodal_E2_D7-2.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_now_B_D8-4.js"></script><!-- ORCH L7 · ORQUESTRADOR --><script src="./js/L7_0x05_savedarch_E_D6.js"></script>
+
+
+</body></html>

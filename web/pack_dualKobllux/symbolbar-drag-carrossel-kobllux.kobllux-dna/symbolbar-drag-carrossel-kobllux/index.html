@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><!--
+  KOBLLUX DNA · symbolbar-drag-carrossel-kobllux · index.html
+  Opcode: 0x00 INICIAR ○ 396Hz · V.E.E.B. B·D8
+  Fractal: 3×6×9×7=1134 · S=Σbᵢ·2^(i-1) · VERDADE×INTEGRAR÷Δ=∞
+  Boot: bootloader→indexdb→icons→dna→main
+--><link rel="stylesheet" href="./css/main.css">
+  <meta charset="utf-8">
+  <title>SymbolBar · Drag + Carrossel [KOBLLUX ∆³]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;800;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/0x00_iniciar_B_D8.css">
+<link rel="manifest" href="./0x02_integrar_E_D4_manifest.webmanifest"></head>
+<body>
+
+  <div class="stage-label">SYMBOLBAR · <b id="archLabel">ATLAS</b></div>
+  <div class="drag-hint">arraste · solte no topo ou rodapé para encolher · deslize na régua</div>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║  SYMBOL BAR (drag livre · auto-shrink)       ║
+       ╚══════════════════════════════════════════════╝ -->
+  <div class="symbol-bar" id="symbolBar" style="left:16px;top:50%;transform:translateY(-50%);">
+
+    <!-- archetype tag canto -->
+    <span class="arch-tag-label" id="archTag">0x02</span>
+
+    <!-- grip -->
+    <div class="bar-grip"></div>
+
+    <!-- track com botões -->
+    <div class="bar-track" id="barTrack">
+
+      <div class="symbol-wrap">
+        <button class="symbol-button main-toggle" id="toggleBtn" data-tip="Menu Principal">≡</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-prev" data-tip="Anterior">◀</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-play" data-tip="Play / Pause">▶</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-next" data-tip="Próximo">▶▶</button>
+      </div>
+
+      <!-- ORB CENTRAL -->
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-arch" data-tip="Orb · Arquétipo">
+          <div class="orb-microphone-container">
+            <div class="tts-orb-mini">
+              <div class="orb" id="main-orb">
+                <div class="orb-core"></div>
+              </div>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="phi" data-tip="Φ · DBZP" data-url="https://kodux78k.github.io/oiDual--Y-/M0D/DBZP/">Φ</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="viv" data-tip="꩜ · 78FFD" data-url="https://kodux78k.github.io/oiDual--Y-/M0D/78FFD/">꩜</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="home" data-tip="◌ · idHome" data-url="https://kodux78k.github.io/oiDual-idHome/">◌</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="doc" data-tip="◘ · info-Doc" data-url="https://kodux78k.github.io/info-Doc/index.html">◘</button>
+      </div>
+
+    </div>
+
+    <!-- dots de carrossel (só em shrunk) -->
+    <div class="carousel-dots" id="carouselDots"></div>
+
+    <!-- HUD STATUS -->
+    <div class="hud-info" id="hudStatus">KOBLLUX · ORB NEXUS</div>
+  </div>
+
+  <!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_block-0_B_D3.js"></script><!-- ORCH L0 · DADOS_PUROS --><script src="./js/L0_0x07_kobllux-opcodes_B_D3.js"></script><!-- ORCH L0 · DADOS_PUROS --><script src="./js/L0_0x01_archetypes-db_V_D5.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x0A_currentarchidx_E_D5.js"></script><!-- ORCH L1 · INFRA --><script src="./js/L1_0x01_kobllux-log_V_D5-2.js"></script><!-- ORCH L2 · REGISTRO --><script src="./js/L2_0x0A_a_E_D5-2.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x0A_nextarchetype_E_D5-3.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x09_bar_V_D6.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x08_track_E2_D3.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_timer_B_D8-2.js"></script><!-- ORCH L4 · UTILITARIOS --><script src="./js/L4_0x04_idletimer_B_D8-3.js"></script><!-- ORCH L7 · ORQUESTRADOR --><script src="./js/L7_0x01_savedarch_V_D5-3.js"></script>
+
+
+</body></html>
