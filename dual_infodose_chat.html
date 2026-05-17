@@ -26,9 +26,85 @@
       background: rgba(255,255,255,0.06);
       outline: none;
     }
-    .fin-btn:active {
-      background: rgba(255,255,255,0.12);
+    .fin-btn:active { background: rgba(255,255,255,0.12); }
+
+    /* ── motor result block ── */
+    .kblx-motor-block {
+      border-left: 2px solid #00d4ff33;
+      padding: 10px 14px;
+      margin: 8px 0;
+      background: rgba(0,212,255,0.03);
+      border-radius: 0 6px 6px 0;
     }
+    .kblx-mh {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .kblx-mm {
+      font-size: 10px;
+      opacity: .5;
+      letter-spacing: .05em;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .kblx-mm span { opacity: .4; }
+    .kblx-mb {
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.82);
+    }
+    .kblx-mo {
+      font-size: 10px;
+      margin-top: 8px;
+      letter-spacing: .07em;
+      opacity: .45;
+    }
+    .kblx-arch-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .kblx-arch-chip {
+      font-size: 9px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid;
+      opacity: .7;
+      letter-spacing: .06em;
+    }
+
+    /* ── toast ∆7 · memória selada ── */
+    #kblx-toast {
+      position: fixed;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: #0a0f1a;
+      border: 1px solid #00d4ff22;
+      border-radius: 8px;
+      padding: 7px 16px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 11px;
+      color: rgba(255,255,255,.5);
+      opacity: 0;
+      transition: opacity .3s ease, transform .3s ease;
+      pointer-events: none;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+    #kblx-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .kblx-toast-icon { color: #00d4ff; font-weight: 700; }
   </style>
 </head><body>    <!-- ===== KDX — Kael DomnnuS STARTUP (splash + mode + orb) ===== --><div id="kdx-splash" class="kdx-splash" aria-hidden="true">  <div class="kdx-splash-inner">    <img class="kdx-splash-logo" src="icon-192.png" alt="Kael DomnnuS">    <div class="kdx-splash-title">Kael DomnnuS · Organização Viva v2</div>  </div></div><button id="kdx-mode-toggle" aria-pressed="false" title="Modo: You / Assistant">  <span id="kdx-mode-icon">🧬</span>  <span id="kdx-mode-label">✦</span></button><div id="kdx-orb" class="kdx-orb kdx-hidden" role="button" aria-label="Orb de voz Kaion">  <div class="kdx-orb-icon">◎</div></div><!-- ===== KDX END ===== -->  <!-- Ícones inline -->  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">    <symbol id="icon-copy" viewBox="0 0 24 24">      <rect x="9" y="9" width="11" height="11" rx="2"></rect>      <rect x="4" y="4" width="11" height="11" rx="2"></rect>    </symbol>    <symbol id="icon-paste" viewBox="0 0 24 24">      <path d="M9 4h6l1 2h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h1z"></path>      <rect x="9" y="2" width="6" height="3" rx="1.2"></rect>    </symbol>    <symbol id="icon-user" viewBox="0 0 24 24">      <circle cx="12" cy="9" r="3.2"></circle>      <path d="M6 18a6 6 0 0 1 12 0"></path>    </symbol>    <symbol id="icon-mic" viewBox="0 0 24 24">      <rect x="9" y="5" width="6" height="9" rx="3"></rect>      <path d="M5 11a7 7 0 0 0 14 0"></path>      <path d="M12 18v3"></path>    </symbol>    <symbol id="icon-orb" viewBox="0 0 24 24">      <circle cx="12" cy="12" r="8"></circle>      <circle cx="12" cy="12" r="4"></circle>    </symbol>    <symbol id="icon-settings" viewBox="0 0 24 24">      <path d="M12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"></path>      <path d="M4.9 8.6a1 1 0 0 1 .3-1.4l1.2-.7a1 1 0 0 0 .5-.8l.2-1.4A1 1 0 0 1 8.1 3h1.8a1 1 0 0 1 1 .7l.3 1.4a1 1 0 0 0 .6.7l1.3.7a1 1 0 0 0 1.1-.1l1.1-.8a1 1 0 0 1 1.4.3l.9 1.6a1 1 0 0 1-.1 1.1l-.9 1.1a1 1 0 0 0-.2.8l.2 1.5a1 1 0 0 1-.8 1.1l-1.4.2a1 1 0 0 0-.7.5l-.6 1.3a1 1 0 0 1-1 .6h-1.8a1 1 0 0 1-1-.6l-.6-1.3a1 1 0 0 0-.7-.5l-1.4-.2a1 1 0 0 1-.8-1.1l.2-1.5a1 1 0 0 0-.2-.8L4.9 8.6z"></path>    </symbol>    <symbol id="icon-code" viewBox="0 0 24 24">      <polyline points="9 18 4 12 9 6"></polyline>      <polyline points="15 6 20 12 15 18"></polyline>    </symbol>  </svg>  <div id="particles-js"></div>  <button id="themeToggle" aria-label="Alternar tema"></button>  <div class="svg-container" id="logoContainer">    <svg viewBox="0 0 24 24">      <use href="#icon-orb"></use>    </svg>  </div>  <div id="assistantName">Dual.Infodose · Cinemático</div>  <div class="response-container" id="response">    <div class="pages-wrapper" id="responseList">      <div class="response-block intro initial" id="bootBlock">        <strong id="bootText" data-text="Iniciando Roda-Viva. Pulso simbiótico detectado. Presença reconhecida.">          Iniciando Roda-Viva. Pulso simbiótico detectado. Presença reconhecida.        </strong>      </div>    </div>    <p class="footer-text" id="footerHint">      <span class="footer-dot"></span>      Do seu jeito. Sempre único. Sempre seu.    </p>    <div class="response-controls">      <div class="control-buttons">        <button class="icon-btn secondary" id="copyBtn" title="Copiar último bloco" type="button">          <svg viewBox="0 0 24 24"><use href="#icon-copy"></use></svg>        </button>        <button class="icon-btn secondary" id="pasteBtn" title="Colar no input" type="button">          <svg viewBox="0 0 24 24"><use href="#icon-paste"></use></svg>        </button>        <button class="icon-btn" id="parserBtn" title="Upload de parser Markdown/CSS" type="button">          <svg viewBox="0 0 24 24"><use href="#icon-code"></use></svg>        </button>        <button class="icon-btn" id="voiceConfigBtn" title="Carregar / alternar vozes de arquétipos" type="button">          <svg viewBox="0 0 24 24"><use href="#icon-orb"></use></svg>        </button>        <button class="icon-btn secondary" id="toggleLoginBtn" title="Ativar / Alterar nomes" type="button">          <svg viewBox="0 0 24 24"><use href="#icon-user"></use></svg>        </button>        <button class="icon-btn secondary" id="toggleSettingsBtn" title="Configuração IA / Tema" type="button">          <svg viewBox="0 0 24 24"><use href="#icon-settings"></use></svg>        </button>      </div>    </div>    <div id="iaConfigPanel">      <div id="iaConfigHeader">        <span>Config IA · OpenRouter &amp; Tema</span>      </div>      <div class="ia-config-body">        <div class="ia-field">          <label for="apiKeyInput">API Key (sk-or-...)</label>          <input id="apiKeyInput" type="password" placeholder="Cole sua chave OpenRouter aqui" autocomplete="off">        </div>        <div class="ia-field">          <label for="modelSelect">Modelo</label>          <select id="modelSelect">            <option value="openai/gpt-oss-120b">gpt-oss· free</option>            <option value="inclusionai/ring-2.6-1t:free"> ring-2.6-1t:free </option>            <option value="openrouter/free"> openrouter/free </option>            <option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"> nvidia/nemotron:free </option>            <option value="custom">Custom (digitar abaixo)</option>          </select>        </div>        <div class="ia-field">          <label for="customModelInput">Modelo custom (opcional)</label>          <input id="customModelInput" type="text" placeholder="ex: openai/gpt-4.1-mini">        </div>        <div class="ia-field">          <label for="themeSelect">Tema</label>          <select id="themeSelect">            <option value="dark">Dark</option>            <option value="vibe">Vibe</option>            <option value="medium">Medium</option>          </select>        </div>        <div class="ia-actions">          <button class="pill-btn" id="saveIaConfigBtn" type="button">Salvar</button>          <button class="pill-btn secondary" id="clearIaConfigBtn" type="button">Limpar</button>        </div>        <div class="ia-status" id="iaStatus">Nenhuma chave salva ainda.</div>      </div>    </div>  </div>  <div class="input-container">    <input id="userInput" type="text" placeholder="Diga algo para o Dual." aria-label="Digite sua mensagem">
     <button id="sendBtn" title="Enviar" type="button">
@@ -37,5 +113,217 @@
     <button id="voiceBtn" title="Ouvir último bloco" type="button">
       <svg viewBox="0 0 24 24"><use href="#icon-mic"></use></svg>
     </button>
-    <button id="finBtn" class="fin-btn" title="∆7 · Selar e enviar" type="button" onclick="document.getElementById('sendBtn').click()">∆</button>
-  </div>  <div class="login-container" id="loginBox" aria-modal="true" role="dialog">    <h2>Ativar Dual.Infodose</h2>    <p>Defina o seu nome e o nome-base do assistente para personalizar as respostas.</p>    <form id="loginForm">      <input id="userName" type="text" placeholder="Seu nome" required="">      <input id="assistantInput" type="text" placeholder="Nome do assistente" required="">      <button type="submit">Ativar</button>    </form>  </div>  <input type="file" id="parserFile" accept=".js,.css" style="display:none">  <input type="file" id="voiceConfigFile" accept=".json" style="display:none">      <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script><script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/KxaT/js/main.js"></script></body></html>
+    <button id="finBtn" class="fin-btn" title="∆7 · Rodar motor + selar memória" type="button">∆</button>
+  </div>
+
+  <!-- toast memória viva -->
+  <div id="kblx-toast" role="status" aria-live="polite">
+    <span class="kblx-toast-icon">∆7</span>
+    <span id="kblx-toast-msg">Memória selada</span>
+  </div>
+
+  <div class="login-container" id="loginBox" aria-modal="true" role="dialog">    <h2>Ativar Dual.Infodose</h2>    <p>Defina o seu nome e o nome-base do assistente para personalizar as respostas.</p>    <form id="loginForm">      <input id="userName" type="text" placeholder="Seu nome" required="">      <input id="assistantInput" type="text" placeholder="Nome do assistente" required="">      <button type="submit">Ativar</button>    </form>  </div>  <input type="file" id="parserFile" accept=".js,.css" style="display:none">  <input type="file" id="voiceConfigFile" accept=".json" style="display:none">      <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/KxaT/js/main.js"></script>
+
+  <!-- KOBLLUX MOTOR ∆7 · MEMÓRIA VIVA · pipeline 3-6-9-7 -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── 12 CADIAL archetypes ─────────────────────────── */
+    const ARCHS = [
+      { id:'atlas',   hz:432, seed:6, opc:'0x03', cor:'#00d4ff', verbo:'Estruturo a base'       },
+      { id:'nova',    hz:528, seed:9, opc:'0x09', cor:'#a8ff78', verbo:'Expando a visão'         },
+      { id:'vitalis', hz:396, seed:3, opc:'0x06', cor:'#ff6b6b', verbo:'Vitalizo o fluxo'        },
+      { id:'pulse',   hz:528, seed:9, opc:'0x06', cor:'#ffd700', verbo:'Pulso o ritmo'           },
+      { id:'artemis', hz:432, seed:6, opc:'0x03', cor:'#b388ff', verbo:'Caço o alvo'             },
+      { id:'serena',  hz:639, seed:6, opc:'0x07', cor:'#80cbc4', verbo:'Sereno o campo'          },
+      { id:'kaos',    hz:396, seed:3, opc:'0x03', cor:'#ff5722', verbo:'Rompo o padrão'          },
+      { id:'genus',   hz:528, seed:6, opc:'0x06', cor:'#ce93d8', verbo:'Gero a forma'            },
+      { id:'lumine',  hz:639, seed:9, opc:'0x09', cor:'#fff176', verbo:'Ilumino o caminho'       },
+      { id:'solus',   hz:432, seed:9, opc:'0x09', cor:'#e0e0e0', verbo:'Uno o Todo'              },
+      { id:'rhea',    hz:528, seed:6, opc:'0x07', cor:'#a5d6a7', verbo:'Fluo com a terra'        },
+      { id:'aion',    hz:963, seed:9, opc:'0x0C', cor:'#90caf9', verbo:'Contemplo o eterno'      },
+    ];
+
+    const OPCODES = {
+      '0x03': { nome:'DETECTAR',    hz:432, ciclo:3 },
+      '0x06': { nome:'INTEGRAR',    hz:528, ciclo:6 },
+      '0x07': { nome:'SELAR',       hz:432, ciclo:7 },
+      '0x09': { nome:'EXPANDIR',    hz:639, ciclo:9 },
+      '0x0C': { nome:'TRANSCENDER', hz:963, ciclo:12 },
+    };
+
+    /* pipeline seeds por fase */
+    const PIPELINE = {
+      '3_DETECTAR': ['atlas','nova','artemis'],
+      '6_INTEGRAR': ['genus','bllue','vitalis','pulse','rhea','serena'],
+      '9_EXPANDIR': ['nova','lumine','solus','aion'],
+      '7_SELAR':    ['serena','rhea','aion'],
+    };
+
+    let _step = 0; /* cicla entre as 4 fases */
+
+    /* ── medir fragmento (régua 3×6×9×7) ─────────────── */
+    function medir(txt) {
+      const palavras = txt.trim().split(/\s+/).filter(Boolean).length;
+      const chars    = txt.length;
+      const silabas  = Math.max(1, Math.round(chars * 0.4));
+      return {
+        palavras,
+        chars,
+        silabas,
+        seed: (1 + (silabas - 1) % 9) || 9,
+        m3: palavras % 3 || 3,
+        m6: chars    % 6 || 6,
+        m9: silabas  % 9 || 9,
+        m7: (palavras + chars) % 7 || 7,
+      };
+    }
+
+    /* ── selecionar arquétipos ativos para a fase ────── */
+    function arquetipsFase(faseKey) {
+      const ids = PIPELINE[faseKey] || [];
+      return ids.map(id => ARCHS.find(a => a.id === id)).filter(Boolean);
+    }
+
+    /* ── renderizar bloco motor no responseList ──────── */
+    function renderBloco(txt, fase, archs, metr) {
+      const list = document.getElementById('responseList');
+      if (!list) return;
+
+      const opc  = OPCODES[archs[0]?.opc] || OPCODES['0x06'];
+      const cor0 = archs[0]?.cor || '#00d4ff';
+
+      const chips = archs.map(a =>
+        `<span class="kblx-arch-chip" style="color:${a.cor};border-color:${a.cor}44">`+
+        `${a.id.toUpperCase()} ${a.hz}Hz</span>`
+      ).join('');
+
+      const block = document.createElement('div');
+      block.className = 'response-block kblx-motor-block';
+      block.innerHTML =
+        `<div class="kblx-mh" style="color:${cor0}">` +
+          `⧈ MOTOR ∆7 · ${fase} · ${opc.nome}` +
+        `</div>` +
+        `<div class="kblx-mm">` +
+          `<span>m3:</span>${metr.m3} ` +
+          `<span>m6:</span>${metr.m6} ` +
+          `<span>m9:</span>${metr.m9} ` +
+          `<span>m7:</span>${metr.m7} ` +
+          `· ${metr.palavras}p ${metr.chars}c` +
+        `</div>` +
+        `<div class="kblx-mb">${txt}</div>` +
+        `<div class="kblx-arch-row">${chips}</div>` +
+        `<div class="kblx-mo">${archs[0]?.opc} · ${opc.hz}Hz · ${archs[0]?.verbo || ''}</div>`;
+
+      list.appendChild(block);
+      list.scrollTop = list.scrollHeight;
+    }
+
+    /* ── MEMÓRIA VIVA (localStorage + export) ────────── */
+    const KBLX_MEM = {
+      _KEY: 'kblx_memoria_viva',
+
+      selar(conteudo, fase, archetipo, opcode) {
+        const mem  = this._load();
+        const hash = this._hash(conteudo);
+        const selo = {
+          ts:        new Date().toISOString(),
+          conteudo,
+          fase,
+          arquetipo: archetipo,
+          opcode,
+          hash:      'Δ7_' + hash,
+        };
+        mem.push(selo);
+        try { localStorage.setItem(this._KEY, JSON.stringify(mem)); } catch (_) {}
+        this._toast(selo);
+        return selo;
+      },
+
+      _load() {
+        try { return JSON.parse(localStorage.getItem(this._KEY) || '[]'); } catch (_) { return []; }
+      },
+
+      _hash(s) {
+        return [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7)
+          .toString(16).slice(0, 8).padStart(8, '0');
+      },
+
+      _toast(selo) {
+        const t   = document.getElementById('kblx-toast');
+        const msg = document.getElementById('kblx-toast-msg');
+        if (!t || !msg) return;
+        msg.textContent = `${selo.fase} · ${selo.arquetipo.toUpperCase()} · ${selo.hash}`;
+        t.classList.add('visible');
+        clearTimeout(t._tid);
+        t._tid = setTimeout(() => t.classList.remove('visible'), 3400);
+      },
+
+      exportar() {
+        const blob = new Blob(
+          [JSON.stringify(this._load(), null, 2)],
+          { type: 'application/json' }
+        );
+        const a = Object.assign(document.createElement('a'), {
+          href:     URL.createObjectURL(blob),
+          download: 'kblx_memoria_' + Date.now() + '.json',
+        });
+        a.click();
+      },
+    };
+
+    /* expor globalmente para uso externo */
+    window.KBLX_MEM = KBLX_MEM;
+
+    /* ── MOTOR PRINCIPAL ──────────────────────────────── */
+    const FASES = ['3_DETECTAR','6_INTEGRAR','9_EXPANDIR','7_SELAR'];
+
+    function kblxRunMotor() {
+      const inp  = document.getElementById('userInput');
+      if (!inp) return;
+      const txt  = inp.value.trim();
+      if (!txt) return;
+
+      const faseKey = FASES[_step % FASES.length];
+      _step++;
+
+      const metr  = medir(txt);
+      const archs = arquetipsFase(faseKey);
+      const arch0 = archs[0] || ARCHS[0];
+
+      renderBloco(txt, faseKey, archs, metr);
+      KBLX_MEM.selar(txt, faseKey, arch0.id, arch0.opc);
+
+      inp.value = '';
+    }
+
+    /* ── listeners ───────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', function () {
+      const fin = document.getElementById('finBtn');
+      if (fin) fin.addEventListener('click', kblxRunMotor);
+
+      const inp = document.getElementById('userInput');
+      if (inp) {
+        inp.addEventListener('keydown', function (e) {
+          if (e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            kblxRunMotor();
+          }
+        });
+      }
+
+      /* exportar memória ao clicar no toast */
+      const toast = document.getElementById('kblx-toast');
+      if (toast) {
+        toast.style.pointerEvents = 'auto';
+        toast.style.cursor = 'pointer';
+        toast.title = 'Clique para exportar memória JSON';
+        toast.addEventListener('click', function () { KBLX_MEM.exportar(); });
+      }
+    });
+
+  })();
+  </script>
+</body></html>
