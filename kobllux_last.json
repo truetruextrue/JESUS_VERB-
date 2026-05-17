@@ -1,0 +1,24 @@
+{
+  "status": "ok",
+  "engine": "VEEB_AST",
+  "arquivo": "kobllux_archetypes_full.json",
+  "titulo": "12 Arquétipos CADIAL · Espelho UNO",
+  "tema_aplicado": "default",
+  "hash_fonte": "VEEB_Δ7_166c3727f3f7daa3",
+  "freq": "528Hz",
+  "fractal": 1134,
+  "ts": "2026-05-17T01:20:33Z",
+  "execucao_s": 0.0028,
+  "coleta": {
+    "imports": [],
+    "funcs": [],
+    "classes": [],
+    "assigns": 0,
+    "ifs": 0,
+    "fors": 0,
+    "whiles": 0,
+    "returns": 0,
+    "raises": 0,
+    "calls": 0
+  }
+}
