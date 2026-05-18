@@ -51,4 +51,12 @@ printf "\n  VERDADE × INTEGRAR ÷ Δ = ∞ · ∆7\n\n"
 # Limpa o arquivo temporário de arquétipo
 rm -f "$ARCH_FILE"
 
+# Alimenta a memória viva com dados do commit (background, não bloqueia)
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$ROOT/kobllux_auto_session.py" \
+    --capture "commit: $MSG (arch=$ARCH opcode=$OPCODE branch=$BRANCH files=$FILES)" \
+    --arch "$ARCH" --source "git-post-commit" \
+    >/dev/null 2>&1 &
+fi
+
 exit 0
