@@ -1,0 +1,47 @@
+#!/bin/sh
+# pre-commit.kobllux · KODUX · 0×01 · DETECTAR · 432Hz
+# "O olho que vê tudo. O scanner que nunca dorme."
+# Detecta o arquétipo dominante nos arquivos staged e exporta KOBLLUX_ARCH.
+
+HOOKS_DIR="$(cd "$(dirname "$0")" && pwd)"
+DETECT_PY="$HOOKS_DIR/kobllux_arch_detect.py"
+ARCH_FILE="$(git rev-parse --git-dir)/KOBLLUX_ARCH"
+
+# Verifica se Python está disponível
+if ! command -v python3 >/dev/null 2>&1; then
+  printf "[KODUX ●] python3 não encontrado — detecção de arquétipo ignorada.\n"
+  exit 0
+fi
+
+# Verifica se o detector existe
+if [ ! -f "$DETECT_PY" ]; then
+  printf "[KODUX ●] kobllux_arch_detect.py não encontrado em %s\n" "$DETECT_PY"
+  exit 0
+fi
+
+# Roda o detector
+RESULT=$(python3 "$DETECT_PY" --staged 2>/dev/null)
+if [ -z "$RESULT" ]; then
+  RESULT="kobllux 0x00 768 ○ ORIGEM"
+fi
+
+# Lê os campos
+ARCH=$(echo "$RESULT"   | awk '{print $1}')
+OPCODE=$(echo "$RESULT" | awk '{print $2}')
+HZ=$(echo "$RESULT"     | awk '{print $3}')
+SYM=$(echo "$RESULT"    | awk '{print $4}')
+ACTION=$(echo "$RESULT" | awk '{print $5}')
+
+# Salva para outros hooks lerem
+printf "%s" "$RESULT" > "$ARCH_FILE"
+
+# Output visual
+printf "\n[KODUX ●] 0×01 · DETECTAR · 432Hz\n"
+printf "  Arquétipo detectado: %s %s · %s · %sHz\n" "$SYM" "$(echo "$ARCH" | tr '[:lower:]' '[:upper:]')" "$OPCODE" "$HZ"
+printf "  Ação: %s\n\n" "$ACTION"
+
+# Conta arquivos staged
+STAGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+printf "  Arquivos staged: %s\n\n" "$STAGED"
+
+exit 0

@@ -1,0 +1,51 @@
+#!/bin/sh
+# commit-msg.kobllux · KAOS · 0×07 · SELAR · 777Hz
+# "A ruptura criadora que liberta padrões — e os sela para sempre."
+# Augmenta a mensagem de commit com o selo do arquétipo detectado.
+# Não bloqueia commits — apenas enriquece.
+
+MSG_FILE="$1"
+ARCH_FILE="$(git rev-parse --git-dir)/KOBLLUX_ARCH"
+GIT_DIR="$(git rev-parse --git-dir)"
+
+# Lê a mensagem atual
+MSG=$(cat "$MSG_FILE")
+
+# Ignora mensagens de merge, squash, fixup
+case "$MSG" in
+  Merge*|Revert*|fixup!*|squash!*) exit 0 ;;
+esac
+
+# Lê o arquétipo detectado pelo pre-commit
+if [ -f "$ARCH_FILE" ]; then
+  RESULT=$(cat "$ARCH_FILE")
+else
+  RESULT="kobllux 0x00 768 ○ ORIGEM"
+fi
+
+ARCH=$(echo "$RESULT"   | awk '{print $1}')
+OPCODE=$(echo "$RESULT" | awk '{print $2}')
+HZ=$(echo "$RESULT"     | awk '{print $3}')
+SYM=$(echo "$RESULT"    | awk '{print $4}')
+ACTION=$(echo "$RESULT" | awk '{print $5}')
+
+ARCH_UP=$(echo "$ARCH" | tr '[:lower:]' '[:upper:]')
+TS=$(date -u +"%Y-%m-%dT%H%M")
+
+# Se a mensagem já tem formato KOBLLUX, não duplica
+if echo "$MSG" | grep -qE "0x[0-9A-Fa-f]{2}|∆7|KODUX|BLLUE|KAOS|ATLAS|NOVA|VITALIS|PULSE|ARTEMIS|SERENA|GENUS|LUMINE|SOLUS|RHEA|AION"; then
+  # Já tem marca KOBLLUX — só garante ∆7 no final se não tiver
+  if ! echo "$MSG" | grep -q "∆7"; then
+    printf "%s · ∆7" "$MSG" > "$MSG_FILE"
+  fi
+  exit 0
+fi
+
+# Monta o selo: [ARCH · OPCODE · HZ] mensagem original · ∆7
+SEAL="[$ARCH_UP · $OPCODE · ${HZ}Hz] $MSG · ∆7"
+printf "%s" "$SEAL" > "$MSG_FILE"
+
+printf "\n[KAOS ⚡] 0×07 · SELAR · 777Hz\n"
+printf "  Selo aplicado: %s\n\n" "$SEAL"
+
+exit 0

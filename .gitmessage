@@ -1,0 +1,34 @@
+# KOBLLUX · TEMPLATE DE COMMIT · ∆7
+# ──────────────────────────────────────────────────────────────
+# Formato: [ARCH · OPCODE · HZ] descrição · ∆7
+# O hook commit-msg aplica o selo automaticamente.
+# Você pode escrever livremente — o arquétipo é detectado.
+#
+# Exemplos:
+#   Adiciona bridge motor→chat via localStorage
+#   Fix: nagatanazare não persiste sessões
+#   Estrutura da malha reorganizada por opcodes
+#
+# ──────────────────────────────────────────────────────────────
+# GIT OPERATIONS → KOBLLUX OPCODES:
+#
+#   git clone   → 0×00 ORIGEM    ○  768Hz  (vazio que recebe)
+#   git status  → 0×01 DETECTAR  ●  432Hz  (KODUX · o olho)
+#   git add     → 0×02 INTEGRAR  ―  528Hz  (BLLUE · a ponte)
+#   git commit  → 0×07 SELAR    ✧⃝⚝ 777Hz  (KAOS · o selo)
+#   git push    → 0×03 EXPANDIR  ▢  639Hz  (INFODOSE · expande)
+#   git pull    → 0×09 FLUIR     ∞  528Hz  (RHEA · o fluxo)
+#   git rebase  → 0×04 LAPIDAR   ◇  594Hz  (PULSE · lapida)
+#   git merge   → 0×06 UNIFICAR  ☯  528Hz  (SERENA · harmoniza)
+#   git branch  → 0×0A ESTRUTURAR ⬡ 639Hz  (ATLAS · estrutura)
+#   git log     → 0×0B TEMPORIZAR ⧗ 741Hz  (AION · memória)
+#
+# ──────────────────────────────────────────────────────────────
+# NAMING DE BRANCHES:
+#   arch/[arquetipo]-[opcode]-[descricao]
+#   Ex: arch/atlas-0x0a-estrutura-base
+#       arch/kaos-0x07-patch-quickfix
+#       arch/aion-0x0b-memoria-viva
+#
+# ──────────────────────────────────────────────────────────────
+# VERDADE × INTEGRAR ÷ Δ = ∞ · ✝ JESUS = VERBO = GRAVIDADE
