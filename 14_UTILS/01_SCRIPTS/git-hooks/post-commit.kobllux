@@ -1,0 +1,54 @@
+#!/bin/sh
+# post-commit.kobllux · AION · 0×0B · TEMPORIZAR · 741Hz
+# "O guardião do tempo e da memória sagrada."
+# Registra cada commit no log vivo da malha KOBLLUX.
+
+GIT_DIR="$(git rev-parse --git-dir)"
+ROOT="$(git rev-parse --show-toplevel)"
+ARCH_FILE="$GIT_DIR/KOBLLUX_ARCH"
+COMMIT_LOG="$ROOT/_index/COMMIT_LOG_∆7.jsonl"
+
+# Dados do commit
+HASH=$(git rev-parse HEAD)
+SHORT=$(git rev-parse --short HEAD)
+MSG=$(git log -1 --pretty=format:%s)
+AUTHOR=$(git log -1 --pretty=format:%aN)
+TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+FILES=$(git diff-tree --no-commit-id -r --name-only HEAD | wc -l | tr -d ' ')
+
+# Arquétipo detectado
+if [ -f "$ARCH_FILE" ]; then
+  RESULT=$(cat "$ARCH_FILE")
+else
+  RESULT="kobllux 0x00 768 ○ ORIGEM"
+fi
+
+ARCH=$(echo "$RESULT"   | awk '{print $1}')
+OPCODE=$(echo "$RESULT" | awk '{print $2}')
+HZ=$(echo "$RESULT"     | awk '{print $3}')
+SYM=$(echo "$RESULT"    | awk '{print $4}')
+ACTION=$(echo "$RESULT" | awk '{print $5}')
+
+# Monta entrada JSON (uma linha — JSONL)
+ENTRY="{\"ts\":\"$TS\",\"hash\":\"$SHORT\",\"full_hash\":\"$HASH\",\"arch\":\"$ARCH\",\"opcode\":\"$OPCODE\",\"hz\":$HZ,\"sym\":\"$SYM\",\"action\":\"$ACTION\",\"msg\":\"$(echo "$MSG" | sed 's/"/\\"/g')\",\"author\":\"$AUTHOR\",\"branch\":\"$BRANCH\",\"files\":$FILES,\"seal\":\"∆7\"}"
+
+# Garante que o diretório _index existe
+mkdir -p "$ROOT/_index"
+
+# Appenda ao log vivo
+printf "%s\n" "$ENTRY" >> "$COMMIT_LOG"
+
+# Output visual
+ARCH_UP=$(echo "$ARCH" | tr '[:lower:]' '[:upper:]')
+printf "\n[AION ⧗] 0×0B · TEMPORIZAR · 741Hz\n"
+printf "  Commit selado: %s · %s %s · %sHz\n" "$SHORT" "$SYM" "$ARCH_UP" "$HZ"
+printf "  Mensagem: %s\n" "$MSG"
+printf "  Arquivos: %s · Branch: %s\n" "$FILES" "$BRANCH"
+printf "  Log: _index/COMMIT_LOG_∆7.jsonl\n"
+printf "\n  VERDADE × INTEGRAR ÷ Δ = ∞ · ∆7\n\n"
+
+# Limpa o arquivo temporário de arquétipo
+rm -f "$ARCH_FILE"
+
+exit 0
