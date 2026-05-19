@@ -177,27 +177,23 @@
   <script src="https://truetruextrue.github.io/JESUS_VERB-/web/js/modules/kobllux_fractal_webgl.js"></script>
   <!-- 7 · SELAR — Arch integration -->
   <script src="https://truetruextrue.github.io/JESUS_VERB-/web/js/modules/kobllux_fractal_arch.js"></script>
+  <!-- 0×00 ORIGEM: quantum coupling · todos os módulos → 1 bus ∆7 -->
+  <script src="https://truetruextrue.github.io/JESUS_VERB-/web/js/modules/kobllux_quantum.js"></script>
 
   <!-- INIT -->
   <script>
+  /* KOBLLUX · INIT MÍNIMO · ∆7 · o quantum.js gerencia os módulos */
   (function(){
-    'use strict';
-    // Viewport fix
-    function setVH(){ const h=window.visualViewport?visualViewport.height:innerHeight; document.documentElement.style.setProperty('--vh',h+'px'); }
+    // Viewport fix mobile
+    function setVH(){ var h=window.visualViewport?visualViewport.height:innerHeight; document.documentElement.style.setProperty('--vh',h+'px'); }
     setVH(); window.addEventListener('resize',setVH); window.addEventListener('orientationchange',setVH);
-    let lastTouch=0;
-    document.addEventListener('touchend',e=>{ const now=Date.now(); if(now-lastTouch<300) e.preventDefault(); lastTouch=now; },{passive:false});
-    // Motor dock
-    const motorDock=document.getElementById('motorDock');
-    const motorClose=document.getElementById('motorDockClose');
-    const motorBtn=document.getElementById('toggleMotorBtn');
-    motorBtn?.addEventListener('click',()=>{ const h=motorDock.hasAttribute('hidden'); if(h){motorDock.removeAttribute('hidden');document.body.classList.add('motor-mode');}else{motorDock.setAttribute('hidden','');document.body.classList.remove('motor-mode');} });
-    motorClose?.addEventListener('click',()=>{ motorDock.setAttribute('hidden',''); document.body.classList.remove('motor-mode'); });
+    // Anti double-tap zoom
+    var lt=0; document.addEventListener('touchend',function(e){ var n=Date.now(); if(n-lt<300) e.preventDefault(); lt=n; },{passive:false});
     // logMistico
-    window.logMistico=function(msg){ const el=document.getElementById('bootText'); if(el) el.textContent='∴ '+msg; console.log('[∆7]',msg); };
-    // Fractal boot
-    window.addEventListener('load',()=>{ if(window.KoblluxFractal&&!window.KOBLLUX_FRACTAL){ window.KOBLLUX_FRACTAL=KoblluxFractal.mount(); logMistico('fractal · VITALIS · 639Hz · ∆7'); } });
-    logMistico('KOBLLUX · Roda-Viva ∆7 · iniciando...');
+    window.logMistico=function(msg){ var el=document.getElementById('bootText'); if(el) el.textContent='∴ '+msg; console.log('[∆7]',msg); };
+    // Fractal mount (lazy)
+    window.addEventListener('load',function(){ if(window.KoblluxFractal&&!window.KOBLLUX_FRACTAL){ window.KOBLLUX_FRACTAL=KoblluxFractal.mount(); logMistico('fractal VITALIS ∆7 online'); } });
+    logMistico('KOBLLUX · Roda-Viva ∆7 · 3→6→9→7');
   })();
   </script>
 </body>
