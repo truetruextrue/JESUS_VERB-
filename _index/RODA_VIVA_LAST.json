@@ -1,28 +1,29 @@
 {
-  "head": "RODA VIVA · 2026-05-18 23:36 · VERDADE×INTEGRAR÷Δ=∞",
-  "stamp": "20260518_2336",
-  "sources": 7,
-  "items": 7,
+  "head": "RODA VIVA · 2026-05-19 05:06 · VERDADE×INTEGRAR÷Δ=∞",
+  "stamp": "20260519_0506",
+  "sources": 8,
+  "items": 8,
   "tags": [
     "kobllux",
     "verbo",
+    "fractal",
     "infodose",
     "termux",
     "python",
+    "delta",
     "kodux",
     "bllue",
     "atlas",
     "nova",
-    "vitalis",
-    "pulse",
-    "artemis"
+    "vitalis"
   ],
-  "written": 7,
+  "written": 8,
   "arch_dist": {
     "aion": 1,
+    "atlas": 1,
     "serena": 5,
     "pulse": 1
   },
   "seal": "∆7",
-  "hash": "d90f79894a5afa8e"
+  "hash": "3a502c38bcf90f68"
 }
