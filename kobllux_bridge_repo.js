@@ -407,8 +407,8 @@
   async function boot() {
     /* 1. Carregar JSONs em paralelo */
     const [codex, verbum] = await Promise.all([
-      loadJSON('./kobllux_codex_data.json'),
-      loadJSON('./verbum_codex_kblx.json'),
+      loadJSON('https://truetruextrue.github.io/JESUS_VERB-/kobllux_codex_data.json'),
+      loadJSON('https://truetruextrue.github.io/JESUS_VERB-/verbum_codex_kblx.json'),
     ]);
     _codex  = codex;
     _verbum = verbum;
