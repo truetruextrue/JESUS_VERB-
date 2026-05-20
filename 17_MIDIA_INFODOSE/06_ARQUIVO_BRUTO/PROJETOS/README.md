@@ -1,0 +1,21 @@
+# ⬡ PROJETOS
+**Arquétipo:** `Atlas` · **Opcode:** `0x00` · **768Hz** · **VEEB-A** · **D1**  
+**Regra:** `BOOT` · **Ação:** `ESTRUTURAR` · **Essência:** _Estrutura · mapa · fundação_
+
+> 📍 `⌂ › 17_MIDIA_INFODOSE › 06_ARQUIVO_BRUTO › PROJETOS`
+
+## Navegação
+
+← **[⬆ Subir](../../..README.md)** (raiz)
+
+**Subpastas:**
+- [⬡ **∆⅞_Quadros_78frames**](∆⅞_Quadros_78frames/README.md) · `Atlas` · `0x00`
+
+## Arquivos
+
+- 📝 `01.txt`
+
+---
+
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

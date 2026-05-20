@@ -1,47 +1,33 @@
-# 01 Selos
+# ⬡ 01_SELOS
+**Arquétipo:** `Atlas` · **Opcode:** `0x00` · **768Hz** · **VEEB-A** · **D1**  
+**Regra:** `BOOT` · **Ação:** `ESTRUTURAR` · **Essência:** _Estrutura · mapa · fundação_
 
-Selos de cada arquétipo
+> 📍 `⌂ › 16_ASCII_ART › 01_SELOS`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** 16_ASCII_ART
-- **Data de criação:** 2026-02-28 08:59:03
+← **[⬆ Subir](../..README.md)** (raiz)
 
-## 📋 Estrutura
+## Arquivos
 
-Esta pasta contém os seguintes elementos:
+- 📝 `selo_aion.txt`
+- 📝 `selo_artemis.txt`
+- 📝 `selo_atlas.txt`
+- 📝 `selo_bllue.txt`
+- 📝 `selo_genus.txt`
+- 📝 `selo_jesus.txt`
+- 📝 `selo_kaos.txt`
+- 📝 `selo_kobllux.txt`
+- 📝 `selo_kodux.txt`
+- 📝 `selo_lumine.txt`
+- 📝 `selo_nova.txt`
+- 📝 `selo_pulse.txt`
+- 📝 `selo_rhea.txt`
+- 📝 `selo_serena.txt`
+- 📝 `selo_solus.txt`
+- 📝 `selo_vitalis.txt`
 
-```
-- selo_kodux.txt
-- selo_jesus.txt
-- selo_artemis.txt
-- selo_kobllux.txt
-- selo_genus.txt
-- selo_atlas.txt
-- selo_serena.txt
-- selo_rhea.txt
-- selo_bllue.txt
-- selo_pulse.txt
-```
+---
 
-## 🔗 Conexões
-
-- **Fase relacionada:** 01_SELOS
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*
