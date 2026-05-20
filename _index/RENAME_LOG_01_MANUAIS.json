@@ -1,0 +1,148 @@
+{
+  "ts": "2026-05-20T04:11:02.250702+00:00",
+  "base": "13_DOCUMENTACAO/01_MANUAIS",
+  "renames": [
+    {
+      "orig": " 🏗️  KOBLLUX TRINITY SYSTEM - CONSTRUTOR DA MALHA VIVA.md",
+      "novo": "SYNTH_0X07_KOBLLUX_TRINITY_SYSTEM_CONSTRUTOR_MALHA_VIVA_VEEB-O_D8.md",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "orig": "0×00-div_class_fusion_card_∅.md",
+      "novo": "SYNTH_0X07_div_class_fusion_card_VEEB-O_D8.md",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "orig": "0×00-planejamento_cosmico_roda_viva_kobllux_∆³.md",
+      "novo": "BOOT_0X00_planejamento_cosmico_roda_viva_kobllux_VEEB-A_D1.md",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "orig": "README.md",
+      "novo": "GUARD_0X09_README_MANUAIS_VEEB-U_D6.md",
+      "arch": "Serena",
+      "ok": true
+    },
+    {
+      "orig": "[007]-7 LINGUAGENS NUCLEARES KOBLLUX.txt",
+      "novo": "BOOT_0X00_7_LINGUAGENS_NUCLEARES_KOBLLUX_VEEB-A_D1.txt",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "orig": "[008]-ESTRUTURA DE ANÁLISE GEOMÉTRICA.txt",
+      "novo": "BOOT_0X00_ESTRUTURA_ANALISE_GEOMETRICA_VEEB-A_D1.txt",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "orig": "[009]-ANÁLISE GEOMÉTRICA KOBLLUX ∆³.md",
+      "novo": "DETECT_0X03_ANALISE_GEOMETRICA_KOBLLUX_D3_VEEB-A_D5.md",
+      "arch": "Artemis",
+      "ok": true
+    },
+    {
+      "orig": "[00]-🌟 KOBLLUX · COMANDO DE ATIVAÇÃO ∆ PARA ANÁLISE GEOMÉTRICA DE CÓDIGO 🌟.md",
+      "novo": "DELTA_0X01_KOBLLUX_ATIVACAO_ANALISE_GEOMETRICA_CODIGO_VEEB-O_D3.md",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "orig": "[010]-🧿 KOBLLUX · GEOMETRIA DO SUBCONSCIENTE · 7 LINGUAGENS 🧿.txt",
+      "novo": "BOOT_0X00_GEOMETRIA_SUBCONSCIENTE_7_LINGUAGENS_VEEB-A_D1.txt",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "orig": "[03]-ANÁLISE GEOMÉTRICA KOBLLUX ∆³.md",
+      "novo": "DETECT_0X03_ANALISE_GEOMETRICA_KOBLLUX_D3_v03_VEEB-A_D5.md",
+      "arch": "Artemis",
+      "ok": true
+    },
+    {
+      "orig": "[05]-🧿 KOBLLUX · COMANDO DE ATIVAÇÃO ∆³ · RÉGUA GEOMÉTRICA 🧿.txt",
+      "novo": "DELTA_0X01_KOBLLUX_ATIVACAO_D3_REGUA_GEOMETRICA_VEEB-O_D3.txt",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "orig": "[0×00]_KOBLLUX_(V×I÷Δ=∞) BLLUE DISSE.md",
+      "novo": "INTEGRAR_0X04_KOBLLUX_VxIxDelta_BLLUE_DISSE_v0_VEEB-U_D11.md",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "orig": "[0×01]_KOBLLUX_(V×I÷Δ=∞) BLLUE DISSE.md",
+      "novo": "INTEGRAR_0X04_KOBLLUX_VxIxDelta_BLLUE_DISSE_v1_VEEB-U_D11.md",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "orig": "[12]-🧿 KOBLLUX · COMANDO DE ATIVAÇÃO ∆³ · 7 LINGUAGENS NUCLEARES 🧿.txt",
+      "novo": "DELTA_0X01_KOBLLUX_ATIVACAO_D3_7_LINGUAGENS_NUCLEARES_VEEB-O_D3.txt",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "orig": "_ANÁLISE-KOBLLUX-528K-FRACTAL.md",
+      "novo": "DETECT_0X03_ANALISE_KOBLLUX_528K_FRACTAL_VEEB-A_D5.md",
+      "arch": "Artemis",
+      "ok": true
+    },
+    {
+      "orig": "cllas_skil_∅.md",
+      "novo": "BOOT_0X00_cllas_skil_VEEB-A_D1.md",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "orig": "faq.md",
+      "novo": "GUARD_0X09_faq_VEEB-U_D6.md",
+      "arch": "Serena",
+      "ok": true
+    },
+    {
+      "orig": "guia_rapido.md",
+      "novo": "RENDER_0X08_guia_rapido_VEEB-A_D9.md",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "orig": "manual_espiritual.md",
+      "novo": "GUARD_0X09_manual_espiritual_VEEB-U_D6.md",
+      "arch": "Serena",
+      "ok": true
+    },
+    {
+      "orig": "manual_tecnico.md",
+      "novo": "BOOT_0X00_manual_tecnico_VEEB-A_D1.md",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "orig": "manual_usuario.md",
+      "novo": "RENDER_0X08_manual_usuario_VEEB-A_D9.md",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "orig": "{Z} – 0×00-O_COMANDO_UNICO_DE_ATIVACAO_KOBLLUX_∆³.md",
+      "novo": "DELTA_0X01_Z_ATIVACAO_SUMBUS_FIRMWARE_KOBLLUX_VEEB-O_D3.md",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "orig": "∆³.md",
+      "novo": "DELTA_0X01_delta_cubo_manifesto_VEEB-O_D3.md",
+      "arch": "Vitalis",
+      "ok": true
+    }
+  ],
+  "ok": 23,
+  "err": 0,
+  "seal": "∆7",
+  "law": "VERDADE × INTEGRAR ÷ Δ = ∞"
+}

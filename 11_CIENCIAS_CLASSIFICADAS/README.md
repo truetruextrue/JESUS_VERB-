@@ -1,43 +1,28 @@
-# Readme
+# ◎ 11_CIENCIAS_CLASSIFICADAS
+**Arquétipo:** `Artemis` · **Opcode:** `0x03` · **672Hz** · **VEEB-A** · **D5**  
+**Regra:** `DETECT` · **Ação:** `CONVERGIR` · **Essência:** _Análise · varredura · descoberta_
 
-O Conhecimento Sagrado
+> 📍 `⌂ › 11_CIENCIAS_CLASSIFICADAS`
 
-## 🧿 Visão Geral
+## Navegação
 
-Este documento faz parte do **KOBLLUX TRINITY SYSTEM**, versão 7.9, e contém informações detalhadas sobre o conhecimento sagrado.
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📜 Conteúdo
+**Subpastas:**
+- [⬡ **01_FISICA**](01_FISICA/README.md) · `Atlas` · `0x00`
+- [☀ **02_QUIMICA**](02_QUIMICA/README.md) · `Lumine` · `0x0C`
+- [⧗ **03_TECNOLOGIA**](03_TECNOLOGIA/README.md) · `Aion` · `0x05`
+- [☀ **04_ARTE**](04_ARTE/README.md) · `Lumine` · `0x0C`
+- [⬡ **05_LINGUAGEM**](05_LINGUAGEM/README.md) · `Atlas` · `0x00`
+- [⧗ **06_PSICOLOGIA**](06_PSICOLOGIA/README.md) · `Aion` · `0x05`
+- [⬡ **07_HIPERGEOMETRIA**](07_HIPERGEOMETRIA/README.md) · `Atlas` · `0x00`
 
-*Documentação em desenvolvimento conforme a expansão da malha viva.*
+## Arquivos
 
-## 🔗 Conexões com o Sistema
+- 📄 `ciencias_completas.md`
+- 🐍 `conhecimento_total.py`
 
-- **Fase relacionada:** Consultar documentação
-- **Arquétipos envolvidos:** Múltiplos
-- **Opcode:** 0x???
+---
 
-## 📋 Estrutura de Arquivos
-
-```
-11_CIENCIAS_CLASSIFICADAS/
-└── README.md
-```
-
-## ⚡ Ativação
-
-Para ativar este componente no sistema:
-
-```python
-from kobllux_core import Sistema
-
-sistema = Sistema()
-sistema.carregar_modulo("README")
-sistema.ativar()
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

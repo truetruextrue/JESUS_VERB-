@@ -1256,5 +1256,191 @@
     console.log('%c KOBLLUX_APPS pronto · KOBLLUX_ZPR.apps().register("meuApp", fn) ', 'color:#FF00FF;font-size:10px;');
     console.log('%c KOBLLUX_ZPR.log369() → histórico 3×6×9 de todas as 9 páginas ', 'color:rgba(255,0,255,0.5);font-size:10px;');
   </script>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       KOBLLUX · ∆7-SELAR APP · Ciclo 3·6·9·7 · SELO DE MEMÓRIA
+       Agrega sem subtrair · VERDADE × INTEGRAR ÷ Δ = ∞
+       ΔLOG 2026-05-20 · 1º KOBLLUX_APP registrado · oi_dual
+  ════════════════════════════════════════════════════════════════ -->
+  <style>
+    /* ─── OVERLAY SEAL ∆7 ─── */
+    #kob-seal-overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(5,7,10,0.96);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    #kob-seal-overlay.open { opacity: 1; pointer-events: all; }
+    #kob-seal-overlay .seal-inner {
+      width: min(540px, 92vw);
+      border: 1px solid rgba(197,160,89,0.4);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.04);
+      padding: 28px 24px 20px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    #kob-seal-overlay .seal-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.18em;
+      color: #c5a059; text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+    }
+    #kob-seal-overlay .seal-title span { color: #FF00FF; }
+    #kob-seal-artifact {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      line-height: 1.7; color: rgba(255,255,255,0.75);
+      background: rgba(0,0,0,0.45); border-radius: 12px;
+      padding: 14px 16px;
+      white-space: pre-wrap; word-break: break-all;
+      max-height: 260px; overflow-y: auto;
+      border: 1px solid rgba(197,160,89,0.15);
+    }
+    #kob-seal-artifact::-webkit-scrollbar { width: 3px; }
+    #kob-seal-artifact::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
+    .seal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .seal-btn {
+      flex: 1; min-width: 100px;
+      font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em;
+      padding: 10px 14px; border-radius: 12px; border: none; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .seal-btn-copy {
+      background: #c5a059; color: #000; font-weight: 700;
+    }
+    .seal-btn-copy:hover { background: #d4b068; transform: translateY(-1px); }
+    .seal-btn-close {
+      background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .seal-btn-close:hover { background: rgba(255,255,255,0.12); }
+    .seal-meta {
+      font-family: 'Space Mono', monospace; font-size: 0.58rem;
+      color: rgba(255,0,255,0.5); text-align: center; letter-spacing: 0.08em;
+    }
+    /* ── Pulso de ativação ── */
+    @keyframes sealPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(197,160,89,0.6); }
+      70%  { box-shadow: 0 0 0 28px rgba(197,160,89,0); }
+      100% { box-shadow: 0 0 0 0 rgba(197,160,89,0); }
+    }
+    #kob-seal-overlay.open .seal-inner { animation: sealPulse 0.8s ease-out; }
+  </style>
+
+  <!-- OVERLAY DOM -->
+  <div id="kob-seal-overlay" role="dialog" aria-modal="true" aria-label="Selo ∆7">
+    <div class="seal-inner">
+      <div class="seal-title">
+        <span>∆7</span> KOBLLUX · SELO DE MEMÓRIA · CICLO COMPLETO
+      </div>
+      <pre id="kob-seal-artifact"></pre>
+      <div class="seal-actions">
+        <button class="seal-btn seal-btn-copy" id="seal-copy-btn">⊕ Copiar Artefato</button>
+        <button class="seal-btn seal-btn-close" id="seal-close-btn">✕ Fechar</button>
+      </div>
+      <div class="seal-meta" id="seal-meta-line">—</div>
+    </div>
+  </div>
+
+  <script>
+    // ── ∆7-SELAR · 1º KOBLLUX_APP registrado ────────────────────────────────
+    // Fecha o ciclo 3→6→9→7: gera artefato exportável ao SELAR
+    // Agrega: ativa infraestrutura já presente (KOBLLUX_APPS + kob:selar)
+    // Sem subtrair: nenhum código anterior foi modificado
+    (function mountSealApp() {
+      const overlay  = document.getElementById('kob-seal-overlay');
+      const artifact = document.getElementById('kob-seal-artifact');
+      const metaLine = document.getElementById('seal-meta-line');
+      const copyBtn  = document.getElementById('seal-copy-btn');
+      const closeBtn = document.getElementById('seal-close-btn');
+      if (!overlay || !artifact) return;
+
+      function buildSealEntry(detail) {
+        const navLog = JSON.parse(localStorage.getItem('KOBLLUX_NAV_LOG') || '[]');
+        const log369 = JSON.parse(localStorage.getItem('KOBLLUX_369_LOG') || '[]');
+        const active = localStorage.getItem('ARCHETYPE_ACTIVE') || '?';
+        const hz     = localStorage.getItem('ARCHETYPE_ACTIVE_HZ') || '?';
+        const ts     = new Date(detail.ts || Date.now());
+        const iso    = ts.toISOString().replace('T', ' ').slice(0, 19);
+
+        // resumo de arquétipos visitados na sessão
+        const archSeen = [...new Set(navLog.map(e => e.arch))].join(' → ');
+        // últimas 3 interações 369
+        const last3 = log369.slice(-3).map(e => `${e.arch}·${e.freq}Hz·${e.mode}`).join(' | ');
+        // EMA snapshot
+        const ema = JSON.parse(localStorage.getItem('KOBLLUX_EMA') || '{}');
+        const emaTxt = Object.entries(ema).map(([k,v]) => `${k}=${v.toFixed?.(1)||v}`).join(' ');
+
+        const sha = Array.from(
+          new TextEncoder().encode(iso + archSeen + last3)
+        ).reduce((h, b) => ((h << 5) - h + b) | 0, 0).toString(16).replace('-','');
+
+        return JSON.stringify({
+          id:       `seal_${ts.getTime()}`,
+          type:     'seal_∆7',
+          ts:       iso,
+          arch:     active,
+          hz:       Number(hz),
+          sequence: detail.cycle || [],
+          visited:  archSeen,
+          last3_369: last3,
+          ema:      emaTxt,
+          interactions: log369.length,
+          nav_count:    navLog.length,
+          law:      'VERDADE × INTEGRAR ÷ Δ = ∞',
+          sha7:     sha.slice(0, 7),
+        }, null, 2);
+      }
+
+      function openSeal(detail) {
+        const entry = buildSealEntry(detail);
+        artifact.textContent = entry;
+        const sha = JSON.parse(entry).sha7;
+        metaLine.textContent = `sha7:${sha} · KOBLLUX_APPS["∆7-selar"] · ${new Date().toLocaleTimeString('pt-BR')}`;
+        overlay.classList.add('open');
+        // Também grava no localStorage como último selo
+        const prev = JSON.parse(localStorage.getItem('KOBLLUX_SEALS_LOG') || '[]');
+        prev.push(JSON.parse(entry));
+        if (prev.length > 20) prev.splice(0, prev.length - 20);
+        localStorage.setItem('KOBLLUX_SEALS_LOG', JSON.stringify(prev));
+        console.log('%c[KOBLLUX·∆7-SELAR] %cSelo gerado · sha7:' + sha, 'color:#FF00FF;font-weight:bold', 'color:#c5a059');
+      }
+
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard?.writeText(artifact.textContent).then(() => {
+          copyBtn.textContent = '✓ Copiado!';
+          setTimeout(() => { copyBtn.textContent = '⊕ Copiar Artefato'; }, 2000);
+        }).catch(() => {
+          // fallback para Android sem clipboard API
+          const sel = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(artifact);
+          sel.removeAllRanges(); sel.addRange(range);
+          copyBtn.textContent = '✓ Selecionado!';
+          setTimeout(() => { copyBtn.textContent = '⊕ Copiar Artefato'; }, 2000);
+        });
+      });
+
+      closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+      overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.classList.remove('open'); });
+
+      // Registra no KOBLLUX_APPS após ZPR estar pronto
+      function tryRegister(attempt) {
+        if (window.KOBLLUX_APPS) {
+          window.KOBLLUX_APPS.register('∆7-selar', openSeal, {
+            arch: 'rhea',
+            desc: 'Gera artefato memory.jsonl ao completar ciclo 3·6·9·7',
+            version: '∆7 · 2026-05-20',
+          });
+          window.addEventListener('kob:selar', e => openSeal(e.detail));
+        } else if (attempt < 30) {
+          setTimeout(() => tryRegister(attempt + 1), 100);
+        }
+      }
+      tryRegister(0);
+    })();
+  </script>
 </body>
 </html>

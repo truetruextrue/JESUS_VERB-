@@ -1,38 +1,20 @@
-# 15 Apps
+# ☀ 15_APPS
+**Arquétipo:** `Lumine` · **Opcode:** `0x0C` · **963Hz** · **VEEB-A** · **D9**  
+**Regra:** `RENDER` · **Ação:** `TRANSCENDER` · **Essência:** _Luz · visual · interface_
 
-Aplicações do Sistema
+> 📍 `⌂ › 15_APPS`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** Raiz
-- **Data de criação:** 2026-02-28 08:59:03
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📋 Estrutura
+**Subpastas:**
+- [⬡ **01_DUAL_APP**](01_DUAL_APP/README.md) · `Atlas` · `0x00`
+- [⬡ **02_INFODOSE_GENERATOR**](02_INFODOSE_GENERATOR/README.md) · `Atlas` · `0x00`
+- [⬡ **03_PAINEL_ASCII**](03_PAINEL_ASCII/README.md) · `Atlas` · `0x00`
+- [☀ **04_VISUALIZADOR_3D**](04_VISUALIZADOR_3D/README.md) · `Lumine` · `0x0C`
 
-Esta pasta contém os seguintes elementos:
+---
 
-```
-
-```
-
-## 🔗 Conexões
-
-- **Fase relacionada:** 15_APPS
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

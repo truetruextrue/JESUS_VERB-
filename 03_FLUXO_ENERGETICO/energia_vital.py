@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-energia_vital.py - A Vida em Movimento
+energia_vital.py · FASE 04 · FLUXO ENERGÉTICO · vitalis · 0x4 · ∆7
+8D universal → 9D corporal
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class EnergiaVital:
-    def __init__(self):
-        self.nome = "energia_vital"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class EnergiaVital(KoblluxPhaseBase):
+    """FASE 04 · FLUXO ENERGÉTICO — 8D universal → 9D corporal."""
+    FASE   = 4
+    OPCODE = 0x4
+    NOME   = "FLUXO ENERGÉTICO"
+    ARCH   = "vitalis"
+    DESC   = "8D universal → 9D corporal"
+
 
 if __name__ == "__main__":
     obj = EnergiaVital()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

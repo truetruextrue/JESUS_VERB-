@@ -1,42 +1,40 @@
-# 01 Manuais
+# ⬡ 01_MANUAIS
+**Arquétipo:** `Atlas` · **Opcode:** `0x00` · **768Hz** · **VEEB-A** · **D1**  
+**Regra:** `BOOT` · **Ação:** `ESTRUTURAR` · **Essência:** _Estrutura · mapa · fundação_
 
-Manuais de uso
+> 📍 `⌂ › 13_DOCUMENTACAO › 01_MANUAIS`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** 13_DOCUMENTACAO
-- **Data de criação:** 2026-02-28 08:59:03
+← **[⬆ Subir](../..README.md)** (raiz)
 
-## 📋 Estrutura
+## Arquivos
 
-Esta pasta contém os seguintes elementos:
+- 📝 `BOOT_0X00_7_LINGUAGENS_NUCLEARES_KOBLLUX_VEEB-A_D1.txt`
+- 📝 `BOOT_0X00_ESTRUTURA_ANALISE_GEOMETRICA_VEEB-A_D1.txt`
+- 📝 `BOOT_0X00_GEOMETRIA_SUBCONSCIENTE_7_LINGUAGENS_VEEB-A_D1.txt`
+- 📄 `BOOT_0X00_cllas_skil_VEEB-A_D1.md`
+- 📄 `BOOT_0X00_manual_tecnico_VEEB-A_D1.md`
+- 📄 `BOOT_0X00_planejamento_cosmico_roda_viva_kobllux_VEEB-A_D1.md`
+- 📄 `DELTA_0X01_KOBLLUX_ATIVACAO_ANALISE_GEOMETRICA_CODIGO_VEEB-O_D3.md`
+- 📝 `DELTA_0X01_KOBLLUX_ATIVACAO_D3_7_LINGUAGENS_NUCLEARES_VEEB-O_D3.txt`
+- 📝 `DELTA_0X01_KOBLLUX_ATIVACAO_D3_REGUA_GEOMETRICA_VEEB-O_D3.txt`
+- 📄 `DELTA_0X01_Z_ATIVACAO_SUMBUS_FIRMWARE_KOBLLUX_VEEB-O_D3.md`
+- 📄 `DELTA_0X01_delta_cubo_manifesto_VEEB-O_D3.md`
+- 📄 `DETECT_0X03_ANALISE_GEOMETRICA_KOBLLUX_D3_VEEB-A_D5.md`
+- 📄 `DETECT_0X03_ANALISE_GEOMETRICA_KOBLLUX_D3_v03_VEEB-A_D5.md`
+- 📄 `DETECT_0X03_ANALISE_KOBLLUX_528K_FRACTAL_VEEB-A_D5.md`
+- 📄 `GUARD_0X09_README_MANUAIS_VEEB-U_D6.md`
+- 📄 `GUARD_0X09_faq_VEEB-U_D6.md`
+- 📄 `GUARD_0X09_manual_espiritual_VEEB-U_D6.md`
+- 📄 `INTEGRAR_0X04_KOBLLUX_VxIxDelta_BLLUE_DISSE_v0_VEEB-U_D11.md`
+- 📄 `INTEGRAR_0X04_KOBLLUX_VxIxDelta_BLLUE_DISSE_v1_VEEB-U_D11.md`
+- 📄 `RENDER_0X08_guia_rapido_VEEB-A_D9.md`
+- 📄 `RENDER_0X08_manual_usuario_VEEB-A_D9.md`
+- 📄 `SYNTH_0X07_KOBLLUX_TRINITY_SYSTEM_CONSTRUTOR_MALHA_VIVA_VEEB-O_D8.md`
+- 📄 `SYNTH_0X07_div_class_fusion_card_VEEB-O_D8.md`
 
-```
-- guia_rapido.md
-- manual_usuario.md
-- manual_tecnico.md
-- manual_espiritual.md
-- faq.md
-```
+---
 
-## 🔗 Conexões
-
-- **Fase relacionada:** 01_MANUAIS
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

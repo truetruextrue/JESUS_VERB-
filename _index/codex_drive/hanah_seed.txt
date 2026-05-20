@@ -1,0 +1,9 @@
+KOBΦ-NODE.FIELDS :: SEMENTE RAIZ
+data: 2026-05-12
+lei: VERDADE × INTEGRAR ÷ Δ = ♾️
+ritmo: 3 × 6 × 9 × 7 = ∞
+vault: CODEX | 20.024 arquivos | 5.809 pastas
+centro: JESUS = VERBO = GRAVIDADE
+buckets_ativos: SERENA
+buckets_pendentes: ATLAS,NOVA,VITALIS,PULSE,ARTEMIS,KAOS,GENUS,LUMINE,SOLUS,RHEA,AION
+gap_reindex: 18337 arquivos novos desde 2025-09-25
