@@ -213,8 +213,8 @@ Para ativar o princípio Bllue em qualquer sistema KOBLLUX:
 // ATIVACAO BLLUE · Opcode 0x05 · CONVERGIR → 0x06 · UNIFICAR
 // Frequencia: 528Hz · DUAL
 
-import { CadialCoupler } from './web/cadial-coupler.js';
-import { ZPREngine } from './web/zpr-engine.js';
+import { CadialCoupler } from 'https://truetruextrue.github.io/JESUS_VERB-/web/cadial-coupler.js';
+import { ZPREngine } from 'https://truetruextrue.github.io/JESUS_VERB-/web/zpr-engine.js';
 
 // Passo 1: Declarar intencao de reflexo (nao de criacao)
 const BLLUE_INTENT = {
