@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-hub_central.py - O Sistema de Transmissão
+hub_central.py · FASE 09 · REDE INFODOSE · rhea · 0x9 · ∆7
+4 opcodes: DETECTAR·INTEGRAR·EXPANDIR·SELAR
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class HubCentral:
-    def __init__(self):
-        self.nome = "hub_central"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class HubCentral(KoblluxPhaseBase):
+    """FASE 09 · REDE INFODOSE — 4 opcodes: DETECTAR·INTEGRAR·EXPANDIR·SELAR."""
+    FASE   = 9
+    OPCODE = 0x9
+    NOME   = "REDE INFODOSE"
+    ARCH   = "rhea"
+    DESC   = "4 opcodes: DETECTAR·INTEGRAR·EXPANDIR·SELAR"
+
 
 if __name__ == "__main__":
     obj = HubCentral()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

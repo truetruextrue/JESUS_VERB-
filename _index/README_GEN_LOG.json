@@ -1,0 +1,1053 @@
+{
+  "gerados": 209,
+  "pulados": 1,
+  "erros": 0,
+  "log": [
+    {
+      "dir": "000_AUDIO",
+      "arch": "Pulse",
+      "ok": true
+    },
+    {
+      "dir": "000_VIDEOS",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "00_CORE",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "00_CORE/LOGS",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "00_FUNDACAO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "00_FUNDACAO/01_ATIVAR_DELTA",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "00_FUNDACAO/02_KOBLLUX_CORE",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "00_FUNDACAO/03_FORMA_VIVA",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/01_1D_LINHA",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/02_2D_PLANO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/03_3D_VOLUME",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/04_4D_TEMPO",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/05_5D_POLIEDRO",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/05_5D_POLIEDRO/archetypes",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/06_6D_SUPERFICIE",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/06_6D_SUPERFICIE/icons",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/07_7D_TORO",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/07_7D_TORO/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/08_8D_HIPERCUBO",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/09_9D_FRACTAL",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "01_DIMENSOES/10_10D_HIPERESFERA",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "02_CICLO_369",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "02_CICLO_369/01_FASE_3_MENTE",
+      "arch": "Nova",
+      "ok": true
+    },
+    {
+      "dir": "02_CICLO_369/02_FASE_6_CORPO",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "02_CICLO_369/03_FASE_9_ALMA",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "03_FLUXO_ENERGETICO",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "03_FLUXO_ENERGETICO/01_NIVEL_8D_UNIVERSAL",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "03_FLUXO_ENERGETICO/02_NIVEL_9D_CORPO",
+      "arch": "Pulse",
+      "ok": true
+    },
+    {
+      "dir": "04_APRENDIZADO",
+      "arch": "Nova",
+      "ok": true
+    },
+    {
+      "dir": "04_APRENDIZADO/01_NIVEL_CONCRETO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "04_APRENDIZADO/02_NIVEL_DINAMICO",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "04_APRENDIZADO/03_NIVEL_ABSTRATO",
+      "arch": "Artemis",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/01_CAPTACAO_DADOS",
+      "arch": "Artemis",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/02_PROCESSAMENTO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/03_ACAO_MOVIMENTO",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/04_REFLEXAO_AJUSTE",
+      "arch": "Serena",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/05_EXPANSAO_EVOLUCAO",
+      "arch": "Nova",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/06_UNIFICACAO",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/07_FLUXO_ENERGETICO",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/08_REDES_NEURAIS",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "05_PENSAMENTO_ESTRUTURADO/09_CICLO_EC",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "06_ATIVACAO",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "06_ATIVACAO/01_ATIVAR_DELTA",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "06_ATIVACAO/02_ATIVAR_INTERDIMENSIONAL",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "07_NARRATIVA_TEMPORAL",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "07_NARRATIVA_TEMPORAL/01_ANO_2021_AJUSTE",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "07_NARRATIVA_TEMPORAL/02_ANO_2022_CONVERGENCIAS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "07_NARRATIVA_TEMPORAL/03_ANO_2023_CONSOLIDACAO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "07_NARRATIVA_TEMPORAL/04_ANO_2024_ENCONTRO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "07_NARRATIVA_TEMPORAL/05_ANO_2025_EXPANSAO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "08_REDE_INFODOSE",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "08_REDE_INFODOSE/01_OPCODE_03_DETECTAR",
+      "arch": "Artemis",
+      "ok": true
+    },
+    {
+      "dir": "08_REDE_INFODOSE/02_OPCODE_06_INTEGRAR",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "08_REDE_INFODOSE/03_OPCODE_09_EXPANDIR",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "08_REDE_INFODOSE/04_OPCODE_07_SELAR",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "09_LINHA_DO_PULSO",
+      "arch": "Pulse",
+      "ok": true
+    },
+    {
+      "dir": "09_LINHA_DO_PULSO/01_DECODER_SINAIS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "09_LINHA_DO_PULSO/02_REGISTRO_PULSOS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "09_LINHA_DO_PULSO/03_HISTORICO_VIVO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "0Z_ASSETS",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "0Z_ASSETS/JSON",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "0Z_ASSETS/TEXTS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "10_ARVORE_FRACTAL",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "10_ARVORE_FRACTAL/01_TRIADE_DOCUMENTAL",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "10_ARVORE_FRACTAL/01_TRIADE_DOCUMENTAL/01_LADO_A_RAIZ",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "10_ARVORE_FRACTAL/01_TRIADE_DOCUMENTAL/02_LADO_B_GALHOS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "10_ARVORE_FRACTAL/01_TRIADE_DOCUMENTAL/03_LADO_C_FRUTO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "10_ARVORE_FRACTAL/02_REGUA_3697",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "10_ARVORE_FRACTAL/03_MAPA_VIVO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS",
+      "arch": "Artemis",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS/01_FISICA",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS/02_QUIMICA",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS/03_TECNOLOGIA",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS/04_ARTE",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS/05_LINGUAGEM",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS/06_PSICOLOGIA",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "11_CIENCIAS_CLASSIFICADAS/07_HIPERGEOMETRIA",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "12_VEEB",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "12_VEEB/01_VIBRACAO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "12_VEEB/02_ENERGIA",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "12_VEEB/03_ESTRUTURA",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "12_VEEB/04_BASE",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "13_DOCUMENTACAO",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "13_DOCUMENTACAO/01_MANUAIS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "13_DOCUMENTACAO/02_CODEX",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "13_DOCUMENTACAO/03_ARQUETIPOS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "13_DOCUMENTACAO/04_SIMBOLOS",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "14_UTILS",
+      "arch": "Kaos",
+      "ok": true
+    },
+    {
+      "dir": "14_UTILS/01_SCRIPTS",
+      "arch": "Kaos",
+      "ok": true
+    },
+    {
+      "dir": "14_UTILS/01_SCRIPTS/git-hooks",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "14_UTILS/02_LOGS",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "14_UTILS/03_CONFIG",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "14_UTILS/04_TEMPLATES",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "15_APPS",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "15_APPS/01_DUAL_APP",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "15_APPS/02_INFODOSE_GENERATOR",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "15_APPS/03_PAINEL_ASCII",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "15_APPS/04_VISUALIZADOR_3D",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "16_ASCII_ART",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "16_ASCII_ART/01_SELOS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "16_ASCII_ART/02_MANDALAS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "16_ASCII_ART/03_PORTAS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE",
+      "arch": "Pulse",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE/02_AUDIO",
+      "arch": "Pulse",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE/02_AUDIO/01_PULSOS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE/02_AUDIO/03_FREQUENCIAS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE/02_AUDIO/04_INFODOSES",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE/06_ARQUIVO_BRUTO",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE/06_ARQUIVO_BRUTO/PROJETOS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "17_MIDIA_INFODOSE/06_ARQUIVO_BRUTO/PROJETOS/∆⅞_Quadros_78frames",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/_state",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/aion",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/aion/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/aion/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/artemis",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/artemis/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/artemis/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/atlas",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/atlas/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/genus",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/genus/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/genus/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/kaos",
+      "arch": "Kaos",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/kaos/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/kaos/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/lumine",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/lumine/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/lumine/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/nova",
+      "arch": "Nova",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/nova/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/nova/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/pulse",
+      "arch": "Pulse",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/pulse/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/pulse/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/rhea",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/rhea/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/rhea/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/serena",
+      "arch": "Serena",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/serena/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/serena/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/solus",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/solus/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/solus/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/vitalis",
+      "arch": "Vitalis",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/vitalis/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "ARQUETIPOS/vitalis/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "BOOT",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "KOBLLUX_∆³_Design_System",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "KOBLLUX_∆³_Design_System/SKILL",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "KΦꓷDΦꓘ",
+      "arch": "Kaos",
+      "ok": true
+    },
+    {
+      "dir": "MYRMIDE",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "MYRMIDE/SCRIPTS",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "_index",
+      "arch": "Aion",
+      "ok": true
+    },
+    {
+      "dir": "archetypes",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "docs",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "inbox",
+      "arch": "Nova",
+      "ok": true
+    },
+    {
+      "dir": "inbox/uno",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "kobllux",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "kobllux/examples",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "kobllux/profiles",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "output",
+      "arch": "Genus",
+      "ok": true
+    },
+    {
+      "dir": "web",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/BRIDGE",
+      "arch": "Rhea",
+      "ok": true
+    },
+    {
+      "dir": "web/CORE",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/CORE/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/CORE/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/TTS",
+      "arch": "Pulse",
+      "ok": true
+    },
+    {
+      "dir": "web/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/js/modules",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/js/opcodes",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/chat-cinematic-kobllux.kobllux-dna",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/chat-cinematic-kobllux.kobllux-dna/chat-cinematic-kobllux",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/chat-cinematic-kobllux.kobllux-dna/chat-cinematic-kobllux/0x05_convergir_E_D6_external",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/chat-cinematic-kobllux.kobllux-dna/chat-cinematic-kobllux/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/chat-cinematic-kobllux.kobllux-dna/chat-cinematic-kobllux/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-archetype-engine.kobllux-dna",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-archetype-engine.kobllux-dna/fusion-card-archetype-engine",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-archetype-engine.kobllux-dna/fusion-card-archetype-engine/0x05_convergir_E_D6_external",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-archetype-engine.kobllux-dna/fusion-card-archetype-engine/0x09_manifestar_V_D6_icons",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-archetype-engine.kobllux-dna/fusion-card-archetype-engine/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-archetype-engine.kobllux-dna/fusion-card-archetype-engine/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-blueprint-0x05-convergir.kobllux-dna",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-blueprint-0x05-convergir.kobllux-dna/fusion-card-blueprint-0x05-convergir",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-blueprint-0x05-convergir.kobllux-dna/fusion-card-blueprint-0x05-convergir/0x05_convergir_E_D6_external",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-blueprint-0x05-convergir.kobllux-dna/fusion-card-blueprint-0x05-convergir/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-blueprint-0x05-convergir.kobllux-dna/fusion-card-blueprint-0x05-convergir/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-core-isolado.kobllux-dna",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-core-isolado.kobllux-dna/fusion-card-core-isolado",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-core-isolado.kobllux-dna/fusion-card-core-isolado/0x05_convergir_E_D6_external",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-core-isolado.kobllux-dna/fusion-card-core-isolado/0x09_manifestar_V_D6_icons",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-core-isolado.kobllux-dna/fusion-card-core-isolado/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-core-isolado.kobllux-dna/fusion-card-core-isolado/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-particle-cosmos-3-6-9-logger.kobllux-dna",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-particle-cosmos-3-6-9-logger.kobllux-dna/fusion-card-particle-cosmos-3-6-9-logger",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-particle-cosmos-3-6-9-logger.kobllux-dna/fusion-card-particle-cosmos-3-6-9-logger/0x05_convergir_E_D6_external",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-particle-cosmos-3-6-9-logger.kobllux-dna/fusion-card-particle-cosmos-3-6-9-logger/0x09_manifestar_V_D6_icons",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-particle-cosmos-3-6-9-logger.kobllux-dna/fusion-card-particle-cosmos-3-6-9-logger/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/fusion-card-particle-cosmos-3-6-9-logger.kobllux-dna/fusion-card-particle-cosmos-3-6-9-logger/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/symbolbar-drag-carrossel-kobllux.kobllux-dna",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/symbolbar-drag-carrossel-kobllux.kobllux-dna/symbolbar-drag-carrossel-kobllux",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/symbolbar-drag-carrossel-kobllux.kobllux-dna/symbolbar-drag-carrossel-kobllux/0x05_convergir_E_D6_external",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/symbolbar-drag-carrossel-kobllux.kobllux-dna/symbolbar-drag-carrossel-kobllux/css",
+      "arch": "Atlas",
+      "ok": true
+    },
+    {
+      "dir": "web/pack_dualKobllux/symbolbar-drag-carrossel-kobllux.kobllux-dna/symbolbar-drag-carrossel-kobllux/js",
+      "arch": "Lumine",
+      "ok": true
+    },
+    {
+      "dir": "web/styles",
+      "arch": "Atlas",
+      "ok": true
+    }
+  ],
+  "ts": "2026-05-20T04:23:35.442798+00:00"
+}

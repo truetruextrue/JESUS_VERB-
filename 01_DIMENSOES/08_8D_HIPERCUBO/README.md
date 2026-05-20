@@ -1,40 +1,20 @@
-# 08 8D Hipercubo
+# ⬢ 08_8D_HIPERCUBO
+**Arquétipo:** `Genus` · **Opcode:** `0x0B` · **852Hz** · **VEEB-O** · **D8**  
+**Regra:** `SYNTH` · **Ação:** `TEMPORIZAR` · **Essência:** _Síntese · forma · construção_
 
-Transição entre camadas
+> 📍 `⌂ › 01_DIMENSOES › 08_8D_HIPERCUBO`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** 01_DIMENSOES
-- **Data de criação:** 2026-02-28 08:59:02
+← **[⬆ Subir](../..README.md)** (raiz)
 
-## 📋 Estrutura
+## Arquivos
 
-Esta pasta contém os seguintes elementos:
+- 🐍 `hipercubo.py`
+- 🐍 `tesserato.py`
+- 📄 `transicao.md`
 
-```
-- tesserato.py
-- hipercubo.py
-- transicao.md
-```
+---
 
-## 🔗 Conexões
-
-- **Fase relacionada:** 08_8D_HIPERCUBO
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

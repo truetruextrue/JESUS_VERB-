@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-metodo_atlas.py - O Método do Sistema
+metodo_atlas.py · FASE 06 · PENSAMENTO · atlas · 0x6 · ∆7
+9 fases do pensamento estruturado
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class MetodoAtlas:
-    def __init__(self):
-        self.nome = "metodo_atlas"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class MetodoAtlas(KoblluxPhaseBase):
+    """FASE 06 · PENSAMENTO — 9 fases do pensamento estruturado."""
+    FASE   = 6
+    OPCODE = 0x6
+    NOME   = "PENSAMENTO"
+    ARCH   = "atlas"
+    DESC   = "9 fases do pensamento estruturado"
+
 
 if __name__ == "__main__":
     obj = MetodoAtlas()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

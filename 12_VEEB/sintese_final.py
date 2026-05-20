@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-sintese_final.py - Vibração · Energia · Estrutura · Base
+sintese_final.py · FASE 13 · V.E.E.B. SÍNTESE · kobllux · 0xc · ∆7
+Vibração·Energia·Estrutura·Base
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class SinteseFinal:
-    def __init__(self):
-        self.nome = "sintese_final"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class SinteseFinal(KoblluxPhaseBase):
+    """FASE 13 · V.E.E.B. SÍNTESE — Vibração·Energia·Estrutura·Base."""
+    FASE   = 13
+    OPCODE = 0xc
+    NOME   = "V.E.E.B. SÍNTESE"
+    ARCH   = "kobllux"
+    DESC   = "Vibração·Energia·Estrutura·Base"
+
 
 if __name__ == "__main__":
     obj = SinteseFinal()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

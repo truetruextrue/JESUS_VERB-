@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-arborista.py - O Mapa Vivo
+arborista.py · FASE 11 · ÁRVORE FRACTAL · genus · 0xb · ∆7
+Raiz·Galhos·Frutos · régua 3-6-9-7
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class Arborista:
-    def __init__(self):
-        self.nome = "arborista"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class Arborista(KoblluxPhaseBase):
+    """FASE 11 · ÁRVORE FRACTAL — Raiz·Galhos·Frutos · régua 3-6-9-7."""
+    FASE   = 11
+    OPCODE = 0xb
+    NOME   = "ÁRVORE FRACTAL"
+    ARCH   = "genus"
+    DESC   = "Raiz·Galhos·Frutos · régua 3-6-9-7"
+
 
 if __name__ == "__main__":
     obj = Arborista()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

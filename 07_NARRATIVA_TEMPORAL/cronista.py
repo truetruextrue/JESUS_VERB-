@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-cronista.py - A História Viva
+cronista.py · FASE 08 · NARRATIVA · aion · 0x8 · ∆7
+Linha do tempo 2021-2025
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class Cronista:
-    def __init__(self):
-        self.nome = "cronista"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class Cronista(KoblluxPhaseBase):
+    """FASE 08 · NARRATIVA — Linha do tempo 2021-2025."""
+    FASE   = 8
+    OPCODE = 0x8
+    NOME   = "NARRATIVA"
+    ARCH   = "aion"
+    DESC   = "Linha do tempo 2021-2025"
+
 
 if __name__ == "__main__":
     obj = Cronista()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

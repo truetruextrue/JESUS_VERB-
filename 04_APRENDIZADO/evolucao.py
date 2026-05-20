@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-evolucao.py - A Evolução do Sistema
+evolucao.py · FASE 05 · APRENDIZADO · nova · 0x5 · ∆7
+Expansão · Contração · Evolução
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class Evolucao:
-    def __init__(self):
-        self.nome = "evolucao"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class Evolucao(KoblluxPhaseBase):
+    """FASE 05 · APRENDIZADO — Expansão · Contração · Evolução."""
+    FASE   = 5
+    OPCODE = 0x5
+    NOME   = "APRENDIZADO"
+    ARCH   = "nova"
+    DESC   = "Expansão · Contração · Evolução"
+
 
 if __name__ == "__main__":
     obj = Evolucao()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

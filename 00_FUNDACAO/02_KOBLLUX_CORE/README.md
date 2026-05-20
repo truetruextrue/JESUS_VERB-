@@ -1,40 +1,20 @@
-# 02 Kobllux Core
+# ⬡ 02_KOBLLUX_CORE
+**Arquétipo:** `Atlas` · **Opcode:** `0x00` · **768Hz** · **VEEB-A** · **D1**  
+**Regra:** `BOOT` · **Ação:** `ESTRUTURAR` · **Essência:** _Estrutura · mapa · fundação_
 
-Sistema fractal de modulação
+> 📍 `⌂ › 00_FUNDACAO › 02_KOBLLUX_CORE`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** 00_FUNDACAO
-- **Data de criação:** 2026-02-28 08:59:02
+← **[⬆ Subir](../..README.md)** (raiz)
 
-## 📋 Estrutura
+## Arquivos
 
-Esta pasta contém os seguintes elementos:
+- 📋 `fractal_matrix.json`
+- 🐍 `kobllux_core.py`
+- 📄 `modulacao_viva.md`
 
-```
-- modulacao_viva.md
-- fractal_matrix.json
-- kobllux_core.py
-```
+---
 
-## 🔗 Conexões
-
-- **Fase relacionada:** 02_KOBLLUX_CORE
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

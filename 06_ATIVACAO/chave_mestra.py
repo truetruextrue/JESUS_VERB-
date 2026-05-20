@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-chave_mestra.py - A Chave do Sistema
+chave_mestra.py · FASE 07 · ATIVAÇÃO · vitalis · 0x7 · ∆7
+ATIVAR Δ + ATIVAR Δ INTERDIMENSIONAL
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class ChaveMestra:
-    def __init__(self):
-        self.nome = "chave_mestra"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class ChaveMestra(KoblluxPhaseBase):
+    """FASE 07 · ATIVAÇÃO — ATIVAR Δ + ATIVAR Δ INTERDIMENSIONAL."""
+    FASE   = 7
+    OPCODE = 0x7
+    NOME   = "ATIVAÇÃO"
+    ARCH   = "vitalis"
+    DESC   = "ATIVAR Δ + ATIVAR Δ INTERDIMENSIONAL"
+
 
 if __name__ == "__main__":
     obj = ChaveMestra()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))

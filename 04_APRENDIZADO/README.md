@@ -1,43 +1,24 @@
-# Readme
+# ✦ 04_APRENDIZADO
+**Arquétipo:** `Nova` · **Opcode:** `0x02` · **432Hz** · **VEEB-A** · **D2**  
+**Regra:** `SEED` · **Ação:** `DETECTAR` · **Essência:** _Semente · inspiração · nova ideia_
 
-A Evolução do Sistema
+> 📍 `⌂ › 04_APRENDIZADO`
 
-## 🧿 Visão Geral
+## Navegação
 
-Este documento faz parte do **KOBLLUX TRINITY SYSTEM**, versão 7.9, e contém informações detalhadas sobre a evolução do sistema.
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📜 Conteúdo
+**Subpastas:**
+- [⬡ **01_NIVEL_CONCRETO**](01_NIVEL_CONCRETO/README.md) · `Atlas` · `0x00`
+- [◉ **02_NIVEL_DINAMICO**](02_NIVEL_DINAMICO/README.md) · `Vitalis` · `0x01`
+- [◎ **03_NIVEL_ABSTRATO**](03_NIVEL_ABSTRATO/README.md) · `Artemis` · `0x03`
 
-*Documentação em desenvolvimento conforme a expansão da malha viva.*
+## Arquivos
 
-## 🔗 Conexões com o Sistema
+- 📄 `aprendizado_continuo.md`
+- 🐍 `evolucao.py`
 
-- **Fase relacionada:** Consultar documentação
-- **Arquétipos envolvidos:** Múltiplos
-- **Opcode:** 0x???
+---
 
-## 📋 Estrutura de Arquivos
-
-```
-04_APRENDIZADO/
-└── README.md
-```
-
-## ⚡ Ativação
-
-Para ativar este componente no sistema:
-
-```python
-from kobllux_core import Sistema
-
-sistema = Sistema()
-sistema.carregar_modulo("README")
-sistema.ativar()
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

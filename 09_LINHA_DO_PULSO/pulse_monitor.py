@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX TRINITY SYSTEM
-pulse_monitor.py - O Registro Vivo
+pulse_monitor.py · FASE 10 · LINHA DO PULSO · pulse · 0xa · ∆7
+Decoder de sinais · registro vivo
+
+Conectado ao SumbusFirmware via KoblluxPhaseBase.
 """
+from __future__ import annotations
+import sys, json
+from pathlib import Path
 
-import sys
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-class PulseMonitor:
-    def __init__(self):
-        self.nome = "pulse_monitor"
-        self.ativo = False
-        
-    def ativar(self) -> str:
-        self.ativo = True
-        return f"✅ {self.nome} ativado com sucesso" 
+from kobllux_phase_base import KoblluxPhaseBase, FASE_OPCODE
 
-    def status(self) -> dict:
-        return {"nome": self.nome, "ativo": self.ativo}
+
+class PulseMonitor(KoblluxPhaseBase):
+    """FASE 10 · LINHA DO PULSO — Decoder de sinais · registro vivo."""
+    FASE   = 10
+    OPCODE = 0xa
+    NOME   = "LINHA DO PULSO"
+    ARCH   = "pulse"
+    DESC   = "Decoder de sinais · registro vivo"
+
 
 if __name__ == "__main__":
     obj = PulseMonitor()
-    print(obj.ativar())
+    print(json.dumps(obj.ativar(), ensure_ascii=False, indent=2))
+    print(json.dumps(obj.status(), ensure_ascii=False, indent=2))
