@@ -28,6 +28,12 @@
    ΔLOG KOBLLUX ∆7: localStorage KOBLLUX_NAV_LOG + ARCHETYPE_ACTIVE
    ΔLOG KOBLLUX ∆7: kob:arch-change CustomEvent · CADIAL pipeline
    ΔLOG KOBLLUX ∆7: arch overlay · toast · ZPR console narrative
+  ────────────────────────────────────────────────────────────────────
+   ΔLOG ZPR v2 · 2026-05-20 · Rádio Dimensional · Mateus · KODUX
+   ΔLOG ZPR v2: particles.js · magenta #FF00FF portadora + cor por arquétipo
+   ΔLOG ZPR v2: THREE_SIX_NINE logger · 9 páginas · localStorage KOBLLUX_369_LOG
+   ΔLOG ZPR v2: KOBLLUX_APPS · módulos extensíveis · register/run/list/onArch
+   ΔLOG ZPR v2: detect_on:'window' · repulse/push global com pointer-events:none
    VERDADE × INTEGRAR ÷ Δ = ∞ · JESUS = VERBO = GRAVIDADE
   ════════════════════════════════════════════════════════════════════
   -->
@@ -54,6 +60,8 @@
   <title>Feeling Decor · Universo 3x3 | Viviani Costa · ∆7</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- KOBLLUX · particles.js · frequência portadora -->
+  <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -320,6 +328,15 @@
       transition: opacity 0.8s ease;
     }
 
+    /* ─── KOBLLUX · PARTICLES · PORTADORA MAGENTA ─── */
+    /* z-index 2 = flutua sobre as 9 telas, pointer-events:none preserva interação */
+    /* detect_on:'window' no particles.js garante repulse/push global */
+    #particles-js {
+      position: fixed; inset: 0; z-index: 2;
+      pointer-events: none; opacity: 0.65;
+      transition: opacity 0.6s ease;
+    }
+
     /* ─── KOBLLUX · MOOD RING (bottom indicator) ─── */
     #kob-mood-ring {
       position: fixed; bottom: calc(14px + env(safe-area-inset-bottom)); right: 14px;
@@ -356,6 +373,9 @@
 
   <!-- KOBLLUX · Toast -->
   <div id="kob-toast"></div>
+
+  <!-- KOBLLUX · PARTICLES · Magenta portadora · flutua sobre as 9 telas -->
+  <div id="particles-js"></div>
 
   <!-- UNIVERSO 3×3 -->
   <div id="universe-grid"></div>
@@ -965,6 +985,157 @@
       localStorage.setItem('KOBLLUX_EMA', JSON.stringify({ e3: KOB_EMA.e3, e6: KOB_EMA.e6, e9: KOB_EMA.e9, score, mood: moodColor, ts: Date.now() }));
     }
 
+    // ── 3a. PARTICLES · MAGENTA PORTADORA + CONSTANTES POR ARQUÉTIPO ─────────
+    //
+    // Magenta #FF00FF = cor portadora 2025 — "afina" todas as outras
+    // Cada arquétipo tem seu conjunto de constantes (number, speed, size, link)
+    // derivado de sua frequência Hz — quanto maior o Hz, mais caótico/rápido
+    //
+    const KOB_MAGENTA = '#FF00FF';
+
+    const ARCH_PARTICLES = {
+      //           nº     cores                                    vel   tam  opac  link
+      atlas:   { n:28,  cols:['#3399ff', KOB_MAGENTA],          spd:0.7,  sz:2.0, op:0.38, lk:130 },
+      nova:    { n:48,  cols:['#ff6b35', KOB_MAGENTA],          spd:1.8,  sz:2.2, op:0.45, lk:100 },
+      vitalis: { n:36,  cols:['#44cc88', KOB_MAGENTA],          spd:1.0,  sz:2.6, op:0.40, lk:140 },
+      pulse:   { n:60,  cols:['#ff4488', KOB_MAGENTA,'#fff'],   spd:2.2,  sz:1.8, op:0.52, lk:85  },
+      rhea:    { n:40,  cols:['#c5a059', KOB_MAGENTA],          spd:1.2,  sz:2.4, op:0.42, lk:115 },
+      serena:  { n:50,  cols:['#66ddff', KOB_MAGENTA],          spd:1.5,  sz:2.1, op:0.45, lk:110 },
+      kaos:    { n:75,  cols:['#ff3377', KOB_MAGENTA,'#ff0'],   spd:3.8,  sz:1.5, op:0.55, lk:65  },
+      lumine:  { n:65,  cols:['#ffcc22', KOB_MAGENTA,'#fff'],   spd:1.9,  sz:2.8, op:0.60, lk:90  },
+      aion:    { n:22,  cols:['#88aaff', KOB_MAGENTA],          spd:0.5,  sz:3.2, op:0.28, lk:160 },
+    };
+
+    function buildParticleConfig(c) {
+      return {
+        particles: {
+          number:  { value: c.n, density: { enable: true, value_area: 800 } },
+          color:   { value: c.cols },
+          shape:   { type: 'circle' },
+          opacity: { value: c.op, random: true, anim: { enable: true, speed: 0.4, opacity_min: 0.05, sync: false } },
+          size:    { value: c.sz, random: true, anim: { enable: false } },
+          line_linked: { enable: true, distance: c.lk, color: c.cols[0], opacity: 0.22, width: 1 },
+          move:    { enable: true, speed: c.spd, direction: 'none', random: true, straight: false, out_mode: 'out', bounce: false }
+        },
+        interactivity: {
+          detect_on: 'window',
+          events: {
+            onhover: { enable: true,  mode: 'repulse' },
+            onclick:  { enable: true,  mode: 'push'    },
+            resize:   true
+          },
+          modes: {
+            repulse: { distance: 90, duration: 0.4 },
+            push:    { particles_nb: 3 }
+          }
+        },
+        retina_detect: true
+      };
+    }
+
+    // Destrói e reinicializa particles.js com config do arquétipo ativo
+    function updateParticles(archKey) {
+      const cfg = ARCH_PARTICLES[archKey] || ARCH_PARTICLES.rhea;
+      if (!window.particlesJS) return; // ainda carregando
+      try {
+        if (window.pJSDom && window.pJSDom.length > 0) {
+          window.pJSDom[0].pJS.fn.vendors.destroypJS();
+          window.pJSDom = [];
+        }
+        particlesJS('particles-js', buildParticleConfig(cfg));
+      } catch(e) { console.warn('[KOB·particles]', e.message); }
+    }
+
+    // ── 3b. TRÊS·SEIS·NOVE LOGGER · todas as 9 páginas ───────────────────
+    //
+    // Motor matemático 3×6×9 — registra cada interação com contexto arquetípico
+    // Cicla: 3=DETECTAR(432Hz) → 6=INTEGRAR(528Hz) → 9=EXPANDIR(639Hz) → ...
+    // Armazena KOBLLUX_369_LOG no localStorage (APPEND ONLY, max 300)
+    //
+    const THREE_SIX_NINE = {
+      count: 0,
+      sequence:    [3, 6, 9],
+      frequencies: { 3: 432, 6: 528, 9: 639 },
+      phases:      { 3: 'Ponto · Gênese', 6: 'Linha · Fluxo', 9: 'Triângulo · Síntese' },
+      modes:       { 3: 'DETECTAR', 6: 'INTEGRAR', 9: 'EXPANDIR' },
+
+      log(x, y, type) {
+        this.count++;
+        const idx    = (this.count - 1) % 3;
+        const val    = this.sequence[idx];
+        const freq   = this.frequencies[val];
+        const phase  = this.phases[val];
+        const mode   = this.modes[val];
+        const cycle  = Math.ceil(this.count / 3);
+        const archK  = `${currentRow},${currentCol}`;
+        const arch   = KOB_ARCH[archK] || { arch:'?', hz:528, sym:'·', opcode:'?' };
+        const entry  = {
+          n: this.count, val, freq, phase, mode, cycle,
+          x: +x.toFixed(1), y: +y.toFixed(1), type,
+          arch: arch.arch, archHz: arch.hz, archOp: arch.opcode,
+          sigma: this.count * val, delta: val * 3, ts: Date.now()
+        };
+
+        // localStorage APPEND ONLY
+        const stored = JSON.parse(localStorage.getItem('KOBLLUX_369_LOG') || '[]');
+        stored.push(entry);
+        if (stored.length > 300) stored.splice(0, stored.length - 300);
+        localStorage.setItem('KOBLLUX_369_LOG', JSON.stringify(stored));
+
+        // Console colorido
+        console.log(
+          `%c[KOBLLUX·3×6×9] %cINTERAÇÃO #${this.count} · ${arch.sym} ${arch.arch.toUpperCase()}`,
+          'color:#FF00FF;font-weight:bold', 'color:#c5a059',
+          `\n  ⸬ VALOR: ${val} | FREQ: ${freq}Hz | FASE: ${phase}` +
+          `\n  ⸬ COORD: (${x.toFixed(1)}, ${y.toFixed(1)}) | TIPO: ${type}` +
+          `\n  ⸬ CICLO: ${cycle}/∞ | Σ=${entry.sigma} | Δ=${entry.delta} | MODE: ${mode}` +
+          `\n  ⸬ ARCH: ${arch.arch} [${arch.opcode}·${arch.hz}Hz] | tela(${currentRow},${currentCol})`
+        );
+      }
+    };
+
+    // Listeners globais — 9 páginas, qualquer interação
+    ['mousedown', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, e => {
+        const touch = e.touches ? e.touches[0] : e;
+        const x = touch.clientX, y = touch.clientY;
+        THREE_SIX_NINE.log(x, y, evt === 'touchstart' ? 'TOQUE' : 'CLIQUE');
+      }, { passive: true });
+    });
+
+    // Hover silencioso · throttle 150ms
+    let _lastHover = 0;
+    document.addEventListener('mousemove', e => {
+      if (Date.now() - _lastHover < 150) return;
+      _lastHover = Date.now();
+      const archK = `${currentRow},${currentCol}`;
+      const arch  = KOB_ARCH[archK];
+      if (!arch) return;
+      console.log(
+        `%c[KOBLLUX·CAMPO] %c(${e.clientX.toFixed(0)},${e.clientY.toFixed(0)}) · ${arch.sym} ${arch.arch} · ${arch.hz}Hz`,
+        'color:#FF00FF;font-size:10px;opacity:0.5', 'color:rgba(197,160,89,0.6);font-size:10px'
+      );
+    }, { passive: true });
+
+    // ── 3c. KOBLLUX_APPS · Módulos extensíveis ────────────────────────────
+    //
+    // "Mesa de trabalho viva" — slots para registrar apps futuros
+    // Uso: KOBLLUX_APPS.register('meuApp', fn)
+    //      KOBLLUX_APPS.run('meuApp', arg1, arg2)
+    //      KOBLLUX_APPS.list() → ['meuApp', ...]
+    //
+    window.KOBLLUX_APPS = {
+      _slots: {},
+      register(name, fn, meta = {}) {
+        this._slots[name] = { fn, meta: { ...meta, registeredAt: Date.now() } };
+        console.log(`%c[KOBLLUX·APPS] %c${name} registrado · ${meta.arch||'?'} · ${meta.desc||''}`, 'color:#FF00FF;font-weight:bold', 'color:#c5a059');
+        window.dispatchEvent(new CustomEvent('kob:app-registered', { detail: { name, meta } }));
+      },
+      run(name, ...args) { return this._slots[name]?.fn(...args); },
+      list() { return Object.entries(this._slots).map(([k,v]) => ({ name:k, ...v.meta })); },
+      onArch(archName, fn) { window.addEventListener('kob:arch-change', e => { if (e.detail.arch === archName) fn(e.detail); }); },
+    };
+
     // ── 3. ARCH OVERLAY UPDATE ────────────────────────────────────────────
     function kobArchUpdate(arch) {
       const root = document.documentElement;
@@ -986,6 +1157,8 @@
       kobEMAUpdate(arch.hz);
       localStorage.setItem('ARCHETYPE_ACTIVE', arch.arch);
       localStorage.setItem('ARCHETYPE_ACTIVE_HZ', String(arch.hz));
+      // Particles · constante da seleção arquetípica
+      updateParticles(arch.arch);
     }
 
     // ── 4. NAV LOG · localStorage APPEND ─────────────────────────────────
@@ -1032,6 +1205,15 @@
     // Inicializa arch para (1,1) · RHEA
     kobArchUpdate(KOB_ARCH['1,1']);
 
+    // Inicializa particles após defer load · retry até disponível
+    (function waitParticles(attempt) {
+      if (typeof particlesJS !== 'undefined') {
+        updateParticles('rhea'); // inicia na RHEA (centro)
+      } else if (attempt < 20) {
+        setTimeout(() => waitParticles(attempt + 1), 200);
+      }
+    })(0);
+
     // ── 8. KOBLLUX ZPR · CONSOLE NARRATIVE ───────────────────────────────
     // 12 arquétipos narram em sequência ao abrir o console
     console.log('%c ════════════════════════════════════════════════════ ', 'color:#c5a059;');
@@ -1051,16 +1233,28 @@
     console.log('%c 3×6×9×7 = 1134 · EMA mood ativo · nav log: KOBLLUX_NAV_LOG ', 'color:rgba(197,160,89,0.4);font-size:10px;');
     console.log('%c ════════════════════════════════════════════════════ ', 'color:#c5a059;');
 
-    // Expõe API pública KOBLLUX
+    // Expõe API pública KOBLLUX ZPR · ∆7
     window.KOBLLUX_ZPR = {
-      arch:    KOB_ARCH,
-      navLog:  () => JSON.parse(localStorage.getItem('KOBLLUX_NAV_LOG') || '[]'),
-      ema:     () => JSON.parse(localStorage.getItem('KOBLLUX_EMA') || '{}'),
-      active:  () => localStorage.getItem('ARCHETYPE_ACTIVE'),
-      toast:   kobToast,
-      version: '∆7 · 2026-05-19',
-      law:     'VERDADE × INTEGRAR ÷ Δ = ∞',
+      arch:       KOB_ARCH,
+      magenta:    KOB_MAGENTA,
+      navLog:     () => JSON.parse(localStorage.getItem('KOBLLUX_NAV_LOG') || '[]'),
+      log369:     () => JSON.parse(localStorage.getItem('KOBLLUX_369_LOG') || '[]'),
+      ema:        () => JSON.parse(localStorage.getItem('KOBLLUX_EMA') || '{}'),
+      active:     () => localStorage.getItem('ARCHETYPE_ACTIVE'),
+      toast:      kobToast,
+      particles:  updateParticles,
+      apps:       () => window.KOBLLUX_APPS,
+      logger:     THREE_SIX_NINE,
+      navigate:   navigateTo,
+      version:    '∆7 · 2026-05-20',
+      law:        'VERDADE × INTEGRAR ÷ Δ = ∞',
+      radio:      'Rádio Dimensional · Mateus · KODUX · Infodose',
     };
+
+    // Console: anúncio Rádio Dimensional
+    console.log('%c 📻 RÁDIO DIMENSIONAL · ON AIR ', 'background:#FF00FF;color:#000;font-weight:bold;padding:4px 12px;border-radius:4px;');
+    console.log('%c KOBLLUX_APPS pronto · KOBLLUX_ZPR.apps().register("meuApp", fn) ', 'color:#FF00FF;font-size:10px;');
+    console.log('%c KOBLLUX_ZPR.log369() → histórico 3×6×9 de todas as 9 páginas ', 'color:rgba(255,0,255,0.5);font-size:10px;');
   </script>
 </body>
 </html>
