@@ -954,14 +954,14 @@ document.getElementById('btn-undo').onclick = () => {
   history.future.push(history.present);
   history.present = history.past.pop();
   UI.input.value = history.present;
-  updateGutter(); updateHistoryBtns();
+  updateGutter(); updateHighlight(); updateVeebOrb(); updateHistoryBtns();
 };
 document.getElementById('btn-redo').onclick = () => {
   if (!history.future.length) return;
   history.past.push(history.present);
   history.present = history.future.pop();
   UI.input.value = history.present;
-  updateGutter(); updateHistoryBtns();
+  updateGutter(); updateHighlight(); updateVeebOrb(); updateHistoryBtns();
 };
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -992,7 +992,7 @@ document.getElementById('btn-format').onclick = () => {
       return ind + l;
     });
     UI.input.value = result.join('\n');
-    updateGutter();
+    updateGutter(); updateHighlight(); updateVeebOrb();
     saveHistory(UI.input.value);
     toast('FORMATADO', 'ok');
   } catch { toast('Erro ao formatar', 'err'); }
@@ -1867,7 +1867,7 @@ async function executeFusion() {
     }
 
     UI.input.value = editorCode;
-    updateGutter();
+    updateGutter(); updateHighlight(); updateVeebOrb();
     saveHistory(editorCode);
     toast('⬢ FUSÃO CONCLUÍDA', 'ok');
     logToUI(`FUSION: ${activeMode} aplicado · ${fetched.length} arquivo(s) · arquétipo: ${activeArch}`, 'fusion');
@@ -1895,7 +1895,7 @@ async function executeFusion() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 document.getElementById('btn-run').onclick  = runCode;
 document.getElementById('btn-clear').onclick = () => {
-  if (confirm('Apagar código atual?')) { UI.input.value=''; updateGutter(); saveHistory(''); }
+  if (confirm('Apagar código atual?')) { UI.input.value=''; updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(''); }
 };
 document.getElementById('btn-save').onclick = () => {
   state.html = UI.input.value;
@@ -1917,7 +1917,7 @@ document.getElementById('file-upload').onchange = async e => {
     UI.input.value = await f.text();
     state.editorPath = f.name;
     document.getElementById('editorPath').textContent = f.name;
-    updateGutter(); saveHistory(UI.input.value);
+    updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value);
     toast('ARQUIVO CARREGADO', 'ok');
     e.target.value = '';
   }
