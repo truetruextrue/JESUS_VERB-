@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="nervous-core">
+<head>
+    <meta charset="UTF-8">
+    <title>🧠 Núcleo do Sistema Nervoso</title>
+    <style>
+        :root {
+            --neural-blue: #3b82f6;
+            --neural-purple: #8b5cf6;
+            --signal-green: #10b981;
+            --bg-neural: #0f172a;
+        }
+        
+        body {
+            background: var(--bg-neural);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .neural-network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .neural-path {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--neural-blue), transparent);
+            height: 1px;
+            transform-origin: left center;
+            opacity: 0.3;
+        }
+        
+        .neuron {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--neural-purple);
+            box-shadow: 0 0 10px var(--neural-purple);
+            animation: neuron-pulse 2s infinite;
+        }
+        
+        @keyframes neuron-pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+        
+        .interface-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .control-node {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .control-node:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--neural-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+        }
+        
+        .signal-meter {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        
+        .signal-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neural-blue), var(--signal-green));
+            width: 0%;
+            transition: width 1s ease;
+            border-radius: 2px;
+        }
+        
+        .activation-sequence {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .sequence-step {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .sequence-step.active {
+            background: var(--signal-green);
+            box-shadow: 0 0 10px var(--signal-green);
+        }
+        
+        .sequence-step.completed {
+            background: var(--neural-blue);
+        }
+        
+        .data-stream {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        
+        .data-packet {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--neural-blue);
+            font-family: 'Courier New', monospace;
+            animation: packet-appear 0.3s ease;
+        }
+        
+        @keyframes packet-appear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="neural-network" id="neuralCanvas"></div>
+    
+    <div class="interface-container">
+        <h1 style="color: var(--neural-blue); margin: 0 0 0.5rem 0;">
+            🧠 NÚCLEO DO SISTEMA NERVOSO
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Centro de controle neural do organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <strong style="color: var(--signal-green);">STATUS: </strong>
+                <span id="system-status" style="color: var(--neural-blue);">INICIALIZANDO</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="activateSubsystem('sensory')" style="padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.2); border: 1px solid var(--neural-blue); color: white; border-radius: 0.5rem; cursor: pointer;">
+                    Ativar Sensorial
+                </button>
+                <button onclick="activateSubsystem('motor')" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.2); border: 1px solid var(--neural-purple); color: white; border-radius: 0.5rem; cursor: pointer;">
+                    Ativar Motor
+                </button>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <div class="control-node" onclick="sendNeuralSignal('visual')">
+                <div style="font-size: 2rem; color: var(--neural-blue);">👁️</div>
+                <strong>VISUAL</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Processamento visual</div>
+                <div class="signal-meter">
+                    <div class="signal-fill" id="visual-signal"></div>
+                </div>
+            </div>
+            
+            <div class="control-node" onclick="sendNeuralSignal('auditory')">
+                <div style="font-size: 2rem; color: var(--neural-purple);">👂</div>
+                <strong>AUDITIVO</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Processamento sonoro</div>
+                <div class="signal-meter">
+                    <div class="signal-fill" id="auditory-signal"></div>
+                </div>
+            </div>
+            
+            <div class="control-node" onclick="sendNeuralSignal('tactile')">
+                <div style="font-size: 2rem; color: var(--signal-green);">✋</div>
+                <strong>TÁTIL</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Feedback háptico</div>
+                <div class="signal-meter">
+                    <div class="signal-fill" id="tactile-signal"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activation-sequence">
+            <div class="sequence-step completed" title="DNA Carregado"></div>
+            <div class="sequence-step active" title="Sistema Nervoso"></div>
+            <div class="sequence-step" title="Córtex"></div>
+            <div class="sequence-step" title="Sensorial"></div>
+            <div class="sequence-step" title="Motor"></div>
+            <div class="sequence-step" title="Consciência"></div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <strong style="color: var(--neural-blue);">📡 FLUXO NEURAL:</strong>
+            <div class="data-stream" id="dataStream">
+                <div class="data-packet">[SYSTEM] Sistema nervoso inicializando...</div>
+                <div class="data-packet">[DNA] Conectando com core/dna.html</div>
+                <div class="data-packet">[NETWORK] Criando caminhos neurais...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Neural Network Visualization
+        const neuralCanvas = document.getElementById('neuralCanvas');
+        const neurons = [];
+        const paths = [];
+        
+        // Create neural network
+        function createNeuralNetwork() {
+            // Create neurons
+            for (let i = 0; i < 30; i++) {
+                const neuron = document.createElement('div');
+                neuron.className = 'neuron';
+                neuron.style.left = `${Math.random() * 100}%`;
+                neuron.style.top = `${Math.random() * 100}%`;
+                neuron.style.animationDelay = `${Math.random() * 2}s`;
+                neuron.style.background = i % 3 === 0 ? 'var(--neural-blue)' : 
+                                         i % 3 === 1 ? 'var(--neural-purple)' : 
+                                         'var(--signal-green)';
+                neuralCanvas.appendChild(neuron);
+                neurons.push(neuron);
+            }
+            
+            // Create neural paths
+            for (let i = 0; i < 20; i++) {
+                const path = document.createElement('div');
+                path.className = 'neural-path';
+                
+                const startNeuron = neurons[Math.floor(Math.random() * neurons.length)];
+                const endNeuron = neurons[Math.floor(Math.random() * neurons.length)];
+                
+                const startRect = startNeuron.getBoundingClientRect();
+                const endRect = endNeuron.getBoundingClientRect();
+                
+                const dx = endRect.left - startRect.left;
+                const dy = endRect.top - startRect.top;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                
+                path.style.width = `${length}px`;
+                path.style.left = `${startRect.left}px`;
+                path.style.top = `${startRect.top}px`;
+                path.style.transform = `rotate(${angle}deg)`;
+                
+                neuralCanvas.appendChild(path);
+                paths.push(path);
+            }
+        }
+        
+        // Neural signal transmission
+        function sendNeuralSignal(system) {
+            const signalFill = document.getElementById(`${system}-signal`);
+            const dataStream = document.getElementById('dataStream');
+            
+            // Animate signal
+            signalFill.style.width = '0%';
+            setTimeout(() => {
+                signalFill.style.width = '100%';
+                
+                // Add to data stream
+                const packet = document.createElement('div');
+                packet.className = 'data-packet';
+                packet.textContent = `[SIGNAL] Enviando para ${system.toUpperCase()}...`;
+                dataStream.appendChild(packet);
+                dataStream.scrollTop = dataStream.scrollHeight;
+                
+                // Update status
+                setTimeout(() => {
+                    const statusPacket = document.createElement('div');
+                    statusPacket.className = 'data-packet';
+                    statusPacket.style.borderLeftColor = 'var(--signal-green)';
+                    statusPacket.textContent = `[✓] ${system.toUpperCase()} ativado`;
+                    dataStream.appendChild(statusPacket);
+                    dataStream.scrollTop = dataStream.scrollHeight;
+                }, 500);
+                
+            }, 100);
+        }
+        
+        // Activate subsystem
+        function activateSubsystem(subsystem) {
+            const dataStream = document.getElementById('dataStream');
+            const status = document.getElementById('system-status');
+            
+            status.textContent = `ATIVANDO ${subsystem.toUpperCase()}...`;
+            status.style.color = 'var(--signal-green)';
+            
+            const packet = document.createElement('div');
+            packet.className = 'data-packet';
+            packet.style.background = 'rgba(16, 185, 129, 0.2)';
+            packet.textContent = `[ACTIVATION] Iniciando ${subsystem}...`;
+            dataStream.appendChild(packet);
+            dataStream.scrollTop = dataStream.scrollHeight;
+            
+            // Simulate activation
+            setTimeout(() => {
+                status.textContent = `${subsystem.toUpperCase()} ATIVO`;
+                
+                const successPacket = document.createElement('div');
+                successPacket.className = 'data-packet';
+                successPacket.style.background = 'rgba(16, 185, 129, 0.3)';
+                successPacket.style.borderLeftColor = 'var(--signal-green)';
+                successPacket.textContent = `[SUCCESS] ${subsystem.toUpperCase()} online`;
+                dataStream.appendChild(successPacket);
+                dataStream.scrollTop = dataStream.scrollHeight;
+                
+                // Update activation sequence
+                const steps = document.querySelectorAll('.sequence-step');
+                if (subsystem === 'sensory') {
+                    steps[3].classList.add('active');
+                    steps[2].classList.remove('active');
+                    steps[2].classList.add('completed');
+                } else if (subsystem === 'motor') {
+                    steps[4].classList.add('active');
+                    steps[3].classList.remove('active');
+                    steps[3].classList.add('completed');
+                }
+            }, 1500);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createNeuralNetwork();
+            console.log('🧠 Sistema nervoso inicializado');
+            
+            // Start neural activity
+            setInterval(() => {
+                // Random neuron pulses
+                const randomNeuron = neurons[Math.floor(Math.random() * neurons.length)];
+                randomNeuron.style.animation = 'none';
+                setTimeout(() => {
+                    randomNeuron.style.animation = 'neuron-pulse 2s infinite';
+                }, 10);
+                
+                // Random data packets
+                if (Math.random() > 0.7) {
+                    const dataStream = document.getElementById('dataStream');
+                    const packets = [
+                        '[NEURAL] Sinal processado',
+                        '[SYNAPSE] Conexão estabelecida',
+                        '[MEMORY] Cache atualizado',
+                        '[SIGNAL] Frequência estável'
+                    ];
+                    
+                    const packet = document.createElement('div');
+                    packet.className = 'data-packet';
+                    packet.style.opacity = '0.7';
+                    packet.textContent = packets[Math.floor(Math.random() * packets.length)];
+                    dataStream.appendChild(packet);
+                    dataStream.scrollTop = dataStream.scrollHeight;
+                    
+                    // Limit stream size
+                    if (dataStream.children.length > 20) {
+                        dataStream.removeChild(dataStream.firstChild);
+                    }
+                }
+            }, 1000);
+        });
+        
+        // Export interface API
+        window.NEURAL_INTERFACE = {
+            sendSignal: sendNeuralSignal,
+            activateSubsystem: activateSubsystem,
+            version: '1.0.0-nervous'
+        };
+    </script>
+</body>
+</html>

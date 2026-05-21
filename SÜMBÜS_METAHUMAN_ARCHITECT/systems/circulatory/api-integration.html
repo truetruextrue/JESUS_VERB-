@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="api-integration">
+<head>
+    <meta charset="UTF-8">
+    <title>🔗 Integração com APIs</title>
+    <style>
+        :root {
+            --api-blue: #3b82f6;
+            --api-green: #10b981;
+            --api-purple: #8b5cf6;
+            --api-orange: #f59e0b;
+            --bg-api: #0f172a;
+        }
+        
+        body {
+            background: var(--bg-api);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        
+        .api-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .api-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .api-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+        
+        .api-card.github::before { background: #6cc644; }
+        .api-card.rest::before { background: var(--api-blue); }
+        .api-card.websocket::before { background: var(--api-purple); }
+        .api-card.graphql::before { background: #e535ab; }
+        
+        .api-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .api-card.active {
+            border-color: var(--api-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .api-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        
+        .status-connected { background: rgba(16, 185, 129, 0.2); color: var(--api-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-disconnected { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }
+        .status-error { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        
+        .request-builder {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .code-editor {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #1e293b;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .response-viewer {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #0f172a;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        
+        .api-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--api-blue);
+            animation: logAppear 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry.request { border-left-color: var(--api-green); background: rgba(16, 185, 129, 0.1); }
+        .log-entry.response { border-left-color: var(--api-purple); background: rgba(139, 92, 246, 0.1); }
+        .log-entry.error { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        
+        @keyframes logAppear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .control-bar {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .api-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--api-blue);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .api-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .api-btn.primary {
+            background: linear-gradient(135deg, var(--api-blue), var(--api-purple));
+            border: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-container">
+        <h1 style="color: var(--api-blue); margin: 0 0 0.5rem 0;">
+            🔗 INTEGRAÇÃO COM APIs
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Conexão e comunicação com sistemas externos do organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 0.5rem;">
+            <div>
+                <strong style="color: var(--api-green);">STATUS GLOBAL: </strong>
+                <span id="global-status" style="color: white;">CONECTANDO...</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="connectAllAPIs()" class="api-btn primary">
+                    🌐 CONECTAR TODAS APIS
+                </button>
+                <button onclick="testAllEndpoints()" class="api-btn">
+                    🧪 TESTAR ENDPOINTS
+                </button>
+            </div>
+        </div>
+        
+        <div class="api-grid">
+            <div class="api-card github" id="github-api">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">🐙</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: white;">GITHUB API</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Acesso a repositórios, commits e dados de desenvolvimento.
+                </p>
+                <div class="api-status status-disconnected" id="github-status">DESCONECTADO</div>
+                <div style="margin-top: 1rem; font-size: 0.8rem; color: #94a3b8;">
+                    Endpoint: api.github.com
+                </div>
+                <button onclick="toggleAPI('github')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(108, 198, 68, 0.1); border: 1px solid #6cc644; color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    CONECTAR
+                </button>
+            </div>
+            
+            <div class="api-card rest" id="rest-api">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">🔄</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: white;">REST API</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Comunicação padrão REST com sistemas externos.
+                </p>
+                <div class="api-status status-connected" id="rest-status">CONECTADO</div>
+                <div style="margin-top: 1rem; font-size: 0.8rem; color: #94a3b8;">
+                    Protocolo: HTTP/HTTPS
+                </div>
+                <button onclick="toggleAPI('rest')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--api-blue); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    TESTAR
+                </button>
+            </div>
+            
+            <div class="api-card websocket" id="websocket-api">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: white;">WEBSOCKET</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Comunicação em tempo real bidirecional.
+                </p>
+                <div class="api-status status-disconnected" id="websocket-status">DESCONECTADO</div>
+                <div style="margin-top: 1rem; font-size: 0.8rem; color: #94a3b8;">
+                    Protocolo: WS/WSS
+                </div>
+                <button onclick="toggleAPI('websocket')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--api-purple); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    CONECTAR
+                </button>
+            </div>
+            
+            <div class="api-card graphql" id="graphql-api">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">🕸️</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: white;">GRAPHQL</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Consultas flexíveis e eficientes para dados complexos.
+                </p>
+                <div class="api-status status-disconnected" id="graphql-status">DESCONECTADO</div>
+                <div style="margin-top: 1rem; font-size: 0.8rem; color: #94a3b8;">
+                    Query Language
+                </div>
+                <button onclick="toggleAPI('graphql')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(229, 53, 171, 0.1); border: 1px solid #e535ab; color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    CONECTAR
+                </button>
+            </div>
+        </div>
+        
+        <div class="request-builder">
+            <strong style="color: var(--api-blue);">🧱 CONSTRUTOR DE REQUISIÇÕES:</strong>
+            <div class="control-bar">
+                <select id="api-select" style="padding: 0.75rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem; flex: 1;">
+                    <option value="github">GitHub API</option>
+                    <option value="rest">REST API</option>
+                    <option value="websocket">WebSocket</option>
+                    <option value="graphql">GraphQL</option>
+                </select>
+                <select id="method-select" style="padding: 0.75rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+                <input type="text" id="endpoint-input" placeholder="/api/endpoint" style="padding: 0.75rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem; flex: 2;">
+                <button onclick="sendRequest()" class="api-btn primary">🚀 ENVIAR</button>
+            </div>
+            
+            <div class="code-editor" id="request-body" contenteditable="true">
+{
+  "query": "query { \n  system {\n    status\n    version\n  }\n}",
+  "variables": {}
+}
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <strong style="color: var(--api-green);">📡 RESPOSTA:</strong>
+            <div class="response-viewer" id="response-viewer">
+                // Aguardando requisição...
+                // A resposta aparecerá aqui
+            </div>
+        </div>
+        
+        <div class="api-log" id="apiLog">
+            <div class="log-entry">[API] Sistema de integração inicializado</div>
+            <div class="log-entry request">[REST] API REST conectada automaticamente</div>
+            <div class="log-entry">[READY] Pronto para integrações</div>
+        </div>
+    </div>
+    
+    <script>
+        // API Integration System
+        const API_SYSTEM = {
+            github: { connected: false, endpoint: 'https://api.github.com' },
+            rest: { connected: true, endpoint: '/api' },
+            websocket: { connected: false, endpoint: 'ws://localhost:8080' },
+            graphql: { connected: false, endpoint: '/graphql' },
+            logs: [],
+            activeConnections: 1
+        };
+        
+        // Toggle API connection
+        function toggleAPI(api) {
+            const apiData = API_SYSTEM[api];
+            const statusEl = document.getElementById(`${api}-status`);
+            const button = event.target;
+            
+            if (apiData.connected) {
+                // Disconnect
+                apiData.connected = false;
+                API_SYSTEM.activeConnections--;
+                
+                statusEl.textContent = 'DESCONECTADO';
+                statusEl.className = 'api-status status-disconnected';
+                
+                button.textContent = 'CONECTAR';
+                button.style.background = api === 'github' ? 'rgba(108, 198, 68, 0.1)' :
+                                        api === 'rest' ? 'rgba(59, 130, 246, 0.1)' :
+                                        api === 'websocket' ? 'rgba(139, 92, 246, 0.1)' :
+                                        'rgba(229, 53, 171, 0.1)';
+                
+                document.getElementById(`${api}-api`).classList.remove('active');
+                
+                addLog(`[${api.toUpperCase()}] Desconectado`, 'error');
+            } else {
+                // Connect (simulated)
+                apiData.connected = true;
+                API_SYSTEM.activeConnections++;
+                
+                statusEl.textContent = 'CONECTANDO...';
+                statusEl.className = 'api-status status-error';
+                
+                button.textContent = 'CONECTANDO...';
+                button.disabled = true;
+                
+                // Simulate connection delay
+                setTimeout(() => {
+                    apiData.connected = true;
+                    
+                    statusEl.textContent = 'CONECTADO';
+                    statusEl.className = 'api-status status-connected';
+                    
+                    button.textContent = 'DESCONECTAR';
+                    button.disabled = false;
+                    button.style.background = 'rgba(245, 158, 11, 0.2)';
+                    
+                    document.getElementById(`${api}-api`).classList.add('active');
+                    
+                    addLog(`[${api.toUpperCase()}] Conectado com sucesso`, 'request');
+                    
+                    // Update global status
+                    updateGlobalStatus();
+                }, 1500);
+            }
+            
+            updateGlobalStatus();
+        }
+        
+        // Connect all APIs
+        function connectAllAPIs() {
+            addLog('[SYSTEM] Conectando todas as APIs...');
+            
+            const apis = ['github', 'websocket', 'graphql'];
+            let delay = 0;
+            
+            apis.forEach(api => {
+                if (!API_SYSTEM[api].connected) {
+                    setTimeout(() => {
+                        // Simulate connection
+                        API_SYSTEM[api].connected = true;
+                        API_SYSTEM.activeConnections++;
+                        
+                        const statusEl = document.getElementById(`${api}-status`);
+                        const button = document.querySelector(`#${api}-api button`);
+                        
+                        statusEl.textContent = 'CONECTADO';
+                        statusEl.className = 'api-status status-connected';
+                        
+                        if (button) {
+                            button.textContent = 'DESCONECTAR';
+                            button.style.background = 'rgba(245, 158, 11, 0.2)';
+                        }
+                        
+                        document.getElementById(`${api}-api`).classList.add('active');
+                        
+                        addLog(`[${api.toUpperCase()}] Conectado automaticamente`, 'request');
+                        
+                        updateGlobalStatus();
+                    }, delay);
+                    
+                    delay += 1000;
+                }
+            });
+            
+            setTimeout(() => {
+                addLog('[SYSTEM] Todas as APIs conectadas!');
+            }, delay);
+        }
+        
+        // Test all endpoints
+        function testAllEndpoints() {
+            addLog('[TEST] Iniciando teste de todos endpoints...');
+            
+            const endpoints = [
+                { api: 'rest', method: 'GET', path: '/api/status' },
+                { api: 'github', method: 'GET', path: '/users/octocat' },
+                { api: 'graphql', method: 'POST', path: '/graphql' },
+                { api: 'websocket', method: 'WS', path: '/ws' }
+            ];
+            
+            endpoints.forEach((endpoint, index) => {
+                setTimeout(() => {
+                    if (API_SYSTEM[endpoint.api].connected) {
+                        addLog(`[TEST] ${endpoint.api.toUpperCase()} ${endpoint.method} ${endpoint.path}: ✅ OK`, 'response');
+                    } else {
+                        addLog(`[TEST] ${endpoint.api.toUpperCase()} ${endpoint.method} ${endpoint.path}: ❌ FALHA (desconectado)`, 'error');
+                    }
+                }, index * 800);
+            });
+        }
+        
+        // Send API request
+        function sendRequest() {
+            const api = document.getElementById('api-select').value;
+            const method = document.getElementById('method-select').value;
+            const endpoint = document.getElementById('endpoint-input').value;
+            const body = document.getElementById('request-body').textContent;
+            
+            if (!API_SYSTEM[api].connected) {
+                addLog(`[ERROR] API ${api.toUpperCase()} não está conectada`, 'error');
+                return;
+            }
+            
+            addLog(`[REQUEST] ${method} ${API_SYSTEM[api].endpoint}${endpoint}`, 'request');
+            
+            // Simulate API request
+            const responseViewer = document.getElementById('response-viewer');
+            responseViewer.innerHTML = '<span style="color: #94a3b8;">⏳ Processando requisição...</span>';
+            
+            setTimeout(() => {
+                // Generate mock response based on API type
+                let mockResponse;
+                
+                switch(api) {
+                    case 'github':
+                        mockResponse = {
+                            status: 200,
+                            data: {
+                                login: "SÜMBÜS-Metahuman",
+                                id: Date.now(),
+                                avatar_url: "https://avatars.githubusercontent.com/u/1?v=4",
+                                url: "https://api.github.com/users/SÜMBÜS-Metahuman",
+                                html_url: "https://github.com/SÜMBÜS-Metahuman",
+                                type: "Organization",
+                                name: "SÜMBÜS Metahuman Architect",
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            },
+                            headers: {
+                                "x-ratelimit-limit": "5000",
+                                "x-ratelimit-remaining": "4999",
+                                "x-ratelimit-reset": Math.floor(Date.now() / 1000) + 3600
+                            }
+                        };
+                        break;
+                        
+                    case 'rest':
+                        mockResponse = {
+                            status: 200,
+                            data: {
+                                system: "SÜMBÜS Metahuman",
+                                version: "1.0.0",
+                                status: "operational",
+                                timestamp: new Date().toISOString(),
+                                endpoints: [
+                                    { path: "/api/status", method: "GET", description: "System status" },
+                                    { path: "/api/data", method: "POST", description: "Data ingestion" },
+                                    { path: "/api/health", method: "GET", description: "Health check" }
+                                ]
+                            },
+                            message: "Request successful"
+                        };
+                        break;
+                        
+                    case 'graphql':
+                        mockResponse = {
+                            data: {
+                                system: {
+                                    status: "ACTIVE",
+                                    version: "1.0.0",
+                                    frequency: "6Hz",
+                                    systemsActive: 6,
+                                    systemsTotal: 8,
+                                    uptime: "24h"
+                                },
+                                organism: {
+                                    name: "SÜMBÜS Metahuman Architect",
+                                    state: "GROWING",
+                                    progress: "15.2%",
+                                    evolution: "Generation 1"
+                                }
+                            },
+                            errors: null,
+                            extensions: {
+                                timestamp: new Date().toISOString(),
+                                duration: "142ms",
+                                operation: "query"
+                            }
+                        };
+                        break;
+                        
+                    case 'websocket':
+                        mockResponse = {
+                            type: "message",
+                            data: {
+                                event: "data_stream",
+                                payload: {
+                                    timestamp: new Date().toISOString(),
+                                    throughput: (Math.random() * 200).toFixed(1),
+                                    latency: (Math.random() * 50).toFixed(1),
+                                    connections: API_SYSTEM.activeConnections
+                                }
+                            },
+                            channel: "system_metrics"
+                        };
+                        break;
+                }
+                
+                // Format and display response
+                responseViewer.innerHTML = `<pre style="margin: 0; color: var(--api-green);">${JSON.stringify(mockResponse, null, 2)}</pre>`;
+                
+                addLog(`[RESPONSE] ${method} ${endpoint}: ✅ 200 OK`, 'response');
+            }, 1000 + Math.random() * 2000);
+        }
+        
+        // Update global status
+        function updateGlobalStatus() {
+            const statusEl = document.getElementById('global-status');
+            const connected = API_SYSTEM.activeConnections;
+            const total = Object.keys(API_SYSTEM).length - 2; // Exclude logs and activeConnections
+            
+            if (connected === total) {
+                statusEl.textContent = `✅ TODAS APIS CONECTADAS (${connected}/${total})`;
+                statusEl.style.color = 'var(--api-green)';
+            } else if (connected >= total / 2) {
+                statusEl.textContent = `🟡 ${connected}/${total} APIS CONECTADAS`;
+                statusEl.style.color = '#f59e0b';
+            } else {
+                statusEl.textContent = `🔴 ${connected}/${total} APIS CONECTADAS`;
+                statusEl.style.color = '#ef4444';
+            }
+        }
+        
+        // Add log entry
+        function addLog(message, type = '') {
+            const log = document.getElementById('apiLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            API_SYSTEM.logs.push({
+                timestamp: new Date(),
+                message: message,
+                type: type
+            });
+            
+            // Limit log size
+            if (log.children.length > 20) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔗 Sistema de integração com APIs inicializado');
+            
+            updateGlobalStatus();
+            
+            // Auto-connect REST API on load
+            setTimeout(() => {
+                document.getElementById('rest-api').classList.add('active');
+            }, 500);
+            
+            // Auto-log updates
+            setInterval(() => {
+                if (Math.random() > 0.7 && API_SYSTEM.activeConnections > 0) {
+                    const messages = [
+                        '[HEARTBEAT] Conexões ativas verificadas',
+                        '[MONITOR] Latência dentro dos limites',
+                        '[SECURITY] Tokens renovados',
+                        '[PERFORMANCE] Cache otimizado'
+                    ];
+                    addLog(messages[Math.floor(Math.random() * messages.length)]);
+                }
+            }, 5000);
+        });
+        
+        // Export API
+        window.API_INTEGRATION = {
+            connectAll: connectAllAPIs,
+            testAll: testAllEndpoints,
+            sendRequest,
+            toggleAPI,
+            getState: () => API_SYSTEM,
+            version: '1.0.0-api'
+        };
+    </script>
+</body>
+</html>

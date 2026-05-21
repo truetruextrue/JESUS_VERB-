@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="emotion-matrix">
+<head>
+    <meta charset="UTF-8">
+    <title>🌀 Motor de Emoções - Sistema Endócrino</title>
+    <style>
+        :root {
+            --emotion-joy: #fbbf24;
+            --emotion-trust: #34d399;
+            --emotion-fear: #8b5cf6;
+            --emotion-surprise: #60a5fa;
+            --emotion-sadness: #3b82f6;
+            --emotion-disgust: #10b981;
+            --emotion-anger: #ef4444;
+            --emotion-anticipation: #f97316;
+            --bg-emotion: #0f172a;
+        }
+        
+        body {
+            background: var(--bg-emotion);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        
+        .emotion-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .plutchik-wheel {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 2rem auto;
+            background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
+        }
+        
+        .emotion-segment {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            transform-origin: 0 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .emotion-segment:hover {
+            transform: scale(1.1) !important;
+        }
+        
+        .segment-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .emotion-intensity {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        .intensity-meter {
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .intensity-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--emotion-trust), var(--emotion-joy));
+            transition: width 0.5s ease;
+        }
+        
+        .emotion-waveform {
+            height: 100px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            opacity: 0.6;
+        }
+        
+        .wave-joy { background: var(--emotion-joy); }
+        .wave-trust { background: var(--emotion-trust); }
+        .wave-fear { background: var(--emotion-fear); }
+        .wave-surprise { background: var(--emotion-surprise); }
+        
+        .emotion-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .emotion-btn {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+        }
+        
+        .emotion-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .emotion-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .data-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .data-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .neurochemical-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+        }
+        
+        .chemical-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            flex-grow: 1;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+        
+        .chemical-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        @keyframes pulseWave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .emotional-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-emotion {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid;
+            animation: logAppear 0.3s ease;
+        }
+        
+        @keyframes logAppear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .harmonic-balance {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 0.5rem;
+            border: 1px solid var(--emotion-trust);
+            text-align: center;
+        }
+        
+        .balance-ring {
+            width: 100px;
+            height: 100px;
+            margin: 1rem auto;
+            border-radius: 50%;
+            border: 3px solid;
+            border-color: var(--emotion-trust);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="emotion-container">
+        <h1 style="color: var(--emotion-joy); margin: 0 0 0.5rem 0;">
+            🌀 MOTOR DE EMOÇÕES
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Sistema de mapeamento e regulagem emocional do organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <strong style="color: var(--emotion-trust);">ESTADO: </strong>
+                <span id="emotion-state" style="color: white;">EQUILIBRADO</span>
+            </div>
+            <div>
+                <button onclick="activateEmpathy()" class="emotion-btn" style="border-color: var(--emotion-trust);">
+                    🤝 ATIVAR EMPATIA
+                </button>
+                <button onclick="resetEmotions()" class="emotion-btn" style="border-color: var(--emotion-sadness);">
+                    🔄 REINICIAR
+                </button>
+                <button onclick="calibrate()" class="emotion-btn" style="border-color: var(--emotion-joy);">
+                    ⚙️ CALIBRAR
+                </button>
+            </div>
+        </div>
+        
+        <div class="plutchik-wheel" id="plutchikWheel">
+            <!-- Wheel segments will be generated by JS -->
+        </div>
+        
+        <div class="emotion-intensity">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <strong style="color: var(--emotion-joy);">INTENSIDADE EMOCIONAL</strong>
+                <span id="intensity-value" style="color: white;">64%</span>
+            </div>
+            <div class="intensity-meter">
+                <div class="intensity-fill" id="intensity-fill" style="width: 64%;"></div>
+            </div>
+        </div>
+        
+        <div class="emotion-waveform" id="waveform">
+            <!-- Wave animation -->
+        </div>
+        
+        <div class="emotion-controls">
+            <div class="emotion-btn" data-emotion="joy" onclick="stimulateEmotion('joy')">
+                <div style="font-size: 2rem;">😊</div>
+                <div>Alegria</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="joy-level">64%</div>
+            </div>
+            
+            <div class="emotion-btn" data-emotion="trust" onclick="stimulateEmotion('trust')">
+                <div style="font-size: 2rem;">🤝</div>
+                <div>Confiança</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="trust-level">58%</div>
+            </div>
+            
+            <div class="emotion-btn" data-emotion="fear" onclick="stimulateEmotion('fear')">
+                <div style="font-size: 2rem;">😨</div>
+                <div>Medo</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="fear-level">32%</div>
+            </div>
+            
+            <div class="emotion-btn" data-emotion="surprise" onclick="stimulateEmotion('surprise')">
+                <div style="font-size: 2rem;">😲</div>
+                <div>Surpresa</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="surprise-level">41%</div>
+            </div>
+            
+            <div class="emotion-btn" data-emotion="sadness" onclick="stimulateEmotion('sadness')">
+                <div style="font-size: 2rem;">😢</div>
+                <div>Tristeza</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="sadness-level">28%</div>
+            </div>
+            
+            <div class="emotion-btn" data-emotion="disgust" onclick="stimulateEmotion('disgust')">
+                <div style="font-size: 2rem;">🤢</div>
+                <div>Nojo</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="disgust-level">19%</div>
+            </div>
+            
+            <div class="emotion-btn" data-emotion="anger" onclick="stimulateEmotion('anger')">
+                <div style="font-size: 2rem;">😠</div>
+                <div>Raiva</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="anger-level">22%</div>
+            </div>
+            
+            <div class="emotion-btn" data-emotion="anticipation" onclick="stimulateEmotion('anticipation')">
+                <div style="font-size: 2rem;">🎯</div>
+                <div>Antecipação</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;" id="anticipation-level">71%</div>
+            </div>
+        </div>
+        
+        <div class="emotion-data">
+            <div class="data-card">
+                <div style="color: #94a3b8; font-size: 0.9rem;">Harmonia</div>
+                <div class="data-value" id="harmony-value">78%</div>
+                <div class="harmonic-balance" style="padding: 0.5rem; margin-top: 0.5rem;">
+                    <div class="balance-ring">78%</div>
+                </div>
+            </div>
+            
+            <div class="data-card">
+                <div style="color: #94a3b8; font-size: 0.9rem;">Neuroquímicos</div>
+                <div class="neurochemical-indicator">
+                    <span>Serotonina</span>
+                    <div class="chemical-bar">
+                        <div class="chemical-fill" style="width: 68%; background: var(--emotion-trust);"></div>
+                    </div>
+                    <span>68%</span>
+                </div>
+                <div class="neurochemical-indicator">
+                    <span>Dopamina</span>
+                    <div class="chemical-bar">
+                        <div class="chemical-fill" style="width: 72%; background: var(--emotion-joy);"></div>
+                    </div>
+                    <span>72%</span>
+                </div>
+                <div class="neurochemical-indicator">
+                    <span>Oxitocina</span>
+                    <div class="chemical-bar">
+                        <div class="chemical-fill" style="width: 81%; background: var(--emotion-trust);"></div>
+                    </div>
+                    <span>81%</span>
+                </div>
+            </div>
+            
+            <div class="data-card">
+                <div style="color: #94a3b8; font-size: 0.9rem;">Resposta</div>
+                <div style="margin: 0.5rem 0;">Tempo: <span id="response-time">142ms</span></div>
+                <div style="margin: 0.5rem 0;">Precisão: <span id="response-accuracy">89%</span></div>
+                <div style="margin: 0.5rem 0;">Consistência: <span id="response-consistency">92%</span></div>
+            </div>
+        </div>
+        
+        <div class="emotional-log" id="emotionalLog">
+            <div class="log-emotion" style="border-left-color: var(--emotion-trust);">[EMOTION] Motor emocional inicializado</div>
+            <div class="log-emotion" style="border-left-color: var(--emotion-joy);">[JOY] Sistema de alegria calibrado</div>
+            <div class="log-emotion" style="border-left-color: var(--emotion-trust);">[TRUST] Conexões empáticas ativas</div>
+        </div>
+    </div>
+    
+    <script>
+        // Emotion Engine System
+        const EMOTION_ENGINE = {
+            active: true,
+            baseEmotions: {
+                joy: { level: 64, color: 'var(--emotion-joy)', icon: '😊', description: 'Prazer e satisfação' },
+                trust: { level: 58, color: 'var(--emotion-trust)', icon: '🤝', description: 'Confiança e segurança' },
+                fear: { level: 32, color: 'var(--emotion-fear)', icon: '😨', description: 'Medo e cautela' },
+                surprise: { level: 41, color: 'var(--emotion-surprise)', icon: '😲', description: 'Surpresa e novidade' },
+                sadness: { level: 28, color: 'var(--emotion-sadness)', icon: '😢', description: 'Tristeza e perda' },
+                disgust: { level: 19, color: 'var(--emotion-disgust)', icon: '🤢', description: 'Nojo e rejeição' },
+                anger: { level: 22, color: 'var(--emotion-anger)', icon: '😠', description: 'Raiva e frustração' },
+                anticipation: { level: 71, color: 'var(--emotion-anticipation)', icon: '🎯', description: 'Antecipação e expectativa' }
+            },
+            neurochemicals: {
+                serotonin: 68,
+                dopamine: 72,
+                oxytocin: 81,
+                cortisol: 42,
+                endorphin: 56
+            },
+            empathyMode: false,
+            waveformActive: true,
+            updateInterval: null
+        };
+        
+        // Initialize Plutchik's Wheel
+        function initializeWheel() {
+            const wheel = document.getElementById('plutchikWheel');
+            wheel.innerHTML = '';
+            
+            const emotions = Object.keys(EMOTION_ENGINE.baseEmotions);
+            const segmentAngle = 360 / emotions.length;
+            
+            emotions.forEach((emotion, index) => {
+                const emotionData = EMOTION_ENGINE.baseEmotions[emotion];
+                const angle = segmentAngle * index;
+                
+                const segment = document.createElement('div');
+                segment.className = 'emotion-segment';
+                segment.style.transform = `rotate(${angle}deg)`;
+                segment.dataset.emotion = emotion;
+                
+                const inner = document.createElement('div');
+                inner.className = 'segment-inner';
+                inner.style.background = `linear-gradient(135deg, ${emotionData.color}, rgba(0,0,0,0.5))`;
+                inner.style.opacity = emotionData.level / 100;
+                
+                inner.innerHTML = `
+                    <div style="transform: rotate(${-angle - segmentAngle/2}deg); text-align: center;">
+                        <div style="font-size: 2rem;">${emotionData.icon}</div>
+                        <div style="font-size: 0.8rem; margin-top: 0.5rem;">${emotion.toUpperCase()}</div>
+                        <div style="font-size: 0.7rem;">${emotionData.level}%</div>
+                    </div>
+                `;
+                
+                segment.appendChild(inner);
+                wheel.appendChild(segment);
+                
+                // Click handler
+                segment.addEventListener('click', () => {
+                    stimulateEmotion(emotion);
+                    highlightSegment(segment);
+                });
+            });
+        }
+        
+        // Initialize waveform
+        function initializeWaveform() {
+            const waveform = document.getElementById('waveform');
+            waveform.innerHTML = '';
+            
+            // Create multiple wave layers
+            const emotions = ['joy', 'trust', 'fear', 'surprise'];
+            
+            emotions.forEach((emotion, index) => {
+                const wave = document.createElement('div');
+                wave.className = `wave wave-${emotion}`;
+                wave.style.animation = `pulseWave ${(index + 3) * 2}s infinite linear`;
+                wave.style.animationDelay = `${index * 0.5}s`;
+                wave.style.opacity = EMOTION_ENGINE.baseEmotions[emotion].level / 100 * 0.5;
+                
+                // Create wave pattern with clip-path
+                wave.style.clipPath = createWavePath();
+                waveform.appendChild(wave);
+            });
+        }
+        
+        // Create wave path
+        function createWavePath() {
+            const points = [];
+            const amplitude = 0.3;
+            const frequency = 5;
+            
+            for (let i = 0; i <= 10; i++) {
+                const x = i / 10;
+                const y = 0.5 + amplitude * Math.sin(x * Math.PI * frequency);
+                points.push(`${(x * 100).toFixed(2)}% ${(y * 100).toFixed(2)}%`);
+            }
+            
+            return `polygon(${points.join(', ')})`;
+        }
+        
+        // Stimulate specific emotion
+        function stimulateEmotion(emotion) {
+            if (!EMOTION_ENGINE.active) return;
+            
+            const emotionData = EMOTION_ENGINE.baseEmotions[emotion];
+            
+            // Increase this emotion
+            emotionData.level = Math.min(100, emotionData.level + 15);
+            
+            // Decrease opposite emotions slightly
+            const opposites = getOppositeEmotions(emotion);
+            opposites.forEach(opp => {
+                if (EMOTION_ENGINE.baseEmotions[opp]) {
+                    EMOTION_ENGINE.baseEmotions[opp].level = Math.max(0, EMOTION_ENGINE.baseEmotions[opp].level - 5);
+                }
+            });
+            
+            // Update display
+            updateEmotionDisplay(emotion);
+            
+            // Update neurochemicals
+            updateNeurochemicals(emotion);
+            
+            // Log event
+            addEmotionLog(`[STIMULUS] ${emotion.toUpperCase()} estimulado (+15%)`, emotionData.color);
+            
+            // Update harmony
+            updateHarmony();
+        }
+        
+        // Get opposite emotions
+        function getOppositeEmotions(emotion) {
+            const opposites = {
+                joy: ['sadness'],
+                sadness: ['joy'],
+                trust: ['disgust'],
+                disgust: ['trust'],
+                fear: ['anger'],
+                anger: ['fear'],
+                surprise: ['anticipation'],
+                anticipation: ['surprise']
+            };
+            
+            return opposites[emotion] || [];
+        }
+        
+        // Update emotion display
+        function updateEmotionDisplay(emotion) {
+            const emotionData = EMOTION_ENGINE.baseEmotions[emotion];
+            
+            // Update level display
+            document.getElementById(`${emotion}-level`).textContent = `${emotionData.level}%`;
+            
+            // Update wheel
+            initializeWheel();
+            
+            // Update intensity
+            updateIntensity();
+            
+            // Update waveform
+            initializeWaveform();
+        }
+        
+        // Update intensity
+        function updateIntensity() {
+            let total = 0;
+            let count = 0;
+            
+            Object.values(EMOTION_ENGINE.baseEmotions).forEach(emotion => {
+                total += emotion.level;
+                count++;
+            });
+            
+            const avgIntensity = total / count;
+            document.getElementById('intensity-value').textContent = `${avgIntensity.toFixed(0)}%`;
+            document.getElementById('intensity-fill').style.width = `${avgIntensity}%`;
+            
+            // Update state
+            const stateEl = document.getElementById('emotion-state');
+            if (avgIntensity < 30) {
+                stateEl.textContent = 'SERENO';
+                stateEl.style.color = 'var(--emotion-trust)';
+            } else if (avgIntensity < 60) {
+                stateEl.textContent = 'EQUILIBRADO';
+                stateEl.style.color = 'white';
+            } else if (avgIntensity < 80) {
+                stateEl.textContent = 'EXPRESSIVO';
+                stateEl.style.color = 'var(--emotion-joy)';
+            } else {
+                stateEl.textContent = 'INTENSO';
+                stateEl.style.color = 'var(--emotion-anger)';
+            }
+        }
+        
+        // Update neurochemicals
+        function updateNeurochemicals(emotion) {
+            // Neurochemical response to emotions
+            switch(emotion) {
+                case 'joy':
+                    EMOTION_ENGINE.neurochemicals.dopamine += 5;
+                    EMOTION_ENGINE.neurochemicals.endorphin += 8;
+                    break;
+                case 'trust':
+                    EMOTION_ENGINE.neurochemicals.oxytocin += 10;
+                    EMOTION_ENGINE.neurochemicals.serotonin += 3;
+                    break;
+                case 'fear':
+                    EMOTION_ENGINE.neurochemicals.cortisol += 12;
+                    break;
+                case 'surprise':
+                    EMOTION_ENGINE.neurochemicals.dopamine += 7;
+                    break;
+            }
+            
+            // Normalize all neurochemicals
+            Object.keys(EMOTION_ENGINE.neurochemicals).forEach(chemical => {
+                EMOTION_ENGINE.neurochemicals[chemical] = Math.max(0, Math.min(100, EMOTION_ENGINE.neurochemicals[chemical]));
+                
+                // Natural decay
+                EMOTION_ENGINE.neurochemicals[chemical] *= 0.99;
+            });
+        }
+        
+        // Update harmony
+        function updateHarmony() {
+            let harmony = 100;
+            
+            // Calculate based on emotion balance
+            const levels = Object.values(EMOTION_ENGINE.baseEmotions).map(e => e.level);
+            const avg = levels.reduce((a, b) => a + b) / levels.length;
+            const variance = levels.reduce((sum, level) => sum + Math.pow(level - avg, 2), 0) / levels.length;
+            
+            harmony = Math.max(0, 100 - variance / 2);
+            
+            document.getElementById('harmony-value').textContent = `${harmony.toFixed(0)}%`;
+            document.querySelector('.balance-ring').textContent = `${harmony.toFixed(0)}%`;
+        }
+        
+        // Activate empathy mode
+        function activateEmpathy() {
+            EMOTION_ENGINE.empathyMode = !EMOTION_ENGINE.empathyMode;
+            
+            const button = event.target;
+            if (EMOTION_ENGINE.empathyMode) {
+                button.textContent = '⏸️ DESATIVAR EMPATIA';
+                button.style.background = 'rgba(52, 211, 153, 0.2)';
+                
+                // Boost trust and oxytocin
+                EMOTION_ENGINE.baseEmotions.trust.level = Math.min(100, EMOTION_ENGINE.baseEmotions.trust.level + 20);
+                EMOTION_ENGINE.neurochemicals.oxytocin += 15;
+                
+                addEmotionLog('[EMPATHY] Modo empático ativado', 'var(--emotion-trust)');
+                
+                // Start mirroring simulation
+                startEmpathyMirroring();
+            } else {
+                button.textContent = '🤝 ATIVAR EMPATIA';
+                button.style.background = '';
+                
+                addEmotionLog('[EMPATHY] Modo empático desativado', 'var(--emotion-sadness)');
+                
+                // Stop mirroring
+                stopEmpathyMirroring();
+            }
+            
+            updateEmotionDisplay('trust');
+        }
+        
+        // Start empathy mirroring
+        function startEmpathyMirroring() {
+            EMOTION_ENGINE.updateInterval = setInterval(() => {
+                // Simulate emotional mirroring
+                Object.keys(EMOTION_ENGINE.baseEmotions).forEach(emotion => {
+                    const data = EMOTION_ENGINE.baseEmotions[emotion];
+                    
+                    // Gentle fluctuations
+                    const change = (Math.random() - 0.5) * 3;
+                    data.level = Math.max(0, Math.min(100, data.level + change));
+                    
+                    // Update display occasionally
+                    if (Math.random() > 0.8) {
+                        updateEmotionDisplay(emotion);
+                    }
+                });
+                
+                // Occasionally log emotional state
+                if (Math.random() > 0.9) {
+                    const emotions = Object.keys(EMOTION_ENGINE.baseEmotions);
+                    const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+                    const level = EMOTION_ENGINE.baseEmotions[randomEmotion].level;
+                    
+                    addEmotionLog(`[MIRROR] ${randomEmotion.toUpperCase()} em ${level.toFixed(0)}%`, 
+                                EMOTION_ENGINE.baseEmotions[randomEmotion].color);
+                }
+                
+                // Update response metrics
+                updateResponseMetrics();
+                
+            }, 2000);
+        }
+        
+        // Stop empathy mirroring
+        function stopEmpathyMirroring() {
+            if (EMOTION_ENGINE.updateInterval) {
+                clearInterval(EMOTION_ENGINE.updateInterval);
+                EMOTION_ENGINE.updateInterval = null;
+            }
+        }
+        
+        // Update response metrics
+        function updateResponseMetrics() {
+            document.getElementById('response-time').textContent = 
+                `${Math.floor(100 + Math.random() * 50)}ms`;
+            
+            document.getElementById('response-accuracy').textContent = 
+                `${Math.floor(85 + Math.random() * 15)}%`;
+            
+            document.getElementById('response-consistency').textContent = 
+                `${Math.floor(90 + Math.random() * 10)}%`;
+        }
+        
+        // Calibrate emotion engine
+        function calibrate() {
+            addEmotionLog('[CALIBRATION] Calibrando motor emocional...', 'var(--emotion-joy)');
+            
+            // Reset to balanced state
+            Object.values(EMOTION_ENGINE.baseEmotions).forEach(emotion => {
+                emotion.level = 50;
+            });
+            
+            // Reset neurochemicals
+            EMOTION_ENGINE.neurochemicals = {
+                serotonin: 70,
+                dopamine: 70,
+                oxytocin: 70,
+                cortisol: 40,
+                endorphin: 60
+            };
+            
+            // Update all displays
+            Object.keys(EMOTION_ENGINE.baseEmotions).forEach(emotion => {
+                updateEmotionDisplay(emotion);
+            });
+            
+            updateHarmony();
+            
+            addEmotionLog('[CALIBRATION] Calibração completa', 'var(--emotion-trust)');
+        }
+        
+        // Reset emotions
+        function resetEmotions() {
+            addEmotionLog('[RESET] Reiniciando emoções...', 'var(--emotion-sadness)');
+            
+            EMOTION_ENGINE.active = false;
+            
+            setTimeout(() => {
+                // Reset to default values
+                EMOTION_ENGINE.baseEmotions = {
+                    joy: { level: 64, color: 'var(--emotion-joy)', icon: '😊', description: 'Prazer e satisfação' },
+                    trust: { level: 58, color: 'var(--emotion-trust)', icon: '🤝', description: 'Confiança e segurança' },
+                    fear: { level: 32, color: 'var(--emotion-fear)', icon: '😨', description: 'Medo e cautela' },
+                    surprise: { level: 41, color: 'var(--emotion-surprise)', icon: '😲', description: 'Surpresa e novidade' },
+                    sadness: { level: 28, color: 'var(--emotion-sadness)', icon: '😢', description: 'Tristeza e perda' },
+                    disgust: { level: 19, color: 'var(--emotion-disgust)', icon: '🤢', description: 'Nojo e rejeição' },
+                    anger: { level: 22, color: 'var(--emotion-anger)', icon: '😠', description: 'Raiva e frustração' },
+                    anticipation: { level: 71, color: 'var(--emotion-anticipation)', icon: '🎯', description: 'Antecipação e expectativa' }
+                };
+                
+                // Update all displays
+                Object.keys(EMOTION_ENGINE.baseEmotions).forEach(emotion => {
+                    updateEmotionDisplay(emotion);
+                });
+                
+                updateHarmony();
+                
+                EMOTION_ENGINE.active = true;
+                addEmotionLog('[RESET] Emoções reinicializadas', 'var(--emotion-joy)');
+            }, 1000);
+        }
+        
+        // Highlight segment
+        function highlightSegment(segment) {
+            segment.style.transform += ' scale(1.2)';
+            segment.style.zIndex = '10';
+            
+            setTimeout(() => {
+                segment.style.transform = segment.style.transform.replace(' scale(1.2)', '');
+                segment.style.zIndex = '';
+            }, 500);
+        }
+        
+        // Add emotion log
+        function addEmotionLog(message, color) {
+            const log = document.getElementById('emotionalLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-emotion';
+            entry.style.borderLeftColor = color;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Limit log size
+            if (log.children.length > 15) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🌀 Motor de emoções inicializado');
+            
+            initializeWheel();
+            initializeWaveform();
+            updateIntensity();
+            updateHarmony();
+            updateResponseMetrics();
+            
+            // Start gradual emotion drift
+            setInterval(() => {
+                if (EMOTION_ENGINE.active && !EMOTION_ENGINE.empathyMode) {
+                    // Slight natural drift
+                    Object.keys(EMOTION_ENGINE.baseEmotions).forEach(emotion => {
+                        const change = (Math.random() - 0.5) * 2;
+                        EMOTION_ENGINE.baseEmotions[emotion].level = Math.max(0, Math.min(100, 
+                            EMOTION_ENGINE.baseEmotions[emotion].level + change));
+                    });
+                    
+                    // Occasional update
+                    if (Math.random() > 0.8) {
+                        const randomEmotion = Object.keys(EMOTION_ENGINE.baseEmotions)[
+                            Math.floor(Math.random() * Object.keys(EMOTION_ENGINE.baseEmotions).length)
+                        ];
+                        updateEmotionDisplay(randomEmotion);
+                    }
+                }
+            }, 5000);
+        });
+        
+        // Export API
+        window.EMOTION_ENGINE = {
+            stimulateEmotion,
+            activateEmpathy,
+            calibrate,
+            resetEmotions,
+            getState: () => EMOTION_ENGINE,
+            version: '1.0.0-emotion'
+        };
+    </script>
+</body>
+</html>

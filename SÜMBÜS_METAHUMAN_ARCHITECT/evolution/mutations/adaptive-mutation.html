@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="adaptive-mutation">
+<head>
+    <meta charset="UTF-8">
+    <title>🧬 Mutação Adaptativa</title>
+    <style>
+        :root {
+            --mutation-blue: #3b82f6;
+            --mutation-purple: #8b5cf6;
+            --mutation-green: #10b981;
+            --mutation-red: #ef4444;
+            --bg-mutation: #0f172a;
+        }
+        
+        body {
+            background: var(--bg-mutation);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        
+        .mutation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .dna-sequence {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .dna-base {
+            display: inline-block;
+            padding: 0.1rem 0.3rem;
+            margin: 0.1rem;
+            border-radius: 0.2rem;
+            transition: all 0.3s;
+        }
+        
+        .base-a { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .base-t { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+        .base-c { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+        .base-g { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
+        
+        .dna-base.mutated {
+            animation: mutation-flash 0.5s;
+            background: rgba(245, 158, 11, 0.3);
+            color: #fde68a;
+        }
+        
+        @keyframes mutation-flash {
+            0%, 100% { background: rgba(245, 158, 11, 0.3); }
+            50% { background: rgba(245, 158, 11, 0.7); }
+        }
+        
+        .mutation-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .mutation-button {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .mutation-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mutation-button[data-type="point"] { border-color: var(--mutation-blue); }
+        .mutation-button[data-type="insertion"] { border-color: var(--mutation-green); }
+        .mutation-button[data-type="deletion"] { border-color: var(--mutation-red); }
+        .mutation-button[data-type="inversion"] { border-color: var(--mutation-purple); }
+        
+        .mutation-button.active {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--mutation-blue);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .evolution-tracker {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .evolution-chart {
+            display: flex;
+            height: 200px;
+            align-items: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+        }
+        
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--mutation-green), var(--mutation-blue));
+            border-radius: 0.25rem 0.25rem 0 0;
+            position: relative;
+            min-height: 10px;
+            transition: height 0.5s ease;
+        }
+        
+        .chart-bar::after {
+            content: attr(data-generation);
+            position: absolute;
+            top: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        
+        .mutation-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--mutation-blue);
+            animation: log-appear 0.3s ease;
+        }
+        
+        .log-entry.mutation {
+            border-left-color: var(--mutation-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .log-entry.evolution {
+            border-left-color: var(--mutation-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .log-entry.error {
+            border-left-color: var(--mutation-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        @keyframes log-appear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-card[data-stat="mutations"] .stat-value { color: var(--mutation-green); }
+        .stat-card[data-stat="generation"] .stat-value { color: var(--mutation-blue); }
+        .stat-card[data-stat="fitness"] .stat-value { color: var(--mutation-purple); }
+        .stat-card[data-stat="stability"] .stat-value { color: #f59e0b; }
+        
+        .simulation-controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .sim-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid var(--mutation-blue);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .sim-button:hover {
+            background: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .sim-button.active {
+            background: var(--mutation-blue);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="mutation-container">
+        <h1 style="color: var(--mutation-green); margin: 0 0 0.5rem 0;">
+            🧬 MUTAÇÃO ADAPTATIVA
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Sistema de evolução e adaptação do DNA KOBLLUX
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 0.5rem;">
+            <div>
+                <strong style="color: var(--mutation-green);">MODO DE EVOLUÇÃO: </strong>
+                <span id="evolution-mode" style="color: var(--mutation-blue);">ADAPTATIVO</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="toggleEvolution()" id="toggleEvolution" style="padding: 0.5rem 1rem; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--mutation-green); color: white; border-radius: 0.5rem; cursor: pointer;">
+                    ▶️ Iniciar Evolução
+                </button>
+                <button onclick="resetEvolution()" style="padding: 0.5rem 1rem; background: rgba(239, 68, 68, 0.2); border: 1px solid var(--mutation-red); color: white; border-radius: 0.5rem; cursor: pointer;">
+                    🔁 Resetar
+                </button>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card" data-stat="mutations">
+                <div style="font-size: 0.9rem; color: #94a3b8;">MUTAÇÕES</div>
+                <div class="stat-value" id="mutation-count">0</div>
+                <div style="font-size: 0.8rem;">Total aplicadas</div>
+            </div>
+            
+            <div class="stat-card" data-stat="generation">
+                <div style="font-size: 0.9rem; color: #94a3b8;">GERAÇÃO</div>
+                <div class="stat-value" id="generation">1</div>
+                <div style="font-size: 0.8rem;">Número atual</div>
+            </div>
+            
+            <div class="stat-card" data-stat="fitness">
+                <div style="font-size: 0.9rem; color: #94a3b8;">APTIDÃO</div>
+                <div class="stat-value" id="fitness">85%</div>
+                <div style="font-size: 0.8rem;">Score evolutivo</div>
+            </div>
+            
+            <div class="stat-card" data-stat="stability">
+                <div style="font-size: 0.9rem; color: #94a3b8;">ESTABILIDADE</div>
+                <div class="stat-value" id="stability">92%</div>
+                <div style="font-size: 0.8rem;">Integridade do DNA</div>
+            </div>
+        </div>
+        
+        <div class="mutation-controls">
+            <button class="mutation-button active" data-type="point" onclick="setMutationType('point')">
+                <div style="font-size: 2rem;">•</div>
+                <strong>PONTUAL</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Alteração de base</div>
+            </button>
+            
+            <button class="mutation-button" data-type="insertion" onclick="setMutationType('insertion')">
+                <div style="font-size: 2rem;">+</div>
+                <strong>INSERÇÃO</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Adição de base</div>
+            </button>
+            
+            <button class="mutation-button" data-type="deletion" onclick="setMutationType('deletion')">
+                <div style="font-size: 2rem;">-</div>
+                <strong>DELEÇÃO</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Remoção de base</div>
+            </button>
+            
+            <button class="mutation-button" data-type="inversion" onclick="setMutationType('inversion')">
+                <div style="font-size: 2rem;">↔</div>
+                <strong>INVERSÃO</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Inversão de sequência</div>
+            </button>
+        </div>
+        
+        <div class="simulation-controls">
+            <button class="sim-button active" onclick="setSimulationSpeed(1)">1x</button>
+            <button class="sim-button" onclick="setSimulationSpeed(2)">2x</button>
+            <button class="sim-button" onclick="setSimulationSpeed(5)">5x</button>
+            <button class="sim-button" onclick="setSimulationSpeed(10)">10x</button>
+            <div style="flex: 1; padding: 0.5rem; color: #94a3b8; font-size: 0.9rem;">
+                Velocidade: <span id="speed-display">1x</span>
+            </div>
+        </div>
+        
+        <div class="dna-sequence" id="dnaSequence">
+            <!-- DNA sequence will be generated here -->
+        </div>
+        
+        <div class="evolution-tracker">
+            <strong style="color: var(--mutation-green);">📈 HISTÓRICO EVOLUTIVO:</strong>
+            <div class="evolution-chart" id="evolutionChart">
+                <!-- Evolution bars will be generated here -->
+            </div>
+        </div>
+        
+        <div class="mutation-log" id="mutationLog">
+            <div class="log-entry">[SYSTEM] Sistema de mutação inicializado</div>
+            <div class="log-entry mutation">[DNA] Sequência inicial gerada</div>
+            <div class="log-entry">[READY] Pronto para evolução adaptativa</div>
+        </div>
+    </div>
+    
+    <script>
+        // Mutation Engine
+        const MUTATION_ENGINE = {
+            active: false,
+            mutationType: 'point',
+            speed: 1,
+            generation: 1,
+            mutationCount: 0,
+            dnaSequence: [],
+            evolutionHistory: [],
+            fitness: 85,
+            stability: 92,
+            intervalId: null
+        };
+        
+        // DNA bases
+        const BASES = ['A', 'T', 'C', 'G'];
+        const BASE_COLORS = {
+            'A': 'base-a',
+            'T': 'base-t', 
+            'C': 'base-c',
+            'G': 'base-g'
+        };
+        
+        // Initialize DNA sequence
+        function initializeDNA() {
+            MUTATION_ENGINE.dnaSequence = [];
+            const sequenceLength = 120;
+            
+            for (let i = 0; i < sequenceLength; i++) {
+                MUTATION_ENGINE.dnaSequence.push({
+                    base: BASES[Math.floor(Math.random() * BASES.length)],
+                    mutated: false,
+                    index: i
+                });
+            }
+            
+            renderDNA();
+            addLogEntry('[DNA] Sequência inicial gerada', 'mutation');
+        }
+        
+        // Render DNA sequence
+        function renderDNA() {
+            const container = document.getElementById('dnaSequence');
+            container.innerHTML = '';
+            
+            MUTATION_ENGINE.dnaSequence.forEach((baseObj, index) => {
+                const baseElement = document.createElement('span');
+                baseElement.className = `dna-base ${BASE_COLORS[baseObj.base]} ${baseObj.mutated ? 'mutated' : ''}`;
+                baseElement.textContent = baseObj.base;
+                baseElement.title = `Posição ${index + 1}`;
+                
+                // Add click handler for manual mutation
+                baseElement.onclick = () => manualMutate(index);
+                
+                container.appendChild(baseElement);
+                
+                // Add space every 10 bases
+                if ((index + 1) % 10 === 0 && index < MUTATION_ENGINE.dnaSequence.length - 1) {
+                    container.appendChild(document.createTextNode(' '));
+                }
+            });
+        }
+        
+        // Set mutation type
+        function setMutationType(type) {
+            MUTATION_ENGINE.mutationType = type;
+            
+            // Update active button
+            document.querySelectorAll('.mutation-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            addLogEntry(`[MUTATION] Tipo alterado para ${type.toUpperCase()}`, 'mutation');
+        }
+        
+        // Set simulation speed
+        function setSimulationSpeed(speed) {
+            MUTATION_ENGINE.speed = speed;
+            
+            // Update active button
+            document.querySelectorAll('.sim-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            document.getElementById('speed-display').textContent = `${speed}x`;
+            
+            // Restart interval if active
+            if (MUTATION_ENGINE.active) {
+                clearInterval(MUTATION_ENGINE.intervalId);
+                startEvolution();
+            }
+            
+            addLogEntry(`[SIMULATION] Velocidade alterada para ${speed}x`, 'evolution');
+        }
+        
+        // Toggle evolution
+        function toggleEvolution() {
+            MUTATION_ENGINE.active = !MUTATION_ENGINE.active;
+            const button = document.getElementById('toggleEvolution');
+            
+            if (MUTATION_ENGINE.active) {
+                button.innerHTML = '⏸️ Pausar Evolução';
+                button.style.background = 'rgba(245, 158, 11, 0.2)';
+                button.style.borderColor = '#f59e0b';
+                
+                addLogEntry('[EVOLUTION] Evolução iniciada', 'evolution');
+                startEvolution();
+            } else {
+                button.innerHTML = '▶️ Iniciar Evolução';
+                button.style.background = 'rgba(16, 185, 129, 0.2)';
+                button.style.borderColor = 'var(--mutation-green)';
+                
+                addLogEntry('[EVOLUTION] Evolução pausada', 'evolution');
+                stopEvolution();
+            }
+        }
+        
+        // Start evolution
+        function startEvolution() {
+            const interval = 2000 / MUTATION_ENGINE.speed; // Base interval divided by speed
+            
+            MUTATION_ENGINE.intervalId = setInterval(() => {
+                applyMutation();
+                updateGeneration();
+                updateStats();
+                updateEvolutionChart();
+            }, interval);
+        }
+        
+        // Stop evolution
+        function stopEvolution() {
+            clearInterval(MUTATION_ENGINE.intervalId);
+            MUTATION_ENGINE.intervalId = null;
+        }
+        
+        // Apply mutation
+        function applyMutation() {
+            const sequence = MUTATION_ENGINE.dnaSequence;
+            
+            if (sequence.length === 0) return;
+            
+            let logMessage = '';
+            
+            switch (MUTATION_ENGINE.mutationType) {
+                case 'point':
+                    // Point mutation: change a single base
+                    const pointIndex = Math.floor(Math.random() * sequence.length);
+                    const oldBase = sequence[pointIndex].base;
+                    const newBase = BASES.filter(b => b !== oldBase)[Math.floor(Math.random() * 3)];
+                    
+                    sequence[pointIndex].base = newBase;
+                    sequence[pointIndex].mutated = true;
+                    
+                    logMessage = `[POINT] ${oldBase}→${newBase} na posição ${pointIndex + 1}`;
+                    break;
+                    
+                case 'insertion':
+                    // Insertion: add a new base
+                    const insertIndex = Math.floor(Math.random() * sequence.length);
+                    const insertBase = BASES[Math.floor(Math.random() * BASES.length)];
+                    
+                    sequence.splice(insertIndex, 0, {
+                        base: insertBase,
+                        mutated: true,
+                        index: sequence.length
+                    });
+                    
+                    // Update indices
+                    sequence.forEach((base, idx) => base.index = idx);
+                    
+                    logMessage = `[INSERTION] ${insertBase} inserido na posição ${insertIndex + 1}`;
+                    break;
+                    
+                case 'deletion':
+                    // Deletion: remove a base
+                    if (sequence.length > 30) { // Keep minimum length
+                        const deleteIndex = Math.floor(Math.random() * sequence.length);
+                        const deletedBase = sequence[deleteIndex].base;
+                        
+                        sequence.splice(deleteIndex, 1);
+                        
+                        // Update indices
+                        sequence.forEach((base, idx) => base.index = idx);
+                        
+                        logMessage = `[DELETION] ${deletedBase} removido da posição ${deleteIndex + 1}`;
+                    }
+                    break;
+                    
+                case 'inversion':
+                    // Inversion: reverse a segment
+                    if (sequence.length >= 10) {
+                        const startIndex = Math.floor(Math.random() * (sequence.length - 5));
+                        const endIndex = startIndex + Math.floor(Math.random() * 5) + 3;
+                        const segment = sequence.slice(startIndex, endIndex);
+                        
+                        // Reverse the segment
+                        for (let i = 0; i < segment.length; i++) {
+                            sequence[startIndex + i] = {
+                                ...segment[segment.length - 1 - i],
+                                mutated: true
+                            };
+                        }
+                        
+                        logMessage = `[INVERSION] Segmento ${startIndex + 1}-${endIndex} invertido`;
+                    }
+                    break;
+            }
+            
+            if (logMessage) {
+                MUTATION_ENGINE.mutationCount++;
+                addLogEntry(logMessage, 'mutation');
+                renderDNA();
+                
+                // Clear mutation flags after animation
+                setTimeout(() => {
+                    sequence.forEach(base => base.mutated = false);
+                    renderDNA();
+                }, 500);
+            }
+        }
+        
+        // Manual mutation
+        function manualMutate(index) {
+            if (MUTATION_ENGINE.active) return; // Don't allow manual during auto
+            
+            const sequence = MUTATION_ENGINE.dnaSequence;
+            const oldBase = sequence[index].base;
+            const newBase = BASES.filter(b => b !== oldBase)[Math.floor(Math.random() * 3)];
+            
+            sequence[index].base = newBase;
+            sequence[index].mutated = true;
+            
+            MUTATION_ENGINE.mutationCount++;
+            
+            addLogEntry(`[MANUAL] ${oldBase}→${newBase} na posição ${index + 1}`, 'mutation');
+            renderDNA();
+            updateStats();
+            
+            // Clear mutation flag
+            setTimeout(() => {
+                sequence[index].mutated = false;
+                renderDNA();
+            }, 500);
+        }
+        
+        // Update generation
+        function updateGeneration() {
+            MUTATION_ENGINE.generation++;
+            document.getElementById('generation').textContent = MUTATION_ENGINE.generation;
+            
+            // Update fitness and stability based on mutations
+            const mutationRate = MUTATION_ENGINE.mutationCount / MUTATION_ENGINE.generation;
+            
+            // Fitness: higher with optimal mutation rate
+            MUTATION_ENGINE.fitness = Math.min(100, Math.max(50, 
+                85 + (Math.random() - 0.5) * 10 + 
+                (mutationRate > 0.05 && mutationRate < 0.15 ? 5 : -5)
+            ));
+            
+            // Stability: decreases with too many mutations
+            MUTATION_ENGINE.stability = Math.min(100, Math.max(60,
+                92 - (mutationRate > 0.2 ? 15 : 0) + 
+                (mutationRate < 0.05 ? 3 : 0)
+            ));
+            
+            // Add to history
+            MUTATION_ENGINE.evolutionHistory.push({
+                generation: MUTATION_ENGINE.generation,
+                fitness: MUTATION_ENGINE.fitness,
+                stability: MUTATION_ENGINE.stability,
+                mutations: MUTATION_ENGINE.mutationCount
+            });
+            
+            // Keep history limited
+            if (MUTATION_ENGINE.evolutionHistory.length > 20) {
+                MUTATION_ENGINE.evolutionHistory.shift();
+            }
+            
+            // Every 5 generations, log progress
+            if (MUTATION_ENGINE.generation % 5 === 0) {
+                addLogEntry(`[GENERATION] ${MUTATION_ENGINE.generation} | Fitness: ${MUTATION_ENGINE.fitness.toFixed(1)}% | Estabilidade: ${MUTATION_ENGINE.stability.toFixed(1)}%`, 'evolution');
+            }
+        }
+        
+        // Update stats
+        function updateStats() {
+            document.getElementById('mutation-count').textContent = MUTATION_ENGINE.mutationCount;
+            document.getElementById('fitness').textContent = `${MUTATION_ENGINE.fitness.toFixed(0)}%`;
+            document.getElementById('stability').textContent = `${MUTATION_ENGINE.stability.toFixed(0)}%`;
+        }
+        
+        // Update evolution chart
+        function updateEvolutionChart() {
+            const chart = document.getElementById('evolutionChart');
+            const history = MUTATION_ENGINE.evolutionHistory;
+            
+            // Clear chart
+            chart.innerHTML = '';
+            
+            // Create bars for each generation in history
+            history.forEach((gen, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${gen.fitness}%`;
+                bar.setAttribute('data-generation', `G${gen.generation}`);
+                bar.title = `Geração ${gen.generation}: Fitness ${gen.fitness.toFixed(1)}%`;
+                
+                // Color based on fitness
+                const hue = 120 + (100 - gen.fitness) * 1.2; // Green to red
+                bar.style.background = `linear-gradient(to top, hsl(${hue}, 70%, 50%), var(--mutation-blue))`;
+                
+                chart.appendChild(bar);
+            });
+        }
+        
+        // Reset evolution
+        function resetEvolution() {
+            stopEvolution();
+            
+            MUTATION_ENGINE.generation = 1;
+            MUTATION_ENGINE.mutationCount = 0;
+            MUTATION_ENGINE.fitness = 85;
+            MUTATION_ENGINE.stability = 92;
+            MUTATION_ENGINE.evolutionHistory = [];
+            MUTATION_ENGINE.active = false;
+            
+            const button = document.getElementById('toggleEvolution');
+            button.innerHTML = '▶️ Iniciar Evolução';
+            button.style.background = 'rgba(16, 185, 129, 0.2)';
+            button.style.borderColor = 'var(--mutation-green)';
+            
+            initializeDNA();
+            updateStats();
+            updateEvolutionChart();
+            
+            addLogEntry('[SYSTEM] Evolução reiniciada', 'evolution');
+        }
+        
+        // Add log entry
+        function addLogEntry(message, type = '') {
+            const log = document.getElementById('mutationLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Limit log size
+            if (log.children.length > 15) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧬 Sistema de mutação inicializado');
+            initializeDNA();
+            updateEvolutionChart();
+            
+            // Auto-log entries
+            setInterval(() => {
+                if (MUTATION_ENGINE.active && Math.random() > 0.8) {
+                    const messages = [
+                        '[ANALYSIS] Analisando aptidão atual...',
+                        '[OPTIMIZATION] Ajustando taxa de mutação...',
+                        '[STABILITY] Verificando integridade do DNA...',
+                        '[EVOLUTION] Processando adaptações...'
+                    ];
+                    addLogEntry(messages[Math.floor(Math.random() * messages.length)], 'evolution');
+                }
+            }, 5000);
+        });
+        
+        // Export mutation API
+        window.MUTATION_ENGINE = {
+            toggleEvolution,
+            setMutationType,
+            setSimulationSpeed,
+            resetEvolution,
+            manualMutate,
+            getState: () => MUTATION_ENGINE
+        };
+    </script>
+</body>
+</html>

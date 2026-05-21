@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="circulatory-core">
+<head>
+    <meta charset="UTF-8">
+    <title>🔄 Fluxo de Dados Circulatório</title>
+    <style>
+        :root {
+            --stream-blue: #3b82f6;
+            --stream-purple: #8b5cf6;
+            --stream-green: #10b981;
+            --stream-red: #ef4444;
+            --bg-stream: #0f172a;
+        }
+        
+        body {
+            background: var(--bg-stream);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .stream-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .flow-visualization {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+            height: 200px;
+            position: relative;
+        }
+        
+        .flow-node {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .flow-node.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--stream-blue);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+        
+        .flow-node::after {
+            content: '→';
+            position: absolute;
+            right: -1.2rem;
+            color: var(--stream-blue);
+            opacity: 0.5;
+            font-size: 1.5rem;
+        }
+        
+        .flow-node:last-child::after {
+            display: none;
+        }
+        
+        .flow-connector {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, var(--stream-blue), transparent);
+            top: 50%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        .data-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .metric-card {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .metric-card:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--stream-blue);
+            transform: translateY(-3px);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .metric-card[data-metric="throughput"] .metric-value { color: var(--stream-blue); }
+        .metric-card[data-metric="latency"] .metric-value { color: var(--stream-green); }
+        .metric-card[data-metric="errors"] .metric-value { color: var(--stream-red); }
+        .metric-card[data-metric="connections"] .metric-value { color: var(--stream-purple); }
+        
+        .api-panel {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .api-endpoint {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            border-left: 3px solid var(--stream-blue);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .stream-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--stream-blue);
+            animation: logAppear 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry.data {
+            border-left-color: var(--stream-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .log-entry.error {
+            border-left-color: var(--stream-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        @keyframes logAppear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .control-panel {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .control-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--stream-blue);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .control-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .control-btn.active {
+            background: var(--stream-blue);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="stream-container">
+        <h1 style="color: var(--stream-blue); margin: 0 0 0.5rem 0;">
+            🔄 SISTEMA CIRCULATÓRIO
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Fluxo de dados e comunicação entre sistemas do organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 0.5rem;">
+            <div>
+                <strong style="color: var(--stream-blue);">STATUS: </strong>
+                <span id="system-status" style="color: var(--stream-green);">INICIALIZANDO</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="startDataFlow()" id="startFlow" class="control-btn active">
+                    ▶️ INICIAR FLUXO
+                </button>
+                <button onclick="resetSystem()" class="control-btn">
+                    🔁 REINICIAR
+                </button>
+            </div>
+        </div>
+        
+        <div class="flow-visualization" id="flowVisualization">
+            <!-- Flow nodes will be generated by JS -->
+        </div>
+        
+        <div class="data-metrics">
+            <div class="metric-card" data-metric="throughput">
+                <div style="font-size: 0.9rem; color: #94a3b8;">THROUGHPUT</div>
+                <div class="metric-value" id="throughput">0</div>
+                <div style="font-size: 0.8rem;">KB/s</div>
+            </div>
+            
+            <div class="metric-card" data-metric="latency">
+                <div style="font-size: 0.9rem; color: #94a3b8;">LATÊNCIA</div>
+                <div class="metric-value" id="latency">0</div>
+                <div style="font-size: 0.8rem;">ms</div>
+            </div>
+            
+            <div class="metric-card" data-metric="errors">
+                <div style="font-size: 0.9rem; color: #94a3b8;">ERROS</div>
+                <div class="metric-value" id="errors">0</div>
+                <div style="font-size: 0.8rem;">/min</div>
+            </div>
+            
+            <div class="metric-card" data-metric="connections">
+                <div style="font-size: 0.9rem; color: #94a3b8;">CONEXÕES</div>
+                <div class="metric-value" id="connections">1</div>
+                <div style="font-size: 0.8rem;">Ativas</div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <button onclick="connectSystem('dna')" class="control-btn">
+                🧬 Conectar DNA
+            </button>
+            <button onclick="connectSystem('nervous')" class="control-btn">
+                🧠 Conectar Nervoso
+            </button>
+            <button onclick="connectSystem('synthesis')" class="control-btn">
+                🌀 Conectar Síntese
+            </button>
+            <button onclick="connectSystem('all')" class="control-btn">
+                🌌 Conectar Tudo
+            </button>
+        </div>
+        
+        <div class="api-panel">
+            <strong style="color: var(--stream-green);">🔌 ENDPOINTS DE API:</strong>
+            <div class="api-endpoint">
+                <span style="color: var(--stream-blue);">POST</span> /api/data/stream
+                <span style="color: #94a3b8; float: right;">→ Envio de dados</span>
+            </div>
+            <div class="api-endpoint">
+                <span style="color: var(--stream-green);">GET</span> /api/system/status
+                <span style="color: #94a3b8; float: right;">→ Status do sistema</span>
+            </div>
+            <div class="api-endpoint">
+                <span style="color: var(--stream-purple);">WS</span> /ws/data/feed
+                <span style="color: #94a3b8; float: right;">→ WebSocket em tempo real</span>
+            </div>
+        </div>
+        
+        <div class="stream-log" id="streamLog">
+            <div class="log-entry">[SYSTEM] Sistema circulatório inicializado</div>
+            <div class="log-entry">[CONNECTION] Conectando com DNA Core...</div>
+            <div class="log-entry data">[DATA] Pronto para fluxo de dados</div>
+        </div>
+    </div>
+    
+    <script>
+        // Circulatory System Engine
+        const CIRCULATORY_SYSTEM = {
+            active: false,
+            throughput: 0,
+            latency: 0,
+            errors: 0,
+            connections: 1,
+            connectedSystems: ['core'],
+            dataStream: [],
+            intervalId: null
+        };
+        
+        // Flow nodes configuration
+        const FLOW_NODES = [
+            { id: 'input', name: 'ENTRADA', icon: '📥', color: 'var(--stream-green)' },
+            { id: 'process', name: 'PROCESSO', icon: '⚡', color: 'var(--stream-blue)' },
+            { id: 'transform', name: 'TRANSFORMAÇÃO', icon: '🔄', color: 'var(--stream-purple)' },
+            { id: 'storage', name: 'ARMAZENAMENTO', icon: '💾', color: 'var(--stream-blue)' },
+            { id: 'output', name: 'SAÍDA', icon: '📤', color: 'var(--stream-green)' }
+        ];
+        
+        // Initialize flow visualization
+        function initializeFlowVisualization() {
+            const container = document.getElementById('flowVisualization');
+            container.innerHTML = '';
+            
+            // Create flow nodes
+            FLOW_NODES.forEach((node, index) => {
+                const nodeEl = document.createElement('div');
+                nodeEl.className = 'flow-node';
+                nodeEl.id = `node-${node.id}`;
+                nodeEl.innerHTML = `
+                    <div style="font-size: 2rem;">${node.icon}</div>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem; font-weight: bold;">${node.name}</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem;">ID: ${node.id}</div>
+                `;
+                container.appendChild(nodeEl);
+                
+                // Create connector (except for last node)
+                if (index < FLOW_NODES.length - 1) {
+                    const connector = document.createElement('div');
+                    connector.className = 'flow-connector';
+                    connector.id = `connector-${node.id}`;
+                    container.appendChild(connector);
+                }
+            });
+            
+            // Position connectors
+            updateConnectors();
+        }
+        
+        // Update connector positions
+        function updateConnectors() {
+            const nodes = document.querySelectorAll('.flow-node');
+            const container = document.querySelector('.flow-visualization');
+            const containerRect = container.getBoundingClientRect();
+            
+            document.querySelectorAll('.flow-connector').forEach((connector, index) => {
+                if (nodes[index] && nodes[index + 1]) {
+                    const node1Rect = nodes[index].getBoundingClientRect();
+                    const node2Rect = nodes[index + 1].getBoundingClientRect();
+                    
+                    const x1 = node1Rect.left - containerRect.left + node1Rect.width;
+                    const x2 = node2Rect.left - containerRect.left;
+                    const y = node1Rect.top - containerRect.top + node1Rect.height / 2;
+                    
+                    connector.style.left = `${x1}px`;
+                    connector.style.top = `${y}px`;
+                    connector.style.width = `${x2 - x1}px`;
+                }
+            });
+        }
+        
+        // Start data flow
+        function startDataFlow() {
+            if (CIRCULATORY_SYSTEM.active) {
+                stopDataFlow();
+                return;
+            }
+            
+            CIRCULATORY_SYSTEM.active = true;
+            const button = document.getElementById('startFlow');
+            button.textContent = '⏸️ PAUSAR FLUXO';
+            button.style.background = 'rgba(245, 158, 11, 0.2)';
+            button.style.borderColor = '#f59e0b';
+            
+            document.getElementById('system-status').textContent = 'FLUXO ATIVO';
+            document.getElementById('system-status').style.color = 'var(--stream-green)';
+            
+            addLog('[FLOW] Fluxo de dados iniciado', 'data');
+            
+            // Activate flow visualization
+            activateFlow();
+            
+            // Start data simulation
+            CIRCULATORY_SYSTEM.intervalId = setInterval(simulateDataFlow, 1000);
+        }
+        
+        // Stop data flow
+        function stopDataFlow() {
+            CIRCULATORY_SYSTEM.active = false;
+            const button = document.getElementById('startFlow');
+            button.textContent = '▶️ INICIAR FLUXO';
+            button.style.background = 'rgba(59, 130, 246, 0.1)';
+            button.style.borderColor = 'var(--stream-blue)';
+            
+            document.getElementById('system-status').textContent = 'PAUSADO';
+            document.getElementById('system-status').style.color = '#f59e0b';
+            
+            addLog('[FLOW] Fluxo de dados pausado');
+            
+            clearInterval(CIRCULATORY_SYSTEM.intervalId);
+            
+            // Deactivate flow visualization
+            deactivateFlow();
+        }
+        
+        // Activate flow animation
+        function activateFlow() {
+            // Animate nodes
+            FLOW_NODES.forEach((node, index) => {
+                const nodeEl = document.getElementById(`node-${node.id}`);
+                const connector = document.getElementById(`connector-${node.id}`);
+                
+                // Node pulse animation
+                setTimeout(() => {
+                    nodeEl.classList.add('active');
+                    nodeEl.style.borderColor = node.color;
+                    nodeEl.style.boxShadow = `0 0 20px ${node.color.replace(')', ', 0.3)').replace('rgb', 'rgba')}`;
+                    
+                    if (connector) {
+                        connector.style.background = `linear-gradient(90deg, ${node.color}, ${FLOW_NODES[index + 1]?.color || node.color})`;
+                        connector.style.opacity = '0.6';
+                    }
+                }, index * 300);
+                
+                // Continuous pulse
+                setInterval(() => {
+                    if (CIRCULATORY_SYSTEM.active) {
+                        nodeEl.animate([
+                            { transform: 'scale(1)', boxShadow: `0 0 20px ${node.color.replace(')', ', 0.3)').replace('rgb', 'rgba')}` },
+                            { transform: 'scale(1.05)', boxShadow: `0 0 30px ${node.color.replace(')', ', 0.5)').replace('rgb', 'rgba')}` },
+                            { transform: 'scale(1)', boxShadow: `0 0 20px ${node.color.replace(')', ', 0.3)').replace('rgb', 'rgba')}` }
+                        ], { duration: 1000, delay: index * 200 });
+                    }
+                }, 3000);
+            });
+        }
+        
+        // Deactivate flow animation
+        function deactivateFlow() {
+            FLOW_NODES.forEach(node => {
+                const nodeEl = document.getElementById(`node-${node.id}`);
+                const connector = document.getElementById(`connector-${node.id}`);
+                
+                nodeEl.classList.remove('active');
+                nodeEl.style.borderColor = '';
+                nodeEl.style.boxShadow = '';
+                
+                if (connector) {
+                    connector.style.background = '';
+                    connector.style.opacity = '0.3';
+                }
+            });
+        }
+        
+        // Simulate data flow
+        function simulateDataFlow() {
+            if (!CIRCULATORY_SYSTEM.active) return;
+            
+            // Update metrics
+            CIRCULATORY_SYSTEM.throughput = 50 + Math.random() * 150;
+            CIRCULATORY_SYSTEM.latency = 5 + Math.random() * 45;
+            
+            // Random errors (5% chance)
+            if (Math.random() < 0.05) {
+                CIRCULATORY_SYSTEM.errors++;
+                addLog(`[ERROR] Erro no fluxo de dados #${CIRCULATORY_SYSTEM.errors}`, 'error');
+            }
+            
+            // Update displays
+            document.getElementById('throughput').textContent = CIRCULATORY_SYSTEM.throughput.toFixed(1);
+            document.getElementById('latency').textContent = CIRCULATORY_SYSTEM.latency.toFixed(1);
+            document.getElementById('errors').textContent = CIRCULATORY_SYSTEM.errors;
+            document.getElementById('connections').textContent = CIRCULATORY_SYSTEM.connections;
+            
+            // Add data packet log
+            if (Math.random() > 0.3) {
+                const packetSize = (1 + Math.random() * 9).toFixed(1);
+                const destinations = ['DNA Core', 'Sistema Nervoso', 'Motor de Síntese', 'Renderização'];
+                const destination = destinations[Math.floor(Math.random() * destinations.length)];
+                
+                addLog(`[DATA] Pacote de ${packetSize}KB → ${destination}`, 'data');
+                
+                // Store in data stream
+                CIRCULATORY_SYSTEM.dataStream.push({
+                    timestamp: new Date(),
+                    size: packetSize,
+                    destination: destination,
+                    latency: CIRCULATORY_SYSTEM.latency
+                });
+                
+                // Keep stream limited
+                if (CIRCULATORY_SYSTEM.dataStream.length > 50) {
+                    CIRCULATORY_SYSTEM.dataStream.shift();
+                }
+            }
+        }
+        
+        // Connect to system
+        function connectSystem(system) {
+            if (system === 'all') {
+                connectSystem('dna');
+                connectSystem('nervous');
+                connectSystem('synthesis');
+                connectSystem('render');
+                return;
+            }
+            
+            const systemNames = {
+                dna: 'DNA Core',
+                nervous: 'Sistema Nervoso',
+                synthesis: 'Motor de Síntese',
+                render: 'Renderização'
+            };
+            
+            if (!CIRCULATORY_SYSTEM.connectedSystems.includes(system)) {
+                CIRCULATORY_SYSTEM.connectedSystems.push(system);
+                CIRCULATORY_SYSTEM.connections = CIRCULATORY_SYSTEM.connectedSystems.length;
+                
+                addLog(`[CONNECTION] Conectado com ${systemNames[system]}`, 'data');
+                
+                // Update button
+                const button = event.target;
+                button.textContent = `✅ ${button.textContent.replace('Conectar', 'Conectado')}`;
+                button.classList.add('active');
+                button.disabled = true;
+                
+                // Update metrics
+                document.getElementById('connections').textContent = CIRCULATORY_SYSTEM.connections;
+            }
+        }
+        
+        // Reset system
+        function resetSystem() {
+            stopDataFlow();
+            
+            CIRCULATORY_SYSTEM.throughput = 0;
+            CIRCULATORY_SYSTEM.latency = 0;
+            CIRCULATORY_SYSTEM.errors = 0;
+            CIRCULATORY_SYSTEM.connections = 1;
+            CIRCULATORY_SYSTEM.connectedSystems = ['core'];
+            CIRCULATORY_SYSTEM.dataStream = [];
+            
+            // Reset displays
+            document.getElementById('throughput').textContent = '0';
+            document.getElementById('latency').textContent = '0';
+            document.getElementById('errors').textContent = '0';
+            document.getElementById('connections').textContent = '1';
+            document.getElementById('system-status').textContent = 'INICIALIZANDO';
+            document.getElementById('system-status').style.color = 'var(--stream-green)';
+            
+            // Reset buttons
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                if (!btn.id.includes('startFlow')) {
+                    btn.textContent = btn.textContent.replace('✅', '').replace('Conectado', 'Conectar');
+                    btn.classList.remove('active');
+                    btn.disabled = false;
+                }
+            });
+            
+            // Clear log (keep first 3 entries)
+            const log = document.getElementById('streamLog');
+            while (log.children.length > 3) {
+                log.removeChild(log.lastChild);
+            }
+            
+            addLog('[SYSTEM] Sistema reinicializado');
+            addLog('[READY] Pronto para novas conexões');
+        }
+        
+        // Add log entry
+        function addLog(message, type = '') {
+            const log = document.getElementById('streamLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Limit log size
+            if (log.children.length > 20) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔄 Sistema circulatório inicializado');
+            
+            initializeFlowVisualization();
+            updateConnectors();
+            
+            // Auto-update connectors on resize
+            window.addEventListener('resize', updateConnectors);
+            
+            // Auto-start flow after 2 seconds
+            setTimeout(() => {
+                startDataFlow();
+            }, 2000);
+        });
+        
+        // Export API
+        window.CIRCULATORY_SYSTEM = {
+            startFlow: startDataFlow,
+            stopFlow: stopDataFlow,
+            connectSystem,
+            resetSystem,
+            getState: () => CIRCULATORY_SYSTEM,
+            version: '1.0.0-circulatory'
+        };
+    </script>
+</body>
+</html>
