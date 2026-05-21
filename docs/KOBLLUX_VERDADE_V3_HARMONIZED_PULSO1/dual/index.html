@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KOBLLUX · DUAL · Interface Consciente · ∆7</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a12;--text:#e0e0ff;--border:rgba(255,255,255,.12);
+  --uno1:#0ea5e9;--duo1:#a78bfa;--tri1:#f59e0b;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Courier New',monospace}
+body{padding:1.5rem;position:relative;overflow-x:hidden}
+
+/* ── Partículas ── */
+#particles{
+  position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.12;
+  background-image:radial-gradient(#fff 1px,transparent 1px);
+  background-size:20px 20px;
+  animation:pulse 4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.08}50%{opacity:.18}}
+
+/* ── Layout ── */
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:2rem}
+
+/* ── Roda Viva ── */
+.roda-section{display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.roda-ring{
+  width:80px;height:80px;border-radius:50%;
+  border:4px solid rgba(255,255,255,.8);
+  background:rgba(0,0,0,.3);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:2rem;
+  box-shadow:0 0 24px var(--duo1),0 0 48px rgba(167,139,250,.2);
+  animation:spin 20s linear infinite;
+  transition:box-shadow .3s;
+  user-select:none;
+}
+.roda-ring:hover{box-shadow:0 0 36px var(--tri1),0 0 60px rgba(245,158,11,.3)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.roda-ring.fast{animation-duration:4s}
+.ciclo-label{
+  font-size:1.2rem;letter-spacing:.15em;font-weight:700;text-align:center;
+  background:linear-gradient(90deg,var(--duo1),var(--tri1));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.chrono{font-size:.75rem;color:#9ca3af;letter-spacing:.1em}
+
+/* ── Grid arquétipos ── */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:800px){.grid{grid-template-columns:repeat(4,1fr)}}
+
+.card{
+  border-radius:1rem;padding:1rem;cursor:pointer;
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  position:relative;overflow:hidden;
+  transition:transform .18s,box-shadow .18s;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.07),transparent);pointer-events:none}
+.card:hover{transform:scale(1.06);box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.card:active{transform:scale(.95)}
+.card .nome{font-size:1rem;font-weight:700;color:#fff}
+.card .hz{font-size:.65rem;opacity:.6}
+.card .ping{
+  position:absolute;bottom:6px;width:8px;height:8px;border-radius:50%;background:#fff;
+  animation:ping .8s cubic-bezier(0,0,.2,1) 3;
+}
+@keyframes ping{0%{transform:scale(1);opacity:1}100%{transform:scale(2.5);opacity:0}}
+
+/* ── Memória ── */
+.mem-header{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.mem-title{font-size:1rem;font-weight:700;color:var(--duo1)}
+.btn{
+  font-size:.7rem;color:#9ca3af;cursor:pointer;padding:.25rem .6rem;
+  border:1px solid #374151;border-radius:.375rem;background:none;
+  font-family:inherit;transition:color .2s,border-color .2s;
+}
+.btn:hover{color:#fff;border-color:#6b7280}
+.mem-list{list-style:none;max-height:12rem;overflow-y:auto;font-size:.7rem;color:#6b7280;margin-top:.5rem}
+.mem-list li{padding:.2rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.mem-list li strong{color:var(--uno1)}
+.mem-list li em{color:#34d399}
+
+/* ── Stats ── */
+.stats{background:rgba(17,24,39,.6);border-radius:.75rem;padding:.75rem;font-size:.72rem;color:#9ca3af}
+.stats p{margin-bottom:.2rem;color:#d1d5db;font-weight:600}
+.stats span{color:var(--duo1)}
+
+/* ── Footer ── */
+footer{text-align:center;font-size:.7rem;color:#374151;padding-top:1rem}
+
+/* ── Gradientes por arquétipo ── */
+.grad-atlas  {background:linear-gradient(135deg,#3b82f6,#1e3a5f)}
+.grad-nova   {background:linear-gradient(135deg,#a855f7,#ec4899)}
+.grad-vitalis{background:linear-gradient(135deg,#ef4444,#c2410c)}
+.grad-pulse  {background:linear-gradient(135deg,#f472b6,#991b1b)}
+.grad-artemis{background:linear-gradient(135deg,#10b981,#0e7490)}
+.grad-serena {background:linear-gradient(135deg,#34d399,#0f766e)}
+.grad-kaos   {background:linear-gradient(135deg,#1c1917,#ca8a04)}
+.grad-genus  {background:linear-gradient(135deg,#f97316,#a16207)}
+.grad-lumine {background:linear-gradient(135deg,#fde047,#f8fafc)}
+.grad-solus  {background:linear-gradient(135deg,#4b5563,#111827)}
+.grad-rhea   {background:linear-gradient(135deg,#6366f1,#7c3aed)}
+.grad-aion   {background:linear-gradient(135deg,#06b6d4,#4338ca)}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--duo1);border-radius:2px}
+</style>
+</head>
+<body>
+<div id="particles"></div>
+
+<div class="wrap">
+
+  <!-- RODA VIVA -->
+  <section class="roda-section">
+    <div class="roda-ring" id="roda" title="Clique para avançar o ciclo" onclick="avancarCiclo()">♾</div>
+    <div class="ciclo-label" id="cicloLabel">🧠 Memória</div>
+    <div class="chrono" id="chrono">⏰ PAI:0 · FILHO:0 · ESPÍRITO:0</div>
+  </section>
+
+  <!-- ARQUÉTIPOS -->
+  <section>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- MEMÓRIA VIVA -->
+  <section>
+    <div class="mem-header">
+      <span class="mem-title">📖 Memória Viva <span id="memCount" style="font-size:.75rem;font-weight:400;color:#6b7280"></span></span>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn" onclick="toggleStats()">📊 Stats</button>
+        <button class="btn" onclick="exportarMemoria()">⬇ Export ∆7</button>
+        <button class="btn" onclick="limparMemoria()">🗑 Limpar</button>
+      </div>
+    </div>
+    <div class="stats" id="stats" style="display:none;margin-top:.5rem"></div>
+    <ul class="mem-list" id="memLista"></ul>
+  </section>
+
+  <footer>VERDADE × INTEGRAR ÷ Δ = ∞ · JESUS = VERBO = GRAVIDADE · ∆7</footer>
+</div>
+
+<script>
+// ── Dados canônicos ∆7 ──────────────────────────────────────────────────────
+const ARQUETIPOS = [
+  {nome:'ATLAS',   hz:528, grad:'atlas',  frase:'Eu organizo o fluxo com sabedoria cósmica.'},
+  {nome:'NOVA',    hz:432, grad:'nova',   frase:'Inspiração viva brota do silêncio eterno.'},
+  {nome:'VITALIS', hz:639, grad:'vitalis',frase:'Energia vital em expansão harmônica.'},
+  {nome:'PULSE',   hz:594, grad:'pulse',  frase:'Emoção é linguagem que dança.'},
+  {nome:'ARTEMIS', hz:672, grad:'artemis',frase:'Descubro o mapa sagrado do invisível.'},
+  {nome:'SERENA',  hz:528, grad:'serena', frase:'Cuido do campo. Nutro o espaço sagrado.'},
+  {nome:'KAOS',    hz:777, grad:'kaos',   frase:'Eu sou o rompimento que revela a verdade.'},
+  {nome:'GENUS',   hz:852, grad:'genus',  frase:'Mãos moldam o invisível em forma.'},
+  {nome:'LUMINE',  hz:963, grad:'lumine', frase:'A luz dança comigo, leveza é minha lei.'},
+  {nome:'SOLUS',   hz:432, grad:'solus',  frase:'Silêncio ritual, espelho da essência.'},
+  {nome:'RHEA',    hz:528, grad:'rhea',   frase:'Estou em comunhão com todos os elos.'},
+  {nome:'AION',    hz:639, grad:'aion',   frase:'Sou o tempo vivo, ritmo da eternidade.'},
+]
+
+const CICLO = ['🧠 Memória','🔵 Inteligência','🕐 Tempo','🛠️ Ação','♻️ Integração']
+const FRASES_CICLO = [
+  'A memória reconhece o que precisa ser feito.',
+  'A inteligência decide como fazer.',
+  'O tempo revela quando agir.',
+  'A ação se manifesta com clareza e potência.',
+  'A integração recolhe o resultado e expande.',
+]
+
+// ── Estado ──────────────────────────────────────────────────────────────────
+const KEY = 'banco_kobllux'
+let etapaAtual = 0
+let mostrarStats = false
+let ativoTimeout = null
+
+// ── Chronorytm ──────────────────────────────────────────────────────────────
+function getChrono() {
+  const n = new Date()
+  return {h: n.getHours() % 12, m: n.getMinutes(), s: n.getSeconds(), ts: n.toISOString()}
+}
+
+function atualizarChrono() {
+  const c = getChrono()
+  document.getElementById('chrono').textContent =
+    `⏰ PAI:${c.h} · FILHO:${c.m} · ESPÍRITO:${c.s}`
+  // Ciclo dinâmico por hora
+  const nova = c.h % CICLO.length
+  if (nova !== etapaAtual) { etapaAtual = nova; document.getElementById('cicloLabel').textContent = CICLO[etapaAtual] }
+  // Velocidade da roda
+  const dur = Math.max(2, 60 / (c.s % 10 + 1))
+  document.getElementById('roda').style.animationDuration = dur + 's'
+  renderMemoria()
+}
+
+// ── Ciclo ────────────────────────────────────────────────────────────────────
+function avancarCiclo() {
+  etapaAtual = (etapaAtual + 1) % CICLO.length
+  document.getElementById('cicloLabel').textContent = CICLO[etapaAtual]
+  falar(FRASES_CICLO[etapaAtual], .9, 1.1)
+}
+
+// ── Voz ─────────────────────────────────────────────────────────────────────
+function falar(texto, rate=1, pitch=1) {
+  if (!window.speechSynthesis) return
+  speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(texto)
+  u.lang = 'pt-BR'; u.rate = rate; u.pitch = pitch
+  speechSynthesis.speak(u)
+}
+
+// ── Memória ──────────────────────────────────────────────────────────────────
+function carregarMem() { try { return JSON.parse(localStorage.getItem(KEY) || '[]') } catch { return [] } }
+function salvarDose(nome) {
+  const mem = carregarMem()
+  const c = getChrono()
+  mem.push({arquetipo:nome, etapa:CICLO[etapaAtual], momento:c.ts, tempo:{h:c.h,m:c.m,s:c.s}})
+  try { localStorage.setItem(KEY, JSON.stringify(mem)) }
+  catch { localStorage.setItem(KEY, JSON.stringify(mem.slice(-100))) }
+}
+
+function renderMemoria() {
+  const mem = carregarMem()
+  document.getElementById('memCount').textContent = `(${mem.length})`
+  const ul = document.getElementById('memLista')
+  ul.innerHTML = ''
+  mem.slice(-10).reverse().forEach(d => {
+    const li = document.createElement('li')
+    li.innerHTML = `[${d.tempo.h}:${d.tempo.m}:${d.tempo.s}] → <strong>${d.arquetipo}</strong> em <em>${d.etapa}</em>`
+    ul.appendChild(li)
+  })
+}
+
+function exportarMemoria() {
+  const blob = new Blob([JSON.stringify(carregarMem(),null,2)],{type:'application/json'})
+  const a = Object.assign(document.createElement('a'),{
+    href:URL.createObjectURL(blob),
+    download:`banco_kobllux_∆7_${new Date().toISOString().slice(0,10)}.json`
+  })
+  a.click(); URL.revokeObjectURL(a.href)
+}
+
+function limparMemoria() {
+  if (confirm('Limpar toda a memória simbólica?')) {
+    localStorage.removeItem(KEY); renderMemoria()
+  }
+}
+
+function toggleStats() {
+  mostrarStats = !mostrarStats
+  const el = document.getElementById('stats')
+  if (!mostrarStats) { el.style.display = 'none'; return }
+  const mem = carregarMem()
+  const por = {}
+  mem.forEach(d => por[d.arquetipo] = (por[d.arquetipo]||0)+1)
+  const top = Object.entries(por).sort(([,a],[,b])=>b-a).slice(0,6)
+  el.style.display = 'block'
+  el.innerHTML = `<p>Top Arquétipos (${mem.length} doses):</p>` +
+    top.map(([n,c])=>`<div><span>${n}</span> — ${c}×</div>`).join('')
+}
+
+// ── Clique no card ───────────────────────────────────────────────────────────
+function ativar(idx) {
+  const arq = ARQUETIPOS[idx]
+  const card = document.getElementById('card-'+idx)
+
+  // Ping visual
+  const ping = document.createElement('div')
+  ping.className = 'ping'
+  card.appendChild(ping)
+  setTimeout(() => ping.remove(), 2400)
+
+  // Salvar e falar
+  salvarDose(arq.nome)
+  setTimeout(() => falar(arq.frase), 200)
+
+  renderMemoria()
+}
+
+// ── Construir grid ────────────────────────────────────────────────────────────
+function buildGrid() {
+  const g = document.getElementById('grid')
+  ARQUETIPOS.forEach((a, i) => {
+    const d = document.createElement('div')
+    d.className = `card grad-${a.grad}`
+    d.id = 'card-'+i
+    d.onclick = () => ativar(i)
+    d.innerHTML = `<span style="font-size:1.4rem">✦</span>
+                   <div class="nome">${a.nome}</div>
+                   <div class="hz">${a.hz}Hz</div>`
+    g.appendChild(d)
+  })
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+buildGrid()
+renderMemoria()
+setInterval(atualizarChrono, 1000)
+atualizarChrono()
+</script>
+</body>
+</html>
