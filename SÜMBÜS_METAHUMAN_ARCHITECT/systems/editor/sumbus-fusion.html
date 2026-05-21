@@ -214,15 +214,15 @@ body {
 }
 .repo-search:focus { border-color:var(--c-green); }
 
-/* ── REPO GRID — mobile-first: 2 colunas com cards legíveis ── */
+/* ── REPO GRID — 2 colunas simétricas mobile-first ── */
 .repo-grid {
   flex:1; overflow-y:auto; padding:8px;
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0,1fr));  /* minmax(0,1fr) = colunas estritamente iguais */
   gap:8px; align-content:start;
 }
-@media(min-width:480px){ .repo-grid{ grid-template-columns:repeat(3,1fr); } }
-@media(min-width:700px){ .repo-grid{ grid-template-columns:repeat(4,1fr); } }
+@media(min-width:480px){ .repo-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(min-width:700px){ .repo-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
 
 /* ── REPO CARD — mobile robustness fix ──
    Não usar -webkit-line-clamp em flex items no Android Chrome:
@@ -236,7 +236,9 @@ body {
   position:relative;
   user-select:none;
   display:flex; flex-direction:column;
-  min-height:118px;           /* garante espaço para todos os elementos */
+  min-height:128px;           /* altura aumentada — icon+previewbtn+nome+path+footer */
+  min-width:0;                /* prevent grid blowout */
+  box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 .repo-card:active { transform:scale(0.96); }
@@ -250,24 +252,97 @@ body {
   color:var(--c-purple); font-weight:900; font-size:14px;
 }
 
-/* Linha topo: ícone grande + botão ℹ */
+/* Linha topo: ícone + dois botões (ℹ e 👁) */
 .rc-top {
   display:flex; align-items:flex-start;
-  justify-content:space-between; margin-bottom:5px;
+  justify-content:space-between; margin-bottom:5px; gap:4px;
 }
 .rc-icon {
-  font-size:1.9rem; line-height:1; flex-shrink:0;
+  font-size:1.75rem; line-height:1; flex-shrink:0;
 }
-.rc-info-btn {
+.rc-btns { display:flex; gap:4px; align-items:center; flex-shrink:0; }
+.rc-info-btn, .rc-prev-btn {
   width:26px; height:26px; border-radius:50%;
   border:1px solid rgba(255,255,255,0.2);
   background:rgba(255,255,255,0.07);
   color:var(--text-muted); font-size:13px; font-weight:700;
   display:flex; align-items:center; justify-content:center;
-  cursor:pointer; flex-shrink:0; line-height:1;
+  cursor:pointer; line-height:1;
   transition:background .2s, color .2s;
 }
 .rc-info-btn:active { background:rgba(59,130,246,0.35); color:var(--primary); }
+.rc-prev-btn:active { background:rgba(0,245,255,0.3); color:var(--primary); }
+
+/* ── PREVIEW FILE MODAL ── */
+.prev-modal {
+  position:fixed; inset:0; background:rgba(2,6,23,0.96);
+  z-index:6000; display:none; flex-direction:column;
+  backdrop-filter:blur(8px);
+}
+.prev-modal.open { display:flex; }
+.prev-modal-head {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 14px; background:rgba(5,8,17,0.99);
+  border-bottom:1px solid rgba(255,255,255,0.08); flex-shrink:0;
+}
+.prev-modal-icon { font-size:1.3rem; flex-shrink:0; }
+.prev-modal-title { flex:1; font-size:12px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.prev-modal-sub { font-size:9px; color:var(--text-muted); }
+.prev-close {
+  width:32px; height:32px; border-radius:50%;
+  background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4);
+  color:#ef4444; font-size:16px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.prev-modal-body { flex:1; overflow:hidden; position:relative; }
+.prev-iframe { width:100%; height:100%; border:none; background:#fff; display:none; }
+.prev-iframe.active { display:block; }
+.prev-code {
+  width:100%; height:100%; overflow:auto; padding:14px;
+  font-family:var(--font-code); font-size:11px; line-height:1.65;
+  white-space:pre-wrap; word-break:break-word;
+  color:#c9d1d9; background:var(--bg-deep); display:none;
+}
+.prev-code.active { display:block; }
+.prev-loading {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--text-muted); font-size:11px; font-family:var(--font-code);
+  animation:flicker 1.5s infinite;
+}
+/* ── fim PREVIEW MODAL ── */
+
+/* ── EDITOR SYNTAX HIGHLIGHT LAYER ── */
+.code-area { flex:1; position:relative; overflow:hidden; }
+.highlight-layer {
+  position:absolute; inset:0; padding:12px;
+  font-family:var(--font-code); font-size:12.5px; line-height:1.65;
+  white-space:pre; overflow:hidden; pointer-events:none;
+  tab-size:2; z-index:1; word-break:normal;
+  /* Scroll is synced via JS */
+}
+.hl-line { display:block; min-height:1.65em; border-radius:2px; }
+#input-layer {
+  position:absolute; inset:0; padding:12px;
+  font-family:var(--font-code); font-size:12.5px; line-height:1.65;
+  white-space:pre; border:none; outline:none; overflow:auto;
+  tab-size:2; width:100%; height:100%;
+  background:transparent;
+  color:transparent;          /* texto invisível — highlight-layer renderiza */
+  caret-color:var(--primary); /* cursor visível */
+  resize:none; z-index:2;
+  -webkit-text-fill-color:transparent; /* Safari/Chrome */
+}
+/* Gutter: linhas coloridas por arquétipo */
+.gutter {
+  width:44px; background:rgba(0,0,0,0.35); border-right:1px solid var(--glass-border);
+  overflow:hidden; font-family:var(--font-code); font-size:11.5px; flex-shrink:0;
+  padding:12px 0;
+}
+.g-line {
+  display:block; text-align:center; line-height:1.65em;
+  font-size:11px; transition:color .1s;
+}
+/* ── fim HIGHLIGHT ── */
 
 /* Nome — height fixo = 2 linhas (font 12px × line-height 1.45 × 2) */
 .rc-name {
@@ -524,6 +599,9 @@ body {
     <div class="editor-frame">
       <div class="gutter" id="gutter">1</div>
       <div class="code-area">
+        <!-- Highlight layer (atrás) — cores arquetípicas KOBLLUX -->
+        <div id="codeHighlight" class="highlight-layer" aria-hidden="true"></div>
+        <!-- Input (frente) — texto transparente, cursor visível -->
         <textarea id="input-layer" spellcheck="false" autocapitalize="off"
           placeholder="<h1>∆³ KOBLLUX_VIVO</h1>"></textarea>
       </div>
@@ -693,6 +771,23 @@ body {
 
 <div id="toaster"></div>
 
+<!-- PREVIEW FILE MODAL -->
+<div class="prev-modal" id="prevModal">
+  <div class="prev-modal-head">
+    <span class="prev-modal-icon" id="prevIcon">📄</span>
+    <div style="flex:1;overflow:hidden">
+      <div class="prev-modal-title" id="prevTitle">—</div>
+      <div class="prev-modal-sub" id="prevSub">—</div>
+    </div>
+    <div class="prev-close" onclick="closeFilePreview()">✕</div>
+  </div>
+  <div class="prev-modal-body">
+    <div class="prev-loading" id="prevLoading">↺ carregando...</div>
+    <iframe class="prev-iframe" id="prevFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+    <div class="prev-code" id="prevCodeEl"></div>
+  </div>
+</div>
+
 <!-- INFO BOTTOM SHEET -->
 <div class="info-overlay" id="infoOverlay" onclick="closeInfoSheet()"></div>
 <div class="info-sheet" id="infoSheet">
@@ -773,8 +868,12 @@ function toast(msg, type='info') {
 }
 
 function updateGutter() {
-  const lines = UI.input.value.split('\n').length;
-  UI.gutter.innerHTML = Array(lines).fill(0).map((_,i)=>i+1).join('<br>');
+  const lines = UI.input.value.split('\n');
+  const ext = (state.editorPath.split('.').pop() || 'html').toLowerCase();
+  UI.gutter.innerHTML = lines.map((line, i) => {
+    const color = getLineNumColor(line, ext);
+    return `<span class="g-line" style="color:${color}">${i+1}</span>`;
+  }).join('');
 }
 
 function logToUI(msg, type='') {
@@ -1005,13 +1104,22 @@ function renderRepoGrid() {
            style="border-color:${borderColor};border-top:2px solid ${ft.color}">
         <div class="rc-top">
           <span class="rc-icon">${ft.icon}</span>
-          <button class="rc-info-btn"
-                  data-path="${esc(f.path)}"
-                  data-ext="${ext}"
-                  data-icon="${ft.icon}"
-                  data-size="${esc(size)}"
-                  onclick="event.stopPropagation();showFileInfo(this)"
-                  title="Ver classes, IDs e detalhes">ℹ</button>
+          <div class="rc-btns">
+            <button class="rc-prev-btn"
+                    data-path="${esc(f.path)}"
+                    data-ext="${ext}"
+                    data-icon="${ft.icon}"
+                    data-name="${esc(name)}"
+                    onclick="event.stopPropagation();showFilePreview(this)"
+                    title="Prévia do arquivo">👁</button>
+            <button class="rc-info-btn"
+                    data-path="${esc(f.path)}"
+                    data-ext="${ext}"
+                    data-icon="${ft.icon}"
+                    data-size="${esc(size)}"
+                    onclick="event.stopPropagation();showFileInfo(this)"
+                    title="Classes, IDs, detalhes">ℹ</button>
+          </div>
         </div>
         <div class="rc-name" style="color:${ft.color}">${esc(name)}</div>
         <div class="rc-path">${esc(dir)}</div>
@@ -1264,6 +1372,250 @@ function preSelectFile(path) {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PREVIEW FILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+async function showFilePreview(btn) {
+  const path = btn.dataset.path;
+  const ext  = btn.dataset.ext;
+  const name = btn.dataset.name || path.split('/').pop();
+  const ft   = TYPE_MAP[ext] || { icon:'📄', color:'#94a3b8', label:ext.toUpperCase() };
+
+  const modal   = document.getElementById('prevModal');
+  const loading = document.getElementById('prevLoading');
+  const frame   = document.getElementById('prevFrame');
+  const codeEl  = document.getElementById('prevCodeEl');
+
+  document.getElementById('prevIcon').textContent  = ft.icon;
+  document.getElementById('prevTitle').textContent = name;
+  document.getElementById('prevTitle').style.color = ft.color;
+  document.getElementById('prevSub').textContent   = path;
+
+  // reset state
+  loading.style.display = 'flex';
+  frame.className   = 'prev-iframe';
+  codeEl.className  = 'prev-code';
+  frame.srcdoc      = '';
+  codeEl.innerHTML  = '';
+  modal.classList.add('open');
+
+  const renderAsFrame = ['html', 'md', 'svg'].includes(ext);
+  const isBinary = ['png','jpg','jpeg','gif','ico','woff','woff2','ttf','pdf','zip'].includes(ext);
+
+  try {
+    if (isBinary) {
+      loading.style.display = 'none';
+      codeEl.className = 'prev-code active';
+      codeEl.innerHTML = `<span style="color:var(--text-muted)">[arquivo binário — preview não disponível]</span>`;
+      return;
+    }
+    const data = await G.fetchFile(path);
+    const raw  = G.decodeContent(data.content);
+    loading.style.display = 'none';
+
+    if (ext === 'html') {
+      frame.className = 'prev-iframe active';
+      frame.srcdoc = raw;
+    } else if (ext === 'md') {
+      frame.className = 'prev-iframe active';
+      frame.srcdoc = `<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        <style>
+          body{font-family:system-ui,sans-serif;padding:20px;max-width:720px;margin:0 auto;color:#1e293b;line-height:1.7}
+          h1{color:#1e40af}h2{color:#1d4ed8}h3{color:#2563eb}
+          code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:.9em}
+          pre{background:#0f172a;color:#e2e8f0;padding:16px;border-radius:8px;overflow-x:auto}
+          blockquote{border-left:4px solid #3b82f6;margin:0;padding-left:16px;color:#475569}
+          a{color:#2563eb}hr{border:none;border-top:1px solid #e2e8f0}
+        </style></head><body>${simpleMarkdown(raw)}</body></html>`;
+    } else {
+      codeEl.className = 'prev-code active';
+      codeEl.innerHTML = colorLine(raw.slice(0, 8000), ext)
+        + (raw.length > 8000 ? `\n<span style="color:var(--text-muted)">... (${raw.length - 8000} chars truncados)</span>` : '');
+    }
+  } catch(e) {
+    loading.style.display = 'none';
+    codeEl.className = 'prev-code active';
+    codeEl.innerHTML = `<span style="color:var(--danger)">Erro: ${esc(e.message)}</span>`;
+  }
+}
+
+function closeFilePreview() {
+  document.getElementById('prevModal').classList.remove('open');
+  document.getElementById('prevFrame').srcdoc = '';
+}
+
+function simpleMarkdown(md) {
+  return md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/^---$/gm,'<hr>')
+    .replace(/^[-*] (.+)$/gm,'<li>$1</li>')
+    .replace(/\n\n/g,'</p><p>');
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SYNTAX HIGHLIGHT — KOBLLUX ARCHETYPE COLORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+// Cores por arquétipo para cada tipo de tag
+const HL = {
+  ATLAS:   '#3b82f6',  // html head body doctype — estrutura
+  NOVA:    '#f59e0b',  // meta link title        — semente
+  VITALIS: '#10b981',  // script                 — energia
+  PULSE:   '#8b5cf6',  // style keyframes        — ritmo
+  ARTEMIS: '#06b6d4',  // input form button      — detecção
+  SERENA:  '#ec4899',  // p span h1-6 text       — cuidado
+  KAOS:    '#ef4444',  // !important, errors     — ruptura
+  GENUS:   '#a855f7',  // div section article    — síntese
+  LUMINE:  '#fbbf24',  // img canvas video svg   — renderização
+  SOLUS:   '#64748b',  // comments               — silêncio
+  RHEA:    '#34d399',  // a iframe embed         — integração
+  AION:    '#818cf8',  // time data template     — tempo
+  STRING:  '#f1fa8c',
+  NUMBER:  '#bd93f9',
+  KEYWORD: '#ff79c6',
+  PROP:    '#8be9fd',
+  FN:      '#50fa7b',
+};
+
+function getLineBg(line) {
+  const l = line.trim();
+  if (/<!--/.test(l))                          return HL.SOLUS   + '14'; // comentário
+  if (/<\/?(?:html|head|body)\b/i.test(l)
+   || /<!DOCTYPE/i.test(l))                    return HL.ATLAS   + '12'; // estrutura
+  if (/<\/?script\b/i.test(l))                 return HL.VITALIS + '12'; // script
+  if (/<\/?style\b/i.test(l)
+   || /@keyframes/i.test(l))                   return HL.PULSE   + '10'; // estilo
+  if (/<(?:meta|link|title|base)\b/i.test(l))  return HL.NOVA    + '10'; // seed
+  if (/<\/?(?:div|section|article|main|aside|nav|header|footer)\b/i.test(l)) return HL.GENUS + '0d';
+  if (/<\/?(?:img|canvas|video|audio|svg|figure)\b/i.test(l))  return HL.LUMINE + '0d';
+  if (/<\/?(?:input|button|form|select|label)\b/i.test(l))     return HL.ARTEMIS+ '0d';
+  if (/<\/?(?:a|iframe|embed)\b/i.test(l))     return HL.RHEA   + '0d';
+  if (/<\/?(?:time|data|template|dialog)\b/i.test(l)) return HL.AION + '0d';
+  return 'transparent';
+}
+
+function getLineNumColor(line, ext) {
+  if (ext !== 'html' && ext !== 'css' && ext !== 'js') return 'rgba(255,255,255,0.18)';
+  const bg = getLineBg(line);
+  if (bg === 'transparent') return 'rgba(255,255,255,0.18)';
+  // derive color from first 7 chars of bg (the hex color)
+  return bg.slice(0,7) + 'cc';
+}
+
+function colorLine(raw, ext) {
+  if (!raw) return '';
+  const lines = raw.split('\n');
+  return lines.map(line => {
+    const escaped = line
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
+    return applyTokenColors(escaped, ext);
+  }).join('\n');
+}
+
+function applyTokenColors(e, ext) {
+  // comments first (don't re-color inside)
+  if (ext === 'html') {
+    // HTML comment
+    let s = e.replace(/(&lt;!--.*?--&gt;)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    // DOCTYPE
+    s = s.replace(/(&lt;!DOCTYPE[^&]*&gt;)/gi, `<span style="color:${HL.ATLAS};font-weight:700">$1</span>`);
+    // structural
+    s = s.replace(/(&lt;\/?(?:html|head|body)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.ATLAS};font-weight:700">$1</span>`);
+    // script/style
+    s = s.replace(/(&lt;\/?script\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.VITALIS};font-weight:700">$1</span>`);
+    s = s.replace(/(&lt;\/?style\b[^&gt;]*&gt;)/gi,  `<span style="color:${HL.PULSE};font-weight:700">$1</span>`);
+    // meta/link/title
+    s = s.replace(/(&lt;\/?(?:meta|link|title|base)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.NOVA}">$1</span>`);
+    // containers
+    s = s.replace(/(&lt;\/?(?:div|section|article|main|aside|nav|header|footer)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.GENUS}">$1</span>`);
+    // content tags
+    s = s.replace(/(&lt;\/?(?:p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.SERENA}">$1</span>`);
+    // visual
+    s = s.replace(/(&lt;\/?(?:img|canvas|video|audio|svg|figure|picture)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.LUMINE}">$1</span>`);
+    // links
+    s = s.replace(/(&lt;\/?(?:a|iframe|embed|portal)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.RHEA}">$1</span>`);
+    // forms
+    s = s.replace(/(&lt;\/?(?:input|button|form|select|textarea|label|fieldset)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.ARTEMIS}">$1</span>`);
+    // time/data/template
+    s = s.replace(/(&lt;\/?(?:time|data|template|slot|dialog|details)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.AION}">$1</span>`);
+    // attribute strings "value"
+    s = s.replace(/"([^"]*)"/g, `<span style="color:${HL.STRING}">"$1"</span>`);
+    return s;
+  }
+  if (ext === 'css') {
+    let s = e;
+    // comment
+    s = s.replace(/(\/\*.*?\*\/)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    // #hex colors — show in their own color
+    s = s.replace(/(#[0-9a-fA-F]{3,8})\b/g, m => `<span style="color:${m};text-shadow:0 0 6px ${m}55">${m}</span>`);
+    // --vars
+    s = s.replace(/(--[a-zA-Z][a-zA-Z0-9_-]+)/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    // properties
+    s = s.replace(/\b([a-z-]{2,})\s*(?=:)/g, `<span style="color:${HL.PROP}">$1</span>`);
+    // strings
+    s = s.replace(/"([^"]*)"/g, `<span style="color:${HL.STRING}">"$1"</span>`);
+    return s;
+  }
+  if (ext === 'js') {
+    let s = e;
+    // line comment
+    s = s.replace(/(\/\/.*$)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    // keywords
+    const kw = 'const|let|var|function|return|if|else|for|while|class|new|typeof|async|await|import|export|from|default|true|false|null|undefined|this|of|in|try|catch|throw';
+    s = s.replace(new RegExp(`\\b(${kw})\\b`, 'g'), `<span style="color:${HL.KEYWORD}">$1</span>`);
+    // strings
+    s = s.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, `<span style="color:${HL.STRING}">$1</span>`);
+    // numbers
+    s = s.replace(/\b(\d+\.?\d*)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    // function calls
+    s = s.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, `<span style="color:${HL.FN}">$1</span>`);
+    return s;
+  }
+  if (ext === 'py') {
+    let s = e;
+    s = s.replace(/(#.*$)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    const kw = 'def|class|return|import|from|if|elif|else|for|while|try|except|with|as|in|is|not|and|or|True|False|None|print|self';
+    s = s.replace(new RegExp(`\\b(${kw})\\b`, 'g'), `<span style="color:${HL.KEYWORD}">$1</span>`);
+    s = s.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, `<span style="color:${HL.STRING}">$1</span>`);
+    s = s.replace(/\b(\d+\.?\d*)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    return s;
+  }
+  // JSON
+  if (ext === 'json') {
+    let s = e;
+    s = s.replace(/"([^"]+)"\s*:/g, `<span style="color:${HL.PROP}">"$1"</span>:`);
+    s = s.replace(/:\s*("(?:[^"\\]|\\.)*")/g, `: <span style="color:${HL.STRING}">$1</span>`);
+    s = s.replace(/\b(true|false|null)\b/g, `<span style="color:${HL.KEYWORD}">$1</span>`);
+    s = s.replace(/\b(\d+\.?\d*)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    return s;
+  }
+  return e;
+}
+
+function updateHighlight() {
+  const layer = document.getElementById('codeHighlight');
+  if (!layer) return;
+  const ext = (state.editorPath.split('.').pop() || 'html').toLowerCase();
+  const lines = UI.input.value.split('\n');
+  layer.innerHTML = lines.map(line => {
+    const bg = (ext === 'html') ? getLineBg(line) : 'transparent';
+    const colored = applyTokenColors(
+      line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'),
+      ext
+    );
+    return `<span class="hl-line" style="background:${bg}">${colored || ' '}</span>`;
+  }).join('\n');
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    FUSION MODES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function setMode(mode, el) {
@@ -1488,8 +1840,12 @@ document.getElementById('btn-push').onclick = async () => {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    EDITOR EVENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-UI.input.oninput    = () => { updateGutter(); saveHistory(UI.input.value); };
-UI.input.onscroll   = () => { UI.gutter.scrollTop = UI.input.scrollTop; };
+UI.input.oninput    = () => { updateGutter(); updateHighlight(); saveHistory(UI.input.value); };
+UI.input.onscroll   = () => {
+  UI.gutter.scrollTop = UI.input.scrollTop;
+  const hl = document.getElementById('codeHighlight');
+  if (hl) { hl.scrollTop = UI.input.scrollTop; hl.scrollLeft = UI.input.scrollLeft; }
+};
 UI.input.onkeydown  = e => {
   if (e.key === 'Tab') {
     e.preventDefault();
@@ -1521,6 +1877,7 @@ window.onload = () => {
 
   history.present = UI.input.value;
   updateGutter();
+  updateHighlight();
   renderCDNs();
   buildArchSelector();
 
@@ -1556,6 +1913,9 @@ Object.assign(window, {
   showFileInfo,
   closeInfoSheet,
   preSelectFile,
+  // Preview modal
+  showFilePreview,
+  closeFilePreview,
   // Fusion
   setMode,
   executeFusion,
