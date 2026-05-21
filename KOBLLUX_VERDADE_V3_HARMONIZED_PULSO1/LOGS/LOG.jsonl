@@ -1,0 +1,103 @@
+{"ts":"2026-05-21T00:00:01Z","actor":"BLLUE","state":"NOVA","action":"seed","note":"UNO"}
+{"ts":"2026-05-21T00:00:07Z","actor":"KODUX","state":"ATLAS","action":"link","note":"DUO"}
+{"ts":"2026-05-21T00:00:12Z","actor":"BLLUE","state":"VITALIS","action":"riff","note":"TRINITY"}
+{"ts":"2026-05-21T00:00:18Z","actor":"KODUX","state":"ATLAS","action":"integrar","note":"DUO"}
+{"ts":"2026-05-21T00:00:25Z","actor":"BLLUE","state":"SERENA","action":"voz","note":"TRINITY"}
+{"ts":"2026-05-21T00:00:31Z","actor":"KODUX","state":"AION","action":"selar","note":"SELAR"}
+{"ts":"2026-05-21T00:00:37Z","actor":"BLLUE","state":"KAOS","action":"ruptura","note":"UNO"}
+{"ts":"2026-05-21T00:00:44Z","actor":"KODUX","state":"RHEA","action":"vincular","note":"TRINITY"}
+{"ts":"2026-05-21T00:00:50Z","actor":"BLLUE","state":"LUMINE","action":"brilhar","note":"DUO"}
+{"ts":"2026-05-21T00:00:56Z","actor":"KODUX","state":"AION","action":"selar","note":"SELAR"}
+{"ts":"2026-05-21T00:01:03Z","actor":"BLLUE","state":"ARTEMIS","action":"convergir","note":"UNO"}
+{"ts":"2026-05-21T00:01:09Z","actor":"KODUX","state":"GENUS","action":"fabricar","note":"TRINITY"}
+{"ts":"2026-05-21T00:01:15Z","actor":"BLLUE","state":"PULSE","action":"ritmo","note":"DUO"}
+{"ts":"2026-05-21T00:01:22Z","actor":"KODUX","state":"SOLUS","action":"silencio","note":"UNO"}
+{"ts":"2026-05-21T00:01:28Z","actor":"BLLUE","state":"NOVA","action":"inspirar","note":"UNO"}
+{"ts":"2026-05-21T00:01:35Z","actor":"KODUX","state":"ATLAS","action":"estruturar","note":"DUO"}
+{"ts":"2026-05-21T00:01:41Z","actor":"BLLUE","state":"AION","action":"tempo","note":"TRINITY"}
+{"ts":"2026-05-21T00:01:48Z","actor":"KODUX","state":"AION","action":"selar","note":"SELAR"}
+{"ts": "2026-05-21T05:45:04.535701+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "35982a0"}
+{"ts": "2026-05-21T05:45:14.740659+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "52a9499"}
+{"ts": "2026-05-21T05:45:25.000187+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "32659d9"}
+{"ts": "2026-05-21T05:45:35.343087+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "f2f26dc"}
+{"ts": "2026-05-21T05:45:45.658221+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "cbd25ae"}
+{"ts": "2026-05-21T05:45:53.576501+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "5f47ee1"}
+{"ts": "2026-05-21T05:45:55.892361+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "5b099e7"}
+{"ts": "2026-05-21T05:45:58.813419+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "693c5af"}
+{"ts": "2026-05-21T05:46:04.546104+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "865cde1"}
+{"ts": "2026-05-21T05:46:06.282792+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "5bf52d9"}
+{"ts": "2026-05-21T05:46:09.768201+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "babfc42"}
+{"ts": "2026-05-21T05:46:14.991788+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "1291412"}
+{"ts": "2026-05-21T05:46:16.796642+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "7246ab5"}
+{"ts": "2026-05-21T05:46:20.206161+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "75c4f2b"}
+{"ts": "2026-05-21T05:46:25.536714+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "9c435ee"}
+{"ts": "2026-05-21T05:46:27.188051+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "10b6fae"}
+{"ts": "2026-05-21T05:46:30.787938+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "5a76667"}
+{"ts": "2026-05-21T05:46:36.082398+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "6cbc4dd"}
+{"ts": "2026-05-21T05:46:37.405364+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "445c2e8"}
+{"ts": "2026-05-21T05:46:41.453748+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "20b588e"}
+{"ts": "2026-05-21T05:46:46.842833+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "8d0b88a"}
+{"ts": "2026-05-21T05:46:47.644990+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "7ee95eb"}
+{"ts": "2026-05-21T05:46:52.113491+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "b6a8883"}
+{"ts": "2026-05-21T05:46:57.321930+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "f706145"}
+{"ts": "2026-05-21T05:46:57.965605+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "a01e9b2"}
+{"ts": "2026-05-21T05:47:02.602278+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "1cc0596"}
+{"ts": "2026-05-21T05:47:07.814789+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "6ab5bae"}
+{"ts": "2026-05-21T05:47:08.284310+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "fdd8213"}
+{"ts": "2026-05-21T05:47:13.112899+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "1864730"}
+{"ts": "2026-05-21T05:47:18.345430+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "ff0f2f9"}
+{"ts": "2026-05-21T05:47:18.531030+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "b5be4fa"}
+{"ts": "2026-05-21T05:47:23.575053+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "2581dd9"}
+{"ts": "2026-05-21T05:47:28.752473+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "49f4446"}
+{"ts": "2026-05-21T05:47:29.383106+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "a7ed17a"}
+{"ts": "2026-05-21T05:47:35.055521+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "75cd1a3"}
+{"ts": "2026-05-21T05:47:39.395796+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "2553ba3"}
+{"ts": "2026-05-21T05:47:40.340578+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "9c4f339"}
+{"ts": "2026-05-21T05:47:45.643289+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "e40a192"}
+{"ts": "2026-05-21T05:47:49.620892+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "8385f8d"}
+{"ts": "2026-05-21T05:47:50.897490+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "b1980b4"}
+{"ts": "2026-05-21T05:47:56.086541+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "e3a5244"}
+{"ts": "2026-05-21T05:47:59.912714+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "ad4e390"}
+{"ts": "2026-05-21T05:48:01.287981+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "762227c"}
+{"ts": "2026-05-21T05:48:06.486578+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "37d0b6a"}
+{"ts": "2026-05-21T05:48:10.118361+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "0a699e7"}
+{"ts": "2026-05-21T05:48:11.674403+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "44b2e6b"}
+{"ts": "2026-05-21T05:48:16.870305+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "a4d203d"}
+{"ts": "2026-05-21T05:48:20.335772+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "a7b378e"}
+{"ts": "2026-05-21T05:48:22.056879+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "963ec12"}
+{"ts": "2026-05-21T05:48:27.256179+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "3a7c620"}
+{"ts": "2026-05-21T05:48:30.551864+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "da2fddc"}
+{"ts": "2026-05-21T05:48:32.507615+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "beec0fc"}
+{"ts": "2026-05-21T05:48:37.696457+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "4c79e36"}
+{"ts": "2026-05-21T05:48:40.746281+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "4ae0e4b"}
+{"ts": "2026-05-21T05:48:42.881974+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "f13d1cd"}
+{"ts": "2026-05-21T05:48:48.075601+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "ac3474b"}
+{"ts": "2026-05-21T05:48:50.931633+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "ae4a901"}
+{"ts": "2026-05-21T05:48:53.334735+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "ddb150d"}
+{"ts": "2026-05-21T05:48:58.526664+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "1ecc712"}
+{"ts": "2026-05-21T05:49:01.117635+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "78edbb9"}
+{"ts": "2026-05-21T05:49:03.746601+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "8cc687f"}
+{"ts": "2026-05-21T05:49:08.939511+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "8b50643"}
+{"ts": "2026-05-21T05:49:11.316193+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "a0a9aeb"}
+{"ts": "2026-05-21T05:49:14.125001+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "74041d5"}
+{"ts": "2026-05-21T05:49:19.323218+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "101c45d"}
+{"ts": "2026-05-21T05:49:21.670633+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "3d9c1b6"}
+{"ts": "2026-05-21T05:49:24.519727+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "52c29ea"}
+{"ts": "2026-05-21T05:49:29.808216+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "3a35938"}
+{"ts": "2026-05-21T05:49:32.103135+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "3145cc5"}
+{"ts": "2026-05-21T05:49:35.116241+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "be0d98c"}
+{"ts": "2026-05-21T05:49:40.389652+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "f766c53"}
+{"ts": "2026-05-21T05:49:42.301995+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "971552c"}
+{"ts": "2026-05-21T05:49:45.576744+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "7895c02"}
+{"ts": "2026-05-21T05:49:50.774847+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "b1ace4d"}
+{"ts": "2026-05-21T05:49:52.549704+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "5020f76"}
+{"ts": "2026-05-21T05:49:56.120078+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "05a88ae"}
+{"ts": "2026-05-21T05:50:01.531622+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "cc03c7f"}
+{"ts": "2026-05-21T05:50:02.766735+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "1fb4ad4"}
+{"ts": "2026-05-21T05:50:06.743721+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "c8cd70a"}
+{"ts": "2026-05-21T05:50:11.934008+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "d060dae"}
+{"ts": "2026-05-21T05:50:12.995716+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "5922919"}
+{"ts": "2026-05-21T05:50:17.147373+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "351d25a"}
+{"ts": "2026-05-21T05:50:22.352838+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "57ffe7d"}
+{"ts": "2026-05-21T05:50:23.185813+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "44538a9"}
+{"ts": "2026-05-21T05:50:27.645197+00:00", "actor": "KODUX", "state": "ATLAS", "action": "text", "note": "TRINITY", "secao": "(preamble)", "arquetipos": ["ATLAS", "NOVA", "PULSE"], "lang": null, "sha7": "c268302"}

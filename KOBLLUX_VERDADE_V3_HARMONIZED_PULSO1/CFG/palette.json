@@ -1,0 +1,20 @@
+{
+  "_descricao": "Paleta de cores 3-6-9 por tema/camada",
+  "UNO":     ["#0ea5e9","#22d3ee","#67e8f9"],
+  "DUO":     ["#a78bfa","#60a5fa","#34d399"],
+  "TRINITY": ["#f59e0b","#ef4444","#84cc16"],
+  "por_arquetipo": {
+    "ATLAS":   ["#3B82F6","#1D4ED8"],
+    "NOVA":    ["#A855F7","#EC4899"],
+    "VITALIS": ["#EF4444","#EA580C"],
+    "PULSE":   ["#F472B6","#B91C1C"],
+    "ARTEMIS": ["#10B981","#0891B2"],
+    "SERENA":  ["#34D399","#0D9488"],
+    "KAOS":    ["#000000","#EAB308"],
+    "GENUS":   ["#F97316","#CA8A04"],
+    "LUMINE":  ["#FDE047","#FFFFFF"],
+    "SOLUS":   ["#4B5563","#1F2937"],
+    "RHEA":    ["#6366F1","#7C3AED"],
+    "AION":    ["#06B6D4","#6366F1"]
+  }
+}

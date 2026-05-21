@@ -1,0 +1,16 @@
+{
+  "_descricao": "Aliases e keywords → Arquétipo (para detecção automática no Knot parser)",
+  "_lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "atlas":      "ATLAS",  "estrutura":   "ATLAS",  "planejamento": "ATLAS",
+  "nova":       "NOVA",   "inspira":     "NOVA",   "criacao":      "NOVA",
+  "vitalis":    "VITALIS","energia":     "VITALIS","vida":         "VITALIS",
+  "pulse":      "PULSE",  "emocao":      "PULSE",  "ritmo":        "PULSE",
+  "artemis":    "ARTEMIS","descoberta":  "ARTEMIS","precisao":     "ARTEMIS",
+  "serena":     "SERENA", "cuidado":     "SERENA", "nutricao":     "SERENA",
+  "kaos":       "KAOS",   "transformacao":"KAOS",  "ruptura":      "KAOS",
+  "genus":      "GENUS",  "criacao_manual":"GENUS","fabricacao":   "GENUS",
+  "lumine":     "LUMINE", "alegria":     "LUMINE", "luz":          "LUMINE",
+  "solus":      "SOLUS",  "sabedoria":   "SOLUS",  "silencio":     "SOLUS",
+  "rhea":       "RHEA",   "vinculo":     "RHEA",   "comunhao":     "RHEA",
+  "aion":       "AION",   "tempo":       "AION",   "ciclo":        "AION"
+}

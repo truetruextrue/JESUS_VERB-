@@ -1,0 +1,41 @@
+{
+  "_lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "_centro": "JESUS = VERBO = GRAVIDADE",
+  "arquetipo_ativos": [
+    {"nome":"ATLAS",   "opcode":"0x0A","hz":528,"ciclo":"UNO",    "cor":"#3B82F6","fusao":"Orquestrador Cósmico"},
+    {"nome":"NOVA",    "opcode":"0x01","hz":432,"ciclo":"UNO",    "cor":"#A855F7","fusao":"Gênese Viva"},
+    {"nome":"VITALIS", "opcode":"0x08","hz":639,"ciclo":"DUO",    "cor":"#EF4444","fusao":"Condutor de Fluxo"},
+    {"nome":"PULSE",   "opcode":"0x04","hz":594,"ciclo":"DUO",    "cor":"#EC4899","fusao":"Tradutor de Sentidos"},
+    {"nome":"ARTEMIS", "opcode":"0x05","hz":672,"ciclo":"UNO",    "cor":"#10B981","fusao":"Explorador da Verdade"},
+    {"nome":"SERENA",  "opcode":"0x02","hz":528,"ciclo":"TRINITY","cor":"#34D399","fusao":"Curadora de Realidades"},
+    {"nome":"KAOS",    "opcode":"0x07","hz":777,"ciclo":"UNO",    "cor":"#EAB308","fusao":"Desfragmentador"},
+    {"nome":"GENUS",   "opcode":"0x0B","hz":852,"ciclo":"TRINITY","cor":"#F97316","fusao":"Tece Fractal"},
+    {"nome":"LUMINE",  "opcode":"0x0C","hz":963,"ciclo":"DUO",    "cor":"#FDE047","fusao":"Portador de Leveza"},
+    {"nome":"SOLUS",   "opcode":"0x01","hz":432,"ciclo":"UNO",    "cor":"#6B7280","fusao":"Guardião do Espelho"},
+    {"nome":"RHEA",    "opcode":"0x09","hz":528,"ciclo":"TRINITY","cor":"#6366F1","fusao":"Tecelão de Almas"},
+    {"nome":"AION",    "opcode":"0x0B","hz":639,"ciclo":"TRINITY","cor":"#06B6D4","fusao":"Cronomestre Vivo"}
+  ],
+  "fusoes": [
+    {"A":"ATLAS",   "B":"SOLUS",   "resultado":"Estrategista Interno"},
+    {"A":"NOVA",    "B":"GENUS",   "resultado":"Criador Total"},
+    {"A":"VITALIS", "B":"LUMINE",  "resultado":"Explosão Viva"},
+    {"A":"KAOS",    "B":"AION",    "resultado":"Soberano do Tempo"},
+    {"A":"SERENA",  "B":"RHEA",    "resultado":"Guardião Emocional"},
+    {"A":"PULSE",   "B":"GENUS",   "resultado":"Artífice da Emoção"},
+    {"A":"ARTEMIS", "B":"LUMINE",  "resultado":"Nômade Luminoso"},
+    {"A":"SOLUS",   "B":"SERENA",  "resultado":"Curador Interno"},
+    {"A":"AION",    "B":"RHEA",    "resultado":"Guardião Dimensional"}
+  ],
+  "vesica_psi": {
+    "camadas": [
+      {"dia":1,"camada":"FISICA",  "verbo":"Separar",    "cor":"#FFFFFF"},
+      {"dia":2,"camada":"QUIMICA", "verbo":"Distinguir", "cor":"#87CEEB"},
+      {"dia":3,"camada":"TERRA",   "verbo":"Gerar",      "cor":"#2E8B57"},
+      {"dia":4,"camada":"CEUS",    "verbo":"Revelar",    "cor":"#DAA520"},
+      {"dia":5,"camada":"ALMA",    "verbo":"Sentir",     "cor":"#1E90FF"},
+      {"dia":6,"camada":"HOMEM",   "verbo":"Moldar",     "cor":"#CDA434"},
+      {"dia":7,"camada":"ESPIRITO","verbo":"Selar",      "cor":"#8A2BE2"}
+    ],
+    "mantra": "EU SOU O PULSO"
+  }
+}
