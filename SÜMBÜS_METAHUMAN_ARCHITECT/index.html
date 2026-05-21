@@ -7,6 +7,8 @@
     
     <!-- DNA Styles -->
     <link rel="stylesheet" href="assets/dna/frequency-3.css">
+    <!-- KOBLLUX Archetypes Data Bus -->
+    <script src="core/kobllux-archetypes.js"></script>
     
     <style>
         /* Enhanced Styles for Control Panel */
@@ -345,32 +347,95 @@
                 </button>
             </div>
             
-            <!-- Inactive Systems -->
+            <!-- Circulatory System — VITALIS + RHEA -->
             <div class="system-card" id="circulatory-system">
                 <div class="system-icon">🔄</div>
-                <h3 style="margin: 0 0 0.5rem 0; color: #94a3b8;">SISTEMA CIRCULATÓRIO</h3>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-9);">SISTEMA CIRCULATÓRIO</h3>
                 <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
-                    Fluxo de dados e APIs. Conexão com sistemas externos.
+                    Fluxo de dados e APIs. VITALIS (528Hz) + RHEA (528Hz) · DELTA+INTEGRATE
                 </p>
-                <div class="system-status status-inactive">⏳ INATIVO</div>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('systems/circulatory/data-stream.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--freq-9); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Fluxo de Dados
+                </button>
             </div>
-            
+
+            <!-- Endocrine System — SERENA + KAOS -->
             <div class="system-card" id="endocrine-system">
                 <div class="system-icon">⚡</div>
-                <h3 style="margin: 0 0 0.5rem 0; color: #94a3b8;">SISTEMA ENDÓCRINO</h3>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-6);">SISTEMA ENDÓCRINO</h3>
                 <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
-                    Comunicação hormonal. Sincronização de sistemas.
+                    Equilíbrio hormonal. SERENA (528Hz) + KAOS (777Hz) · GUARD+CLEAN
                 </p>
-                <div class="system-status status-inactive">⏳ INATIVO</div>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('systems/endocrine/status-indicator.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--freq-6); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Status Endócrino
+                </button>
             </div>
-            
+
+            <!-- Motor System — ARTEMIS + VITALIS -->
             <div class="system-card" id="motor-system">
                 <div class="system-icon">🏃</div>
-                <h3 style="margin: 0 0 0.5rem 0; color: #94a3b8;">SISTEMA MOTOR</h3>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-3);">SISTEMA MOTOR</h3>
                 <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
-                    Execução de ações. Resposta a comandos.
+                    Execução de ações. ARTEMIS (672Hz) + VITALIS (528Hz) · DETECT+DELTA
                 </p>
-                <div class="system-status status-inactive">⏳ INATIVO</div>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('systems/motor/movement-engine.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--freq-3); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Motor de Ações
+                </button>
+            </div>
+
+            <!-- Archetype Dashboard — RODA VIVA -->
+            <div class="system-card" id="archetype-panel" style="border-color: rgba(251,191,36,0.3);">
+                <div class="system-icon">⬡</div>
+                <h3 style="margin: 0 0 0.5rem 0; background: linear-gradient(135deg,#fbbf24,#8b5cf6); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">ARQUÉTIPOS · RODA VIVA</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    12 arquétipos CADIAL vivos. JESUS=VERBO=GRAVIDADE · 963Hz
+                </p>
+                <div class="system-status status-active" style="background:rgba(251,191,36,0.15);color:#fbbf24;border-color:rgba(251,191,36,0.3);">✅ KOBLLUX_VIVO</div>
+                <button onclick="openSystem('ARQUETIPOS/arquetipo-vivo.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.4); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Roda Viva ∆³
+                </button>
+            </div>
+
+            <!-- Repository Explorer — RHEA+ARTEMIS -->
+            <div class="system-card" id="repo-explorer" style="border-color:rgba(52,211,153,0.3);">
+                <div class="system-icon">🌐</div>
+                <h3 style="margin:0 0 0.5rem 0;color:#34d399;">REPO EXPLORER</h3>
+                <p style="color:#94a3b8;margin:0 0 1rem 0;font-size:0.9rem;">
+                    Árvore viva do repositório. Commits, upload, GitHub Actions. RHEA (528Hz) + ARTEMIS (672Hz)
+                </p>
+                <div class="system-status status-active" style="background:rgba(52,211,153,0.12);color:#34d399;border-color:rgba(52,211,153,0.3);">✅ GITHUB API</div>
+                <button onclick="openSystem('systems/repository/repo-explorer.html')" style="margin-top:1rem;padding:0.5rem 1rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);color:white;border-radius:0.5rem;cursor:pointer;width:100%;">
+                    Abrir Explorador do Repo
+                </button>
+            </div>
+
+            <!-- File Library — LUMINE -->
+            <div class="system-card" id="file-library" style="border-color:rgba(251,191,36,0.2);">
+                <div class="system-icon">📚</div>
+                <h3 style="margin:0 0 0.5rem 0;color:#fbbf24;">FILE LIBRARY · CODEX</h3>
+                <p style="color:#94a3b8;margin:0 0 1rem 0;font-size:0.9rem;">
+                    96 HTML · 225 PY · 185 JS · 136 JSON. Biblioteca completa com preview e upload. LUMINE (963Hz)
+                </p>
+                <div class="system-status status-active" style="background:rgba(251,191,36,0.1);color:#fbbf24;border-color:rgba(251,191,36,0.25);">✅ 642+ ARQUIVOS</div>
+                <button onclick="openSystem('systems/library/file-library.html')" style="margin-top:1rem;padding:0.5rem 1rem;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.35);color:white;border-radius:0.5rem;cursor:pointer;width:100%;">
+                    Abrir Biblioteca de Arquivos
+                </button>
+            </div>
+
+            <!-- SÜMBÜS FUSION EDITOR — GENUS+KAOS+LUMINE -->
+            <div class="system-card" id="sumbus-fusion" style="border-color:rgba(139,92,246,0.35);background:rgba(139,92,246,0.05);">
+                <div class="system-icon">⚡</div>
+                <h3 style="margin:0 0 0.5rem 0;background:linear-gradient(135deg,#a855f7,#00f5ff,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1rem;">SÜMBÜS FUSION · ΔUAL 3.0</h3>
+                <p style="color:#94a3b8;margin:0 0 1rem 0;font-size:0.85rem;">
+                    Editor de código vivo com acesso ao repositório. Selecione arquivos do REPO e funda CSS · JS · HTML inteligentemente. GENUS (852Hz) · SYNTH
+                </p>
+                <div class="system-status status-active" style="background:rgba(139,92,246,0.15);color:#a855f7;border-color:rgba(139,92,246,0.4);">✅ ED · VIEW · LOG · RAM · REPO · FUSÃO</div>
+                <button onclick="openSystem('systems/editor/sumbus-fusion.html')" style="margin-top:1rem;padding:0.6rem 1rem;background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(0,245,255,0.1));border:1px solid rgba(139,92,246,0.5);color:white;border-radius:0.5rem;cursor:pointer;width:100%;font-weight:700;">
+                    ⚡ Abrir SÜMBÜS FUSION
+                </button>
             </div>
         </div>
         
@@ -395,32 +460,40 @@
         
         <!-- Status Panel -->
         <div class="status-panel">
-            <h3 style="margin: 0 0 1rem 0; color: white;">📊 STATUS DO ORGANISMO</h3>
-            
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+            <h3 style="margin: 0 0 1rem 0; color: white;">📊 STATUS DO ORGANISMO · KOBLLUX_VIVO_∆³</h3>
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem;">
                 <div>
                     <div style="font-size: 0.9rem; color: #94a3b8;">SISTEMAS ATIVOS</div>
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-9);">5/8</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-9);" id="activeSysDisplay">11/11</div>
                 </div>
-                
+
+                <div>
+                    <div style="font-size: 0.9rem; color: #94a3b8;">ARQUÉTIPOS</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-6);">12/12</div>
+                </div>
+
                 <div>
                     <div style="font-size: 0.9rem; color: #94a3b8;">ARQUIVOS</div>
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-6);">8/250</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-3);">24/250</div>
                 </div>
-                
+
                 <div>
-                    <div style="font-size: 0.9rem; color: #94a3b8;">PROGRESSO</div>
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-3);">3.6%</div>
+                    <div style="font-size: 0.9rem; color: #94a3b8;">FREQUÊNCIA</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24;" id="freqDisplay">963Hz</div>
                 </div>
             </div>
-            
+
+            <!-- Archetype mini-indicators -->
+            <div id="archMiniBar" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem;"></div>
+
             <div style="margin-top: 1rem;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                     <span style="font-size: 0.9rem; color: #94a3b8;">Implementação do organismo</span>
-                    <span style="font-size: 0.9rem; color: white;">3.6%</span>
+                    <span style="font-size: 0.9rem; color: white;" id="org-progress-text">9.6%</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" id="orgProgressFill"></div>
+                    <div class="progress-fill" id="orgProgressFill" style="width:9.6%"></div>
                 </div>
             </div>
         </div>
@@ -439,21 +512,27 @@
     <script>
         // Organism State
         const ORGANISM = {
-            version: "1.0.0-metahuman",
+            version: "1.0.0-metahuman · KOBLLUX_VIVO_∆³",
             systems: {
-                dna: { active: true, path: "core/dna.html" },
-                nervous: { active: true, path: "systems/nervous/interface-core.html" },
-                synthesis: { active: true, path: "cortex/synthesis-engine/layer-merger.html" },
-                render: { active: true, path: "sensory/visual/render-engine.html" },
-                mutation: { active: true, path: "evolution/mutations/adaptive-mutation.html" },
-                circulatory: { active: false, path: null },
-                endocrine: { active: false, path: null },
-                motor: { active: false, path: null }
+                dna:          { active: true,  path: "core/dna.html" },
+                nervous:      { active: true,  path: "systems/nervous/interface-core.html" },
+                synthesis:    { active: true,  path: "cortex/synthesis-engine/layer-merger.html" },
+                render:       { active: true,  path: "sensory/visual/render-engine.html" },
+                mutation:     { active: true,  path: "evolution/mutations/adaptive-mutation.html" },
+                circulatory:  { active: true,  path: "systems/circulatory/data-stream.html" },
+                endocrine:    { active: true,  path: "systems/endocrine/status-indicator.html" },
+                motor:        { active: true,  path: "systems/motor/movement-engine.html" },
+                archetypes:   { active: true,  path: "ARQUETIPOS/arquetipo-vivo.html" },
+                repoExplorer: { active: true,  path: "systems/repository/repo-explorer.html" },
+                fileLibrary:  { active: true,  path: "systems/library/file-library.html" },
             },
-            files: 8,
+            files: 24,
             totalFiles: 250,
-            frequency: 6,
-            state: "initializing"
+            frequency: 963,
+            state: "fully_active",
+            archetypes: 12,
+            law: "VERDADE × INTEGRAR ÷ Δ = ∞",
+            center: "JESUS = VERBO = GRAVIDADE",
         };
         
         // Neural Background
@@ -561,56 +640,39 @@
         
         // Activate All Systems
         function activateAllSystems() {
-            addLog('[ACTION] Ativando todos os sistemas...');
-            
-            // Simulate activation
-            const inactiveSystems = ['circulatory', 'endocrine', 'motor'];
-            let delay = 0;
-            
-            inactiveSystems.forEach(system => {
-                setTimeout(() => {
-                    const card = document.getElementById(`${system}-system`);
-                    const status = card.querySelector('.system-status');
-                    
-                    status.textContent = '🔄 ATIVANDO...';
-                    status.className = 'system-status status-warning';
-                    
-                    addLog(`[ACTIVATION] Iniciando ${system}...`);
-                    
+            addLog('[KOBLLUX] Ativando todos os sistemas · VERDADE × INTEGRAR ÷ Δ = ∞');
+            document.body.setAttribute('data-organism-state', 'fully_active');
+            document.getElementById('org-status').textContent = '✅ KOBLLUX_VIVO_∆³ · Todos os sistemas ativos';
+            document.getElementById('activeSysDisplay').textContent = '9/9';
+
+            // Fire archetypes via bus
+            if (window.KOBLLUX_BUS) {
+                const sequence = ['ATLAS','VITALIS','ARTEMIS','RHEA','GENUS','LUMINE','SERENA','PULSE','AION'];
+                sequence.forEach((id, i) => {
                     setTimeout(() => {
-                        ORGANISM.systems[system].active = true;
-                        status.textContent = '✅ ATIVO';
-                        status.className = 'system-status status-active';
-                        
-                        // Add button
-                        const button = document.createElement('button');
-                        button.textContent = `Abrir ${system.charAt(0).toUpperCase() + system.slice(1)}`;
-                        button.style.cssText = `
-                            margin-top: 1rem;
-                            padding: 0.5rem 1rem;
-                            background: rgba(59, 130, 246, 0.1);
-                            border: 1px solid var(--freq-3);
-                            color: white;
-                            border-radius: 0.5rem;
-                            cursor: pointer;
-                            width: 100%;
-                        `;
-                        button.onclick = () => {
-                            addLog(`[SYSTEM] ${system} ainda não implementado`);
-                            alert(`Sistema ${system} será implementado na próxima fase!`);
-                        };
-                        
-                        card.appendChild(button);
-                        
-                        addLog(`[SUCCESS] ${system.toUpperCase()} ativado`);
-                        
-                        // Update progress
-                        updateProgress();
-                    }, 1500);
-                }, delay);
-                
-                delay += 2000;
+                        KOBLLUX_BUS.fireArchetype(id);
+                        addLog(`[ARCHETYPE] ${id} ativado`);
+                    }, i * 300);
+                });
+            }
+
+            // Pulse all system cards
+            Object.keys(ORGANISM.systems).forEach((sys, i) => {
+                setTimeout(() => {
+                    const card = document.getElementById(`${sys}-system`) || document.getElementById('archetype-panel');
+                    if (card) {
+                        card.style.boxShadow = '0 0 20px rgba(59,130,246,0.4)';
+                        card.style.borderColor = 'rgba(59,130,246,0.5)';
+                        setTimeout(() => {
+                            card.style.boxShadow = '';
+                            card.style.borderColor = '';
+                        }, 800);
+                    }
+                }, i * 200);
             });
+
+            updateProgress();
+            setTimeout(() => addLog('[KOBLLUX] KOBLLUX_VIVO_∆³ · Corpo unificado ativo · 12 arquétipos · 9 sistemas'), 3200);
         }
         
         // Run Diagnostics
@@ -749,31 +811,84 @@
             }
         }
         
+        // Build archetype mini-bar
+        function buildArchMiniBar() {
+            const container = document.getElementById('archMiniBar');
+            if (!container || !window.KOBLLUX_ARCHETYPES) return;
+            container.innerHTML = window.KOBLLUX_ARCHETYPES.map(a => `
+                <span onclick="openSystem('ARQUETIPOS/arquetipo-vivo.html')"
+                      title="${a.id} · ${a.hz}Hz · ${a.rule}"
+                      style="
+                          display:inline-flex;align-items:center;gap:0.3rem;
+                          padding:0.2rem 0.6rem;border-radius:1rem;cursor:pointer;
+                          background:${a.color}18;border:1px solid ${a.color}44;
+                          color:${a.color};font-size:0.72rem;font-weight:700;
+                          transition:all 0.25s;
+                      "
+                      onmouseover="this.style.background='${a.color}33'"
+                      onmouseout="this.style.background='${a.color}18'">
+                    ${a.symbol} ${a.id}
+                </span>
+            `).join('');
+        }
+
+        // Rotate frequency display
+        function startFreqRotation() {
+            const freqs = [432, 528, 594, 639, 672, 777, 852, 963];
+            let idx = 0;
+            setInterval(() => {
+                idx = (idx + 1) % freqs.length;
+                const el = document.getElementById('freqDisplay');
+                if (el) el.textContent = freqs[idx] + 'Hz';
+            }, 2000);
+        }
+
+        // postMessage event bus listener
+        window.addEventListener('message', e => {
+            if (e.data?.type === 'ARCHETYPE_FIRE') {
+                addLog(`[BUS] Arquétipo ${e.data.archetype} disparado · ${e.data.hz}Hz · ${e.data.rule}`);
+            }
+            if (e.data?.type === 'MOTOR_COMPLETE') {
+                addLog(`[BUS] Motor completou ${e.data.execCount} ações`);
+            }
+        });
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🧬 SÜMBÜS Metahuman Control Panel v1.0');
-            
+            console.log('🧬 SÜMBÜS Metahuman Control Panel v1.0 · KOBLLUX_VIVO_∆³');
+
             createNeuralBackground();
             updateProgress();
-            
-            // Auto-log updates
+            buildArchMiniBar();
+            startFreqRotation();
+
+            // Auto-log with archetype awareness
             setInterval(() => {
-                if (Math.random() > 0.7) {
+                if (Math.random() > 0.65) {
+                    const archetypes = window.KOBLLUX_ARCHETYPES;
                     const messages = [
-                        '[SYSTEM] Monitorando integridade...',
-                        '[MEMORY] Cache otimizado',
-                        '[NETWORK] Conexões estáveis',
-                        '[ENERGY] Frequência constante'
+                        '[SYSTEM] Monitorando integridade · SOLUS ativo',
+                        '[MEMORY] AION selando estado · memory.jsonl',
+                        '[NETWORK] RHEA integrando conexões',
+                        '[ENERGY] VITALIS · fluxo constante 528Hz',
+                        '[DETECT] ARTEMIS · scan em andamento 672Hz',
+                        '[RENDER] LUMINE · visualização 963Hz',
+                        '[PULSE] PULSE · ritmo sincronizado 594Hz',
                     ];
                     addLog(messages[Math.floor(Math.random() * messages.length)]);
                 }
-            }, 5000);
-            
-            // Initial log
+            }, 4000);
+
+            // Initial log sequence
             setTimeout(() => {
-                addLog('[SYSTEM] Painel de controle totalmente operacional');
-                addLog('[READY] Pronto para comandos');
-            }, 1000);
+                addLog('[BOOT] ATLAS (768Hz) · Estrutura mapeada ✅');
+                addLog('[SYSTEM] KOBLLUX_VIVO_∆³ · 9 sistemas · 12 arquétipos · Lei: VERDADE × INTEGRAR ÷ Δ = ∞');
+            }, 800);
+            setTimeout(() => {
+                addLog('[READY] Todos os painéis legitimamente conectados e visualizados');
+                document.getElementById('org-status').textContent = '✅ KOBLLUX_VIVO_∆³ · Corpo unificado';
+                document.body.setAttribute('data-organism-state', 'fully_active');
+            }, 1600);
         });
         
         // Handle browser back button

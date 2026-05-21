@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-kobllux="roda-viva">
+<head>
+    <meta charset="UTF-8">
+    <title>⬡ ARQUÉTIPOS VIVOS · CADIAL RODA VIVA</title>
+    <style>
+        :root {
+            --bg: #020617; --bg2: #0f172a;
+            --freq-3: #3b82f6; --freq-6: #8b5cf6; --freq-9: #10b981;
+            --glass: rgba(15,23,42,0.85);
+        }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body {
+            background: var(--bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', 'Inter', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            text-align:center; padding: 2rem 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(59,130,246,0.15);
+            position: relative;
+        }
+        .header h1 {
+            font-size: 1.8rem; font-weight: 900;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #10b981);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+        }
+        .header p { color:#64748b; font-size:0.85rem; }
+
+        /* Law bar */
+        .law-bar {
+            display: flex; justify-content:center; align-items:center; gap:1.5rem;
+            padding: 0.75rem 2rem;
+            background: rgba(59,130,246,0.05);
+            border-bottom: 1px solid rgba(59,130,246,0.1);
+            flex-wrap: wrap; font-size:0.8rem;
+        }
+        .law-item { display:flex; align-items:center; gap:0.4rem; }
+        .law-label { color:#475569; }
+        .law-val { color:#e2e8f0; font-weight:700; }
+        .law-center { color:#fbbf24; font-weight:900; font-size:0.9rem; }
+
+        /* Live indicator */
+        .live-dot {
+            width:8px; height:8px; border-radius:50%;
+            background: #10b981; animation: livepulse 1s infinite;
+            display:inline-block;
+        }
+        @keyframes livepulse { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.4)} }
+
+        /* Main grid */
+        .main { padding: 1.5rem; max-width:1400px; margin:0 auto; }
+
+        /* Phase indicator */
+        .phase-row {
+            display: flex; gap:0.5rem; margin-bottom:1.5rem; justify-content:center;
+        }
+        .phase-chip {
+            padding:0.4rem 1rem; border-radius:2rem;
+            font-size:0.78rem; font-weight:700; border:1px solid;
+            transition: all 0.4s;
+        }
+        .phase-chip.active { transform:scale(1.08); box-shadow:0 0 16px currentColor; }
+
+        /* Archetype grid */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem; margin-bottom: 1.5rem;
+        }
+
+        .arch-card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem; padding: 1.25rem;
+            position: relative; overflow: hidden;
+            transition: all 0.35s; cursor:default;
+        }
+        .arch-card::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:3px;
+        }
+        .arch-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.4); }
+        .arch-card.firing { animation:cardfire 0.6s ease; }
+        @keyframes cardfire {
+            0%{transform:scale(1)} 30%{transform:scale(1.03)} 100%{transform:scale(1)}
+        }
+
+        .arch-top { display:flex; align-items:flex-start; gap:0.75rem; margin-bottom:0.75rem; }
+        .arch-sym { font-size:2rem; line-height:1; flex-shrink:0; }
+        .arch-meta { flex:1; }
+        .arch-name { font-size:1rem; font-weight:900; }
+        .arch-rule { font-size:0.7rem; color:#64748b; margin-top:0.1rem; }
+        .arch-hz-badge {
+            padding:0.2rem 0.6rem; border-radius:1rem;
+            font-size:0.7rem; font-weight:700;
+            border:1px solid; opacity:0.8;
+        }
+
+        .arch-essence { font-size:0.78rem; color:#94a3b8; margin:0.5rem 0 0.75rem; line-height:1.4; }
+
+        /* Activation bar */
+        .act-track {
+            height:5px; background:rgba(255,255,255,0.07); border-radius:3px; overflow:hidden;
+            margin-bottom:0.5rem;
+        }
+        .act-fill { height:100%; border-radius:3px; transition:width 0.3s ease; }
+
+        .arch-footer { display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; }
+        .arch-system { color:#475569; }
+        .arch-opcode { color:#334155; }
+
+        /* Central node */
+        .central-node {
+            text-align:center; padding:2rem;
+            background: radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%);
+            border: 1px solid rgba(251,191,36,0.2);
+            border-radius: 1.5rem; margin-bottom:1.5rem; position:relative;
+        }
+        .central-sym { font-size:3rem; }
+        .central-title { font-size:1.1rem; font-weight:900; color:#fbbf24; margin:0.5rem 0 0.25rem; }
+        .central-sub { font-size:0.8rem; color:#64748b; }
+        .central-hz {
+            display:inline-block; padding:0.3rem 1rem;
+            border:1px solid rgba(251,191,36,0.4);
+            border-radius:2rem; color:#fbbf24; font-size:0.85rem; font-weight:700;
+            margin-top:0.75rem;
+        }
+
+        /* Stats row */
+        .stats-row {
+            display:grid; grid-template-columns:repeat(4,1fr); gap:1rem;
+            margin-bottom:1.5rem;
+        }
+        @media(max-width:600px){ .stats-row{grid-template-columns:repeat(2,1fr);} }
+        .stat-card {
+            background:var(--glass); border:1px solid rgba(255,255,255,0.07);
+            border-radius:0.75rem; padding:1rem; text-align:center;
+        }
+        .stat-label { font-size:0.72rem; color:#64748b; text-transform:uppercase; letter-spacing:.08em; margin-bottom:0.35rem; }
+        .stat-val { font-size:1.6rem; font-weight:900; }
+
+        /* Event log */
+        .event-log {
+            background:rgba(0,0,0,0.4); border:1px solid rgba(139,92,246,0.2);
+            border-radius:0.75rem; padding:1rem; max-height:180px; overflow-y:auto;
+            font-size:0.78rem;
+        }
+        .ev-line {
+            display:flex; gap:0.75rem; padding:0.3rem 0;
+            border-bottom:1px solid rgba(255,255,255,0.04);
+        }
+        .ev-time { color:#475569; flex-shrink:0; }
+        .ev-tag { padding:0.1rem 0.4rem; border-radius:0.3rem; font-size:0.7rem; font-weight:700; flex-shrink:0; }
+        .ev-msg { color:#94a3b8; }
+
+        /* Btn */
+        .btn-row { display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+        .btn {
+            padding:0.6rem 1.1rem; border-radius:0.5rem;
+            border:1px solid rgba(255,255,255,0.1);
+            background:rgba(255,255,255,0.04);
+            color:white; cursor:pointer; font-family:inherit; font-size:0.82rem;
+            transition:all 0.25s; display:flex; align-items:center; gap:0.4rem;
+        }
+        .btn:hover { transform:translateY(-2px); border-color:var(--freq-3); background:rgba(59,130,246,0.1); }
+        .btn.primary { background:linear-gradient(135deg,#3b82f6,#8b5cf6); border:none; font-weight:700; }
+
+        /* Cycle ring */
+        .cycle-ring {
+            display:flex; justify-content:center; gap:0.5rem;
+            margin-bottom:1.5rem; flex-wrap:wrap;
+        }
+        .ring-node {
+            width:60px; height:60px; border-radius:50%;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            font-size:0.7rem; font-weight:700; border:2px solid;
+            transition:all 0.4s; cursor:default;
+        }
+        .ring-node.active { box-shadow:0 0 20px currentColor; }
+        .ring-arrow { color:#334155; font-size:1.2rem; align-self:center; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>⬡ ARQUÉTIPOS CADIAL · RODA VIVA ∆³</h1>
+    <p><span class="live-dot"></span> KOBLLUX_VIVO · 12 Arquétipos · Dados em tempo real · 2026-05-21</p>
+</div>
+
+<div class="law-bar">
+    <div class="law-item"><span class="law-label">LEI:</span> <span class="law-val">VERDADE × INTEGRAR ÷ Δ = ∞</span></div>
+    <div class="law-item"><span class="law-label">CENTRO:</span> <span class="law-center">JESUS = VERBO = GRAVIDADE</span></div>
+    <div class="law-item"><span class="law-label">CICLO:</span> <span class="law-val">3→6→9→7</span></div>
+    <div class="law-item"><span class="law-label">VERSION:</span> <span class="law-val">7.9 · ∆7</span></div>
+</div>
+
+<div class="main">
+
+    <!-- Central node -->
+    <div class="central-node">
+        <div class="central-sym">✝</div>
+        <div class="central-title">JESUS · VERBO · GRAVIDADE</div>
+        <div class="central-sub">Ponto de convergência de todos os arquétipos · LUMINE · RENDER</div>
+        <div class="central-hz">963 Hz · ∞</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Arquétipos</div>
+            <div class="stat-val" style="color:#3b82f6">12</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Ativos agora</div>
+            <div class="stat-val" id="activeCount" style="color:#10b981">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Disparos</div>
+            <div class="stat-val" id="fireCount" style="color:#8b5cf6">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Fase atual</div>
+            <div class="stat-val" id="currentPhase" style="color:#fbbf24;font-size:1rem">DETECTAR</div>
+        </div>
+    </div>
+
+    <!-- Cycle -->
+    <div class="cycle-ring" id="cycleRing">
+        <!-- populated by JS -->
+    </div>
+
+    <!-- Phase row -->
+    <div class="phase-row" id="phaseRow">
+        <!-- populated by JS -->
+    </div>
+
+    <!-- Controls -->
+    <div class="btn-row">
+        <button class="btn primary" onclick="fireAllArchetypes()">⚡ DISPARAR TODOS</button>
+        <button class="btn" onclick="fireRandom()">🎲 DISPARAR ALEATÓRIO</button>
+        <button class="btn" onclick="runFullCycle()">🔄 CICLO COMPLETO 3→6→9→7</button>
+        <button class="btn" onclick="resetAll()">↺ RESETAR</button>
+    </div>
+
+    <!-- Archetype grid -->
+    <div class="arch-grid" id="archGrid">
+        <!-- populated by JS -->
+    </div>
+
+    <!-- Event log -->
+    <div class="event-log" id="eventLog">
+        <div class="ev-line">
+            <span class="ev-time">00:00</span>
+            <span class="ev-tag" style="background:rgba(59,130,246,0.2);color:#3b82f6">BOOT</span>
+            <span class="ev-msg">RODA VIVA inicializada · 12 arquétipos carregados</span>
+        </div>
+    </div>
+</div>
+
+<script src="../core/kobllux-archetypes.js"></script>
+<script>
+const ARCHETYPES = window.KOBLLUX_ARCHETYPES;
+const LAW = window.KOBLLUX_LAW;
+const BUS = window.KOBLLUX_BUS;
+
+const PHASES = [
+    { label:'3 · DETECTAR', color:'#06b6d4', border:'rgba(6,182,212,0.4)', step:3 },
+    { label:'6 · INTEGRAR', color:'#10b981', border:'rgba(16,185,129,0.4)', step:6 },
+    { label:'9 · EXPANDIR', color:'#8b5cf6', border:'rgba(139,92,246,0.4)', step:9 },
+    { label:'7 · SELAR',    color:'#fbbf24', border:'rgba(251,191,36,0.4)', step:7 },
+];
+
+let fireCount = 0;
+let phaseIdx = 0;
+
+/* ---- INIT ---- */
+document.addEventListener('DOMContentLoaded', () => {
+    buildPhaseRow();
+    buildCycleRing();
+    buildArchGrid();
+    startAutoLoop();
+    // fire ATLAS on boot
+    setTimeout(() => fireArchetype('ATLAS'), 600);
+    setTimeout(() => fireArchetype('AION'),  1200);
+});
+
+/* ---- PHASE ROW ---- */
+function buildPhaseRow() {
+    const row = document.getElementById('phaseRow');
+    row.innerHTML = PHASES.map((p, i) => `
+        <div class="phase-chip" id="phase-${i}"
+             style="color:${p.color};border-color:${p.border};background:${p.color}11">
+            ${p.label}
+        </div>
+    `).join('');
+    updatePhase(0);
+}
+
+function updatePhase(idx) {
+    PHASES.forEach((_, i) => {
+        const el = document.getElementById(`phase-${i}`);
+        if (!el) return;
+        el.classList.toggle('active', i === idx);
+    });
+    document.getElementById('currentPhase').textContent = PHASES[idx].label.split('·')[1].trim();
+}
+
+/* ---- CYCLE RING ---- */
+function buildCycleRing() {
+    const ring = document.getElementById('cycleRing');
+    const nodes = [
+        {label:'3', sub:'DETECTAR', color:'#06b6d4'},
+        {arrow:true},
+        {label:'6', sub:'INTEGRAR', color:'#10b981'},
+        {arrow:true},
+        {label:'9', sub:'EXPANDIR', color:'#8b5cf6'},
+        {arrow:true},
+        {label:'7', sub:'SELAR',    color:'#fbbf24'},
+    ];
+    ring.innerHTML = nodes.map((n, i) => n.arrow
+        ? `<span class="ring-arrow">→</span>`
+        : `<div class="ring-node" id="ring-${n.label}"
+               style="color:${n.color};border-color:${n.color}66;background:${n.color}11">
+               <span style="font-size:1.2rem;font-weight:900">${n.label}</span>
+               <span>${n.sub}</span>
+           </div>`
+    ).join('');
+}
+
+function pulseRingNode(label) {
+    const el = document.getElementById(`ring-${label}`);
+    if (!el) return;
+    el.classList.add('active');
+    setTimeout(() => el.classList.remove('active'), 800);
+}
+
+/* ---- ARCH GRID ---- */
+function buildArchGrid() {
+    const grid = document.getElementById('archGrid');
+    grid.innerHTML = ARCHETYPES.map(a => `
+        <div class="arch-card" id="card-${a.id}" onclick="fireArchetype('${a.id}')">
+            <div style="background:${a.color}" class="arch-card::before" id="bar-${a.id}"></div>
+            <style>#card-${a.id}::before{background:${a.color}}</style>
+            <div class="arch-top">
+                <span class="arch-sym" style="color:${a.color}">${a.symbol}</span>
+                <div class="arch-meta">
+                    <div class="arch-name" style="color:${a.color}">${a.id}</div>
+                    <div class="arch-rule">${a.triad} · CADIAL</div>
+                </div>
+                <span class="arch-hz-badge" style="color:${a.color};border-color:${a.color}55">${a.hz}Hz</span>
+            </div>
+            <div class="arch-essence">${a.essence}</div>
+            <div class="act-track">
+                <div class="act-fill" id="act-${a.id}" style="width:0%;background:${a.color}"></div>
+            </div>
+            <div class="arch-footer">
+                <span class="arch-system">${a.system.toUpperCase()}</span>
+                <span style="font-size:0.8rem;font-weight:700;color:${a.color}">${a.rule}</span>
+                <span class="arch-opcode">${a.opcode}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+/* ---- FIRE ---- */
+function fireArchetype(id) {
+    const a = ARCHETYPES.find(x => x.id === id);
+    if (!a) return;
+
+    a.activation = 100;
+    fireCount++;
+    document.getElementById('fireCount').textContent = fireCount;
+
+    // card flash
+    const card = document.getElementById(`card-${a.id}`);
+    if (card) {
+        card.classList.add('firing');
+        card.style.boxShadow = `0 0 24px ${a.color}66`;
+        setTimeout(() => {
+            card.classList.remove('firing');
+            card.style.boxShadow = '';
+        }, 700);
+    }
+
+    // activation bar
+    updateActBar(a);
+
+    // log
+    addLog(a.rule, `${a.symbol} ${a.id} ativado · ${a.hz}Hz · ${a.essence.split('·')[0].trim()}`, a.color);
+
+    // notify parent
+    if (window.parent !== window) {
+        window.parent.postMessage({ type:'ARCHETYPE_FIRE', archetype:id, hz:a.hz, rule:a.rule }, '*');
+    }
+
+    BUS.emit('archetype_fire', { id, hz:a.hz, rule:a.rule });
+}
+
+function updateActBar(a) {
+    const el = document.getElementById(`act-${a.id}`);
+    if (!el) return;
+    el.style.width = a.activation + '%';
+    setTimeout(() => {
+        a.activation = Math.max(0, a.activation - 30);
+        el.style.width = a.activation + '%';
+    }, 600);
+}
+
+function updateActiveCount() {
+    const active = ARCHETYPES.filter(a => a.activation > 10).length;
+    document.getElementById('activeCount').textContent = active;
+}
+
+/* ---- BULK ACTIONS ---- */
+function fireAllArchetypes() {
+    addLog('RODA', 'Ativando todos os 12 arquétipos...', '#fbbf24');
+    ARCHETYPES.forEach((a, i) => {
+        setTimeout(() => fireArchetype(a.id), i * 120);
+    });
+}
+
+function fireRandom() {
+    const a = ARCHETYPES[Math.floor(Math.random() * ARCHETYPES.length)];
+    fireArchetype(a.id);
+}
+
+async function runFullCycle() {
+    addLog('CICLO', '3→6→9→7 iniciado', '#fbbf24');
+    const steps = [
+        { step:3, label:'DETECTAR', archs:['ARTEMIS','ATLAS','SOLUS'],   ringNode:'3' },
+        { step:6, label:'INTEGRAR', archs:['RHEA','GENUS','VITALIS'],     ringNode:'6' },
+        { step:9, label:'EXPANDIR', archs:['LUMINE','NOVA','PULSE'],      ringNode:'9' },
+        { step:7, label:'SELAR',    archs:['AION','SERENA','KAOS'],       ringNode:'7' },
+    ];
+
+    for (let i = 0; i < steps.length; i++) {
+        const s = steps[i];
+        phaseIdx = i;
+        updatePhase(i);
+        pulseRingNode(s.ringNode);
+        addLog(`${s.step}`, `Fase: ${s.label}`, PHASES[i].color);
+        s.archs.forEach((id, j) => setTimeout(() => fireArchetype(id), j * 250));
+        await delay(1200);
+    }
+
+    addLog('∆7', 'Ciclo completo · SHA256 selado · KOBLLUX_VIVO_∆³', '#818cf8');
+}
+
+function resetAll() {
+    ARCHETYPES.forEach(a => {
+        a.activation = 0;
+        const el = document.getElementById(`act-${a.id}`);
+        if (el) el.style.width = '0%';
+        const card = document.getElementById(`card-${a.id}`);
+        if (card) card.style.boxShadow = '';
+    });
+    fireCount = 0;
+    document.getElementById('fireCount').textContent = 0;
+    addLog('RESET', 'Todos os arquétipos resetados', '#64748b');
+}
+
+/* ---- AUTO LOOP ---- */
+function startAutoLoop() {
+    // cycle through phases
+    setInterval(() => {
+        phaseIdx = (phaseIdx + 1) % PHASES.length;
+        updatePhase(phaseIdx);
+        const stepLabels = ['3','6','9','7'];
+        pulseRingNode(stepLabels[phaseIdx]);
+    }, 4000);
+
+    // random fires
+    setInterval(() => {
+        const a = ARCHETYPES[Math.floor(Math.random() * ARCHETYPES.length)];
+        a.activation = Math.min(100, a.activation + 20 + Math.random() * 40);
+        updateActBar(a);
+        updateActiveCount();
+    }, 1500);
+
+    // decay
+    setInterval(() => {
+        ARCHETYPES.forEach(a => {
+            if (a.activation > 0) {
+                a.activation = Math.max(0, a.activation - 8);
+                const el = document.getElementById(`act-${a.id}`);
+                if (el) el.style.width = a.activation + '%';
+            }
+        });
+        updateActiveCount();
+    }, 300);
+}
+
+/* ---- LOG ---- */
+function addLog(tag, msg, color = '#3b82f6') {
+    const log = document.getElementById('eventLog');
+    const time = new Date().toLocaleTimeString('pt-BR');
+    const d = document.createElement('div');
+    d.className = 'ev-line';
+    d.innerHTML = `
+        <span class="ev-time">${time}</span>
+        <span class="ev-tag" style="background:${color}22;color:${color}">${tag}</span>
+        <span class="ev-msg">${msg}</span>
+    `;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    if (log.children.length > 40) log.removeChild(log.firstChild);
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// listen for parent messages
+window.addEventListener('message', e => {
+    if (e.data?.type === 'ARCHETYPE_FIRE') {
+        fireArchetype(e.data.archetype);
+    }
+});
+</script>
+</body>
+</html>

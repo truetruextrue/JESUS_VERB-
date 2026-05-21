@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-kobllux="file-library">
+<head>
+<meta charset="UTF-8">
+<title>📚 FILE LIBRARY · KOBLLUX CODEX · LUMINE</title>
+<style>
+:root {
+    --bg:#020617; --bg2:#0f172a; --bg3:#1e293b;
+    --c3:#3b82f6; --c6:#8b5cf6; --c9:#10b981;
+    --warn:#f59e0b; --red:#ef4444; --text:#e2e8f0; --muted:#64748b;
+    --border:rgba(59,130,246,0.2);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono','Inter',monospace; min-height:100vh; }
+
+/* Header */
+.header {
+    padding:0.75rem 1.25rem; background:var(--bg2); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;
+}
+.header h1 { font-size:1rem; font-weight:900; color:#fbbf24; }
+.spacer { flex:1; }
+.btn { padding:0.35rem 0.8rem; border-radius:0.4rem; border:1px solid var(--border); background:rgba(59,130,246,0.1); color:var(--text); cursor:pointer; font-family:inherit; font-size:0.78rem; transition:all 0.2s; }
+.btn:hover { background:rgba(59,130,246,0.25); border-color:var(--c3); }
+.btn.primary { background:linear-gradient(135deg,var(--c3),var(--c6)); border:none; font-weight:700; }
+
+/* Stats bar */
+.stats-bar {
+    display:flex; gap:0.75rem; padding:0.75rem 1.25rem; background:var(--bg2);
+    border-bottom:1px solid rgba(255,255,255,0.05); flex-wrap:wrap;
+    align-items:center;
+}
+.stat-card {
+    display:flex; align-items:center; gap:0.5rem;
+    padding:0.35rem 0.8rem; border-radius:0.5rem; border:1px solid;
+    cursor:pointer; transition:all 0.2s;
+}
+.stat-card:hover { transform:translateY(-1px); }
+.stat-icon { font-size:1rem; }
+.stat-info { display:flex; flex-direction:column; }
+.stat-count { font-size:1rem; font-weight:900; line-height:1; }
+.stat-label { font-size:0.65rem; color:var(--muted); }
+
+/* Filter / search bar */
+.filter-bar {
+    display:flex; gap:0.5rem; padding:0.6rem 1.25rem; background:var(--bg2);
+    border-bottom:1px solid rgba(255,255,255,0.04); flex-wrap:wrap; align-items:center;
+}
+.filter-chip {
+    padding:0.25rem 0.8rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.1);
+    background:transparent; color:var(--muted); cursor:pointer; font-family:inherit;
+    font-size:0.72rem; font-weight:700; transition:all 0.2s;
+}
+.filter-chip.active { transform:scale(1.05); }
+.filter-chip:hover { opacity:0.85; }
+.search-input {
+    background:var(--bg3); border:1px solid var(--border); border-radius:0.4rem;
+    padding:0.3rem 0.75rem; color:var(--text); font-family:inherit; font-size:0.78rem;
+    outline:none; width:220px;
+}
+.search-input:focus { border-color:var(--c3); }
+.sort-select {
+    background:var(--bg3); border:1px solid var(--border); border-radius:0.4rem;
+    padding:0.3rem 0.6rem; color:var(--text); font-family:inherit; font-size:0.78rem;
+    outline:none; cursor:pointer;
+}
+
+/* Main layout */
+.main-layout { display:grid; grid-template-columns:1fr 300px; min-height:calc(100vh - 200px); }
+@media(max-width:768px){ .main-layout{grid-template-columns:1fr;} .side-panel{display:none;} }
+
+/* File grid */
+.file-grid {
+    padding:1.25rem; display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+    gap:0.75rem; align-content:start;
+}
+.file-card {
+    background:var(--bg2); border:1px solid rgba(255,255,255,0.07);
+    border-radius:0.75rem; padding:0.9rem; cursor:pointer;
+    transition:all 0.25s; position:relative; overflow:hidden;
+}
+.file-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+.file-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.3); }
+.fc-icon { font-size:1.6rem; margin-bottom:0.5rem; }
+.fc-name { font-size:0.78rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-bottom:0.2rem; }
+.fc-path { font-size:0.65rem; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-bottom:0.4rem; }
+.fc-footer { display:flex; justify-content:space-between; align-items:center; }
+.fc-badge { padding:0.15rem 0.4rem; border-radius:0.3rem; font-size:0.65rem; font-weight:700; border:1px solid; }
+.fc-arch { font-size:0.7rem; }
+.fc-size { font-size:0.65rem; color:var(--muted); }
+
+/* Side panel */
+.side-panel { border-left:1px solid rgba(255,255,255,0.06); background:var(--bg2); padding:1rem; overflow-y:auto; }
+.sp-section { margin-bottom:1.5rem; }
+.sp-title { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:0.75rem; padding-bottom:0.4rem; border-bottom:1px solid rgba(255,255,255,0.06); }
+
+/* Arch legend */
+.arch-leg { display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0; font-size:0.72rem; cursor:pointer; border-radius:0.3rem; padding:0.3rem 0.4rem; transition:background 0.15s; }
+.arch-leg:hover { background:rgba(255,255,255,0.04); }
+.arch-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.arch-leg-name { font-weight:700; width:52px; flex-shrink:0; }
+.arch-leg-count { margin-left:auto; font-size:0.65rem; color:var(--muted); }
+
+/* Folder tree (mini) */
+.folder-row { padding:0.2rem 0.4rem; font-size:0.75rem; cursor:pointer; border-radius:0.3rem; transition:background 0.15s; display:flex; align-items:center; gap:0.4rem; white-space:nowrap; overflow:hidden; }
+.folder-row:hover { background:rgba(255,255,255,0.04); color:var(--c3); }
+
+/* Modal */
+.modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; backdrop-filter:blur(8px); }
+.modal-bg.open { display:flex; }
+.modal { background:var(--bg2); border:1px solid var(--border); border-radius:1rem; width:700px; max-width:95vw; max-height:92vh; display:flex; flex-direction:column; overflow:hidden; }
+.modal-head { padding:0.75rem 1.25rem; background:var(--bg3); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:0.75rem; }
+.modal-title { flex:1; font-size:0.9rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.modal-code { flex:1; overflow:auto; padding:1rem; font-size:0.78rem; font-family:'JetBrains Mono',monospace; line-height:1.6; white-space:pre-wrap; word-break:break-all; color:#c9d1d9; background:var(--bg); }
+.line-num { color:#475569; user-select:none; margin-right:0.75rem; display:inline-block; min-width:3ch; text-align:right; }
+
+/* Upload modal */
+.umodal { padding:1.5rem; overflow-y:auto; }
+.form-row { margin-bottom:0.75rem; }
+.form-label { font-size:0.72rem; color:var(--muted); margin-bottom:0.25rem; display:block; }
+.form-input { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:0.4rem; padding:0.4rem 0.6rem; color:var(--text); font-family:'JetBrains Mono',monospace; font-size:0.78rem; outline:none; transition:border-color 0.2s; }
+.form-input:focus { border-color:var(--c3); }
+textarea.form-input { resize:vertical; min-height:220px; }
+.drop-zone { border:2px dashed var(--border); border-radius:0.5rem; padding:2rem; text-align:center; cursor:pointer; margin-bottom:0.75rem; transition:all 0.2s; }
+.drop-zone:hover,.drop-zone.drag { border-color:var(--c3); background:rgba(59,130,246,0.05); }
+
+/* Toast */
+.toast { position:fixed; bottom:1.5rem; right:1.5rem; z-index:10000; padding:0.6rem 1rem; border-radius:0.5rem; font-size:0.8rem; display:none; }
+.toast.ok   { background:rgba(16,185,129,0.15); border:1px solid var(--c9); color:var(--c9); display:block; }
+.toast.err  { background:rgba(239,68,68,0.15); border:1px solid var(--red); color:var(--red); display:block; }
+.toast.info { background:rgba(59,130,246,0.15); border:1px solid var(--c3); color:var(--c3); display:block; }
+
+.loading { text-align:center; padding:3rem; color:var(--muted); }
+.empty { text-align:center; padding:4rem 2rem; color:var(--muted); font-size:0.85rem; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>📚 FILE LIBRARY · KOBLLUX CODEX</h1>
+    <span style="color:var(--muted);font-size:0.75rem">LUMINE (963Hz) · RENDER · truetruextrue/JESUS_VERB-</span>
+    <div class="spacer"></div>
+    <button class="btn" onclick="loadLibrary()">🔄 Reload</button>
+    <button class="btn primary" onclick="openUpload()">⬆ Upload Arquivo</button>
+    <button class="btn" onclick="window.open('https://github.com/truetruextrue/JESUS_VERB-','_blank')">GitHub →</button>
+</div>
+
+<!-- Stats bar -->
+<div class="stats-bar" id="statsBar">
+    <div class="loading" style="padding:0.5rem">Carregando biblioteca...</div>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+    <span style="color:var(--muted);font-size:0.72rem">TIPO:</span>
+    <div id="filterChips"></div>
+    <div class="spacer"></div>
+    <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+        <option value="name">Nome A→Z</option>
+        <option value="type">Tipo</option>
+        <option value="arch">Arquétipo</option>
+        <option value="size">Tamanho</option>
+        <option value="path">Caminho</option>
+    </select>
+    <input class="search-input" id="searchInput" placeholder="🔍 buscar nome ou caminho..." oninput="applyFilters()">
+</div>
+
+<!-- Main layout -->
+<div class="main-layout">
+    <div class="file-grid" id="fileGrid">
+        <div class="loading" style="grid-column:1/-1">☀ LUMINE carregando biblioteca...</div>
+    </div>
+
+    <div class="side-panel">
+
+        <!-- Upload quick button -->
+        <div class="sp-section">
+            <button class="btn primary" style="width:100%;padding:0.6rem" onclick="openUpload()">⬆ Upload / Criar Arquivo</button>
+        </div>
+
+        <!-- Archetype legend -->
+        <div class="sp-section">
+            <div class="sp-title">⬡ ARQUÉTIPOS</div>
+            <div id="archLegend"></div>
+        </div>
+
+        <!-- Top folders -->
+        <div class="sp-section">
+            <div class="sp-title">📁 PASTAS PRINCIPAIS</div>
+            <div id="folderList"></div>
+        </div>
+
+        <!-- Token config -->
+        <div class="sp-section">
+            <div class="sp-title">🔑 GITHUB TOKEN (para upload)</div>
+            <input class="form-input" id="tokenInput" type="password" placeholder="ghp_... PAT token" style="margin-bottom:0.5rem">
+            <button class="btn" style="width:100%" onclick="saveToken()">Salvar Token</button>
+            <div style="font-size:0.65rem;color:var(--muted);margin-top:0.4rem">Token salvo no localStorage. Necessário para upload.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal-bg" id="previewModal">
+    <div class="modal">
+        <div class="modal-head">
+            <div class="modal-title" id="previewTitle">—</div>
+            <span id="previewArch" style="font-size:0.78rem"></span>
+            <span id="previewSize" style="font-size:0.72rem;color:var(--muted)"></span>
+            <button class="btn" onclick="downloadPreview()">⬇ Download</button>
+            <button class="btn" onclick="editPreview()">✏ Editar</button>
+            <button class="btn" style="border-color:var(--red);color:var(--red)" onclick="closePreview()">✕</button>
+        </div>
+        <div class="modal-code" id="previewCode">Carregando...</div>
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal-bg" id="uploadModal">
+    <div class="modal" style="width:640px">
+        <div class="modal-head">
+            <div class="modal-title">⬆ Upload · Criar ou Atualizar Arquivo</div>
+            <button class="btn" style="border-color:var(--red);color:var(--red)" onclick="closeUpload()">✕</button>
+        </div>
+        <div class="umodal">
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+                 ondragover="ev.preventDefault();this.classList.add('drag')"
+                 ondragleave="this.classList.remove('drag')"
+                 ondrop="handleDrop(event)">
+                <div style="font-size:2.5rem">📁</div>
+                <div style="color:var(--muted);margin-top:0.5rem;font-size:0.82rem">Arraste arquivos ou clique para selecionar do seu computador</div>
+                <input type="file" id="fileInput" style="display:none" multiple onchange="handleSelect(this)">
+            </div>
+            <div class="form-row">
+                <label class="form-label">Caminho no repositório</label>
+                <input class="form-input" id="uPath" placeholder="pasta/subpasta/arquivo.html">
+            </div>
+            <div class="form-row">
+                <label class="form-label">Conteúdo</label>
+                <textarea class="form-input" id="uContent" placeholder="Cole o conteúdo ou carregue via drag-and-drop acima"></textarea>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Mensagem do commit</label>
+                <input class="form-input" id="uMsg" value="∆7 KOBLLUX_VIVO · upload via File Library">
+            </div>
+            <div class="form-row">
+                <label class="form-label" style="color:var(--warn)">SHA existente (se atualizando — deixe vazio para criar novo)</label>
+                <input class="form-input" id="uSha" placeholder="sha do arquivo existente">
+            </div>
+            <div style="display:flex;gap:0.5rem;justify-content:flex-end">
+                <button class="btn" onclick="closeUpload()">Cancelar</button>
+                <button class="btn primary" onclick="doUpload()">⬆ Enviar ao Repositório</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../../core/github-bridge.js"></script>
+<script src="../../core/kobllux-archetypes.js"></script>
+<script>
+const G = window.GITHUB_BRIDGE;
+
+const TYPE_DEFS = [
+    { ext:'html', label:'HTML', color:'#e34c26', icon:'🌐' },
+    { ext:'js',   label:'JS',   color:'#f7df1e', icon:'⚡' },
+    { ext:'py',   label:'PY',   color:'#3572A5', icon:'🐍' },
+    { ext:'json', label:'JSON', color:'#10b981', icon:'{}' },
+    { ext:'css',  label:'CSS',  color:'#264de4', icon:'🎨' },
+    { ext:'md',   label:'MD',   color:'#94a3b8', icon:'📝' },
+    { ext:'sh',   label:'SH',   color:'#a855f7', icon:'⚙' },
+    { ext:'yml',  label:'YML',  color:'#f59e0b', icon:'⚙' },
+    { ext:'txt',  label:'TXT',  color:'#64748b', icon:'📄' },
+    { ext:'svg',  label:'SVG',  color:'#ec4899', icon:'🖼' },
+];
+
+const ARCH_LIST = [
+    { id:'ATLAS',   sym:'⬡', color:'#3b82f6' },
+    { id:'NOVA',    sym:'✦', color:'#f59e0b' },
+    { id:'VITALIS', sym:'◉', color:'#10b981' },
+    { id:'PULSE',   sym:'≋', color:'#8b5cf6' },
+    { id:'ARTEMIS', sym:'◎', color:'#06b6d4' },
+    { id:'SERENA',  sym:'❋', color:'#ec4899' },
+    { id:'KAOS',    sym:'⚡', color:'#ef4444' },
+    { id:'GENUS',   sym:'⬢', color:'#a855f7' },
+    { id:'LUMINE',  sym:'☀', color:'#fbbf24' },
+    { id:'SOLUS',   sym:'◈', color:'#94a3b8' },
+    { id:'RHEA',    sym:'∞', color:'#34d399' },
+    { id:'AION',    sym:'⧗', color:'#818cf8' },
+];
+
+let allFiles = [];
+let activeType = 'all';
+let previewPath = null;
+let previewSha = null;
+
+// ── INIT ────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const tok = G.getToken();
+    if (tok) document.getElementById('tokenInput').value = tok;
+    buildFilterChips();
+    loadLibrary();
+});
+
+// ── LOAD ─────────────────────────────────────────────────────────────
+async function loadLibrary() {
+    document.getElementById('fileGrid').innerHTML = '<div class="loading" style="grid-column:1/-1">☀ LUMINE carregando...</div>';
+    try {
+        const data = await G.fetchTree();
+        allFiles = data.tree.filter(i => i.type === 'blob');
+        buildStats();
+        buildArchLegend();
+        buildFolderList();
+        applyFilters();
+    } catch(e) {
+        document.getElementById('fileGrid').innerHTML = `<div class="empty">${e.message}</div>`;
+        toast('Erro: ' + e.message, 'err');
+    }
+}
+
+// ── STATS ─────────────────────────────────────────────────────────────
+function buildStats() {
+    const bar = document.getElementById('statsBar');
+    const counts = {};
+    let total = 0;
+    allFiles.forEach(f => {
+        const ext = f.path.split('.').pop().toLowerCase();
+        counts[ext] = (counts[ext] || 0) + 1;
+        total++;
+    });
+
+    const cards = [{ ext:'all', label:'TOTAL', color:'#e2e8f0', icon:'📚', count:total }];
+    TYPE_DEFS.forEach(t => {
+        if (counts[t.ext]) cards.push({ ...t, count: counts[t.ext] });
+    });
+
+    bar.innerHTML = cards.map(c => `
+        <div class="stat-card" style="border-color:${c.color}33;background:${c.color}11"
+             onclick="quickFilter('${c.ext}')">
+            <span class="stat-icon">${c.icon}</span>
+            <div class="stat-info">
+                <span class="stat-count" style="color:${c.color}">${c.count}</span>
+                <span class="stat-label">${c.label}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ── FILTERS ──────────────────────────────────────────────────────────
+function buildFilterChips() {
+    const wrap = document.getElementById('filterChips');
+    const types = [{ ext:'all', label:'ALL', color:'#e2e8f0' }, ...TYPE_DEFS];
+    wrap.innerHTML = types.map(t => `
+        <button class="filter-chip ${t.ext==='all'?'active':''}" id="chip-${t.ext}"
+                style="${t.ext!=='all'?`color:${t.color}`:'color:#e2e8f0'}"
+                onclick="setType('${t.ext}',this)">${t.label}</button>
+    `).join('');
+}
+
+function setType(ext, btn) {
+    activeType = ext;
+    document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+}
+
+function quickFilter(ext) {
+    activeType = ext;
+    const chip = document.getElementById(`chip-${ext}`);
+    document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+    if (chip) chip.classList.add('active');
+    applyFilters();
+}
+
+function applyFilters() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const sort = document.getElementById('sortSelect').value;
+
+    let files = allFiles.filter(f => {
+        const ext = f.path.split('.').pop().toLowerCase();
+        const typeOk = activeType === 'all' || ext === activeType;
+        const searchOk = !q || f.path.toLowerCase().includes(q);
+        return typeOk && searchOk;
+    });
+
+    // sort
+    files = files.sort((a, b) => {
+        if (sort === 'name')  return a.path.split('/').pop().localeCompare(b.path.split('/').pop());
+        if (sort === 'path')  return a.path.localeCompare(b.path);
+        if (sort === 'size')  return (b.size || 0) - (a.size || 0);
+        if (sort === 'type')  { const ea = a.path.split('.').pop(); const eb = b.path.split('.').pop(); return ea.localeCompare(eb); }
+        if (sort === 'arch')  return G.getArchetypeForPath(a.path).id.localeCompare(G.getArchetypeForPath(b.path).id);
+        return 0;
+    });
+
+    renderGrid(files);
+}
+
+function renderGrid(files) {
+    const grid = document.getElementById('fileGrid');
+    if (!files.length) {
+        grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Nenhum arquivo encontrado</div>';
+        return;
+    }
+    grid.innerHTML = files.map(f => {
+        const ft = G.getFileType(f.path);
+        const arch = G.getArchetypeForPath(f.path);
+        const name = f.path.split('/').pop();
+        const dir  = f.path.split('/').slice(0,-1).join('/') || '.';
+        return `
+            <div class="file-card" onclick="openPreview('${f.path}','${f.sha}')"
+                 title="${f.path}" style="border-color:${ft.color}22">
+                <style>.file-card[title="${f.path}"]::before{background:${ft.color}}</style>
+                <div class="fc-icon">${ft.icon}</div>
+                <div class="fc-name" style="color:${ft.color}">${name}</div>
+                <div class="fc-path">${dir}</div>
+                <div class="fc-footer">
+                    <span class="fc-badge" style="color:${ft.color};border-color:${ft.color}44;background:${ft.color}11">${ft.label}</span>
+                    <span class="fc-arch" style="color:${arch.color}" title="${arch.id}">${arch.sym}</span>
+                    <span class="fc-size">${G.formatSize(f.size)}</span>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+// ── ARCH LEGEND ───────────────────────────────────────────────────────
+function buildArchLegend() {
+    const counts = {};
+    allFiles.forEach(f => {
+        const a = G.getArchetypeForPath(f.path).id;
+        counts[a] = (counts[a] || 0) + 1;
+    });
+    const el = document.getElementById('archLegend');
+    el.innerHTML = ARCH_LIST.map(a => `
+        <div class="arch-leg" onclick="filterByArch('${a.id}')">
+            <span class="arch-dot" style="background:${a.color}"></span>
+            <span class="arch-leg-name" style="color:${a.color}">${a.sym} ${a.id}</span>
+            <span class="arch-leg-count">${counts[a.id] || 0}</span>
+        </div>
+    `).join('');
+}
+
+function filterByArch(archId) {
+    const q = document.getElementById('searchInput');
+    // we'll search by archetype mapping
+    const matching = allFiles.filter(f => G.getArchetypeForPath(f.path).id === archId);
+    activeType = 'all';
+    document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+    document.getElementById('chip-all').classList.add('active');
+    const grid = document.getElementById('fileGrid');
+    renderGrid(matching);
+}
+
+// ── FOLDER LIST ───────────────────────────────────────────────────────
+function buildFolderList() {
+    const folders = {};
+    allFiles.forEach(f => {
+        const top = f.path.split('/')[0];
+        if (f.path.includes('/')) folders[top] = (folders[top] || 0) + 1;
+    });
+    const el = document.getElementById('folderList');
+    el.innerHTML = Object.entries(folders)
+        .sort((a,b) => b[1]-a[1])
+        .slice(0, 20)
+        .map(([name, count]) => `
+            <div class="folder-row" onclick="filterByFolder('${name}')">
+                <span>📁</span>
+                <span style="overflow:hidden;text-overflow:ellipsis;flex:1">${name}</span>
+                <span style="color:var(--muted);font-size:0.65rem">${count}</span>
+            </div>
+        `).join('');
+}
+
+function filterByFolder(folder) {
+    document.getElementById('searchInput').value = folder;
+    applyFilters();
+}
+
+// ── PREVIEW ───────────────────────────────────────────────────────────
+async function openPreview(path, sha) {
+    previewPath = path;
+    previewSha = sha;
+    const ft = G.getFileType(path);
+    const arch = G.getArchetypeForPath(path);
+    const code = document.getElementById('previewCode');
+
+    document.getElementById('previewTitle').textContent = path;
+    document.getElementById('previewArch').innerHTML = `<span style="color:${arch.color}">${arch.sym} ${arch.id} · ${arch.hz}Hz</span>`;
+    code.innerHTML = '<div class="loading">Carregando...</div>';
+    document.getElementById('previewModal').classList.add('open');
+
+    try {
+        const data = await G.fetchFile(path);
+        if (!data.content) { code.textContent = '[arquivo binário]'; return; }
+        previewSha = data.sha;
+        const raw = G.decodeContent(data.content);
+        document.getElementById('previewSize').textContent = G.formatSize(data.size);
+
+        const lines = raw.split('\n');
+        code.innerHTML = lines.map((l, i) =>
+            `<span class="line-num">${i+1}</span>${l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}`
+        ).join('\n');
+    } catch(e) {
+        code.innerHTML = `<span style="color:var(--red)">${e.message}</span>`;
+    }
+}
+
+function closePreview() {
+    document.getElementById('previewModal').classList.remove('open');
+}
+
+async function downloadPreview() {
+    if (!previewPath) return;
+    try {
+        const data = await G.fetchFile(previewPath);
+        const raw = G.decodeContent(data.content);
+        const blob = new Blob([raw], { type:'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = previewPath.split('/').pop();
+        a.click(); URL.revokeObjectURL(url);
+        toast('Download iniciado', 'ok');
+    } catch(e) { toast(e.message, 'err'); }
+}
+
+async function editPreview() {
+    closePreview();
+    document.getElementById('uPath').value = previewPath;
+    document.getElementById('uSha').value = previewSha || '';
+    document.getElementById('uMsg').value = `∆7 edit: ${previewPath}`;
+    try {
+        const data = await G.fetchFile(previewPath);
+        document.getElementById('uContent').value = G.decodeContent(data.content);
+        openUpload();
+    } catch(e) { toast(e.message, 'err'); }
+}
+
+// ── UPLOAD ────────────────────────────────────────────────────────────
+function openUpload() {
+    document.getElementById('uploadModal').classList.add('open');
+}
+function closeUpload() {
+    document.getElementById('uploadModal').classList.remove('open');
+}
+function saveToken() {
+    const t = document.getElementById('tokenInput').value.trim();
+    G.setToken(t);
+    toast(t ? 'Token salvo ✅' : 'Token removido', t ? 'ok' : 'info');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('drag');
+    if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]);
+}
+function handleSelect(input) {
+    if (input.files.length) readFile(input.files[0]);
+}
+function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('uContent').value = e.target.result;
+        if (!document.getElementById('uPath').value)
+            document.getElementById('uPath').value = file.name;
+        document.getElementById('uMsg').value = `∆7 KOBLLUX_VIVO · upload: ${file.name}`;
+    };
+    reader.readAsText(file);
+}
+
+async function doUpload() {
+    const path    = document.getElementById('uPath').value.trim();
+    const content = document.getElementById('uContent').value;
+    const msg     = document.getElementById('uMsg').value.trim();
+    const sha     = document.getElementById('uSha').value.trim() || null;
+
+    if (!path || !content || !msg) { toast('Preencha todos os campos', 'err'); return; }
+    toast('Enviando ao repositório...', 'info');
+
+    try {
+        await G.createOrUpdateFile(path, content, msg, sha);
+        toast(`✅ ${path} salvo no repositório!`, 'ok');
+        closeUpload();
+        setTimeout(loadLibrary, 2000);
+        if (window.parent !== window)
+            window.parent.postMessage({ type:'FILE_UPLOADED', path }, '*');
+    } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+let tTimer;
+function toast(msg, type='info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.className = `toast ${type}`;
+    clearTimeout(tTimer);
+    tTimer = setTimeout(() => el.className = 'toast', 4000);
+}
+</script>
+</body>
+</html>
