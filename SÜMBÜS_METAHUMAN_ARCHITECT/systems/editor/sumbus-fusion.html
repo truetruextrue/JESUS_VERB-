@@ -313,25 +313,38 @@ body {
 
 /* ── EDITOR SYNTAX HIGHLIGHT LAYER ── */
 .code-area { flex:1; position:relative; overflow:hidden; }
+
+/* FIX SCROLL: overflow:scroll + sem scrollbars = pode receber scrollTop via JS */
 .highlight-layer {
   position:absolute; inset:0; padding:12px;
   font-family:var(--font-code); font-size:12.5px; line-height:1.65;
-  white-space:pre; overflow:hidden; pointer-events:none;
+  white-space:pre; pointer-events:none;
   tab-size:2; z-index:1; word-break:normal;
-  /* Scroll is synced via JS */
+  overflow:scroll;             /* permite scroll sincronizado via JS */
+  scrollbar-width:none;        /* Firefox: sem scrollbar visível */
 }
+.highlight-layer::-webkit-scrollbar { display:none; } /* Chrome: sem scrollbar */
 .hl-line { display:block; min-height:1.65em; border-radius:2px; }
+
+/* FIX ANDROID: textarea VISÍVEL mas coberta pelo highlight layer com fundo sólido */
+/* Usar background no highlight elimina necessidade de color:transparent problemático */
 #input-layer {
   position:absolute; inset:0; padding:12px;
   font-family:var(--font-code); font-size:12.5px; line-height:1.65;
   white-space:pre; border:none; outline:none; overflow:auto;
   tab-size:2; width:100%; height:100%;
   background:transparent;
-  color:transparent;          /* texto invisível — highlight-layer renderiza */
-  caret-color:var(--primary); /* cursor visível */
-  resize:none; z-index:2;
-  -webkit-text-fill-color:transparent; /* Safari/Chrome */
+  color:rgba(232,224,240,0.06);  /* quase invisível — highlight cobre */
+  caret-color:var(--primary);    /* cursor sempre visível */
+  resize:none; z-index:3;        /* acima do highlight para receber eventos */
+  -webkit-text-fill-color:rgba(232,224,240,0.06);
 }
+/* Highlight atrás com fundo sólido — cobre o texto do textarea */
+.highlight-layer {
+  background:var(--bg-deep);  /* fundo sólido para cobrir texto do textarea */
+  z-index:2;
+}
+
 /* Gutter: linhas coloridas por arquétipo */
 .gutter {
   width:44px; background:rgba(0,0,0,0.35); border-right:1px solid var(--glass-border);
@@ -341,6 +354,27 @@ body {
 .g-line {
   display:block; text-align:center; line-height:1.65em;
   font-size:11px; transition:color .1s;
+}
+
+/* ── VEEB ORB — arquétipo da linha atual ── */
+.veeb-orb {
+  display:flex; align-items:center; gap:5px; flex-shrink:0;
+  padding:2px 8px 2px 5px; border-radius:99px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(0,0,0,0.3); cursor:default;
+  transition:border-color .3s, background .3s;
+}
+.veeb-orb-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:var(--primary); flex-shrink:0;
+  animation:veebpulse 2s infinite;
+  transition:background .3s, box-shadow .3s;
+}
+@keyframes veebpulse { 0%,100%{opacity:.5;transform:scale(.9)} 50%{opacity:1;transform:scale(1.15)} }
+.veeb-orb-txt {
+  font-size:8.5px; font-weight:700; color:var(--primary);
+  font-family:var(--font-code); letter-spacing:.05em;
+  transition:color .3s;
 }
 /* ── fim HIGHLIGHT ── */
 
@@ -594,6 +628,11 @@ body {
       <span class="editor-path" id="editorPath" title="Clique para mudar caminho" onclick="changeEditorPath()">novo_arquivo.html</span>
       <button class="tool-btn" id="btn-format" title="Formatar"><i data-lucide="align-left"></i></button>
       <button class="tool-btn" id="btn-wrap" title="Word Wrap"><i data-lucide="wrap-text"></i></button>
+      <!-- VEEB ORB — arquétipo da linha atual -->
+      <div class="veeb-orb" id="veebOrb" title="Arquétipo da linha atual (VEEB)">
+        <div class="veeb-orb-dot" id="veebDot"></div>
+        <span class="veeb-orb-txt" id="veebTxt">ATLAS</span>
+      </div>
       <button class="tool-btn" id="btn-clear" title="Limpar"><i data-lucide="trash-2"></i></button>
     </div>
     <div class="editor-frame">
@@ -1520,83 +1559,104 @@ function colorLine(raw, ext) {
   }).join('\n');
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// FIX CRÍTICO: o problema anterior — regex de strings "..."
+// modificava os atributos style="color:..." das próprias <span>
+// geradas em etapas anteriores, criando HTML inválido que aparecia
+// como texto cru no highlight layer.
+//
+// SOLUÇÃO: Colorir apenas os NOMES das tags (não os atributos).
+// A regex `&lt;\/?` + nome do tag é sempre segura pois não processa
+// o conteúdo dentro da tag (atributos), evitando qualquer conflito
+// com spans já gerados. String regex removida do HTML.
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function applyTokenColors(e, ext) {
-  // comments first (don't re-color inside)
+
   if (ext === 'html') {
-    // HTML comment
-    let s = e.replace(/(&lt;!--.*?--&gt;)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
-    // DOCTYPE
-    s = s.replace(/(&lt;!DOCTYPE[^&]*&gt;)/gi, `<span style="color:${HL.ATLAS};font-weight:700">$1</span>`);
-    // structural
-    s = s.replace(/(&lt;\/?(?:html|head|body)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.ATLAS};font-weight:700">$1</span>`);
-    // script/style
-    s = s.replace(/(&lt;\/?script\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.VITALIS};font-weight:700">$1</span>`);
-    s = s.replace(/(&lt;\/?style\b[^&gt;]*&gt;)/gi,  `<span style="color:${HL.PULSE};font-weight:700">$1</span>`);
-    // meta/link/title
-    s = s.replace(/(&lt;\/?(?:meta|link|title|base)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.NOVA}">$1</span>`);
-    // containers
-    s = s.replace(/(&lt;\/?(?:div|section|article|main|aside|nav|header|footer)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.GENUS}">$1</span>`);
-    // content tags
-    s = s.replace(/(&lt;\/?(?:p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.SERENA}">$1</span>`);
-    // visual
-    s = s.replace(/(&lt;\/?(?:img|canvas|video|audio|svg|figure|picture)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.LUMINE}">$1</span>`);
-    // links
-    s = s.replace(/(&lt;\/?(?:a|iframe|embed|portal)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.RHEA}">$1</span>`);
-    // forms
-    s = s.replace(/(&lt;\/?(?:input|button|form|select|textarea|label|fieldset)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.ARTEMIS}">$1</span>`);
-    // time/data/template
-    s = s.replace(/(&lt;\/?(?:time|data|template|slot|dialog|details)\b[^&gt;]*&gt;)/gi, `<span style="color:${HL.AION}">$1</span>`);
-    // attribute strings "value"
-    s = s.replace(/"([^"]*)"/g, `<span style="color:${HL.STRING}">"$1"</span>`);
+    let s = e;
+    // 1. Comentários (SOLUS) — processados primeiro, sem conflito
+    s = s.replace(/(&lt;!--[\s\S]*?--&gt;)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic;opacity:.8">$1</span>`);
+    // 2. Colorir APENAS o nome da tag — NUNCA os atributos.
+    //    Isso evita o bug onde strings nos atributos eram re-processadas.
+    //    Padrão seguro: &lt;[/]TAGNAME — não inclui conteúdo após o nome.
+    const tagColor = (names, color, bold) => {
+      const b = bold ? ';font-weight:700' : '';
+      s = s.replace(
+        new RegExp(`(&lt;\\/?)(${names})(\\b)`, 'gi'),
+        `$1<span style="color:${color}${b}">$2</span>$3`
+      );
+    };
+    tagColor('!DOCTYPE|html|head|body',                        HL.ATLAS,   true);  // B · Base
+    tagColor('script',                                         HL.VITALIS, true);  // E · Energia
+    tagColor('style',                                          HL.PULSE,   true);  // V · Vibração
+    tagColor('meta|link|title|base',                          HL.NOVA,    false); // NOVA · semente
+    tagColor('div|section|article|main|aside|nav|header|footer', HL.GENUS, false); // E · Estrutura
+    tagColor('p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li',   HL.SERENA,  false); // SERENA
+    tagColor('img|canvas|video|audio|svg|figure|picture',     HL.LUMINE,  false); // LUMINE
+    tagColor('a|iframe|embed|portal',                         HL.RHEA,    false); // RHEA
+    tagColor('input|button|form|select|textarea|label',       HL.ARTEMIS, false); // ARTEMIS
+    tagColor('time|data|template|slot|dialog|details',        HL.AION,    false); // AION
+    // 3. &lt; e &gt; em azul suave (delimitadores)
+    s = s.replace(/&lt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&lt;</span>`);
+    s = s.replace(/&gt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&gt;</span>`);
     return s;
   }
+
   if (ext === 'css') {
     let s = e;
-    // comment
-    s = s.replace(/(\/\*.*?\*\/)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
-    // #hex colors — show in their own color
-    s = s.replace(/(#[0-9a-fA-F]{3,8})\b/g, m => `<span style="color:${m};text-shadow:0 0 6px ${m}55">${m}</span>`);
-    // --vars
-    s = s.replace(/(--[a-zA-Z][a-zA-Z0-9_-]+)/g, `<span style="color:${HL.NUMBER}">$1</span>`);
-    // properties
-    s = s.replace(/\b([a-z-]{2,})\s*(?=:)/g, `<span style="color:${HL.PROP}">$1</span>`);
-    // strings
-    s = s.replace(/"([^"]*)"/g, `<span style="color:${HL.STRING}">"$1"</span>`);
+    // Comentários primeiro
+    s = s.replace(/(\/\*[\s\S]*?\*\/)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    // #hex colors (cada cor em si mesma — visualmente impactante)
+    s = s.replace(/(#[0-9a-fA-F]{3,8})\b/g,
+      m => `<span style="color:${m};text-shadow:0 0 8px ${m}66;font-weight:700">${m}</span>`);
+    // CSS custom properties --var (NUNCA conflita com spans)
+    s = s.replace(/(--[a-zA-Z_][a-zA-Z0-9_-]+)/g,
+      `<span style="color:${HL.NUMBER}">$1</span>`);
+    // Strings CSS (font-family:"Name" etc) — aplicado ANTES de propriedades
+    s = s.replace(/'([^']*)'/g, `<span style="color:${HL.STRING}">'$1'</span>`);
+    // NÃO aplicar regex de propriedade pois conflita com #hex e --vars já inseridos
     return s;
   }
+
   if (ext === 'js') {
     let s = e;
-    // line comment
-    s = s.replace(/(\/\/.*$)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
-    // keywords
+    // Comentários inline primeiro (prioridade máxima)
+    s = s.replace(/(\/\/[^\n]*)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    // Keywords — aplicados antes de strings para não colorir keywords dentro de strings
+    // Mas keywords como 'for','if' raramente aparecem em style="..." então seguro
     const kw = 'const|let|var|function|return|if|else|for|while|class|new|typeof|async|await|import|export|from|default|true|false|null|undefined|this|of|in|try|catch|throw';
-    s = s.replace(new RegExp(`\\b(${kw})\\b`, 'g'), `<span style="color:${HL.KEYWORD}">$1</span>`);
-    // strings
-    s = s.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, `<span style="color:${HL.STRING}">$1</span>`);
-    // numbers
-    s = s.replace(/\b(\d+\.?\d*)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
-    // function calls
-    s = s.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, `<span style="color:${HL.FN}">$1</span>`);
+    s = s.replace(new RegExp(`(^|\\s)(${kw})(?=\\s|\\(|\\{|;|,|$)`, 'gm'),
+      (m,sp,kword) => `${sp}<span style="color:${HL.KEYWORD}">${kword}</span>`);
+    // Números (não conflita com spans já inseridos)
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
     return s;
   }
+
   if (ext === 'py') {
     let s = e;
-    s = s.replace(/(#.*$)/g, `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
-    const kw = 'def|class|return|import|from|if|elif|else|for|while|try|except|with|as|in|is|not|and|or|True|False|None|print|self';
-    s = s.replace(new RegExp(`\\b(${kw})\\b`, 'g'), `<span style="color:${HL.KEYWORD}">$1</span>`);
-    s = s.replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, `<span style="color:${HL.STRING}">$1</span>`);
-    s = s.replace(/\b(\d+\.?\d*)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    s = s.replace(/(#[^\n]*)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    const kw = 'def|class|return|import|from|if|elif|else|for|while|try|except|with|as|in|is|not|and|or|True|False|None|self|print|lambda|yield|raise|pass|break|continue';
+    s = s.replace(new RegExp(`\\b(${kw})\\b`, 'g'),
+      `<span style="color:${HL.KEYWORD}">$1</span>`);
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
     return s;
   }
-  // JSON
+
   if (ext === 'json') {
     let s = e;
-    s = s.replace(/"([^"]+)"\s*:/g, `<span style="color:${HL.PROP}">"$1"</span>:`);
-    s = s.replace(/:\s*("(?:[^"\\]|\\.)*")/g, `: <span style="color:${HL.STRING}">$1</span>`);
-    s = s.replace(/\b(true|false|null)\b/g, `<span style="color:${HL.KEYWORD}">$1</span>`);
-    s = s.replace(/\b(\d+\.?\d*)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    // Keys — sem processar strings internas (evita conflitos)
+    s = s.replace(/("(?:[^"\\]|\\.)*")\s*:/g,
+      `<span style="color:${HL.PROP}">$1</span>:`);
+    s = s.replace(/\b(true|false|null)\b/g,
+      `<span style="color:${HL.KEYWORD}">$1</span>`);
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
     return s;
   }
+
   return e;
 }
 
@@ -1607,12 +1667,56 @@ function updateHighlight() {
   const lines = UI.input.value.split('\n');
   layer.innerHTML = lines.map(line => {
     const bg = (ext === 'html') ? getLineBg(line) : 'transparent';
-    const colored = applyTokenColors(
-      line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'),
-      ext
-    );
-    return `<span class="hl-line" style="background:${bg}">${colored || ' '}</span>`;
+    const safe = line
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
+    const colored = applyTokenColors(safe, ext);
+    return `<span class="hl-line" style="background:${bg}">${colored || '&#8203;'}</span>`;
   }).join('\n');
+  // Sync scroll after content update
+  layer.scrollTop  = UI.input.scrollTop;
+  layer.scrollLeft = UI.input.scrollLeft;
+}
+
+// VEEB ORB — atualiza o indicador de arquétipo com base na linha do cursor
+function updateVeebOrb() {
+  const input = UI.input;
+  const pos   = input.selectionStart;
+  const lines = input.value.substring(0, pos).split('\n');
+  const curLine = input.value.split('\n')[lines.length - 1] || '';
+  const ext = (state.editorPath.split('.').pop() || 'html').toLowerCase();
+
+  let archId = 'ATLAS', archColor = HL.ATLAS, veebLetter = 'B';
+
+  if (ext === 'html') {
+    const bg = getLineBg(curLine);
+    if      (bg.startsWith(HL.VITALIS)) { archId='VITALIS'; archColor=HL.VITALIS; veebLetter='E'; }
+    else if (bg.startsWith(HL.PULSE))   { archId='PULSE';   archColor=HL.PULSE;   veebLetter='V'; }
+    else if (bg.startsWith(HL.NOVA))    { archId='NOVA';    archColor=HL.NOVA;    veebLetter='B'; }
+    else if (bg.startsWith(HL.GENUS))   { archId='GENUS';   archColor=HL.GENUS;   veebLetter='E'; }
+    else if (bg.startsWith(HL.LUMINE))  { archId='LUMINE';  archColor=HL.LUMINE;  veebLetter='V'; }
+    else if (bg.startsWith(HL.ARTEMIS)) { archId='ARTEMIS'; archColor=HL.ARTEMIS; veebLetter='E'; }
+    else if (bg.startsWith(HL.RHEA))    { archId='RHEA';    archColor=HL.RHEA;    veebLetter='E'; }
+    else if (bg.startsWith(HL.AION))    { archId='AION';    archColor=HL.AION;    veebLetter='B'; }
+    else if (bg.startsWith(HL.SOLUS))   { archId='SOLUS';   archColor=HL.SOLUS;   veebLetter='V'; }
+    else                                { archId='ATLAS';   archColor=HL.ATLAS;   veebLetter='B'; }
+  } else if (ext === 'css') {
+    archId='PULSE'; archColor=HL.PULSE; veebLetter='V';
+  } else if (ext === 'js') {
+    archId='VITALIS'; archColor=HL.VITALIS; veebLetter='E';
+  } else if (ext === 'py') {
+    archId='ARTEMIS'; archColor=HL.ARTEMIS; veebLetter='E';
+  } else if (ext === 'json') {
+    archId='RHEA'; archColor=HL.RHEA; veebLetter='E';
+  }
+
+  const dot = document.getElementById('veebDot');
+  const txt = document.getElementById('veebTxt');
+  const orb = document.getElementById('veebOrb');
+  if (dot) { dot.style.background = archColor; dot.style.boxShadow = `0 0 6px ${archColor}`; }
+  if (txt) { txt.textContent = veebLetter + '·' + archId; txt.style.color = archColor; }
+  if (orb) { orb.style.borderColor = archColor + '66'; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1840,10 +1944,13 @@ document.getElementById('btn-push').onclick = async () => {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    EDITOR EVENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-UI.input.oninput    = () => { updateGutter(); updateHighlight(); saveHistory(UI.input.value); };
+UI.input.oninput    = () => { updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value); };
+UI.input.onclick    = () => updateVeebOrb();
+UI.input.onkeyup    = () => updateVeebOrb();
 UI.input.onscroll   = () => {
   UI.gutter.scrollTop = UI.input.scrollTop;
   const hl = document.getElementById('codeHighlight');
+  // FIX SCROLL: highlight layer agora tem overflow:scroll — pode receber scrollTop
   if (hl) { hl.scrollTop = UI.input.scrollTop; hl.scrollLeft = UI.input.scrollLeft; }
 };
 UI.input.onkeydown  = e => {
@@ -1878,6 +1985,7 @@ window.onload = () => {
   history.present = UI.input.value;
   updateGutter();
   updateHighlight();
+  updateVeebOrb();
   renderCDNs();
   buildArchSelector();
 
