@@ -1,0 +1,10 @@
+{
+  "_descricao": "Pares espelho palindrômicos — viés simétrico na matriz Markov",
+  "_lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "NOVA":    "AION",    "AION":    "NOVA",
+  "ATLAS":   "KAOS",    "KAOS":    "ATLAS",
+  "VITALIS": "SOLUS",   "SOLUS":   "VITALIS",
+  "PULSE":   "SERENA",  "SERENA":  "PULSE",
+  "ARTEMIS": "RHEA",    "RHEA":    "ARTEMIS",
+  "GENUS":   "LUMINE",  "LUMINE":  "GENUS"
+}

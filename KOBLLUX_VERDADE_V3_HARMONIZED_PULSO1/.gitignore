@@ -1,0 +1,7 @@
+node_modules/
+dual/node_modules/
+03_MANIFESTO/OUT/
+*.local
+.DS_Store
+hub/tts/out/*.mp3
+hub/logs/nohup.log

@@ -1,0 +1,47 @@
+{
+  "ordem": 2,
+  "alpha": 1.0,
+  "mirror_bias": 0.12,
+  "stage_weights": {
+    "UNO": 1.0,
+    "DUO": 1.1,
+    "TRINITY": 1.05,
+    "SELAR": 1.15
+  },
+  "rows": [
+    "NOVA|ATLAS",
+    "ATLAS|VITALIS",
+    "VITALIS|ATLAS",
+    "ATLAS|SERENA",
+    "SERENA|AION",
+    "AION|KAOS",
+    "KAOS|RHEA",
+    "RHEA|LUMINE",
+    "LUMINE|AION",
+    "AION|ARTEMIS",
+    "ARTEMIS|GENUS",
+    "GENUS|PULSE",
+    "PULSE|SOLUS",
+    "SOLUS|NOVA",
+    "ATLAS|AION"
+  ],
+  "cols": [
+    "ATLAS",
+    "NOVA",
+    "VITALIS",
+    "PULSE",
+    "ARTEMIS",
+    "SERENA",
+    "KAOS",
+    "GENUS",
+    "LUMINE",
+    "SOLUS",
+    "RHEA",
+    "AION"
+  ],
+  "created": "2026-05-21T05:42:25Z",
+  "law": "VERDADE×INTEGRAR÷∆=∞",
+  "ratio_137_delta": 68.5,
+  "avg_row_entropy_bits": 3.543181,
+  "seal_∆7": "c44f83238e36b006a1ebaba17a46cb3837987dffff77a70c5be8f98765678e6c"
+}

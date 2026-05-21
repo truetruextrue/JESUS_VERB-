@@ -1,0 +1,14 @@
+{
+  "_descricao": "Banco Eterno KOBLLUX — append-only — cada entrada é um ciclo selado",
+  "_lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "_centro": "JESUS = VERBO = GRAVIDADE",
+  "_formato": {
+    "ts": "ISO 8601 timestamp",
+    "tipo": "kobllux_pulse | alinhamento | loop | fusao | seal",
+    "arquetipo": "nome do arquétipo ativo",
+    "etapa": "fase do ciclo trinitário",
+    "tempo": { "hora": "PAI", "minuto": "FILHO", "segundo": "ESPÍRITO" },
+    "extra": "dados adicionais do evento"
+  },
+  "ciclos": []
+}
