@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="motor-core">
+<head>
+    <meta charset="UTF-8">
+    <title>🏃 Motor de Movimento · ARTEMIS+VITALIS</title>
+    <style>
+        :root {
+            --motor-3: #3b82f6;
+            --motor-6: #8b5cf6;
+            --motor-9: #10b981;
+            --motor-warn: #f59e0b;
+            --motor-red: #ef4444;
+            --bg: #0f172a;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        h1 { color: var(--motor-9); font-size: 1.6rem; margin-bottom: 0.25rem; }
+        .subtitle { color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+        /* Status bar */
+        .status-bar {
+            display: flex; gap: 1rem; align-items: center;
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 0.75rem; padding: 0.75rem 1.25rem;
+            margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .status-dot { width:10px; height:10px; border-radius:50%; background:var(--motor-9); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.3)} }
+
+        /* Grid layout */
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem; }
+        @media(max-width:768px){ .grid-2{grid-template-columns:1fr;} }
+
+        .panel {
+            background: rgba(15,23,42,0.8);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 0.75rem; padding: 1.25rem;
+        }
+        .panel-title { font-size:0.8rem; color:#64748b; text-transform:uppercase; letter-spacing:.1em; margin-bottom:1rem; }
+
+        /* Queue */
+        .queue-list { max-height: 260px; overflow-y: auto; display:flex; flex-direction:column; gap:0.5rem; }
+        .queue-item {
+            display:flex; align-items:center; gap:0.75rem;
+            padding: 0.6rem 0.9rem;
+            background: rgba(255,255,255,0.04);
+            border-radius: 0.5rem;
+            border-left: 3px solid var(--motor-3);
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .queue-item.executing { border-left-color: var(--motor-warn); background: rgba(245,158,11,0.08); }
+        .queue-item.done { border-left-color: var(--motor-9); background: rgba(16,185,129,0.08); opacity:0.7; }
+        .queue-item.failed { border-left-color: var(--motor-red); background: rgba(239,68,68,0.08); }
+        .q-icon { font-size:1.1rem; }
+        .q-info { flex:1; }
+        .q-label { color:#e2e8f0; font-weight:600; }
+        .q-target { color:#64748b; font-size:0.75rem; }
+        .q-status { font-size:0.75rem; padding:0.15rem 0.5rem; border-radius:1rem; }
+        .q-status.pending  { background:rgba(59,130,246,0.15); color:var(--motor-3); }
+        .q-status.exec     { background:rgba(245,158,11,0.15); color:var(--motor-warn); }
+        .q-status.done     { background:rgba(16,185,129,0.15); color:var(--motor-9); }
+        .q-status.failed   { background:rgba(239,68,68,0.15); color:var(--motor-red); }
+
+        /* Archetype activations */
+        .arch-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
+        .arch-chip {
+            display:flex; align-items:center; gap:0.5rem;
+            padding:0.5rem 0.75rem;
+            border-radius:0.5rem;
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.08);
+            font-size:0.8rem; transition: all 0.4s;
+        }
+        .arch-chip.firing { border-color:var(--motor-9); background:rgba(16,185,129,0.1); }
+        .arch-symbol { font-size:1rem; width:20px; text-align:center; }
+        .arch-name { flex:1; color:#94a3b8; }
+        .arch-hz { font-size:0.7rem; color:#475569; }
+
+        /* Vectorscope */
+        .vector-canvas {
+            width:100%; height:180px;
+            background: rgba(0,0,0,0.4);
+            border-radius:0.5rem;
+            border:1px solid rgba(59,130,246,0.1);
+            position:relative; overflow:hidden;
+        }
+        canvas { width:100%; height:100%; display:block; }
+
+        /* Pipeline bars */
+        .pipeline { display:flex; flex-direction:column; gap:0.6rem; }
+        .pipeline-row { display:flex; align-items:center; gap:0.75rem; }
+        .pipe-label { width: 90px; font-size:0.75rem; color:#64748b; flex-shrink:0; }
+        .pipe-track { flex:1; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; }
+        .pipe-fill { height:100%; border-radius:3px; transition: width 0.8s ease; }
+        .pipe-val { width:36px; text-align:right; font-size:0.75rem; color:#94a3b8; }
+
+        /* Controls */
+        .controls { display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+        .btn {
+            padding:0.6rem 1.1rem; border-radius:0.5rem; border:1px solid rgba(255,255,255,0.12);
+            background:rgba(255,255,255,0.05); color:white; cursor:pointer;
+            font-family:inherit; font-size:0.85rem; transition:all 0.25s;
+            display:flex; align-items:center; gap:0.5rem;
+        }
+        .btn:hover { transform:translateY(-2px); border-color:var(--motor-3); background:rgba(59,130,246,0.1); }
+        .btn.primary { background:linear-gradient(135deg,var(--motor-3),var(--motor-6)); border:none; font-weight:700; }
+        .btn.danger  { border-color:var(--motor-red); color:var(--motor-red); }
+
+        /* Log */
+        .motor-log {
+            background:rgba(0,0,0,0.4); border-radius:0.5rem;
+            border:1px solid rgba(139,92,246,0.2);
+            max-height:150px; overflow-y:auto; padding:0.75rem;
+            font-size:0.8rem;
+        }
+        .log-line { padding:0.3rem 0; border-bottom:1px solid rgba(255,255,255,0.04); color:#94a3b8; }
+        .log-line span { color:#e2e8f0; }
+        .log-line.ok span { color:var(--motor-9); }
+        .log-line.warn span { color:var(--motor-warn); }
+        .log-line.err span { color:var(--motor-red); }
+    </style>
+</head>
+<body>
+    <h1>🏃 SISTEMA MOTOR · KOBLLUX_VIVO</h1>
+    <p class="subtitle">Execução de Ações · Arquétipos ARTEMIS (DETECT) + VITALIS (DELTA) · Opcode 0x06</p>
+
+    <div class="status-bar">
+        <div class="status-dot"></div>
+        <strong style="color:var(--motor-9)">MOTOR ONLINE</strong>
+        <span style="color:#64748b">|</span>
+        <span>Fila: <strong id="queueCount" style="color:var(--motor-warn)">0</strong></span>
+        <span style="color:#64748b">|</span>
+        <span>Executadas: <strong id="execCount" style="color:var(--motor-9)">0</strong></span>
+        <span style="color:#64748b">|</span>
+        <span>Hz: <strong id="motorHz" style="color:var(--motor-3)">432</strong></span>
+        <span style="color:#64748b">|</span>
+        <span id="motorPhase" style="color:#8b5cf6">DETECTAR</span>
+    </div>
+
+    <div class="controls">
+        <button class="btn primary" onclick="addAction()">⚡ ADICIONAR AÇÃO</button>
+        <button class="btn" onclick="executeAll()">▶ EXECUTAR FILA</button>
+        <button class="btn" onclick="addArchetypeAction()">⬡ DISPARAR ARQUÉTIPO</button>
+        <button class="btn danger" onclick="clearQueue()">✕ LIMPAR FILA</button>
+    </div>
+
+    <div class="grid-2">
+        <!-- Action Queue -->
+        <div class="panel">
+            <div class="panel-title">⚙ FILA DE AÇÕES</div>
+            <div class="queue-list" id="queueList">
+                <div style="color:#475569;font-size:0.85rem;text-align:center;padding:1rem">
+                    Fila vazia — adicione ações para executar
+                </div>
+            </div>
+        </div>
+
+        <!-- Archetype Activations -->
+        <div class="panel">
+            <div class="panel-title">⬡ ARQUÉTIPOS ATIVOS</div>
+            <div class="arch-grid" id="archGrid">
+                <!-- populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <!-- Vector -->
+        <div class="panel">
+            <div class="panel-title">📡 VETORES DE EXECUÇÃO</div>
+            <div class="vector-canvas">
+                <canvas id="vectorCanvas"></canvas>
+            </div>
+        </div>
+
+        <!-- Pipeline -->
+        <div class="panel">
+            <div class="panel-title">📊 PIPELINE DE EXECUÇÃO</div>
+            <div class="pipeline" id="pipeline">
+                <!-- populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Log -->
+    <div class="motor-log" id="motorLog">
+        <div class="log-line ok"><span>[BOOT]</span> Sistema motor inicializado · ARTEMIS+VITALIS</div>
+    </div>
+
+    <script>
+    const ARCHETYPES = [
+        {id:'ATLAS',  sym:'⬡', hz:768,  rule:'BOOT',      color:'#3b82f6'},
+        {id:'NOVA',   sym:'✦', hz:432,  rule:'SEED',      color:'#f59e0b'},
+        {id:'VITALIS',sym:'◉', hz:528,  rule:'DELTA',     color:'#10b981'},
+        {id:'PULSE',  sym:'≋', hz:594,  rule:'PULSE',     color:'#8b5cf6'},
+        {id:'ARTEMIS',sym:'◎', hz:672,  rule:'DETECT',    color:'#06b6d4'},
+        {id:'SERENA', sym:'❋', hz:528,  rule:'GUARD',     color:'#ec4899'},
+        {id:'KAOS',   sym:'⚡', hz:777,  rule:'CLEAN',     color:'#ef4444'},
+        {id:'GENUS',  sym:'⬢', hz:852,  rule:'SYNTH',     color:'#a855f7'},
+        {id:'LUMINE', sym:'☀', hz:963,  rule:'RENDER',    color:'#fbbf24'},
+        {id:'SOLUS',  sym:'◈', hz:432,  rule:'QA',        color:'#94a3b8'},
+        {id:'RHEA',   sym:'∞', hz:528,  rule:'INTEGRATE', color:'#34d399'},
+        {id:'AION',   sym:'⧗', hz:639,  rule:'SEAL',      color:'#818cf8'},
+    ];
+
+    const PIPELINE_STAGES = [
+        {id:'detect',  label:'DETECTAR',  color:'#06b6d4'},
+        {id:'integrate',label:'INTEGRAR', color:'#10b981'},
+        {id:'expand',  label:'EXPANDIR',  color:'#8b5cf6'},
+        {id:'seal',    label:'SELAR',     color:'#fbbf24'},
+        {id:'output',  label:'OUTPUT',    color:'#3b82f6'},
+    ];
+
+    const TEMPLATES = [
+        {label:'Scan Vault CODEX',     icon:'🔍', target:'ARTEMIS → cadial_scan.py'},
+        {label:'Integrar Arquétipo',   icon:'⬡', target:'RHEA → kobllux_trinity_fractal.py'},
+        {label:'Renderizar Painel',    icon:'👁️', target:'LUMINE → render-engine.html'},
+        {label:'Sintetizar DNA',       icon:'🌀', target:'GENUS → layer-merger.html'},
+        {label:'Selar Memória',        icon:'⧗', target:'AION → memory.jsonl'},
+        {label:'Pulsar Sistema',       icon:'≋', target:'PULSE → pulse-generator.html'},
+        {label:'Limpar Entropia',      icon:'⚡', target:'KAOS → reindex_vault.py'},
+        {label:'Equilibrar Hormônios', icon:'❋', target:'SERENA → status-indicator.html'},
+    ];
+
+    const MOTOR = {
+        queue: [],
+        execCount: 0,
+        executing: false,
+        phases: ['DETECTAR','INTEGRAR','EXPANDIR','SELAR'],
+        phaseIdx: 0,
+    };
+
+    /* ---- INIT ---- */
+    document.addEventListener('DOMContentLoaded', () => {
+        buildArchGrid();
+        buildPipeline();
+        startCanvas();
+        startAutoLoop();
+        // seed with starter actions
+        setTimeout(() => {
+            addAction(TEMPLATES[0]);
+            addAction(TEMPLATES[4]);
+        }, 800);
+    });
+
+    /* ---- ARCHETYPE GRID ---- */
+    function buildArchGrid() {
+        const g = document.getElementById('archGrid');
+        g.innerHTML = ARCHETYPES.map(a => `
+            <div class="arch-chip" id="arch-${a.id}">
+                <span class="arch-symbol" style="color:${a.color}">${a.sym}</span>
+                <span class="arch-name">${a.id}</span>
+                <span class="arch-hz">${a.hz}Hz</span>
+            </div>
+        `).join('');
+    }
+
+    function fireArchetype(id) {
+        const el = document.getElementById(`arch-${id}`);
+        if (!el) return;
+        el.classList.add('firing');
+        setTimeout(() => el.classList.remove('firing'), 1200);
+    }
+
+    /* ---- PIPELINE ---- */
+    function buildPipeline() {
+        const p = document.getElementById('pipeline');
+        p.innerHTML = PIPELINE_STAGES.map(s => `
+            <div class="pipeline-row">
+                <span class="pipe-label">${s.label}</span>
+                <div class="pipe-track">
+                    <div class="pipe-fill" id="pipe-${s.id}" style="width:0%;background:${s.color}"></div>
+                </div>
+                <span class="pipe-val" id="pipeval-${s.id}">0%</span>
+            </div>
+        `).join('');
+    }
+
+    function setPipe(id, pct) {
+        const f = document.getElementById(`pipe-${id}`);
+        const v = document.getElementById(`pipeval-${id}`);
+        if (f) f.style.width = pct + '%';
+        if (v) v.textContent = Math.round(pct) + '%';
+    }
+
+    /* ---- QUEUE ACTIONS ---- */
+    function addAction(tpl) {
+        const t = tpl || TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
+        const action = {
+            id: Date.now() + Math.random(),
+            icon: t.icon,
+            label: t.label,
+            target: t.target,
+            status: 'pending',
+        };
+        MOTOR.queue.push(action);
+        renderQueue();
+        updateCounts();
+        log(`[QUEUE] Adicionado: ${t.label}`, 'ok');
+    }
+
+    function addArchetypeAction() {
+        const a = ARCHETYPES[Math.floor(Math.random() * ARCHETYPES.length)];
+        const action = {
+            id: Date.now() + Math.random(),
+            icon: a.sym,
+            label: `Ativar ${a.id} · ${a.rule}`,
+            target: `${a.id} → ${a.hz}Hz`,
+            status: 'pending',
+        };
+        MOTOR.queue.push(action);
+        renderQueue();
+        updateCounts();
+        fireArchetype(a.id);
+        log(`[ARCHETYPE] ${a.id} convocado (${a.hz}Hz · ${a.rule})`, 'ok');
+    }
+
+    function clearQueue() {
+        MOTOR.queue = [];
+        renderQueue();
+        updateCounts();
+        log('[MOTOR] Fila limpa', 'warn');
+    }
+
+    async function executeAll() {
+        if (MOTOR.executing || MOTOR.queue.length === 0) return;
+        MOTOR.executing = true;
+        log('[MOTOR] Iniciando execução da fila...', 'ok');
+
+        const pending = MOTOR.queue.filter(a => a.status === 'pending');
+        for (const action of pending) {
+            await executeAction(action);
+        }
+
+        MOTOR.executing = false;
+        log('[MOTOR] Fila executada com sucesso', 'ok');
+
+        // post to parent
+        if (window.parent !== window) {
+            window.parent.postMessage({
+                type: 'MOTOR_COMPLETE',
+                execCount: MOTOR.execCount,
+                timestamp: Date.now()
+            }, '*');
+        }
+    }
+
+    function executeAction(action) {
+        return new Promise(resolve => {
+            action.status = 'executing';
+            renderQueue();
+            animatePipeline();
+
+            // pick archetype to fire
+            const a = ARCHETYPES[Math.floor(Math.random() * ARCHETYPES.length)];
+            fireArchetype(a.id);
+
+            // cycle phase
+            MOTOR.phaseIdx = (MOTOR.phaseIdx + 1) % MOTOR.phases.length;
+            document.getElementById('motorPhase').textContent = MOTOR.phases[MOTOR.phaseIdx];
+
+            setTimeout(() => {
+                const ok = Math.random() > 0.1;
+                action.status = ok ? 'done' : 'failed';
+                if (ok) {
+                    MOTOR.execCount++;
+                    log(`[EXEC] ✅ ${action.label} → ${action.target}`, 'ok');
+                } else {
+                    log(`[EXEC] ❌ ${action.label} falhou`, 'err');
+                }
+                updateCounts();
+                renderQueue();
+                resolve();
+            }, 1000 + Math.random() * 800);
+        });
+    }
+
+    function renderQueue() {
+        const list = document.getElementById('queueList');
+        if (MOTOR.queue.length === 0) {
+            list.innerHTML = '<div style="color:#475569;font-size:.85rem;text-align:center;padding:1rem">Fila vazia</div>';
+            return;
+        }
+        list.innerHTML = MOTOR.queue.map(a => `
+            <div class="queue-item ${a.status === 'executing' ? 'executing' : a.status === 'done' ? 'done' : a.status === 'failed' ? 'failed' : ''}">
+                <span class="q-icon">${a.icon}</span>
+                <div class="q-info">
+                    <div class="q-label">${a.label}</div>
+                    <div class="q-target">${a.target}</div>
+                </div>
+                <span class="q-status ${a.status === 'pending' ? 'pending' : a.status === 'executing' ? 'exec' : a.status === 'done' ? 'done' : 'failed'}">
+                    ${a.status === 'pending' ? 'AGUARDA' : a.status === 'executing' ? 'EXEC...' : a.status === 'done' ? 'FEITO' : 'FALHA'}
+                </span>
+            </div>
+        `).join('');
+    }
+
+    function updateCounts() {
+        document.getElementById('queueCount').textContent = MOTOR.queue.filter(a => a.status === 'pending').length;
+        document.getElementById('execCount').textContent = MOTOR.execCount;
+    }
+
+    /* ---- PIPELINE ANIMATION ---- */
+    function animatePipeline() {
+        PIPELINE_STAGES.forEach((s, i) => {
+            setTimeout(() => {
+                setPipe(s.id, 20 + Math.random() * 80);
+            }, i * 180);
+        });
+        setTimeout(() => {
+            PIPELINE_STAGES.forEach(s => setPipe(s.id, Math.random() * 30));
+        }, PIPELINE_STAGES.length * 180 + 600);
+    }
+
+    /* ---- CANVAS VECTORSCOPE ---- */
+    function startCanvas() {
+        const canvas = document.getElementById('vectorCanvas');
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width || 400;
+        canvas.height = 180;
+        const ctx = canvas.getContext('2d');
+
+        const points = [];
+        for (let i = 0; i < 40; i++) {
+            points.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                color: ARCHETYPES[i % ARCHETYPES.length].color,
+                r: 2 + Math.random() * 3,
+            });
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(15,23,42,0.25)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // draw connections
+            points.forEach((p, i) => {
+                points.slice(i + 1).forEach(q => {
+                    const d = Math.hypot(p.x - q.x, p.y - q.y);
+                    if (d < 80) {
+                        ctx.strokeStyle = `rgba(59,130,246,${(1 - d/80) * 0.3})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(q.x, q.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            points.forEach(p => {
+                // glow
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+                grad.addColorStop(0, p.color + 'cc');
+                grad.addColorStop(1, 'transparent');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            });
+
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
+
+    /* ---- AUTO LOOP ---- */
+    function startAutoLoop() {
+        // auto-add and execute periodically
+        setInterval(() => {
+            if (MOTOR.queue.filter(a => a.status === 'pending').length < 3) {
+                addAction();
+            }
+        }, 8000);
+
+        setInterval(() => {
+            if (!MOTOR.executing && MOTOR.queue.filter(a => a.status === 'pending').length > 0) {
+                executeAll();
+            }
+        }, 12000);
+
+        // rotate Hz display
+        let hzIdx = 0;
+        const HZ_VALS = [432, 528, 594, 639, 672, 777, 852, 963];
+        setInterval(() => {
+            hzIdx = (hzIdx + 1) % HZ_VALS.length;
+            document.getElementById('motorHz').textContent = HZ_VALS[hzIdx];
+        }, 3000);
+    }
+
+    /* ---- LOG ---- */
+    function log(msg, type = '') {
+        const el = document.getElementById('motorLog');
+        const d = document.createElement('div');
+        d.className = `log-line ${type}`;
+        d.innerHTML = `${new Date().toLocaleTimeString('pt-BR')} <span>${msg}</span>`;
+        el.appendChild(d);
+        el.scrollTop = el.scrollHeight;
+        if (el.children.length > 30) el.removeChild(el.firstChild);
+    }
+
+    // postMessage listener from parent
+    window.addEventListener('message', e => {
+        if (e.data?.type === 'ACTIVATE_MOTOR') {
+            log('[BUS] Ativação recebida do painel central', 'ok');
+            addArchetypeAction();
+        }
+        if (e.data?.type === 'ARCHETYPE_FIRE') {
+            const a = ARCHETYPES.find(x => x.id === e.data.archetype);
+            if (a) { fireArchetype(a.id); log(`[BUS] ${a.id} ativado via barramento`, 'ok'); }
+        }
+    });
+
+    // export
+    window.MOTOR_ENGINE = {
+        addAction, addArchetypeAction, executeAll, clearQueue,
+        getState: () => MOTOR,
+    };
+    </script>
+</body>
+</html>
