@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="endocrine-core">
+<head>
+    <meta charset="UTF-8">
+    <title>⚡ Indicador de Status Endócrino</title>
+    <style>
+        :root {
+            --endocrine-blue: #3b82f6;
+            --endocrine-purple: #8b5cf6;
+            --endocrine-green: #10b981;
+            --endocrine-orange: #f59e0b;
+            --bg-endocrine: #0f172a;
+        }
+        
+        body {
+            background: var(--bg-endocrine);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        
+        .endocrine-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .hormone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .hormone-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hormone-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+        
+        .hormone-card[data-hormone="serotonin"]::before { background: var(--endocrine-blue); }
+        .hormone-card[data-hormone="dopamine"]::before { background: var(--endocrine-green); }
+        .hormone-card[data-hormone="cortisol"]::before { background: var(--endocrine-orange); }
+        .hormone-card[data-hormone="melatonin"]::before { background: var(--endocrine-purple); }
+        
+        .hormone-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hormone-level {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .hormone-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        
+        .hormone-card[data-hormone="serotonin"] .hormone-fill { background: var(--endocrine-blue); }
+        .hormone-card[data-hormone="dopamine"] .hormone-fill { background: var(--endocrine-green); }
+        .hormone-card[data-hormone="cortisol"] .hormone-fill { background: var(--endocrine-orange); }
+        .hormone-card[data-hormone="melatonin"] .hormone-fill { background: var(--endocrine-purple); }
+        
+        .system-connections {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .connection-map {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .connection-node {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .connection-node.connected {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--endocrine-green);
+        }
+        
+        .connection-line {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.3);
+            height: 2px;
+            z-index: -1;
+        }
+        
+        .endocrine-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--endocrine-blue);
+            animation: logAppear 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry.hormone { border-left-color: var(--endocrine-green); background: rgba(16, 185, 129, 0.1); }
+        .log-entry.connection { border-left-color: var(--endocrine-purple); background: rgba(139, 92, 246, 0.1); }
+        .log-entry.warning { border-left-color: var(--endocrine-orange); background: rgba(245, 158, 11, 0.1); }
+        
+        @keyframes logAppear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .control-panel {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .endocrine-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--endocrine-blue);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .endocrine-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .endocrine-btn.primary {
+            background: linear-gradient(135deg, var(--endocrine-blue), var(--endocrine-purple));
+            border: none;
+            font-weight: bold;
+        }
+        
+        .pulse-animation {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--endocrine-green);
+            animation: pulse 2s infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="endocrine-container">
+        <h1 style="color: var(--endocrine-blue); margin: 0 0 0.5rem 0;">
+            ⚡ SISTEMA ENDÓCRINO
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Sistema de comunicação hormonal e sincronização do organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 0.5rem;">
+            <div>
+                <strong style="color: var(--endocrine-green);">STATUS: </strong>
+                <span id="system-status" style="color: white;">SINCRONIZANDO</span>
+                <div class="pulse-animation" style="display: inline-block; margin-left: 1rem;"></div>
+            </div>
+            <div class="control-panel">
+                <button onclick="startHormonalCycle()" class="endocrine-btn primary">
+                    🔄 INICIAR CICLO
+                </button>
+                <button onclick="balanceSystems()" class="endocrine-btn">
+                    ⚖️ EQUILIBRAR
+                </button>
+                <button onclick="resetEndocrine()" class="endocrine-btn">
+                    🔁 REINICIAR
+                </button>
+            </div>
+        </div>
+        
+        <div class="hormone-grid">
+            <div class="hormone-card" data-hormone="serotonin">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; color: var(--endocrine-blue);">SEROTONINA</h3>
+                    <span id="serotonin-value" style="font-size: 1.5rem; font-weight: bold; color: var(--endocrine-blue);">68%</span>
+                </div>
+                <p style="color: #94a3b8; margin: 0.5rem 0 1rem 0; font-size: 0.9rem;">
+                    Humor e bem-estar. Regula satisfação e felicidade.
+                </p>
+                <div class="hormone-level">
+                    <div class="hormone-fill" id="serotonin-level" style="width: 68%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8;">
+                    <span>Baixo</span>
+                    <span>Ótimo</span>
+                    <span>Alto</span>
+                </div>
+            </div>
+            
+            <div class="hormone-card" data-hormone="dopamine">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; color: var(--endocrine-green);">DOPAMINA</h3>
+                    <span id="dopamine-value" style="font-size: 1.5rem; font-weight: bold; color: var(--endocrine-green);">72%</span>
+                </div>
+                <p style="color: #94a3b8; margin: 0.5rem 0 1rem 0; font-size: 0.9rem;">
+                    Motivação e recompensa. Regula prazer e aprendizado.
+                </p>
+                <div class="hormone-level">
+                    <div class="hormone-fill" id="dopamine-level" style="width: 72%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8;">
+                    <span>Baixo</span>
+                    <span>Ótimo</span>
+                    <span>Alto</span>
+                </div>
+            </div>
+            
+            <div class="hormone-card" data-hormone="cortisol">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; color: var(--endocrine-orange);">CORTISOL</h3>
+                    <span id="cortisol-value" style="font-size: 1.5rem; font-weight: bold; color: var(--endocrine-orange);">42%</span>
+                </div>
+                <p style="color: #94a3b8; margin: 0.5rem 0 1rem 0; font-size: 0.9rem;">
+                    Estresse e alerta. Regula resposta a desafios.
+                </p>
+                <div class="hormone-level">
+                    <div class="hormone-fill" id="cortisol-level" style="width: 42%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8;">
+                    <span>Baixo</span>
+                    <span>Ótimo</span>
+                    <span>Alto</span>
+                </div>
+            </div>
+            
+            <div class="hormone-card" data-hormone="melatonin">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; color: var(--endocrine-purple);">MELATONINA</h3>
+                    <span id="melatonin-value" style="font-size: 1.5rem; font-weight: bold; color: var(--endocrine-purple);">15%</span>
+                </div>
+                <p style="color: #94a3b8; margin: 0.5rem 0 1rem 0; font-size: 0.9rem;">
+                    Sono e ritmo circadiano. Regula descanso e recuperação.
+                </p>
+                <div class="hormone-level">
+                    <div class="hormone-fill" id="melatonin-level" style="width: 15%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8;">
+                    <span>Baixo</span>
+                    <span>Ótimo</span>
+                    <span>Alto</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="system-connections">
+            <strong style="color: var(--endocrine-green);">🔗 CONEXÕES COM SISTEMAS:</strong>
+            <div class="connection-map" id="connectionMap">
+                <!-- Connections will be generated by JS -->
+            </div>
+        </div>
+        
+        <div class="endocrine-log" id="endocrineLog">
+            <div class="log-entry">[ENDOCRINE] Sistema endócrino inicializado</div>
+            <div class="log-entry hormone">[HORMONE] Níveis hormonais medidos</div>
+            <div class="log-entry connection">[SYNC] Conectando com sistemas...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Endocrine System
+        const ENDOCRINE_SYSTEM = {
+            active: false,
+            hormones: {
+                serotonin: { level: 68, optimal: 70, unit: '%', description: 'Humor e bem-estar' },
+                dopamine: { level: 72, optimal: 75, unit: '%', description: 'Motivação e recompensa' },
+                cortisol: { level: 42, optimal: 40, unit: '%', description: 'Estresse e alerta' },
+                melatonin: { level: 15, optimal: 80, unit: '%', description: 'Sono e ritmo' }
+            },
+            connections: {
+                dna: { connected: true, strength: 90 },
+                nervous: { connected: true, strength: 85 },
+                circulatory: { connected: true, strength: 88 },
+                synthesis: { connected: true, strength: 82 },
+                render: { connected: true, strength: 78 },
+                mutation: { connected: true, strength: 75 }
+            },
+            cycleInterval: null
+        };
+        
+        // Initialize connection map
+        function initializeConnections() {
+            const map = document.getElementById('connectionMap');
+            map.innerHTML = '';
+            
+            Object.entries(ENDOCRINE_SYSTEM.connections).forEach(([system, data]) => {
+                const node = document.createElement('div');
+                node.className = `connection-node ${data.connected ? 'connected' : ''}`;
+                node.innerHTML = `
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">
+                        ${getSystemIcon(system)}
+                    </div>
+                    <div style="font-weight: bold; font-size: 0.9rem;">${system.toUpperCase()}</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem;">
+                        ${data.strength}%
+                    </div>
+                `;
+                map.appendChild(node);
+            });
+            
+            // Draw connection lines (simplified)
+            drawConnectionLines();
+        }
+        
+        // Get system icon
+        function getSystemIcon(system) {
+            const icons = {
+                dna: '🧬',
+                nervous: '🧠',
+                circulatory: '🔄',
+                synthesis: '🌀',
+                render: '👁️',
+                mutation: '🧬'
+            };
+            return icons[system] || '⚡';
+        }
+        
+        // Draw connection lines (visual simulation)
+        function drawConnectionLines() {
+            // In a real implementation, this would use SVG or canvas
+            // For now, we'll just update connection strengths
+            setTimeout(() => {
+                Object.keys(ENDOCRINE_SYSTEM.connections).forEach(system => {
+                    const connection = ENDOCRINE_SYSTEM.connections[system];
+                    // Simulate slight fluctuations
+                    connection.strength = Math.min(100, Math.max(60, 
+                        connection.strength + (Math.random() - 0.5) * 5
+                    ));
+                });
+                
+                // Update connection map
+                initializeConnections();
+                
+                // Log connection health
+                if (Math.random() > 0.7) {
+                    const systems = Object.keys(ENDOCRINE_SYSTEM.connections);
+                    const randomSystem = systems[Math.floor(Math.random() * systems.length)];
+                    addLog(`[CONNECTION] ${randomSystem.toUpperCase()} sincronizado (${ENDOCRINE_SYSTEM.connections[randomSystem].strength}%)`, 'connection');
+                }
+            }, 1000);
+        }
+        
+        // Start hormonal cycle
+        function startHormonalCycle() {
+            if (ENDOCRINE_SYSTEM.active) {
+                stopHormonalCycle();
+                return;
+            }
+            
+            ENDOCRINE_SYSTEM.active = true;
+            const button = event.target;
+            button.textContent = '⏸️ PAUSAR CICLO';
+            button.style.background = 'rgba(245, 158, 11, 0.2)';
+            button.style.borderColor = '#f59e0b';
+            
+            document.getElementById('system-status').textContent = 'CICLO ATIVO';
+            
+            addLog('[CYCLE] Ciclo hormonal iniciado', 'hormone');
+            
+            // Start cycle simulation
+            ENDOCRINE_SYSTEM.cycleInterval = setInterval(simulateHormonalCycle, 2000);
+            
+            // Update hormone levels gradually
+            simulateHormonalCycle();
+        }
+        
+        // Stop hormonal cycle
+        function stopHormonalCycle() {
+            ENDOCRINE_SYSTEM.active = false;
+            const button = event.target;
+            button.textContent = '🔄 INICIAR CICLO';
+            button.style.background = '';
+            button.style.borderColor = 'var(--endocrine-blue)';
+            
+            document.getElementById('system-status').textContent = 'PAUSADO';
+            
+            addLog('[CYCLE] Ciclo hormonal pausado');
+            
+            clearInterval(ENDOCRINE_SYSTEM.cycleInterval);
+        }
+        
+        // Simulate hormonal cycle
+        function simulateHormonalCycle() {
+            if (!ENDOCRINE_SYSTEM.active) return;
+            
+            // Update each hormone level
+            Object.keys(ENDOCRINE_SYSTEM.hormones).forEach(hormone => {
+                const data = ENDOCRINE_SYSTEM.hormones[hormone];
+                
+                // Simulate natural fluctuation
+                const change = (Math.random() - 0.5) * 4;
+                data.level = Math.max(0, Math.min(100, data.level + change));
+                
+                // Update display
+                document.getElementById(`${hormone}-value`).textContent = `${data.level.toFixed(0)}%`;
+                document.getElementById(`${hormone}-level`).style.width = `${data.level}%`;
+                
+                // Color feedback
+                const levelEl = document.getElementById(`${hormone}-level`);
+                const diff = Math.abs(data.level - data.optimal);
+                
+                if (diff < 10) {
+                    levelEl.style.opacity = '1';
+                } else if (diff < 20) {
+                    levelEl.style.opacity = '0.8';
+                } else {
+                    levelEl.style.opacity = '0.6';
+                    if (Math.random() > 0.9) {
+                        addLog(`[WARNING] ${hormone.toUpperCase()} fora do ideal (${data.level.toFixed(0)}%)`, 'warning');
+                    }
+                }
+            });
+            
+            // Occasionally log hormonal balance
+            if (Math.random() > 0.8) {
+                const balance = calculateHormonalBalance();
+                addLog(`[BALANCE] Equilíbrio hormonal: ${balance.toFixed(1)}%`, 'hormone');
+            }
+        }
+        
+        // Calculate hormonal balance
+        function calculateHormonalBalance() {
+            let totalDiff = 0;
+            Object.values(ENDOCRINE_SYSTEM.hormones).forEach(hormone => {
+                totalDiff += Math.abs(hormone.level - hormone.optimal);
+            });
+            
+            const maxDiff = 100 * Object.keys(ENDOCRINE_SYSTEM.hormones).length;
+            return Math.max(0, 100 - (totalDiff / maxDiff * 100));
+        }
+        
+        // Balance all systems
+        function balanceSystems() {
+            addLog('[BALANCE] Equilibrando sistemas...', 'hormone');
+            
+            // Gradually move hormones toward optimal levels
+            Object.keys(ENDOCRINE_SYSTEM.hormones).forEach(hormone => {
+                const data = ENDOCRINE_SYSTEM.hormones[hormone];
+                const step = (data.optimal - data.level) * 0.3;
+                data.level += step;
+                
+                // Animate the change
+                const levelEl = document.getElementById(`${hormone}-level`);
+                const valueEl = document.getElementById(`${hormone}-value`);
+                
+                animateValue(valueEl, parseFloat(valueEl.textContent), data.level, 1000);
+                levelEl.style.width = `${data.level}%`;
+                
+                // Improve connection strengths
+                Object.values(ENDOCRINE_SYSTEM.connections).forEach(conn => {
+                    conn.strength = Math.min(100, conn.strength + 2);
+                });
+            });
+            
+            // Update connections
+            initializeConnections();
+            
+            addLog('[BALANCE] Sistemas equilibrados', 'connection');
+        }
+        
+        // Animate value changes
+        function animateValue(element, start, end, duration) {
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const current = start + (end - start) * progress;
+                element.textContent = `${current.toFixed(0)}%`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        // Reset endocrine system
+        function resetEndocrine() {
+            stopHormonalCycle();
+            
+            // Reset to default values
+            ENDOCRINE_SYSTEM.hormones = {
+                serotonin: { level: 68, optimal: 70, unit: '%', description: 'Humor e bem-estar' },
+                dopamine: { level: 72, optimal: 75, unit: '%', description: 'Motivação e recompensa' },
+                cortisol: { level: 42, optimal: 40, unit: '%', description: 'Estresse e alerta' },
+                melatonin: { level: 15, optimal: 80, unit: '%', description: 'Sono e ritmo' }
+            };
+            
+            // Reset connections
+            Object.values(ENDOCRINE_SYSTEM.connections).forEach(conn => {
+                conn.strength = 75 + Math.random() * 20;
+            });
+            
+            // Update displays
+            Object.keys(ENDOCRINE_SYSTEM.hormones).forEach(hormone => {
+                const data = ENDOCRINE_SYSTEM.hormones[hormone];
+                document.getElementById(`${hormone}-value`).textContent = `${data.level.toFixed(0)}%`;
+                document.getElementById(`${hormone}-level`).style.width = `${data.level}%`;
+            });
+            
+            initializeConnections();
+            
+            document.getElementById('system-status').textContent = 'SINCRONIZANDO';
+            
+            addLog('[SYSTEM] Sistema endócrino reinicializado');
+        }
+        
+        // Add log entry
+        function addLog(message, type = '') {
+            const log = document.getElementById('endocrineLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Limit log size
+            if (log.children.length > 20) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('⚡ Sistema endócrino inicializado');
+            
+            initializeConnections();
+            
+            // Auto-start cycle after 3 seconds
+            setTimeout(() => {
+                startHormonalCycle();
+            }, 3000);
+            
+            // Auto-balance every 30 seconds
+            setInterval(() => {
+                if (ENDOCRINE_SYSTEM.active && Math.random() > 0.7) {
+                    balanceSystems();
+                }
+            }, 30000);
+        });
+        
+        // Export API
+        window.ENDOCRINE_SYSTEM = {
+            startCycle: startHormonalCycle,
+            stopCycle: stopHormonalCycle,
+            balanceSystems,
+            resetSystem: resetEndocrine,
+            getState: () => ENDOCRINE_SYSTEM,
+            version: '1.0.0-endocrine'
+        };
+    </script>
+</body>
+</html>

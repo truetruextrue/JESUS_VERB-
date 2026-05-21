@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-kobllux-frequency="369" data-organism="sumbus-metahuman">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧬 SÜMBÜS Metahuman Architect v1.0</title>
+    
+    <!-- DNA Styles -->
+    <link rel="stylesheet" href="assets/dna/frequency-3.css">
+    
+    <style>
+        /* Enhanced Styles for Control Panel */
+        :root {
+            --freq-3: #3b82f6;
+            --freq-6: #8b5cf6;
+            --freq-9: #10b981;
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-border: rgba(59, 130, 246, 0.3);
+        }
+        
+        body {
+            background: var(--bg-darker);
+            color: #e2e8f0;
+            font-family: 'Inter', 'JetBrains Mono', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+        }
+        
+        /* Neural Network Background */
+        .neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        /* Main Container */
+        .control-panel {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .org-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--glass-bg);
+            border-radius: 1.5rem;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .org-title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--freq-3), var(--freq-6), var(--freq-9));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: -0.05em;
+        }
+        
+        .org-subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Frequency Indicators */
+        .freq-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .freq-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .freq-dot:nth-child(1) { background: var(--freq-3); animation-delay: 0s; }
+        .freq-dot:nth-child(2) { background: var(--freq-6); animation-delay: 0.3s; }
+        .freq-dot:nth-child(3) { background: var(--freq-9); animation-delay: 0.6s; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* System Grid */
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .system-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .system-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--freq-3), var(--freq-6), var(--freq-9));
+        }
+        
+        .system-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--glass-border);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+        
+        .system-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .system-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        
+        .status-active { background: rgba(16, 185, 129, 0.2); color: var(--freq-9); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-inactive { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }
+        .status-warning { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+        
+        /* Action Buttons */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .action-btn {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--freq-3);
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--freq-3), var(--freq-6));
+            border: none;
+            font-weight: bold;
+        }
+        
+        /* Status Panel */
+        .status-panel {
+            background: var(--glass-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--freq-3), var(--freq-6), var(--freq-9));
+            width: 3.6%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+        
+        /* Log Panel */
+        .log-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--freq-3);
+            animation: logAppear 0.3s ease;
+        }
+        
+        @keyframes logAppear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .control-panel { padding: 1rem; }
+            .org-title { font-size: 2rem; }
+            .system-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body data-organism-state="initializing">
+    <!-- Neural Background -->
+    <div class="neural-bg" id="neuralBg"></div>
+    
+    <!-- Main Control Panel -->
+    <div class="control-panel">
+        <!-- Header -->
+        <div class="org-header">
+            <h1 class="org-title">SÜMBÜS METAHUMAN ARCHITECT</h1>
+            <p class="org-subtitle">Organismo Digital Fractal • DNA KOBLLUX • Frequência 3-6-9</p>
+            
+            <div class="freq-indicators">
+                <div class="freq-dot"></div>
+                <div class="freq-dot"></div>
+                <div class="freq-dot"></div>
+            </div>
+            
+            <div style="margin-top: 1rem; color: #94a3b8; font-size: 0.9rem;">
+                <span id="org-status">🔄 Inicializando sistemas...</span>
+                • <span id="org-progress">Progresso: 3.6%</span>
+                • <span id="org-freq">Frequência: 6Hz</span>
+            </div>
+        </div>
+        
+        <!-- System Grid -->
+        <div class="system-grid">
+            <!-- DNA Core -->
+            <div class="system-card" id="dna-core">
+                <div class="system-icon">🧬</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-3);">DNA CORE</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Código genético do organismo. Define identidade e frequências fundamentais.
+                </p>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('core/dna.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--freq-3); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir DNA
+                </button>
+            </div>
+            
+            <!-- Nervous System -->
+            <div class="system-card" id="nervous-system">
+                <div class="system-icon">🧠</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-6);">SISTEMA NERVOSO</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Interface e controle neural. Processa interações e comandos.
+                </p>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('systems/nervous/interface-core.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--freq-6); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Interface
+                </button>
+            </div>
+            
+            <!-- Synthesis Engine -->
+            <div class="system-card" id="synthesis-engine">
+                <div class="system-icon">🌀</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-9);">MOTOR DE SÍNTESE</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Fusão e integração de camadas DNA. Criação de novo código genético.
+                </p>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('cortex/synthesis-engine/layer-merger.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--freq-9); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Sintetizador
+                </button>
+            </div>
+            
+            <!-- Render Engine -->
+            <div class="system-card" id="render-engine">
+                <div class="system-icon">👁️</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-3);">RENDERIZAÇÃO</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Sistema visual fractal. Geração de partículas e animações.
+                </p>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('sensory/visual/render-engine.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--freq-3); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Renderizador
+                </button>
+            </div>
+            
+            <!-- Mutation System -->
+            <div class="system-card" id="mutation-system">
+                <div class="system-icon">🧬</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--freq-6);">MUTAÇÃO ADAPTATIVA</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Evolução do DNA. Adaptação e otimização do organismo.
+                </p>
+                <div class="system-status status-active">✅ ATIVO</div>
+                <button onclick="openSystem('evolution/mutations/adaptive-mutation.html')" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--freq-6); color: white; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Abrir Evolução
+                </button>
+            </div>
+            
+            <!-- Inactive Systems -->
+            <div class="system-card" id="circulatory-system">
+                <div class="system-icon">🔄</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: #94a3b8;">SISTEMA CIRCULATÓRIO</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Fluxo de dados e APIs. Conexão com sistemas externos.
+                </p>
+                <div class="system-status status-inactive">⏳ INATIVO</div>
+            </div>
+            
+            <div class="system-card" id="endocrine-system">
+                <div class="system-icon">⚡</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: #94a3b8;">SISTEMA ENDÓCRINO</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Comunicação hormonal. Sincronização de sistemas.
+                </p>
+                <div class="system-status status-inactive">⏳ INATIVO</div>
+            </div>
+            
+            <div class="system-card" id="motor-system">
+                <div class="system-icon">🏃</div>
+                <h3 style="margin: 0 0 0.5rem 0; color: #94a3b8;">SISTEMA MOTOR</h3>
+                <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                    Execução de ações. Resposta a comandos.
+                </p>
+                <div class="system-status status-inactive">⏳ INATIVO</div>
+            </div>
+        </div>
+        
+        <!-- Action Grid -->
+        <div class="action-grid">
+            <button class="action-btn primary" onclick="activateAllSystems()">
+                <span>⚡</span> ATIVAR TODOS OS SISTEMAS
+            </button>
+            
+            <button class="action-btn" onclick="runDiagnostics()">
+                <span>🔍</span> EXECUTAR DIAGNÓSTICO
+            </button>
+            
+            <button class="action-btn" onclick="updateDNA()">
+                <span>🔄</span> ATUALIZAR DNA
+            </button>
+            
+            <button class="action-btn" onclick="exportOrganism()">
+                <span>📤</span> EXPORTAR ORGANISMO
+            </button>
+        </div>
+        
+        <!-- Status Panel -->
+        <div class="status-panel">
+            <h3 style="margin: 0 0 1rem 0; color: white;">📊 STATUS DO ORGANISMO</h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <div style="font-size: 0.9rem; color: #94a3b8;">SISTEMAS ATIVOS</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-9);">5/8</div>
+                </div>
+                
+                <div>
+                    <div style="font-size: 0.9rem; color: #94a3b8;">ARQUIVOS</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-6);">8/250</div>
+                </div>
+                
+                <div>
+                    <div style="font-size: 0.9rem; color: #94a3b8;">PROGRESSO</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-3);">3.6%</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.9rem; color: #94a3b8;">Implementação do organismo</span>
+                    <span style="font-size: 0.9rem; color: white;">3.6%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="orgProgressFill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Log Panel -->
+        <div class="log-panel" id="logPanel">
+            <div class="log-entry">[SYSTEM] Painel de controle inicializado</div>
+            <div class="log-entry">[DNA] Conectando com core/dna.html...</div>
+            <div class="log-entry">[NERVOUS] Sistema nervoso online</div>
+            <div class="log-entry">[SYNTHESIS] Motor de síntese carregado</div>
+            <div class="log-entry">[RENDER] Renderizador ativo</div>
+            <div class="log-entry">[MUTATION] Sistema de evolução pronto</div>
+        </div>
+    </div>
+    
+    <script>
+        // Organism State
+        const ORGANISM = {
+            version: "1.0.0-metahuman",
+            systems: {
+                dna: { active: true, path: "core/dna.html" },
+                nervous: { active: true, path: "systems/nervous/interface-core.html" },
+                synthesis: { active: true, path: "cortex/synthesis-engine/layer-merger.html" },
+                render: { active: true, path: "sensory/visual/render-engine.html" },
+                mutation: { active: true, path: "evolution/mutations/adaptive-mutation.html" },
+                circulatory: { active: false, path: null },
+                endocrine: { active: false, path: null },
+                motor: { active: false, path: null }
+            },
+            files: 8,
+            totalFiles: 250,
+            frequency: 6,
+            state: "initializing"
+        };
+        
+        // Neural Background
+        function createNeuralBackground() {
+            const bg = document.getElementById('neuralBg');
+            const colors = ['#3b82f6', '#8b5cf6', '#10b981'];
+            
+            for (let i = 0; i < 20; i++) {
+                const path = document.createElement('div');
+                path.style.cssText = `
+                    position: absolute;
+                    width: 1px;
+                    height: ${100 + Math.random() * 200}px;
+                    background: ${colors[i % 3]};
+                    opacity: 0.05;
+                    transform: rotate(${Math.random() * 360}deg);
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                `;
+                bg.appendChild(path);
+            }
+            
+            // Animate
+            setInterval(() => {
+                const paths = bg.children;
+                for (let path of paths) {
+                    const currentOpacity = parseFloat(path.style.opacity);
+                    path.style.opacity = (currentOpacity + (Math.random() - 0.5) * 0.02).toFixed(3);
+                }
+            }, 100);
+        }
+        
+        // Open System
+        function openSystem(path) {
+            addLog(`[NAVIGATION] Abrindo ${path}`);
+            
+            // Create iframe overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(2, 6, 23, 0.95);
+                z-index: 10000;
+                display: flex;
+                flex-direction: column;
+                backdrop-filter: blur(20px);
+            `;
+            
+            const header = document.createElement('div');
+            header.style.cssText = `
+                padding: 1rem;
+                background: rgba(15, 23, 42, 0.8);
+                border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            `;
+            
+            const title = document.createElement('div');
+            title.style.cssText = `
+                color: white;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1.1rem;
+            `;
+            title.textContent = `Sistema: ${path}`;
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.style.cssText = `
+                padding: 0.5rem 1rem;
+                background: rgba(239, 68, 68, 0.2);
+                border: 1px solid #ef4444;
+                color: white;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                font-family: 'JetBrains Mono', monospace;
+            `;
+            closeBtn.textContent = 'FECHAR';
+            closeBtn.onclick = () => {
+                document.body.removeChild(overlay);
+                addLog(`[NAVIGATION] Fechando ${path}`);
+            };
+            
+            header.appendChild(title);
+            header.appendChild(closeBtn);
+            
+            const iframe = document.createElement('iframe');
+            iframe.style.cssText = `
+                flex: 1;
+                width: 100%;
+                border: none;
+                background: white;
+            `;
+            iframe.src = path;
+            
+            overlay.appendChild(header);
+            overlay.appendChild(iframe);
+            document.body.appendChild(overlay);
+            
+            // Update URL without page reload
+            window.history.pushState({ system: path }, `Sistema: ${path}`, `#${path}`);
+        }
+        
+        // Activate All Systems
+        function activateAllSystems() {
+            addLog('[ACTION] Ativando todos os sistemas...');
+            
+            // Simulate activation
+            const inactiveSystems = ['circulatory', 'endocrine', 'motor'];
+            let delay = 0;
+            
+            inactiveSystems.forEach(system => {
+                setTimeout(() => {
+                    const card = document.getElementById(`${system}-system`);
+                    const status = card.querySelector('.system-status');
+                    
+                    status.textContent = '🔄 ATIVANDO...';
+                    status.className = 'system-status status-warning';
+                    
+                    addLog(`[ACTIVATION] Iniciando ${system}...`);
+                    
+                    setTimeout(() => {
+                        ORGANISM.systems[system].active = true;
+                        status.textContent = '✅ ATIVO';
+                        status.className = 'system-status status-active';
+                        
+                        // Add button
+                        const button = document.createElement('button');
+                        button.textContent = `Abrir ${system.charAt(0).toUpperCase() + system.slice(1)}`;
+                        button.style.cssText = `
+                            margin-top: 1rem;
+                            padding: 0.5rem 1rem;
+                            background: rgba(59, 130, 246, 0.1);
+                            border: 1px solid var(--freq-3);
+                            color: white;
+                            border-radius: 0.5rem;
+                            cursor: pointer;
+                            width: 100%;
+                        `;
+                        button.onclick = () => {
+                            addLog(`[SYSTEM] ${system} ainda não implementado`);
+                            alert(`Sistema ${system} será implementado na próxima fase!`);
+                        };
+                        
+                        card.appendChild(button);
+                        
+                        addLog(`[SUCCESS] ${system.toUpperCase()} ativado`);
+                        
+                        // Update progress
+                        updateProgress();
+                    }, 1500);
+                }, delay);
+                
+                delay += 2000;
+            });
+        }
+        
+        // Run Diagnostics
+        function runDiagnostics() {
+            addLog('[DIAGNOSTIC] Executando diagnóstico completo...');
+            
+            const checks = [
+                { name: 'DNA Core', check: () => ORGANISM.systems.dna.active },
+                { name: 'Sistema Nervoso', check: () => ORGANISM.systems.nervous.active },
+                { name: 'Motor de Síntese', check: () => ORGANISM.systems.synthesis.active },
+                { name: 'Renderização', check: () => ORGANISM.systems.render.active },
+                { name: 'Mutação', check: () => ORGANISM.systems.mutation.active }
+            ];
+            
+            let delay = 0;
+            checks.forEach(check => {
+                setTimeout(() => {
+                    const passed = check.check();
+                    addLog(`[CHECK] ${check.name}: ${passed ? '✅ OK' : '❌ FALHA'}`);
+                    
+                    if (passed) {
+                        document.getElementById('logPanel').lastChild.style.borderLeftColor = '#10b981';
+                        document.getElementById('logPanel').lastChild.style.background = 'rgba(16, 185, 129, 0.1)';
+                    }
+                }, delay);
+                
+                delay += 500;
+            });
+            
+            setTimeout(() => {
+                addLog('[DIAGNOSTIC] Diagnóstico completo. 5/5 sistemas operacionais.');
+            }, delay);
+        }
+        
+        // Update DNA
+        function updateDNA() {
+            addLog('[DNA] Iniciando atualização do código genético...');
+            
+            // Simulate DNA update
+            const progressFill = document.getElementById('orgProgressFill');
+            let progress = 3.6;
+            
+            const interval = setInterval(() => {
+                progress += 0.5;
+                progressFill.style.width = `${progress}%`;
+                document.getElementById('org-progress').textContent = `Progresso: ${progress.toFixed(1)}%`;
+                
+                if (progress >= 10) {
+                    clearInterval(interval);
+                    ORGANISM.files += 5;
+                    updateProgress();
+                    addLog('[DNA] Atualização completa! 5 novos arquivos gerados.');
+                }
+            }, 100);
+        }
+        
+        // Export Organism
+        function exportOrganism() {
+            addLog('[EXPORT] Preparando exportação do organismo...');
+            
+            // Create export data
+            const exportData = {
+                organism: ORGANISM,
+                timestamp: new Date().toISOString(),
+                structure: {
+                    core: ['dna.html', 'init.js'],
+                    systems: ['nervous/interface-core.html'],
+                    cortex: ['synthesis-engine/layer-merger.html'],
+                    sensory: ['visual/render-engine.html'],
+                    evolution: ['mutations/adaptive-mutation.html']
+                },
+                metadata: {
+                    frequency: '3-6-9',
+                    version: '1.0.0-metahuman',
+                    author: 'KOBLLUX Architect'
+                }
+            };
+            
+            // Create download
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `sumbus_metahuman_export_${Date.now()}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            addLog(`[EXPORT] Organismo exportado: ${exportFileDefaultName}`);
+        }
+        
+        // Update Progress
+        function updateProgress() {
+            const activeSystems = Object.values(ORGANISM.systems).filter(s => s.active).length;
+            const progress = (ORGANISM.files / ORGANISM.totalFiles * 100).toFixed(1);
+            
+            // Update displays
+            document.getElementById('org-progress').textContent = `Progresso: ${progress}%`;
+            document.getElementById('org-freq').textContent = `Frequência: ${ORGANISM.frequency}Hz`;
+            
+            // Update progress bar
+            document.getElementById('orgProgressFill').style.width = `${progress}%`;
+            
+            // Update organism state
+            if (progress >= 50) {
+                ORGANISM.state = "maturing";
+                document.body.setAttribute('data-organism-state', 'maturing');
+            } else if (progress >= 20) {
+                ORGANISM.state = "growing";
+                document.body.setAttribute('data-organism-state', 'growing');
+            }
+            
+            // Update status
+            if (activeSystems === 8) {
+                document.getElementById('org-status').textContent = '✅ Todos os sistemas ativos';
+                ORGANISM.state = "fully_active";
+                document.body.setAttribute('data-organism-state', 'fully_active');
+            } else if (activeSystems >= 5) {
+                document.getElementById('org-status').textContent = '🔄 Sistemas principais ativos';
+            }
+        }
+        
+        // Add Log Entry
+        function addLog(message) {
+            const logPanel = document.getElementById('logPanel');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = message;
+            logPanel.appendChild(entry);
+            logPanel.scrollTop = logPanel.scrollHeight;
+            
+            // Limit log size
+            if (logPanel.children.length > 20) {
+                logPanel.removeChild(logPanel.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧬 SÜMBÜS Metahuman Control Panel v1.0');
+            
+            createNeuralBackground();
+            updateProgress();
+            
+            // Auto-log updates
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const messages = [
+                        '[SYSTEM] Monitorando integridade...',
+                        '[MEMORY] Cache otimizado',
+                        '[NETWORK] Conexões estáveis',
+                        '[ENERGY] Frequência constante'
+                    ];
+                    addLog(messages[Math.floor(Math.random() * messages.length)]);
+                }
+            }, 5000);
+            
+            // Initial log
+            setTimeout(() => {
+                addLog('[SYSTEM] Painel de controle totalmente operacional');
+                addLog('[READY] Pronto para comandos');
+            }, 1000);
+        });
+        
+        // Handle browser back button
+        window.addEventListener('popstate', () => {
+            // Close any open system overlays
+            const overlays = document.querySelectorAll('[style*="position: fixed"][style*="z-index: 10000"]');
+            overlays.forEach(overlay => overlay.remove());
+        });
+        
+        // Export API
+        window.SÜMBÜS_CONTROL = {
+            openSystem,
+            activateAllSystems,
+            runDiagnostics,
+            updateDNA,
+            exportOrganism,
+            getState: () => ORGANISM,
+            version: '1.0.0'
+        };
+    </script>
+</body>
+</html>
