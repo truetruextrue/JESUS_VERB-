@@ -96,12 +96,16 @@ while :; do
   CICLO_N=$((CICLO_N + 1))
   say "─── Ciclo ${CICLO_N} iniciado ───"
 
-  # 3 · DETECTAR: scan
-  if command -v python3 &>/dev/null && [[ -f "${SCRIPTS}/knot_parser.py" ]]; then
+  # 3 · DETECTAR: scan — fonte deve ser quicknote.md, NÃO o próprio LOG
+  QUICKNOTE="${QUICKNOTE:-}"
+  if [[ -n "$QUICKNOTE" && -f "$QUICKNOTE" && -f "${SCRIPTS}/knot_parser.py" ]]; then
     python3 "${SCRIPTS}/knot_parser.py" \
-      --input "${ROOT}/LOGS/LOG.jsonl" \
+      --input "$QUICKNOTE" \
+      --log "${ROOT}/LOGS/LOG.jsonl" \
       --output-dir "${ROOT}/LOGS" 2>>"$LOG" || true
-    echo "$(date -Is) | ∆7 | SCAN | ok" >> "$LOG"
+    echo "$(date -Is) | ∆7 | SCAN | $QUICKNOTE" >> "$LOG"
+  else
+    echo "$(date -Is) | ∆7 | SCAN_SKIP | defina QUICKNOTE=/caminho/quicknote.md" >> "$LOG"
   fi
 
   # 6 · INTEGRAR: narrar cada ID
