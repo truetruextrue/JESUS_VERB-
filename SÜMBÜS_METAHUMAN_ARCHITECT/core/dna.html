@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-frequency="3" data-organ="dna-core">
+<head>
+    <meta charset="UTF-8">
+    <title>🧬 DNA KOBLLUX Metahuman</title>
+    <style>
+        :root {
+            --freq-3: #3b82f6;
+            --freq-6: #8b5cf6; 
+            --freq-9: #10b981;
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+        }
+        
+        body {
+            background: var(--bg-darker);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .dna-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.95));
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.1);
+        }
+        
+        .frequency-display {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .frequency {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .frequency-3 { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--freq-3); }
+        .frequency-6 { background: rgba(139, 92, 246, 0.1); border: 1px solid var(--freq-6); }
+        .frequency-9 { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--freq-9); }
+        
+        .helix {
+            position: relative;
+            height: 200px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .helix-strand {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: var(--freq-3);
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+        
+        .helix-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        }
+        
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .system-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        
+        .system-card:hover {
+            background: rgba(59, 130, 246, 0.05);
+            border-color: var(--freq-3);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="dna-container">
+        <h1 style="color: var(--freq-3); margin: 0 0 1rem 0;">
+            🧬 DNA KOBLLUX METAHUMAN
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Código genético do organismo digital SÜMBÜS
+        </p>
+        
+        <div class="frequency-display">
+            <div class="frequency frequency-3">
+                <div style="font-size: 2rem; color: var(--freq-3);">3</div>
+                <div>UNO</div>
+                <div style="font-size: 0.8rem; opacity: 0.7;">Unidade</div>
+            </div>
+            <div class="frequency frequency-6">
+                <div style="font-size: 2rem; color: var(--freq-6);">6</div>
+                <div>DUO</div>
+                <div style="font-size: 0.8rem; opacity: 0.7;">Polaridade</div>
+            </div>
+            <div class="frequency frequency-9">
+                <div style="font-size: 2rem; color: var(--freq-9);">9</div>
+                <div>TRINITY</div>
+                <div style="font-size: 0.8rem; opacity: 0.7;">Convergência</div>
+            </div>
+        </div>
+        
+        <div class="helix">
+            <div class="helix-strand"></div>
+            <!-- Nodes serão gerados por JS -->
+        </div>
+        
+        <div class="system-grid">
+            <div class="system-card">
+                <strong style="color: var(--freq-3);">🎯 SISTEMA NERVOSO</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem;">Interface e controle</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;">Status: <span id="nervous-status">iniciando...</span></div>
+            </div>
+            
+            <div class="system-card">
+                <strong style="color: var(--freq-6);">🔄 SISTEMA CIRCULATÓRIO</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem;">Fluxo de dados</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;">Status: <span id="circulatory-status">inativo</span></div>
+            </div>
+            
+            <div class="system-card">
+                <strong style="color: var(--freq-9);">🧠 CÓRTEX</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem;">Processamento superior</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;">Status: <span id="cortex-status">inativo</span></div>
+            </div>
+            
+            <div class="system-card">
+                <strong style="color: var(--freq-3);">👁️ SENSORIAL</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem;">Percepção e render</div>
+                <div style="font-size: 0.8rem; color: #94a3b8;">Status: <span id="sensory-status">inativo</span></div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem; padding: 1rem; background: rgba(16, 185, 129, 0.05); border-radius: 0.5rem; border: 1px solid rgba(16, 185, 129, 0.2);">
+            <strong style="color: var(--freq-9);">📊 STATUS DO ORGANISMO</strong>
+            <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+                <div>🔄 Progresso: <span id="progress">1.6%</span></div>
+                <div>🎯 Fase atual: <span id="current-phase">Ativação do sistema nervoso</span></div>
+                <div>⚡ Frequência: <span id="current-frequency">3Hz</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // DNA Configuration
+        const KOBLLUX_DNA = {
+            VERSION: "1.0.0-metahuman",
+            FREQUENCIES: { 
+                UNO: 3, 
+                DUO: 6, 
+                TRINITY: 9 
+            },
+            SYSTEMS: [
+                { id: "nervous", name: "Sistema Nervoso", status: "activating", freq: 3 },
+                { id: "circulatory", name: "Sistema Circulatório", status: "inactive", freq: 6 },
+                { id: "endocrine", name: "Sistema Endócrino", status: "inactive", freq: 6 },
+                { id: "motor", name: "Sistema Motor", status: "inactive", freq: 3 },
+                { id: "cortex", name: "Córtex", status: "inactive", freq: 9 },
+                { id: "sensory", name: "Sensorial", status: "inactive", freq: 6 }
+            ],
+            STATE: "initializing",
+            PROGRESS: 1.6
+        };
+        
+        // Create DNA helix visualization
+        const helix = document.querySelector('.helix');
+        for (let i = 0; i < 20; i++) {
+            const node = document.createElement('div');
+            node.className = 'helix-node';
+            node.style.top = `${(i * 10)}%`;
+            node.style.background = i % 3 === 0 ? 'var(--freq-3)' : 
+                                   i % 3 === 1 ? 'var(--freq-6)' : 
+                                   'var(--freq-9)';
+            node.style.animationDelay = `${i * 0.15}s`;
+            helix.appendChild(node);
+        }
+        
+        // Update status display
+        function updateStatus() {
+            document.getElementById('nervous-status').textContent = 'ativando...';
+            document.getElementById('progress').textContent = `${KOBLLUX_DNA.PROGRESS}%`;
+            document.getElementById('current-frequency').textContent = '3Hz';
+            
+            // Simulate activation sequence
+            setTimeout(() => {
+                document.getElementById('nervous-status').textContent = 'ativo';
+                document.getElementById('nervous-status').style.color = 'var(--freq-9)';
+                
+                // Update DNA state
+                KOBLLUX_DNA.STATE = "nervous_active";
+                KOBLLUX_DNA.PROGRESS = 10.0;
+                
+                console.log('🧬 DNA atualizado:', KOBLLUX_DNA);
+                
+                // Notify parent window if in iframe
+                if (window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'DNA_UPDATE',
+                        dna: KOBLLUX_DNA
+                    }, '*');
+                }
+            }, 2000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', updateStatus);
+        window.KOBLLUX_DNA = KOBLLUX_DNA;
+        
+        console.log('🧬 DNA KOBLLUX Metahuman carregado');
+    </script>
+</body>
+</html>

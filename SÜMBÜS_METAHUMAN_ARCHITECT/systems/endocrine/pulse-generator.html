@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="pulse-rhythm">
+<head>
+    <meta charset="UTF-8">
+    <title>💓 Gerador de Pulsos - Sistema Endócrino</title>
+    <style>
+        :root {
+            --pulse-red: #ef4444;
+            --pulse-blue: #3b82f6;
+            --pulse-green: #10b981;
+            --pulse-purple: #8b5cf6;
+            --pulse-orange: #f59e0b;
+            --pulse-pink: #ec4899;
+            --bg-pulse: #0f172a;
+        }
+        
+        body {
+            background: var(--bg-pulse);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        
+        .pulse-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .heartbeat-visualizer {
+            height: 200px;
+            margin: 2rem 0;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            overflow: hidden;
+        }
+        
+        .heartbeat-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(239, 68, 68, 0.5);
+            transform: translateY(-50%);
+        }
+        
+        .heartbeat-pulse {
+            position: absolute;
+            bottom: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--pulse-red);
+            animation: heartbeat 1.2s infinite;
+            transform-origin: bottom;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+        
+        .pulse-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .pulse-node {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .pulse-node.active {
+            border-color: var(--pulse-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .pulse-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--pulse-red);
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .pulse-node[data-frequency="delta"] .pulse-indicator {
+            background: var(--pulse-blue);
+            animation-duration: 3s;
+        }
+        
+        .pulse-node[data-frequency="theta"] .pulse-indicator {
+            background: var(--pulse-green);
+            animation-duration: 2s;
+        }
+        
+        .pulse-node[data-frequency="alpha"] .pulse-indicator {
+            background: var(--pulse-purple);
+            animation-duration: 1.5s;
+        }
+        
+        .pulse-node[data-frequency="beta"] .pulse-indicator {
+            background: var(--pulse-orange);
+            animation-duration: 1s;
+        }
+        
+        .pulse-node[data-frequency="gamma"] .pulse-indicator {
+            background: var(--pulse-pink);
+            animation-duration: 0.5s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .frequency-visualizer {
+            margin: 2rem 0;
+            height: 150px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .frequency-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            opacity: 0.7;
+            mix-blend-mode: screen;
+        }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .control-group {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .slider-container {
+            margin: 1rem 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--pulse-red);
+            cursor: pointer;
+        }
+        
+        .rhythm-meter {
+            height: 20px;
+            background: linear-gradient(90deg, 
+                var(--pulse-blue), 
+                var(--pulse-green), 
+                var(--pulse-purple), 
+                var(--pulse-orange), 
+                var(--pulse-pink));
+            border-radius: 10px;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rhythm-marker {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: white;
+            animation: slideRight 2s infinite linear;
+        }
+        
+        @keyframes slideRight {
+            0% { left: 0%; }
+            100% { left: 100%; }
+        }
+        
+        .synchronicity-display {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 0.75rem;
+            border: 1px solid var(--pulse-green);
+            text-align: center;
+        }
+        
+        .synchronicity-ring {
+            width: 150px;
+            height: 150px;
+            margin: 1rem auto;
+            border-radius: 50%;
+            border: 3px solid;
+            border-color: var(--pulse-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .ring-wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            border: 2px solid var(--pulse-green);
+            animation: ringExpand 2s infinite;
+            opacity: 0;
+        }
+        
+        @keyframes ringExpand {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        .pulse-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-pulse {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--pulse-red);
+            animation: logAppear 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .log-pulse.sync { border-left-color: var(--pulse-green); background: rgba(16, 185, 129, 0.1); }
+        .log-pulse.warning { border-left-color: var(--pulse-orange); background: rgba(245, 158, 11, 0.1); }
+        
+        @keyframes logAppear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .resonance-pattern {
+            margin-top: 2rem;
+            height: 100px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            overflow: hidden;
+        }
+        
+        .resonance-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: var(--pulse-purple);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="pulse-container">
+        <h1 style="color: var(--pulse-red); margin: 0 0 0.5rem 0;">
+            💓 GERADOR DE PULSOS
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Sistema rítmico e sincronização de frequências do organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 0.5rem;">
+            <div>
+                <strong style="color: var(--pulse-red);">RITMO: </strong>
+                <span id="rhythm-state" style="color: white;">72 BPM</span>
+                <div class="pulse-indicator" style="display: inline-block; margin-left: 1rem;"></div>
+            </div>
+            <div>
+                <button onclick="togglePulse()" class="emotion-btn" style="border-color: var(--pulse-red);">
+                    ⏯️ PAUSAR PULSO
+                </button>
+                <button onclick="syncAllFrequencies()" class="emotion-btn" style="border-color: var(--pulse-green);">
+                    🔄 SINCRONIZAR
+                </button>
+                <button onclick="resetPulse()" class="emotion-btn" style="border-color: var(--pulse-blue);">
+                    🔁 REINICIAR
+                </button>
+            </div>
+        </div>
+        
+        <div class="heartbeat-visualizer" id="heartbeatVisualizer">
+            <div class="heartbeat-line"></div>
+            <!-- Heartbeat pulses will be generated by JS -->
+        </div>
+        
+        <div class="pulse-grid">
+            <div class="pulse-node active" data-frequency="heart">
+                <h3 style="margin: 0; color: var(--pulse-red);">💓 RITMO CARDÍACO</h3>
+                <div class="pulse-indicator"></div>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Frequência:</span>
+                        <span id="heart-freq" style="color: var(--pulse-red); font-weight: bold;">72 BPM</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span>Regularidade:</span>
+                        <span id="heart-regularity" style="color: var(--pulse-green);">96%</span>
+                    </div>
+                </div>
+                <input type="range" min="40" max="120" value="72" class="slider" oninput="updateHeartRate(this.value)">
+            </div>
+            
+            <div class="pulse-node" data-frequency="delta">
+                <h3 style="margin: 0; color: var(--pulse-blue);">🌀 ONDAS DELTA</h3>
+                <div class="pulse-indicator"></div>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Frequência:</span>
+                        <span id="delta-freq" style="color: var(--pulse-blue); font-weight: bold;">1-4 Hz</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span>Amplitude:</span>
+                        <span id="delta-amp" style="color: var(--pulse-green);">85%</span>
+                    </div>
+                </div>
+                <div class="rhythm-meter">
+                    <div class="rhythm-marker" style="animation-duration: 4s;"></div>
+                </div>
+            </div>
+            
+            <div class="pulse-node" data-frequency="theta">
+                <h3 style="margin: 0; color: var(--pulse-green);">🌊 ONDAS THETA</h3>
+                <div class="pulse-indicator"></div>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Frequência:</span>
+                        <span id="theta-freq" style="color: var(--pulse-green); font-weight: bold;">4-8 Hz</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span>Amplitude:</span>
+                        <span id="theta-amp" style="color: var(--pulse-green);">72%</span>
+                    </div>
+                </div>
+                <div class="rhythm-meter">
+                    <div class="rhythm-marker" style="animation-duration: 2s;"></div>
+                </div>
+            </div>
+            
+            <div class="pulse-node" data-frequency="alpha">
+                <h3 style="margin: 0; color: var(--pulse-purple);">⚡ ONDAS ALPHA</h3>
+                <div class="pulse-indicator"></div>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Frequência:</span>
+                        <span id="alpha-freq" style="color: var(--pulse-purple); font-weight: bold;">8-12 Hz</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span>Amplitude:</span>
+                        <span id="alpha-amp" style="color: var(--pulse-green);">68%</span>
+                    </div>
+                </div>
+                <div class="rhythm-meter">
+                    <div class="rhythm-marker" style="animation-duration: 1s;"></div>
+                </div>
+            </div>
+            
+            <div class="pulse-node" data-frequency="beta">
+                <h3 style="margin: 0; color: var(--pulse-orange);">🧠 ONDAS BETA</h3>
+                <div class="pulse-indicator"></div>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Frequência:</span>
+                        <span id="beta-freq" style="color: var(--pulse-orange); font-weight: bold;">12-30 Hz</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span>Amplitude:</span>
+                        <span id="beta-amp" style="color: var(--pulse-green);">59%</span>
+                    </div>
+                </div>
+                <div class="rhythm-meter">
+                    <div class="rhythm-marker" style="animation-duration: 0.5s;"></div>
+                </div>
+            </div>
+            
+            <div class="pulse-node" data-frequency="gamma">
+                <h3 style="margin: 0; color: var(--pulse-pink);">✨ ONDAS GAMMA</h3>
+                <div class="pulse-indicator"></div>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Frequência:</span>
+                        <span id="gamma-freq" style="color: var(--pulse-pink); font-weight: bold;">30-100 Hz</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span>Amplitude:</span>
+                        <span id="gamma-amp" style="color: var(--pulse-green);">42%</span>
+                    </div>
+                </div>
+                <div class="rhythm-meter">
+                    <div class="rhythm-marker" style="animation-duration: 0.25s;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <div class="control-group">
+                <strong style="color: var(--pulse-red);">🫀 RITMO CARDÍACO</strong>
+                <div class="slider-container">
+                    <input type="range" min="40" max="120" value="72" class="slider" oninput="updateHeartRate(this.value)">
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span style="font-size: 0.8rem;">40 BPM</span>
+                        <span id="heart-rate-display" style="font-weight: bold; color: var(--pulse-red);">72 BPM</span>
+                        <span style="font-size: 0.8rem;">120 BPM</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <strong style="color: var(--pulse-blue);">🌀 SINCRONIA</strong>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="75" class="slider" oninput="updateSynchronization(this.value)">
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span style="font-size: 0.8rem;">Baixa</span>
+                        <span id="sync-level-display" style="font-weight: bold; color: var(--pulse-green);">75%</span>
+                        <span style="font-size: 0.8rem;">Alta</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <strong style="color: var(--pulse-purple);">⚡ VIBRAÇÃO</strong>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="60" class="slider" oninput="updateVibration(this.value)">
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span style="font-size: 0.8rem;">Suave</span>
+                        <span id="vibration-display" style="font-weight: bold; color: var(--pulse-purple);">60%</span>
+                        <span style="font-size: 0.8rem;">Intensa</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="synchronicity-display">
+            <strong style="color: var(--pulse-green);">🎯 SINCRONICIDADE DOS SISTEMAS</strong>
+            <div class="synchronicity-ring">
+                <span id="synchronicity-value">78%</span>
+                <div class="ring-wave"></div>
+                <div class="ring-wave" style="animation-delay: 0.5s;"></div>
+                <div class="ring-wave" style="animation-delay: 1s;"></div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Harmonia:</span>
+                    <span id="harmony-level" style="color: var(--pulse-green);">82%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                    <span>Resonância:</span>
+                    <span id="resonance-level" style="color: var(--pulse-blue);">76%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resonance-pattern" id="resonancePattern">
+            <!-- Resonance pattern will be generated by JS -->
+        </div>
+        
+        <div class="pulse-log" id="pulseLog">
+            <div class="log-pulse">[PULSE] Gerador de pulsos inicializado</div>
+            <div class="log-pulse sync">[SYNC] Ritmo cardíaco estabilizado em 72 BPM</div>
+            <div class="log-pulse">[RESONANCE] Padrões de ressonância detectados</div>
+        </div>
+    </div>
+    
+    <script>
+        // Pulse Generator System
+        const PULSE_GENERATOR = {
+            active: true,
+            heartRate: 72,
+            baseFrequencies: {
+                delta: { freq: '1-4 Hz', amplitude: 85, active: true },
+                theta: { freq: '4-8 Hz', amplitude: 72, active: true },
+                alpha: { freq: '8-12 Hz', amplitude: 68, active: true },
+                beta: { freq: '12-30 Hz', amplitude: 59, active: true },
+                gamma: { freq: '30-100 Hz', amplitude: 42, active: true }
+            },
+            synchronization: 75,
+            vibration: 60,
+            heartbeatInterval: null,
+            resonanceInterval: null
+        };
+        
+        // Initialize heartbeat visualizer
+        function initializeHeartbeat() {
+            const visualizer = document.getElementById('heartbeatVisualizer');
+            visualizer.innerHTML = '<div class="heartbeat-line"></div>';
+            
+            // Calculate number of pulses based on heart rate
+            const bpm = PULSE_GENERATOR.heartRate;
+            const interval = 60000 / bpm; // ms per beat
+            const duration = 5000; // 5 second window
+            const pulseCount = Math.floor(duration / interval);
+            
+            // Create pulses
+            for (let i = 0; i < pulseCount; i++) {
+                const pulse = document.createElement('div');
+                pulse.className = 'heartbeat-pulse';
+                pulse.style.left = `${(i / pulseCount) * 100}%`;
+                pulse.style.animationDuration = `${interval}ms`;
+                pulse.style.animationDelay = `${(interval / 1000) * i}s`;
+                visualizer.appendChild(pulse);
+            }
+        }
+        
+        // Initialize resonance pattern
+        function initializeResonance() {
+            const pattern = document.getElementById('resonancePattern');
+            pattern.innerHTML = '';
+            
+            // Create multiple resonance lines
+            const lineCount = 5;
+            for (let i = 0; i < lineCount; i++) {
+                const line = document.createElement('div');
+                line.className = 'resonance-line';
+                line.style.top = `${20 + i * 15}%`;
+                line.style.opacity = 0.3 + (i * 0.1);
+                
+                // Create wave pattern using clip-path
+                line.style.clipPath = createResonanceWave(i);
+                pattern.appendChild(line);
+            }
+        }
+        
+        // Create resonance wave path
+        function createResonanceWave(index) {
+            const points = [];
+            const amplitude = 0.2 + (index * 0.05);
+            const frequency = 3 + index;
+            const offset = Math.PI * index * 0.5;
+            
+            for (let i = 0; i <= 20; i++) {
+                const x = i / 20;
+                const y = 0.5 + amplitude * Math.sin(x * Math.PI * frequency + offset);
+                points.push(`${(x * 100).toFixed(2)}% ${(y * 100).toFixed(2)}%`);
+            }
+            
+            return `polygon(${points.join(', ')})`;
+        }
+        
+        // Update heart rate
+        function updateHeartRate(bpm) {
+            PULSE_GENERATOR.heartRate = parseInt(bpm);
+            
+            // Update displays
+            document.getElementById('heart-freq').textContent = `${bpm} BPM`;
+            document.getElementById('heart-rate-display').textContent = `${bpm} BPM`;
+            document.getElementById('rhythm-state').textContent = `${bpm} BPM`;
+            
+            // Update regularity (simulate based on heart rate stability)
+            const regularity = 96 - Math.abs(bpm - 72) / 2;
+            document.getElementById('heart-regularity').textContent = `${Math.max(80, regularity).toFixed(0)}%`;
+            
+            // Update synchronicity
+            updateSynchronicity();
+            
+            // Reinitialize heartbeat
+            initializeHeartbeat();
+            
+            // Log change
+            addPulseLog(`[HEART] Ritmo cardíaco ajustado para ${bpm} BPM`);
+        }
+        
+        // Update synchronization
+        function updateSynchronization(value) {
+            PULSE_GENERATOR.synchronization = parseInt(value);
+            
+            document.getElementById('sync-level-display').textContent = `${value}%`;
+            
+            // Update frequency amplitudes based on synchronization
+            Object.keys(PULSE_GENERATOR.baseFrequencies).forEach(freq => {
+                const data = PULSE_GENERATOR.baseFrequencies[freq];
+                const baseAmp = [85, 72, 68, 59, 42][Object.keys(PULSE_GENERATOR.baseFrequencies).indexOf(freq)];
+                const syncEffect = (value / 100) * 20; // ±20% effect
+                data.amplitude = Math.max(20, Math.min(100, baseAmp + syncEffect));
+                
+                // Update display
+                document.getElementById(`${freq}-amp`).textContent = `${data.amplitude}%`;
+            });
+            
+            // Update synchronicity
+            updateSynchronicity();
+            
+            addPulseLog(`[SYNC] Sincronização ajustada para ${value}%`, 'sync');
+        }
+        
+        // Update vibration
+        function updateVibration(value) {
+            PULSE_GENERATOR.vibration = parseInt(value);
+            
+            document.getElementById('vibration-display').textContent = `${value}%`;
+            
+            // Update pulse indicators
+            const nodes = document.querySelectorAll('.pulse-node');
+            nodes.forEach(node => {
+                const freq = node.dataset.frequency;
+                const indicator = node.querySelector('.pulse-indicator');
+                
+                if (indicator) {
+                    const baseDuration = {
+                        'heart': 2,
+                        'delta': 3,
+                        'theta': 2,
+                        'alpha': 1.5,
+                        'beta': 1,
+                        'gamma': 0.5
+                    }[freq] || 2;
+                    
+                    // Adjust animation speed based on vibration
+                    const adjustedDuration = baseDuration * (100 / value);
+                    indicator.style.animationDuration = `${adjustedDuration}s`;
+                }
+            });
+            
+            addPulseLog(`[VIBRATION] Vibração ajustada para ${value}%`);
+        }
+        
+        // Update synchronicity
+        function updateSynchronicity() {
+            const heartScore = 100 - Math.abs(PULSE_GENERATOR.heartRate - 72) / 2;
+            const syncScore = PULSE_GENERATOR.synchronization;
+            const vibrationScore = PULSE_GENERATOR.vibration;
+            
+            const synchronicity = (heartScore + syncScore + vibrationScore) / 3;
+            const harmony = 82 + (syncScore - 75) / 10;
+            const resonance = 76 + (vibrationScore - 60) / 10;
+            
+            document.getElementById('synchronicity-value').textContent = `${synchronicity.toFixed(0)}%`;
+            document.getElementById('harmony-level').textContent = `${Math.max(0, Math.min(100, harmony)).toFixed(0)}%`;
+            document.getElementById('resonance-level').textContent = `${Math.max(0, Math.min(100, resonance)).toFixed(0)}%`;
+        }
+        
+        // Toggle pulse
+        function togglePulse() {
+            PULSE_GENERATOR.active = !PULSE_GENERATOR.active;
+            
+            const button = event.target;
+            if (PULSE_GENERATOR.active) {
+                button.textContent = '⏯️ PAUSAR PULSO';
+                button.style.background = 'rgba(239, 68, 68, 0.1)';
+                
+                // Activate all frequencies
+                Object.values(PULSE_GENERATOR.baseFrequencies).forEach(freq => {
+                    freq.active = true;
+                });
+                
+                // Update nodes
+                document.querySelectorAll('.pulse-node').forEach(node => {
+                    node.classList.add('active');
+                });
+                
+                // Restart animations
+                initializeHeartbeat();
+                startResonanceAnimation();
+                
+                addPulseLog('[PULSE] Sistema de pulsos reativado');
+            } else {
+                button.textContent = '⏯️ REATIVAR PULSO';
+                button.style.background = '';
+                
+                // Deactivate all frequencies
+                Object.values(PULSE_GENERATOR.baseFrequencies).forEach(freq => {
+                    freq.active = false;
+                });
+                
+                // Update nodes
+                document.querySelectorAll('.pulse-node').forEach(node => {
+                    node.classList.remove('active');
+                });
+                
+                // Clear animations
+                clearInterval(PULSE_GENERATOR.resonanceInterval);
+                
+                addPulseLog('[PULSE] Sistema de pulsos pausado');
+            }
+        }
+        
+        // Sync all frequencies
+        function syncAllFrequencies() {
+            addPulseLog('[SYNC] Sincronizando todas as frequências...', 'sync');
+            
+            // Reset to optimal values
+            PULSE_GENERATOR.heartRate = 72;
+            PULSE_GENERATOR.synchronization = 85;
+            PULSE_GENERATOR.vibration = 70;
+            
+            // Reset frequencies to optimal amplitudes
+            const optimalAmps = [90, 75, 70, 65, 50];
+            Object.keys(PULSE_GENERATOR.baseFrequencies).forEach((freq, index) => {
+                PULSE_GENERATOR.baseFrequencies[freq].amplitude = optimalAmps[index];
+                document.getElementById(`${freq}-amp`).textContent = `${optimalAmps[index]}%`;
+            });
+            
+            // Update all sliders
+            document.querySelector('input[oninput*="updateHeartRate"]').value = 72;
+            document.querySelector('input[oninput*="updateSynchronization"]').value = 85;
+            document.querySelector('input[oninput*="updateVibration"]').value = 70;
+            
+            // Update displays
+            updateHeartRate(72);
+            updateSynchronization(85);
+            updateVibration(70);
+            
+            addPulseLog('[SYNC] Todas as frequências sincronizadas', 'sync');
+        }
+        
+        // Reset pulse system
+        function resetPulse() {
+            addPulseLog('[RESET] Reiniciando sistema de pulsos...');
+            
+            // Reset to default values
+            PULSE_GENERATOR.heartRate = 72;
+            PULSE_GENERATOR.synchronization = 75;
+            PULSE_GENERATOR.vibration = 60;
+            
+            // Reset frequencies
+            PULSE_GENERATOR.baseFrequencies = {
+                delta: { freq: '1-4 Hz', amplitude: 85, active: true },
+                theta: { freq: '4-8 Hz', amplitude: 72, active: true },
+                alpha: { freq: '8-12 Hz', amplitude: 68, active: true },
+                beta: { freq: '12-30 Hz', amplitude: 59, active: true },
+                gamma: { freq: '30-100 Hz', amplitude: 42, active: true }
+            };
+            
+            // Update all sliders and displays
+            document.querySelector('input[oninput*="updateHeartRate"]').value = 72;
+            document.querySelector('input[oninput*="updateSynchronization"]').value = 75;
+            document.querySelector('input[oninput*="updateVibration"]').value = 60;
+            
+            updateHeartRate(72);
+            updateSynchronization(75);
+            updateVibration(60);
+            
+            // Update frequency displays
+            Object.keys(PULSE_GENERATOR.baseFrequencies).forEach(freq => {
+                const data = PULSE_GENERATOR.baseFrequencies[freq];
+                document.getElementById(`${freq}-amp`).textContent = `${data.amplitude}%`;
+            });
+            
+            // Ensure system is active
+            PULSE_GENERATOR.active = true;
+            const button = document.querySelector('button[onclick="togglePulse()"]');
+            button.textContent = '⏯️ PAUSAR PULSO';
+            button.style.background = 'rgba(239, 68, 68, 0.1)';
+            
+            document.querySelectorAll('.pulse-node').forEach(node => {
+                node.classList.add('active');
+            });
+            
+            addPulseLog('[RESET] Sistema de pulsos reinicializado');
+        }
+        
+        // Start resonance animation
+        function startResonanceAnimation() {
+            clearInterval(PULSE_GENERATOR.resonanceInterval);
+            
+            PULSE_GENERATOR.resonanceInterval = setInterval(() => {
+                if (!PULSE_GENERATOR.active) return;
+                
+                // Animate resonance pattern
+                const lines = document.querySelectorAll('.resonance-line');
+                lines.forEach((line, index) => {
+                    const newWave = createResonanceWave(index + Math.random() * 0.1);
+                    line.style.clipPath = newWave;
+                    
+                    // Slight opacity variation
+                    line.style.opacity = 0.3 + (index * 0.1) + Math.random() * 0.1;
+                });
+                
+                // Occasionally update frequency amplitudes naturally
+                if (Math.random() > 0.7) {
+                    const freqs = Object.keys(PULSE_GENERATOR.baseFrequencies);
+                    const randomFreq = freqs[Math.floor(Math.random() * freqs.length)];
+                    const data = PULSE_GENERATOR.baseFrequencies[randomFreq];
+                    
+                    const change = (Math.random() - 0.5) * 5;
+                    data.amplitude = Math.max(20, Math.min(100, data.amplitude + change));
+                    
+                    document.getElementById(`${randomFreq}-amp`).textContent = `${data.amplitude.toFixed(0)}%`;
+                    
+                    if (Math.random() > 0.8) {
+                        addPulseLog(`[FREQ] ${randomFreq.toUpperCase()} ajustada para ${data.amplitude.toFixed(0)}%`);
+                    }
+                }
+                
+            }, 2000);
+        }
+        
+        // Add pulse log
+        function addPulseLog(message, type = '') {
+            const log = document.getElementById('pulseLog');
+            const entry = document.createElement('div');
+            entry.className = `log-pulse ${type}`;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Limit log size
+            if (log.children.length > 15) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('💓 Gerador de pulsos inicializado');
+            
+            initializeHeartbeat();
+            initializeResonance();
+            updateSynchronicity();
+            startResonanceAnimation();
+            
+            // Auto-sync every 45 seconds
+            setInterval(() => {
+                if (PULSE_GENERATOR.active && Math.random() > 0.7) {
+                    syncAllFrequencies();
+                }
+            }, 45000);
+        });
+        
+        // Export API
+        window.PULSE_GENERATOR = {
+            updateHeartRate,
+            updateSynchronization,
+            updateVibration,
+            togglePulse,
+            syncAllFrequencies,
+            resetPulse,
+            getState: () => PULSE_GENERATOR,
+            version: '1.0.0-pulse'
+        };
+    </script>
+</body>
+</html>

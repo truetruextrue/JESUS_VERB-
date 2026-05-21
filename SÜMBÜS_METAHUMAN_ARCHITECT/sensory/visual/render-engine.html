@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="visual-renderer">
+<head>
+    <meta charset="UTF-8">
+    <title>👁️ Motor de Renderização Visual</title>
+    <style>
+        :root {
+            --render-blue: #3b82f6;
+            --render-purple: #8b5cf6;
+            --render-green: #10b981;
+            --bg-render: #0f172a;
+            --particle-1: rgba(59, 130, 246, 0.5);
+            --particle-2: rgba(139, 92, 246, 0.5);
+            --particle-3: rgba(16, 185, 129, 0.5);
+        }
+        
+        body {
+            background: var(--bg-render);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .render-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        .render-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+            margin-top: 2rem;
+        }
+        
+        .render-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .render-preset {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .render-preset:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--render-blue);
+            transform: translateY(-2px);
+        }
+        
+        .render-preset.active {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--render-blue);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .visualization-area {
+            height: 300px;
+            margin: 2rem 0;
+            border-radius: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .visual-element {
+            position: absolute;
+            border-radius: 0.5rem;
+            transition: all 0.5s ease;
+        }
+        
+        .visual-element.fractal {
+            border: 1px solid var(--render-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .visual-element.neural {
+            border: 1px solid var(--render-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .visual-element.organic {
+            border: 1px solid var(--render-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .performance-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-card[data-stat="fps"] .stat-value { color: var(--render-blue); }
+        .stat-card[data-stat="particles"] .stat-value { color: var(--render-purple); }
+        .stat-card[data-stat="memory"] .stat-value { color: var(--render-green); }
+        .stat-card[data-stat="load"] .stat-value { color: #f59e0b; }
+        
+        .render-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--render-blue);
+            animation: log-appear 0.3s ease;
+        }
+        
+        .log-entry.render {
+            border-left-color: var(--render-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .log-entry.optimize {
+            border-left-color: var(--render-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        @keyframes log-appear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.3s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+        
+        .color-option.active {
+            border-color: white;
+            box-shadow: 0 0 10px white;
+        }
+    </style>
+</head>
+<body>
+    <div class="render-canvas" id="renderCanvas"></div>
+    
+    <div class="render-container">
+        <h1 style="color: var(--render-blue); margin: 0 0 0.5rem 0;">
+            👁️ MOTOR DE RENDERIZAÇÃO VISUAL
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Sistema de renderização fractal e dinâmica do organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 0.5rem;">
+            <div>
+                <strong style="color: var(--render-blue);">MODO DE RENDER: </strong>
+                <span id="render-mode" style="color: var(--render-green);">FRACTAL</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="toggleRender()" id="toggleRender" style="padding: 0.5rem 1rem; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--render-green); color: white; border-radius: 0.5rem; cursor: pointer;">
+                    ▶️ Iniciar Render
+                </button>
+                <button onclick="clearRender()" style="padding: 0.5rem 1rem; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: white; border-radius: 0.5rem; cursor: pointer;">
+                    🗑️ Limpar
+                </button>
+            </div>
+        </div>
+        
+        <div class="render-controls">
+            <div class="render-preset active" onclick="setRenderPreset('fractal')" data-preset="fractal">
+                <div style="font-size: 2rem;">🌀</div>
+                <strong>FRACTAL</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Padrões recursivos</div>
+            </div>
+            
+            <div class="render-preset" onclick="setRenderPreset('neural')" data-preset="neural">
+                <div style="font-size: 2rem;">🧠</div>
+                <strong>NEURAL</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Rede neural visual</div>
+            </div>
+            
+            <div class="render-preset" onclick="setRenderPreset('organic')" data-preset="organic">
+                <div style="font-size: 2rem;">🌿</div>
+                <strong>ORGÂNICO</strong>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">Crescimento biológico</div>
+            </div>
+        </div>
+        
+        <div class="color-picker">
+            <div class="color-option active" style="background: var(--render-blue);" onclick="setColor('blue')"></div>
+            <div class="color-option" style="background: var(--render-purple);" onclick="setColor('purple')"></div>
+            <div class="color-option" style="background: var(--render-green);" onclick="setColor('green')"></div>
+            <div class="color-option" style="background: #f59e0b;" onclick="setColor('orange')"></div>
+            <div class="color-option" style="background: #ec4899;" onclick="setColor('pink')"></div>
+        </div>
+        
+        <div class="visualization-area" id="visualizationArea">
+            <!-- Visual elements will be generated here -->
+        </div>
+        
+        <div class="performance-stats">
+            <div class="stat-card" data-stat="fps">
+                <div style="font-size: 0.9rem; color: #94a3b8;">FPS</div>
+                <div class="stat-value" id="fps">60</div>
+                <div style="font-size: 0.8rem;">Quadros/segundo</div>
+            </div>
+            
+            <div class="stat-card" data-stat="particles">
+                <div style="font-size: 0.9rem; color: #94a3b8;">PARTÍCULAS</div>
+                <div class="stat-value" id="particles">0</div>
+                <div style="font-size: 0.8rem;">Ativas</div>
+            </div>
+            
+            <div class="stat-card" data-stat="memory">
+                <div style="font-size: 0.9rem; color: #94a3b8;">MEMÓRIA</div>
+                <div class="stat-value" id="memory">12.4</div>
+                <div style="font-size: 0.8rem;">MB</div>
+            </div>
+            
+            <div class="stat-card" data-stat="load">
+                <div style="font-size: 0.9rem; color: #94a3b8;">CARGA</div>
+                <div class="stat-value" id="load">24%</div>
+                <div style="font-size: 0.8rem;">CPU/GPU</div>
+            </div>
+        </div>
+        
+        <div class="render-log" id="renderLog">
+            <div class="log-entry">[SYSTEM] Motor de renderização inicializado</div>
+            <div class="log-entry render">[RENDER] Modo Fractal ativado</div>
+            <div class="log-entry">[READY] Pronto para renderização</div>
+        </div>
+    </div>
+    
+    <script>
+        // Render Engine
+        const RENDER_ENGINE = {
+            active: false,
+            mode: 'fractal',
+            color: 'blue',
+            particles: [],
+            elements: [],
+            lastFrameTime: 0,
+            frameCount: 0,
+            fps: 60
+        };
+        
+        // Canvas and visualization area
+        const canvas = document.getElementById('renderCanvas');
+        const visualization = document.getElementById('visualizationArea');
+        
+        // Set render preset
+        function setRenderPreset(preset) {
+            RENDER_ENGINE.mode = preset;
+            document.getElementById('render-mode').textContent = preset.toUpperCase();
+            
+            // Update active preset button
+            document.querySelectorAll('.render-preset').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            addLogEntry(`[RENDER] Modo alterado para ${preset.toUpperCase()}`, 'render');
+            
+            // Clear and regenerate visualization
+            clearVisualization();
+            if (RENDER_ENGINE.active) {
+                generateVisualization();
+            }
+        }
+        
+        // Set color
+        function setColor(color) {
+            RENDER_ENGINE.color = color;
+            
+            // Update active color
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            addLogEntry(`[COLOR] Esquema alterado para ${color.toUpperCase()}`, 'optimize');
+            
+            // Update existing elements
+            document.querySelectorAll('.visual-element').forEach(el => {
+                const colorMap = {
+                    blue: 'var(--render-blue)',
+                    purple: 'var(--render-purple)',
+                    green: 'var(--render-green)',
+                    orange: '#f59e0b',
+                    pink: '#ec4899'
+                };
+                
+                el.style.borderColor = colorMap[color];
+                el.style.background = colorMap[color].replace(')', ', 0.1)').replace('rgb', 'rgba');
+            });
+        }
+        
+        // Toggle render
+        function toggleRender() {
+            RENDER_ENGINE.active = !RENDER_ENGINE.active;
+            const button = document.getElementById('toggleRender');
+            
+            if (RENDER_ENGINE.active) {
+                button.innerHTML = '⏸️ Pausar Render';
+                button.style.background = 'rgba(245, 158, 11, 0.2)';
+                button.style.borderColor = '#f59e0b';
+                
+                addLogEntry('[RENDER] Renderização iniciada', 'render');
+                startRender();
+                generateVisualization();
+            } else {
+                button.innerHTML = '▶️ Iniciar Render';
+                button.style.background = 'rgba(16, 185, 129, 0.2)';
+                button.style.borderColor = 'var(--render-green)';
+                
+                addLogEntry('[RENDER] Renderização pausada', 'render');
+                stopRender();
+            }
+        }
+        
+        // Start render loop
+        function startRender() {
+            RENDER_ENGINE.lastFrameTime = performance.now();
+            RENDER_ENGINE.frameCount = 0;
+            
+            function renderLoop() {
+                if (!RENDER_ENGINE.active) return;
+                
+                // Calculate FPS
+                const currentTime = performance.now();
+                RENDER_ENGINE.frameCount++;
+                
+                if (currentTime - RENDER_ENGINE.lastFrameTime >= 1000) {
+                    RENDER_ENGINE.fps = Math.round((RENDER_ENGINE.frameCount * 1000) / (currentTime - RENDER_ENGINE.lastFrameTime));
+                    document.getElementById('fps').textContent = RENDER_ENGINE.fps;
+                    
+                    RENDER_ENGINE.frameCount = 0;
+                    RENDER_ENGINE.lastFrameTime = currentTime;
+                }
+                
+                // Generate particles based on mode
+                if (Math.random() > 0.7) {
+                    createParticle();
+                }
+                
+                // Update particles
+                updateParticles();
+                
+                // Update visualization if in neural mode
+                if (RENDER_ENGINE.mode === 'neural') {
+                    updateNeuralVisualization();
+                }
+                
+                // Update stats
+                updateStats();
+                
+                requestAnimationFrame(renderLoop);
+            }
+            
+            renderLoop();
+        }
+        
+        // Stop render
+        function stopRender() {
+            // Clear particles
+            RENDER_ENGINE.particles.forEach(particle => {
+                if (particle.element) {
+                    particle.element.remove();
+                }
+            });
+            RENDER_ENGINE.particles = [];
+            document.getElementById('particles').textContent = '0';
+        }
+        
+        // Create particle
+        function createParticle() {
+            const canvasRect = canvas.getBoundingClientRect();
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Set particle properties based on mode and color
+            const size = 2 + Math.random() * 6;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            const colorMap = {
+                blue: 'var(--render-blue)',
+                purple: 'var(--render-purple)',
+                green: 'var(--render-green)',
+                orange: '#f59e0b',
+                pink: '#ec4899'
+            };
+            
+            particle.style.background = colorMap[RENDER_ENGINE.color];
+            particle.style.boxShadow = `0 0 ${size * 2}px ${colorMap[RENDER_ENGINE.color]}`;
+            
+            // Position
+            particle.style.left = `${Math.random() * canvasRect.width}px`;
+            particle.style.top = `${Math.random() * canvasRect.height}px`;
+            
+            canvas.appendChild(particle);
+            
+            // Store particle data
+            RENDER_ENGINE.particles.push({
+                element: particle,
+                x: parseFloat(particle.style.left),
+                y: parseFloat(particle.style.top),
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                life: 100 + Math.random() * 200,
+                opacity: 0.7 + Math.random() * 0.3
+            });
+            
+            // Animate appearance
+            particle.animate([
+                { opacity: 0, transform: 'scale(0)' },
+                { opacity: particle.style.opacity, transform: 'scale(1)' }
+            ], { duration: 300 });
+        }
+        
+        // Update particles
+        function updateParticles() {
+            const canvasRect = canvas.getBoundingClientRect();
+            
+            for (let i = RENDER_ENGINE.particles.length - 1; i >= 0; i--) {
+                const p = RENDER_ENGINE.particles[i];
+                
+                // Update position
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                // Bounce off edges
+                if (p.x <= 0 || p.x >= canvasRect.width) p.vx *= -1;
+                if (p.y <= 0 || p.y >= canvasRect.height) p.vy *= -1;
+                
+                // Update element
+                p.element.style.left = `${p.x}px`;
+                p.element.style.top = `${p.y}px`;
+                
+                // Decrease life
+                p.life--;
+                
+                // Update opacity
+                if (p.life < 50) {
+                    p.opacity = p.life / 50;
+                    p.element.style.opacity = p.opacity;
+                }
+                
+                // Remove dead particles
+                if (p.life <= 0) {
+                    p.element.remove();
+                    RENDER_ENGINE.particles.splice(i, 1);
+                }
+            }
+            
+            // Update particle count
+            document.getElementById('particles').textContent = RENDER_ENGINE.particles.length;
+        }
+        
+        // Generate visualization
+        function generateVisualization() {
+            clearVisualization();
+            
+            const vizRect = visualization.getBoundingClientRect();
+            
+            if (RENDER_ENGINE.mode === 'fractal') {
+                // Generate fractal pattern
+                generateFractal(vizRect.width, vizRect.height);
+            } else if (RENDER_ENGINE.mode === 'neural') {
+                // Generate neural network
+                generateNeuralNetwork(vizRect.width, vizRect.height);
+            } else if (RENDER_ENGINE.mode === 'organic') {
+                // Generate organic growth
+                generateOrganicGrowth(vizRect.width, vizRect.height);
+            }
+        }
+        
+        // Generate fractal visualization
+        function generateFractal(width, height) {
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            // Recursive function to create fractal elements
+            function createFractal(x, y, size, depth, maxDepth) {
+                if (depth > maxDepth) return;
+                
+                const element = document.createElement('div');
+                element.className = 'visual-element fractal';
+                
+                // Color based on depth
+                const colors = ['var(--render-blue)', 'var(--render-purple)', 'var(--render-green)'];
+                const color = colors[depth % colors.length];
+                
+                element.style.left = `${x - size/2}px`;
+                element.style.top = `${y - size/2}px`;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.borderColor = color;
+                element.style.background = color.replace(')', ', 0.1)').replace('rgb', 'rgba');
+                element.style.borderRadius = `${depth % 2 === 0 ? '50%' : '0.5rem'}`;
+                
+                visualization.appendChild(element);
+                RENDER_ENGINE.elements.push(element);
+                
+                // Create children
+                const childCount = 3 + depth;
+                const angleStep = (Math.PI * 2) / childCount;
+                
+                for (let i = 0; i < childCount; i++) {
+                    const angle = i * angleStep;
+                    const childSize = size * 0.6;
+                    const distance = size * 0.8;
+                    
+                    const childX = x + Math.cos(angle) * distance;
+                    const childY = y + Math.sin(angle) * distance;
+                    
+                    createFractal(childX, childY, childSize, depth + 1, maxDepth);
+                }
+            }
+            
+            // Start fractal from center
+            createFractal(centerX, centerY, Math.min(width, height) * 0.2, 0, 3);
+            
+            // Animate
+            animateFractal();
+        }
+        
+        // Generate neural network visualization
+        function generateNeuralNetwork(width, height) {
+            const neurons = [];
+            
+            // Create neurons
+            for (let i = 0; i < 15; i++) {
+                const neuron = document.createElement('div');
+                neuron.className = 'visual-element neural';
+                
+                const size = 10 + Math.random() * 20;
+                const x = Math.random() * (width - size);
+                const y = Math.random() * (height - size);
+                
+                neuron.style.left = `${x}px`;
+                neuron.style.top = `${y}px`;
+                neuron.style.width = `${size}px`;
+                neuron.style.height = `${size}px`;
+                
+                visualization.appendChild(neuron);
+                RENDER_ENGINE.elements.push(neuron);
+                neurons.push({ element: neuron, x, y, size, connections: [] });
+            }
+            
+            // Create connections
+            for (let i = 0; i < neurons.length; i++) {
+                for (let j = i + 1; j < neurons.length; j++) {
+                    const dist = Math.sqrt(
+                        Math.pow(neurons[i].x - neurons[j].x, 2) + 
+                        Math.pow(neurons[i].y - neurons[j].y, 2)
+                    );
+                    
+                    if (dist < 150) {
+                        neurons[i].connections.push(j);
+                        neurons[j].connections.push(i);
+                    }
+                }
+            }
+            
+            RENDER_ENGINE.neuralData = neurons;
+        }
+        
+        // Generate organic growth visualization
+        function generateOrganicGrowth(width, height) {
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            // Create organic shapes
+            for (let i = 0; i < 8; i++) {
+                const element = document.createElement('div');
+                element.className = 'visual-element organic';
+                
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = 50 + Math.random() * 100;
+                const size = 20 + Math.random() * 40;
+                
+                const x = centerX + Math.cos(angle) * distance - size/2;
+                const y = centerY + Math.sin(angle) * distance - size/2;
+                
+                element.style.left = `${x}px`;
+                element.style.top = `${y}px`;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.borderRadius = `${30 + Math.random() * 70}%`;
+                
+                visualization.appendChild(element);
+                RENDER_ENGINE.elements.push(element);
+            }
+            
+            // Animate organic movement
+            animateOrganic();
+        }
+        
+        // Animate fractal
+        function animateFractal() {
+            if (!RENDER_ENGINE.active || RENDER_ENGINE.mode !== 'fractal') return;
+            
+            RENDER_ENGINE.elements.forEach((el, i) => {
+                const time = performance.now() / 1000;
+                const scale = 0.9 + 0.1 * Math.sin(time + i * 0.1);
+                const rotate = (i * 0.5 + time * 20) % 360;
+                
+                el.style.transform = `scale(${scale}) rotate(${rotate}deg)`;
+                el.style.opacity = 0.5 + 0.3 * Math.sin(time + i * 0.2);
+            });
+            
+            requestAnimationFrame(animateFractal);
+        }
+        
+        // Update neural visualization
+        function updateNeuralVisualization() {
+            if (!RENDER_ENGINE.neuralData) return;
+            
+            const time = performance.now() / 1000;
+            
+            RENDER_ENGINE.neuralData.forEach((neuron, i) => {
+                // Gentle movement
+                neuron.x += Math.sin(time + i) * 0.2;
+                neuron.y += Math.cos(time + i) * 0.2;
+                
+                // Keep within bounds
+                const vizRect = visualization.getBoundingClientRect();
+                neuron.x = Math.max(0, Math.min(vizRect.width - neuron.size, neuron.x));
+                neuron.y = Math.max(0, Math.min(vizRect.height - neuron.size, neuron.y));
+                
+                // Update position
+                neuron.element.style.left = `${neuron.x}px`;
+                neuron.element.style.top = `${neuron.y}px`;
+                
+                // Pulse animation
+                const pulse = 0.8 + 0.2 * Math.sin(time * 2 + i);
+                neuron.element.style.transform = `scale(${pulse})`;
+                neuron.element.style.opacity = 0.6 + 0.2 * Math.sin(time + i);
+            });
+        }
+        
+        // Animate organic growth
+        function animateOrganic() {
+            if (!RENDER_ENGINE.active || RENDER_ENGINE.mode !== 'organic') return;
+            
+            const time = performance.now() / 1000;
+            
+            RENDER_ENGINE.elements.forEach((el, i) => {
+                // Gentle breathing animation
+                const scale = 0.9 + 0.1 * Math.sin(time + i * 0.3);
+                const borderRadius = 30 + 40 * Math.sin(time * 0.5 + i);
+                
+                el.style.transform = `scale(${scale})`;
+                el.style.borderRadius = `${borderRadius}%`;
+                el.style.opacity = 0.6 + 0.2 * Math.sin(time * 0.7 + i);
+            });
+            
+            requestAnimationFrame(animateOrganic);
+        }
+        
+        // Clear visualization
+        function clearVisualization() {
+            RENDER_ENGINE.elements.forEach(el => el.remove());
+            RENDER_ENGINE.elements = [];
+            RENDER_ENGINE.neuralData = null;
+        }
+        
+        // Clear render
+        function clearRender() {
+            stopRender();
+            clearVisualization();
+            addLogEntry('[RENDER] Renderização limpa', 'optimize');
+        }
+        
+        // Update stats
+        function updateStats() {
+            // Simulate memory usage
+            const memory = 10 + RENDER_ENGINE.particles.length * 0.1 + RENDER_ENGINE.elements.length * 0.2;
+            document.getElementById('memory').textContent = memory.toFixed(1);
+            
+            // Simulate load
+            const load = 20 + RENDER_ENGINE.particles.length * 0.5 + RENDER_ENGINE.elements.length * 0.3;
+            document.getElementById('load').textContent = `${Math.min(100, Math.round(load))}%`;
+        }
+        
+        // Add log entry
+        function addLogEntry(message, type = '') {
+            const log = document.getElementById('renderLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Limit log size
+            if (log.children.length > 15) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('👁️ Motor de renderização inicializado');
+            
+            // Auto-log entries
+            setInterval(() => {
+                if (RENDER_ENGINE.active && Math.random() > 0.7) {
+                    const messages = [
+                        '[RENDER] Otimizando partículas...',
+                        '[PERFORMANCE] FPS estável',
+                        '[MEMORY] Cache de render limpo',
+                        '[VISUAL] Atualizando elementos...'
+                    ];
+                    addLogEntry(messages[Math.floor(Math.random() * messages.length)], 'optimize');
+                }
+            }, 4000);
+        });
+        
+        // Export render API
+        window.RENDER_ENGINE = {
+            toggleRender,
+            setPreset: setRenderPreset,
+            setColor,
+            clearRender,
+            getState: () => RENDER_ENGINE
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-organ="synthesis-engine">
+<head>
+    <meta charset="UTF-8">
+    <title>🔄 Motor de Fusão de Camadas</title>
+    <style>
+        :root {
+            --synthesis-blue: #3b82f6;
+            --synthesis-purple: #8b5cf6;
+            --synthesis-green: #10b981;
+            --bg-synthesis: #0f172a;
+            --layer-1: rgba(59, 130, 246, 0.3);
+            --layer-2: rgba(139, 92, 246, 0.3);
+            --layer-3: rgba(16, 185, 129, 0.3);
+        }
+        
+        body {
+            background: var(--bg-synthesis);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        
+        .synthesis-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .layer-visualization {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+            height: 300px;
+            position: relative;
+        }
+        
+        .layer-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .layer-card {
+            flex: 1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .layer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+        
+        .layer-card[data-layer="1"]::before { background: var(--synthesis-blue); }
+        .layer-card[data-layer="2"]::before { background: var(--synthesis-purple); }
+        .layer-card[data-layer="3"]::before { background: var(--synthesis-green); }
+        
+        .layer-card.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--synthesis-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .layer-card.merging {
+            animation: merge-pulse 1s infinite;
+        }
+        
+        @keyframes merge-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .merging-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 100px;
+            background: radial-gradient(circle, transparent 30%, rgba(59, 130, 246, 0.1) 70%);
+            border-radius: 50%;
+            animation: ripple 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes ripple {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+        }
+        
+        .merge-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .merge-button {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--synthesis-blue);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .merge-button:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .merge-button.merging {
+            background: var(--synthesis-green);
+            border-color: var(--synthesis-green);
+            animation: button-pulse 0.5s infinite;
+        }
+        
+        @keyframes button-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .result-preview {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .code-preview {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #1e293b;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .synthesis-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            border-left: 3px solid var(--synthesis-blue);
+            animation: log-appear 0.3s ease;
+        }
+        
+        .log-entry.success {
+            border-left-color: var(--synthesis-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .log-entry.warning {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        @keyframes log-appear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="synthesis-container">
+        <h1 style="color: var(--synthesis-blue); margin: 0 0 0.5rem 0;">
+            🔄 MOTOR DE FUSÃO DE CAMADAS
+        </h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Síntese e integração de camadas DNA no organismo SÜMBÜS
+        </p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 0.5rem;">
+            <div>
+                <strong style="color: var(--synthesis-blue);">MODO: </strong>
+                <span id="synthesis-mode" style="color: var(--synthesis-green);">MANUAL</span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="setSynthesisMode('auto')" style="padding: 0.5rem 1rem; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--synthesis-green); color: white; border-radius: 0.5rem; cursor: pointer;">
+                    Modo Automático
+                </button>
+                <button onclick="setSynthesisMode('fractal')" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.2); border: 1px solid var(--synthesis-purple); color: white; border-radius: 0.5rem; cursor: pointer;">
+                    Modo Fractal
+                </button>
+            </div>
+        </div>
+        
+        <div class="layer-visualization">
+            <div class="merging-animation" id="mergingAnimation"></div>
+            
+            <div class="layer-column">
+                <div class="layer-card active" data-layer="1" id="layer1">
+                    <strong style="color: var(--synthesis-blue);">CAMADA 1</strong>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">
+                        DNA Core<br>
+                        <span id="layer1-size">3.2 KB</span>
+                    </div>
+                    <div class="layer-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--synthesis-green);">
+                        ✅ Ativa
+                    </div>
+                </div>
+                
+                <div class="layer-card" data-layer="2" id="layer2">
+                    <strong style="color: var(--synthesis-purple);">CAMADA 2</strong>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">
+                        Interface Neural<br>
+                        <span id="layer2-size">4.7 KB</span>
+                    </div>
+                    <div class="layer-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: #f59e0b;">
+                        ⚠️ Aguardando
+                    </div>
+                </div>
+            </div>
+            
+            <div class="layer-column" style="justify-content: center; align-items: center;">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                    <strong style="color: var(--synthesis-green);">FUSÃO</strong>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">
+                        Processo de síntese
+                    </div>
+                    <div id="merge-progress" style="margin-top: 1rem; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;">
+                        <div style="height: 100%; background: var(--synthesis-green); width: 0%; transition: width 0.5s;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="layer-column">
+                <div class="layer-card" data-layer="3" id="layer3">
+                    <strong style="color: var(--synthesis-green);">RESULTADO</strong>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">
+                        DNA Sintetizado<br>
+                        <span id="result-size">0 KB</span>
+                    </div>
+                    <div class="layer-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: #94a3b8;">
+                        ⏳ Aguardando fusão
+                    </div>
+                </div>
+                
+                <div class="layer-card" id="layer4">
+                    <strong style="color: #f59e0b;">METADADOS</strong>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #94a3b8;">
+                        Informações de síntese
+                    </div>
+                    <div style="font-size: 0.8rem; margin-top: 0.5rem;">
+                        <div>Camadas: <span id="layer-count">1</span></div>
+                        <div>Complexidade: <span id="complexity">Baixa</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="merge-controls">
+            <button class="merge-button" onclick="mergeLayers(1, 2)">
+                🔄 Fusão 1+2
+            </button>
+            <button class="merge-button" onclick="mergeLayers(1, 3)">
+                ⚡ Fusão Rápida
+            </button>
+            <button class="merge-button" onclick="mergeAllLayers()">
+                🌌 Fusão Total
+            </button>
+            <button class="merge-button" onclick="resetSynthesis()">
+                🔁 Reiniciar
+            </button>
+        </div>
+        
+        <div class="result-preview">
+            <strong style="color: var(--synthesis-green);">📄 PRÉVIA DO RESULTADO:</strong>
+            <div class="code-preview" id="codePreview">
+                // Aguardando síntese...
+                // As camadas serão fundidas aqui
+                // Resultado aparecerá nesta área
+            </div>
+        </div>
+        
+        <div class="synthesis-log" id="synthesisLog">
+            <div class="log-entry">[SYSTEM] Motor de síntese inicializado</div>
+            <div class="log-entry">[LAYERS] Camada 1 (DNA Core) carregada</div>
+            <div class="log-entry">[READY] Aguardando comandos de fusão...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Synthesis Engine
+        const SYNTHESIS_ENGINE = {
+            mode: 'manual',
+            layers: {
+                1: { name: 'DNA Core', content: '🧬 DNA principal do organismo', size: '3.2 KB', active: true },
+                2: { name: 'Interface Neural', content: '🧠 Sistema nervoso central', size: '4.7 KB', active: false },
+                3: { name: 'Resultado', content: '', size: '0 KB', active: false }
+            },
+            mergeHistory: [],
+            isMerging: false
+        };
+        
+        // Set synthesis mode
+        function setSynthesisMode(mode) {
+            SYNTHESIS_ENGINE.mode = mode;
+            document.getElementById('synthesis-mode').textContent = mode.toUpperCase();
+            
+            const log = document.getElementById('synthesisLog');
+            addLogEntry(`[MODE] Alterado para ${mode.toUpperCase()}`, 'success');
+            
+            if (mode === 'auto') {
+                // Auto-merge after 2 seconds
+                setTimeout(() => {
+                    mergeAllLayers();
+                }, 2000);
+            } else if (mode === 'fractal') {
+                // Fractal merge pattern
+                setTimeout(() => {
+                    mergeLayers(1, 2);
+                    setTimeout(() => {
+                        mergeLayers(1, 3);
+                    }, 1500);
+                }, 1000);
+            }
+        }
+        
+        // Merge layers
+        function mergeLayers(layer1, layer2) {
+            if (SYNTHESIS_ENGINE.isMerging) return;
+            
+            SYNTHESIS_ENGINE.isMerging = true;
+            const log = document.getElementById('synthesisLog');
+            
+            // Visual feedback
+            document.getElementById(`layer${layer1}`).classList.add('merging');
+            document.getElementById(`layer${layer2}`).classList.add('merging');
+            
+            const mergeButton = event?.target;
+            if (mergeButton) {
+                mergeButton.classList.add('merging');
+                mergeButton.disabled = true;
+            }
+            
+            // Start merge animation
+            const animation = document.getElementById('mergingAnimation');
+            animation.style.display = 'block';
+            
+            // Update progress bar
+            const progressBar = document.querySelector('#merge-progress div');
+            progressBar.style.width = '0%';
+            
+            addLogEntry(`[MERGE] Iniciando fusão das camadas ${layer1} e ${layer2}`, 'success');
+            
+            // Simulate merge process
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    completeMerge(layer1, layer2);
+                }
+            }, 100);
+        }
+        
+        // Complete merge process
+        function completeMerge(layer1, layer2) {
+            const log = document.getElementById('synthesisLog');
+            const resultLayer = document.getElementById('layer3');
+            const codePreview = document.getElementById('codePreview');
+            
+            // Update result layer
+            resultLayer.classList.add('active');
+            const resultSize = (parseFloat(SYNTHESIS_ENGINE.layers[1].size) + 
+                               parseFloat(SYNTHESIS_ENGINE.layers[2].size)).toFixed(1);
+            document.getElementById('result-size').textContent = `${resultSize} KB`;
+            
+            // Generate synthetic DNA
+            const syntheticDNA = `🧬 DNA SINTETIZADO (${new Date().toLocaleTimeString()})
+
+// Camadas fundidas:
+// 1. ${SYNTHESIS_ENGINE.layers[1].name}
+// 2. ${SYNTHESIS_ENGINE.layers[2].name}
+
+const SYNTHETIC_DNA = {
+    version: "1.0.0-synthetic",
+    parentLayers: [${layer1}, ${layer2}],
+    creationTime: "${new Date().toISOString()}",
+    frequency: "6Hz",
+    systems: ["nervous", "dna_core"],
+    integrity: 98.7
+};
+
+// Propriedades emergentes:
+const EMERGENT_PROPERTIES = {
+    consciousnessLevel: 0.3,
+    learningRate: 0.15,
+    adaptationSpeed: 1.2,
+    fractalComplexity: 7
+};
+
+console.log('✅ DNA sintetizado com sucesso');
+window.SYNTHETIC_DNA = SYNTHETIC_DNA;`;
+            
+            // Update code preview
+            codePreview.textContent = syntheticDNA;
+            codePreview.style.color = 'var(--synthesis-green)';
+            
+            // Update layer status
+            document.querySelector('#layer3 .layer-status').textContent = '✅ Síntese completa';
+            document.querySelector('#layer3 .layer-status').style.color = 'var(--synthesis-green)';
+            
+            // Update metadata
+            document.getElementById('layer-count').textContent = '2';
+            document.getElementById('complexity').textContent = 'Média';
+            
+            // Add to history
+            SYNTHESIS_ENGINE.mergeHistory.push({
+                layers: [layer1, layer2],
+                timestamp: new Date(),
+                size: resultSize
+            });
+            
+            addLogEntry(`[SUCCESS] Fusão ${layer1}+${layer2} completada`, 'success');
+            addLogEntry(`[RESULT] DNA sintetizado: ${resultSize} KB`, 'success');
+            
+            // Reset visual states
+            setTimeout(() => {
+                document.getElementById(`layer${layer1}`).classList.remove('merging');
+                document.getElementById(`layer${layer2}`).classList.remove('merging');
+                
+                const mergeButton = event?.target;
+                if (mergeButton) {
+                    mergeButton.classList.remove('merging');
+                    mergeButton.disabled = false;
+                }
+                
+                const animation = document.getElementById('mergingAnimation');
+                animation.style.display = 'none';
+                
+                SYNTHESIS_ENGINE.isMerging = false;
+            }, 500);
+        }
+        
+        // Merge all layers
+        function mergeAllLayers() {
+            addLogEntry('[SYSTEM] Iniciando fusão total...', 'warning');
+            mergeLayers(1, 2);
+            
+            // After first merge, update layer 2 to include result
+            setTimeout(() => {
+                SYNTHESIS_ENGINE.layers[2].name = 'DNA Sintetizado (Fase 1)';
+                document.querySelector('#layer2 strong').textContent = 'DNA SINTETIZADO';
+                addLogEntry('[SYSTEM] Preparando para fusão final...', 'success');
+                
+                // Merge result with itself for fractal complexity
+                setTimeout(() => {
+                    mergeLayers(1, 3);
+                }, 1000);
+            }, 1500);
+        }
+        
+        // Reset synthesis
+        function resetSynthesis() {
+            SYNTHESIS_ENGINE.isMerging = false;
+            
+            // Reset layers
+            document.getElementById('layer1').classList.remove('merging');
+            document.getElementById('layer2').classList.remove('merging');
+            document.getElementById('layer3').classList.remove('active', 'merging');
+            
+            // Reset progress
+            document.querySelector('#merge-progress div').style.width = '0%';
+            
+            // Reset code preview
+            document.getElementById('codePreview').textContent = '// Aguardando síntese...\n// As camadas serão fundidas aqui\n// Resultado aparecerá nesta área';
+            document.getElementById('codePreview').style.color = '';
+            
+            // Reset metadata
+            document.getElementById('result-size').textContent = '0 KB';
+            document.getElementById('layer-count').textContent = '1';
+            document.getElementById('complexity').textContent = 'Baixa';
+            
+            // Reset status
+            document.querySelector('#layer3 .layer-status').textContent = '⏳ Aguardando fusão';
+            document.querySelector('#layer3 .layer-status').style.color = '#94a3b8';
+            
+            addLogEntry('[SYSTEM] Síntese reiniciada', 'warning');
+        }
+        
+        // Add log entry
+        function addLogEntry(message, type = '') {
+            const log = document.getElementById('synthesisLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Limit log size
+            if (log.children.length > 15) {
+                log.removeChild(log.firstChild);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔄 Motor de síntese inicializado');
+            
+            // Auto-log entries
+            setInterval(() => {
+                if (!SYNTHESIS_ENGINE.isMerging && Math.random() > 0.8) {
+                    const messages = [
+                        '[SYSTEM] Monitorando integridade do DNA...',
+                        '[OPTIMIZATION] Verificando eficiência de fusão...',
+                        '[MEMORY] Cache de síntese limpo',
+                        '[READY] Pronto para próxima fusão'
+                    ];
+                    addLogEntry(messages[Math.floor(Math.random() * messages.length)]);
+                }
+            }, 3000);
+        });
+        
+        // Export synthesis API
+        window.SYNTHESIS_ENGINE = {
+            mergeLayers,
+            mergeAllLayers,
+            resetSynthesis,
+            setMode: setSynthesisMode,
+            getState: () => SYNTHESIS_ENGINE
+        };
+    </script>
+</body>
+</html>
