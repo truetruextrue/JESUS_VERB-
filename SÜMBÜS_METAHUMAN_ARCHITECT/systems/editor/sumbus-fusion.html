@@ -214,33 +214,137 @@ body {
 }
 .repo-search:focus { border-color:var(--c-green); }
 
+/* ── REPO GRID — mobile-first: 2 colunas com cards legíveis ── */
 .repo-grid {
-  flex:1; overflow-y:auto; padding:10px;
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:7px;
-  align-content:start;
+  flex:1; overflow-y:auto; padding:8px;
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:8px; align-content:start;
 }
+@media(min-width:480px){ .repo-grid{ grid-template-columns:repeat(3,1fr); } }
+@media(min-width:700px){ .repo-grid{ grid-template-columns:repeat(4,1fr); } }
+
 .repo-card {
-  background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07);
-  border-radius:8px; padding:9px; cursor:pointer; transition:all 0.2s;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:10px; padding:10px 10px 8px;
+  cursor:pointer; transition:all 0.2s;
   position:relative; overflow:hidden;
-  user-select:none;
+  user-select:none; display:flex; flex-direction:column; gap:4px;
+  -webkit-tap-highlight-color:transparent;
 }
-.repo-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
-.repo-card:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.4); }
+.repo-card:active { transform:scale(0.97); }
 .repo-card.selected {
   border-color:var(--c-purple);
-  background:rgba(139,92,246,0.12);
-  box-shadow:0 0 12px rgba(139,92,246,0.3);
+  background:rgba(139,92,246,0.14);
+  box-shadow:0 0 14px rgba(139,92,246,0.25);
 }
 .repo-card.selected::after {
-  content:'✓'; position:absolute; top:5px; right:7px;
-  color:var(--c-purple); font-weight:900; font-size:11px;
+  content:'✓'; position:absolute; top:6px; right:8px;
+  color:var(--c-purple); font-weight:900; font-size:13px;
 }
-.rc-icon { font-size:1.4rem; margin-bottom:4px; }
-.rc-name { font-size:9.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-bottom:2px; }
-.rc-path { font-size:8px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.rc-footer { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
-.rc-badge { font-size:7.5px; font-weight:700; padding:1px 4px; border-radius:3px; border:1px solid; }
+
+/* Ícone + botão info no topo */
+.rc-top {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:2px;
+}
+.rc-icon { font-size:1.6rem; line-height:1; }
+.rc-info-btn {
+  width:22px; height:22px; border-radius:50%;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.06);
+  color:var(--text-muted); font-size:11px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; flex-shrink:0; line-height:1;
+  transition:all 0.2s;
+}
+.rc-info-btn:active { background:rgba(59,130,246,0.3); color:var(--primary); }
+
+/* Nome — 2 linhas para nomes longos não ficarem cortados */
+.rc-name {
+  font-size:11px; font-weight:700;
+  overflow:hidden;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  word-break:break-all;
+  line-height:1.35; min-height:30px;
+}
+
+/* Caminho curto */
+.rc-path {
+  font-size:8.5px; color:var(--text-muted);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+
+/* Footer: badge + tamanho */
+.rc-footer {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:auto; padding-top:4px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.rc-badge {
+  font-size:8px; font-weight:700; padding:2px 5px;
+  border-radius:3px; border:1px solid;
+}
+.rc-size { font-size:8.5px; color:var(--text-muted); }
+
+/* ── INFO BOTTOM SHEET (mobile) ── */
+.info-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  z-index:4999; display:none;
+  backdrop-filter:blur(4px);
+}
+.info-overlay.open { display:block; }
+.info-sheet {
+  position:fixed; bottom:-100%; left:0; right:0;
+  background:var(--bg-deep);
+  border-top:2px solid var(--c3, #3b82f6);
+  border-radius:18px 18px 0 0;
+  z-index:5000; transition:bottom 0.32s cubic-bezier(.4,0,.2,1);
+  max-height:78vh; display:flex; flex-direction:column;
+}
+.info-sheet.open { bottom:0; }
+.info-handle {
+  width:40px; height:4px; background:rgba(255,255,255,0.2);
+  border-radius:2px; margin:10px auto 0; flex-shrink:0;
+}
+.info-head {
+  padding:10px 16px 8px; display:flex; align-items:center; gap:8px;
+  border-bottom:1px solid rgba(255,255,255,0.07); flex-shrink:0;
+}
+.info-head-icon { font-size:1.4rem; }
+.info-head-title { flex:1; font-size:12px; font-weight:700; overflow:hidden; }
+.info-head-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.info-head-path { font-size:9px; color:var(--text-muted); }
+.info-close {
+  background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3);
+  color:#ef4444; width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  font-size:14px; flex-shrink:0;
+}
+.info-body { overflow-y:auto; padding:12px 16px 24px; flex:1; }
+.info-section { margin-bottom:12px; }
+.info-section-title {
+  font-size:9px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--text-muted);
+  margin-bottom:6px; padding-bottom:4px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.info-chips { display:flex; flex-wrap:wrap; gap:4px; }
+.info-chip {
+  padding:3px 8px; border-radius:99px; font-size:9px; font-weight:600;
+  border:1px solid; font-family:var(--font-code);
+  background:rgba(255,255,255,0.04);
+}
+.info-stat-row {
+  display:flex; justify-content:space-between; padding:4px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:10px;
+}
+.info-stat-label { color:var(--text-muted); }
+.info-stat-val   { font-weight:700; font-family:var(--font-code); }
+.info-loading { text-align:center; padding:2rem; color:var(--text-muted); font-size:10px; }
+/* ── fim INFO SHEET ── */
 
 .repo-footer {
   padding:8px 12px; background:rgba(0,0,0,0.5); border-top:1px solid var(--glass-border);
@@ -580,6 +684,23 @@ body {
 
 <div id="toaster"></div>
 
+<!-- INFO BOTTOM SHEET -->
+<div class="info-overlay" id="infoOverlay" onclick="closeInfoSheet()"></div>
+<div class="info-sheet" id="infoSheet">
+  <div class="info-handle"></div>
+  <div class="info-head">
+    <span class="info-head-icon" id="infoIcon">📄</span>
+    <div class="info-head-title">
+      <div class="info-head-name" id="infoName">—</div>
+      <div class="info-head-path" id="infoPath">—</div>
+    </div>
+    <div class="info-close" onclick="closeInfoSheet()">✕</div>
+  </div>
+  <div class="info-body" id="infoBody">
+    <div class="info-loading">Toque ℹ em um arquivo para ver detalhes</div>
+  </div>
+</div>
+
 <!-- ━━━━━ SCRIPTS ━━━━━ -->
 <script src="../../core/github-bridge.js"></script>
 <script src="../../core/kobllux-archetypes.js"></script>
@@ -857,24 +978,37 @@ function renderRepoGrid() {
   grid.innerHTML = filtered.map(f => {
     const ext  = f.path.split('.').pop().toLowerCase();
     const name = f.path.split('/').pop();
-    const dir  = f.path.split('/').slice(0,-1).slice(-2).join('/');
+    // Mostra as 2 últimas partes do caminho (pasta/subpasta) para não ficar longo
+    const pathParts = f.path.split('/');
+    const dir  = pathParts.length > 2 ? pathParts.slice(-3,-1).join('/') : pathParts.slice(0,-1).join('/');
     const ft   = TYPE_MAP[ext] || { label:ext.toUpperCase(), color:'#475569', bg:'rgba(71,85,105,0.1)', icon:'📁' };
     const sel  = selectedFiles.some(s => s.path === f.path);
     const borderColor = sel ? 'var(--c-purple)' : ft.color + '22';
+    const size = G && G.formatSize ? G.formatSize(f.size) : '';
     return `
       <div class="repo-card ${sel?'selected':''}"
            data-path="${esc(f.path)}"
            data-sha="${f.sha}"
            data-ext="${ext}"
            data-name="${esc(name)}"
+           data-size="${esc(size)}"
            onclick="handleCardClick(this)"
            style="border-color:${borderColor};border-top:2px solid ${ft.color}">
-        <div class="rc-icon">${ft.icon}</div>
-        <div class="rc-name" style="color:${ft.color}" title="${esc(f.path)}">${esc(name)}</div>
+        <div class="rc-top">
+          <span class="rc-icon">${ft.icon}</span>
+          <button class="rc-info-btn"
+                  data-path="${esc(f.path)}"
+                  data-ext="${ext}"
+                  data-icon="${ft.icon}"
+                  data-size="${esc(size)}"
+                  onclick="event.stopPropagation();showFileInfo(this)"
+                  title="Ver classes, IDs e detalhes">ℹ</button>
+        </div>
+        <div class="rc-name" style="color:${ft.color}">${esc(name)}</div>
         <div class="rc-path">${esc(dir)}</div>
         <div class="rc-footer">
           <span class="rc-badge" style="color:${ft.color};border-color:${ft.color}44;background:${ft.bg}">${ft.label}</span>
-          <span style="font-size:7.5px;color:var(--text-muted)">${G && G.formatSize ? G.formatSize(f.size) : ''}</span>
+          <span class="rc-size">${size}</span>
         </div>
       </div>`;
   }).join('');
@@ -942,6 +1076,183 @@ window.removeSel = i => {
   updateSelectionUI();
   renderRepoGrid();
 };
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   INFO SHEET — classes · IDs · detalhes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+async function showFileInfo(btn) {
+  const path  = btn.dataset.path;
+  const ext   = btn.dataset.ext;
+  const icon  = btn.dataset.icon;
+  const size  = btn.dataset.size;
+  const name  = path.split('/').pop();
+  const dir   = path.split('/').slice(0,-1).slice(-2).join('/');
+
+  // Open sheet immediately with loading state
+  document.getElementById('infoIcon').textContent = icon;
+  document.getElementById('infoName').textContent = name;
+  document.getElementById('infoPath').textContent = dir;
+  document.getElementById('infoBody').innerHTML = '<div class="info-loading">↺ carregando...</div>';
+  document.getElementById('infoSheet').style.borderTopColor = TYPE_MAP[ext]?.color || '#3b82f6';
+  document.getElementById('infoSheet').classList.add('open');
+  document.getElementById('infoOverlay').classList.add('open');
+
+  // Binary/large file guard
+  const isBinary = ['png','jpg','jpeg','gif','svg','ico','woff','woff2','ttf','eot','pdf','zip'].includes(ext);
+
+  try {
+    if (isBinary) {
+      renderInfoStats({ size, lines: '—', type: ext.toUpperCase(), classes:[], ids:[], vars:[], fns:[], keys:[] });
+      return;
+    }
+    const data = await G.fetchFile(path);
+    if (!data.content) { renderInfoStats({ size, lines:'—', type:ext.toUpperCase(), classes:[],ids:[],vars:[],fns:[],keys:[] }); return; }
+    const raw = G.decodeContent(data.content);
+    const lines = raw.split('\n').length;
+    const parsed = parseFileInfo(raw, ext);
+    renderInfoStats({ size, lines, type: ext.toUpperCase(), ...parsed, path, ext });
+  } catch(e) {
+    document.getElementById('infoBody').innerHTML =
+      `<div class="info-loading" style="color:var(--danger)">Erro: ${e.message}</div>`;
+  }
+}
+
+function parseFileInfo(raw, ext) {
+  const uniq = arr => [...new Set(arr)].sort();
+  const classes=[], ids=[], vars=[], fns=[], keys=[];
+
+  if (ext === 'css') {
+    // classes: .name { ou .name,
+    const cMatch = raw.matchAll(/\.(-?[a-zA-Z_][a-zA-Z0-9_-]*)[\s{,>+~:[\n]/g);
+    for (const m of cMatch) if (!m[1].startsWith('-')) classes.push(m[1]);
+    // IDs: #name {
+    const iMatch = raw.matchAll(/#([a-zA-Z_][a-zA-Z0-9_-]*)[\s{,>+~:[\n]/g);
+    for (const m of iMatch) ids.push(m[1]);
+    // CSS vars: --var-name
+    const vMatch = raw.matchAll(/--([a-zA-Z][a-zA-Z0-9_-]+)\s*:/g);
+    for (const m of vMatch) vars.push('--' + m[1]);
+  }
+  else if (ext === 'html') {
+    // class="" attributes
+    const cMatch = raw.matchAll(/class="([^"]+)"/g);
+    for (const m of cMatch) m[1].split(/\s+/).forEach(c => { if(c) classes.push(c); });
+    // id="" attributes
+    const iMatch = raw.matchAll(/\bid="([^"]+)"/g);
+    for (const m of iMatch) ids.push(m[1]);
+    // <script> function names
+    const fnMatch = raw.matchAll(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g);
+    for (const m of fnMatch) fns.push(m[1]);
+  }
+  else if (ext === 'js') {
+    // function declarations
+    const fnMatch = raw.matchAll(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g);
+    for (const m of fnMatch) fns.push(m[1]);
+    // arrow / const fn
+    const arMatch = raw.matchAll(/(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*(?:async\s*)?\(/g);
+    for (const m of arMatch) fns.push(m[1]);
+    // const/let/var declarations (non-functions)
+    const vMatch = raw.matchAll(/(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*[=;,]/g);
+    for (const m of vMatch) vars.push(m[1]);
+    // class definitions
+    const clMatch = raw.matchAll(/class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g);
+    for (const m of clMatch) classes.push(m[1]);
+  }
+  else if (ext === 'json') {
+    try {
+      const obj = JSON.parse(raw);
+      if (typeof obj === 'object' && obj !== null) {
+        Object.keys(obj).slice(0, 30).forEach(k => keys.push(k));
+      }
+    } catch {}
+  }
+  else if (ext === 'py') {
+    // def function_name
+    const fnMatch = raw.matchAll(/^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/gm);
+    for (const m of fnMatch) fns.push(m[1]);
+    // class ClassName
+    const clMatch = raw.matchAll(/^class\s+([a-zA-Z_][a-zA-Z0-9_]*)/gm);
+    for (const m of clMatch) classes.push(m[1]);
+  }
+  else if (ext === 'md') {
+    // headings
+    const hMatch = raw.matchAll(/^#{1,3}\s+(.+)$/gm);
+    for (const m of hMatch) keys.push(m[1].trim().slice(0,40));
+  }
+
+  return {
+    classes: uniq(classes).slice(0,40),
+    ids:     uniq(ids).slice(0,20),
+    vars:    uniq(vars).slice(0,20),
+    fns:     uniq(fns).slice(0,30),
+    keys:    uniq(keys).slice(0,20),
+  };
+}
+
+function renderInfoStats({ size, lines, type, classes, ids, vars, fns, keys, path, ext }) {
+  const ft = TYPE_MAP[ext] || { color:'#94a3b8' };
+  const chip = (label, color) =>
+    `<span class="info-chip" style="color:${color};border-color:${color}44">${esc(label)}</span>`;
+
+  let html = `<div class="info-section">
+    <div class="info-section-title">📊 Estatísticas</div>
+    <div class="info-stat-row"><span class="info-stat-label">Tipo</span><span class="info-stat-val" style="color:${ft.color}">${type}</span></div>
+    <div class="info-stat-row"><span class="info-stat-label">Tamanho</span><span class="info-stat-val">${size || '—'}</span></div>
+    <div class="info-stat-row"><span class="info-stat-label">Linhas</span><span class="info-stat-val">${lines}</span></div>
+  </div>`;
+
+  if (classes.length) html += `<div class="info-section">
+    <div class="info-section-title">🎨 Classes (${classes.length})</div>
+    <div class="info-chips">${classes.map(c => chip('.'+c,'#264de4')).join('')}</div>
+  </div>`;
+
+  if (ids.length) html += `<div class="info-section">
+    <div class="info-section-title"># IDs (${ids.length})</div>
+    <div class="info-chips">${ids.map(i => chip('#'+i,'#e34c26')).join('')}</div>
+  </div>`;
+
+  if (vars.length) html += `<div class="info-section">
+    <div class="info-section-title">⚙ Variáveis / Props (${vars.length})</div>
+    <div class="info-chips">${vars.map(v => chip(v,'#94a3b8')).join('')}</div>
+  </div>`;
+
+  if (fns.length) html += `<div class="info-section">
+    <div class="info-section-title">⚡ Funções (${fns.length})</div>
+    <div class="info-chips">${fns.map(f => chip(f+'()','#f7df1e')).join('')}</div>
+  </div>`;
+
+  if (keys.length) html += `<div class="info-section">
+    <div class="info-section-title">🗝 Chaves / Seções (${keys.length})</div>
+    <div class="info-chips">${keys.map(k => chip(k,'#10b981')).join('')}</div>
+  </div>`;
+
+  // Button to open in fusion with this file pre-selected
+  if (path) html += `<div style="margin-top:8px">
+    <button onclick="closeInfoSheet();preSelectFile('${esc(path)}')"
+      style="width:100%;padding:10px;background:rgba(139,92,246,0.15);border:1px solid var(--c-purple);color:var(--c-purple);border-radius:8px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer">
+      ⚡ Selecionar para FUSÃO
+    </button>
+  </div>`;
+
+  document.getElementById('infoBody').innerHTML = html;
+}
+
+function closeInfoSheet() {
+  document.getElementById('infoSheet').classList.remove('open');
+  document.getElementById('infoOverlay').classList.remove('open');
+}
+
+function preSelectFile(path) {
+  const file = repoFiles.find(f => f.path === path);
+  if (!file) return;
+  const ext  = path.split('.').pop().toLowerCase();
+  const name = path.split('/').pop();
+  if (!selectedFiles.some(s => s.path === path)) {
+    selectedFiles.push({ path, sha: file.sha, ext, name });
+    updateSelectionUI();
+    renderRepoGrid();
+  }
+  switchTab('fusion');
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    FUSION MODES
@@ -1232,11 +1543,14 @@ Object.assign(window, {
   setRepoFilter,
   goToFusion,
   clearSelection,
+  // Info sheet
+  showFileInfo,
+  closeInfoSheet,
+  preSelectFile,
   // Fusion
   setMode,
   executeFusion,
   setArch,
-  // Upload (dock btn-push usa closure, não precisa aqui)
 });
 
 })();
