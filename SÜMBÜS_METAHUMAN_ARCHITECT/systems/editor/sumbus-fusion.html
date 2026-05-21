@@ -810,6 +810,10 @@ function saveRepoToken() {
 }
 
 async function loadRepo() {
+  if (!G) {
+    document.getElementById('repoGrid').innerHTML = '<div class="loading-anim" style="grid-column:1/-1;color:var(--danger)">GitHub Bridge não carregou. Verifique o caminho dos scripts.</div>';
+    return;
+  }
   const grid = document.getElementById('repoGrid');
   grid.innerHTML = '<div class="loading-anim" style="grid-column:1/-1">⬡ ATLAS carregando árvore...</div>';
   try {
@@ -847,26 +851,38 @@ function renderRepoGrid() {
     return;
   }
 
+  // FIXED: sem <style> inline por card (causava freeze com 600+ arquivos)
+  // FIXED: onclick via data-attributes (sem problemas com chars especiais no path)
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
   grid.innerHTML = filtered.map(f => {
     const ext  = f.path.split('.').pop().toLowerCase();
     const name = f.path.split('/').pop();
     const dir  = f.path.split('/').slice(0,-1).slice(-2).join('/');
     const ft   = TYPE_MAP[ext] || { label:ext.toUpperCase(), color:'#475569', bg:'rgba(71,85,105,0.1)', icon:'📁' };
     const sel  = selectedFiles.some(s => s.path === f.path);
+    const borderColor = sel ? 'var(--c-purple)' : ft.color + '22';
     return `
-      <div class="repo-card ${sel?'selected':''}" id="rc-${f.sha}"
-           onclick="toggleSelect('${f.path}','${f.sha}','${ext}','${name.replace(/'/g,"\\'")}')"
-           style="border-color:${sel?'var(--c-purple)':ft.color+'22'}">
-        <style>#rc-${f.sha}::before{background:${ft.color}}</style>
+      <div class="repo-card ${sel?'selected':''}"
+           data-path="${esc(f.path)}"
+           data-sha="${f.sha}"
+           data-ext="${ext}"
+           data-name="${esc(name)}"
+           onclick="handleCardClick(this)"
+           style="border-color:${borderColor};border-top:2px solid ${ft.color}">
         <div class="rc-icon">${ft.icon}</div>
-        <div class="rc-name" style="color:${ft.color}" title="${f.path}">${name}</div>
-        <div class="rc-path">${dir}</div>
+        <div class="rc-name" style="color:${ft.color}" title="${esc(f.path)}">${esc(name)}</div>
+        <div class="rc-path">${esc(dir)}</div>
         <div class="rc-footer">
           <span class="rc-badge" style="color:${ft.color};border-color:${ft.color}44;background:${ft.bg}">${ft.label}</span>
-          <span style="font-size:7.5px;color:var(--text-muted)">${G.formatSize ? G.formatSize(f.size) : ''}</span>
+          <span style="font-size:7.5px;color:var(--text-muted)">${G && G.formatSize ? G.formatSize(f.size) : ''}</span>
         </div>
       </div>`;
   }).join('');
+}
+
+function handleCardClick(el) {
+  toggleSelect(el.dataset.path, el.dataset.sha, el.dataset.ext, el.dataset.name);
 }
 
 function toggleSelect(path, sha, ext, name) {

@@ -484,57 +484,62 @@ function searchTree(q) {
     renderFullTree(getFilteredFiles());
 }
 
-function renderFullTree(items) {
-    const root = document.getElementById('treeRoot');
-    // Build folder hierarchy
-    const tree = {};
+// ── FIXED TREE BUILDER ──────────────────────────────────────────────
+// Bug anterior: node = node[dir]._dirs entrava um nível a mais,
+// colocando arquivos em _dirs._files em vez de dir._files.
+function buildFileTree(items) {
+    const root = { _files: [], _dirs: {} };
     items.forEach(item => {
         const parts = item.path.split('/');
-        let node = tree;
+        let node = root;
         for (let i = 0; i < parts.length - 1; i++) {
-            if (!node[parts[i]]) node[parts[i]] = { _files: [], _dirs: {} };
-            node = node[parts[i]]._dirs;
+            const d = parts[i];
+            if (!node._dirs[d]) node._dirs[d] = { _files: [], _dirs: {} };
+            node = node._dirs[d]; // move into the dir node, NOT its _dirs
         }
-        const fileName = parts[parts.length - 1];
-        const folder = parts.length > 1 ? parts.slice(0,-1).join('/') : '';
-        if (!node._files) node._files = [];
-        node._files.push({ ...item, name: fileName });
+        node._files.push({ ...item, name: parts[parts.length - 1] });
     });
+    return root;
+}
 
-    root.innerHTML = renderNode(tree, '', 0);
+let _uid = 0;
+function renderFullTree(items) {
+    _uid = 0;
+    const root = buildFileTree(items);
+    document.getElementById('treeRoot').innerHTML = renderDirNode(root, 0);
     document.getElementById('treeCount').textContent = items.length;
 }
 
-function renderNode(node, pathPrefix, depth) {
-    let html = '';
-    const indent = depth * 12;
-    const pad = `padding-left:${8 + indent}px`;
+function _esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-    // Folders first
-    const dirs = Object.keys(node).filter(k => k !== '_files' && k !== '_dirs').sort();
-    dirs.forEach(dir => {
-        const fullPath = pathPrefix ? pathPrefix + '/' + dir : dir;
-        const child = node[dir];
+function renderDirNode(node, depth) {
+    let html = '';
+    const pad = `padding-left:${8 + depth * 12}px`;
+
+    Object.keys(node._dirs).sort().forEach(dir => {
+        const id = 'n' + (++_uid);
         html += `
-            <div class="tree-item dir" style="${pad}" onclick="toggleDir(event,'dir-${fullPath.replace(/\//g,'__')}')">
-                <span class="tree-expand" id="exp-${fullPath.replace(/\//g,'__')}">▶</span>
+            <div class="tree-item dir" style="${pad}" onclick="toggleDir(event,'${id}')">
+                <span class="tree-expand" id="x${id}">▶</span>
                 <span class="tree-icon">📁</span>
-                <span class="tree-name">${dir}</span>
+                <span class="tree-name">${_esc(dir)}</span>
             </div>
-            <div class="tree-children" id="dir-${fullPath.replace(/\//g,'__')}">
-                ${renderNode({ ...child._dirs, _files: child._files }, fullPath, depth + 1)}
+            <div class="tree-children" id="${id}">
+                ${renderDirNode(node._dirs[dir], depth + 1)}
             </div>`;
     });
 
-    // Files
-    const files = (node._files || []).sort((a,b) => a.name.localeCompare(b.name));
-    files.forEach(file => {
-        const ft = G.getFileType(file.path);
+    // Files — usa data-attributes para evitar problemas com chars especiais no onclick
+    (node._files || []).sort((a,b) => a.name.localeCompare(b.name)).forEach(file => {
+        const ft   = G.getFileType(file.path);
         const arch = G.getArchetypeForPath(file.path);
         html += `
-            <div class="tree-item" style="${pad}" onclick="openFile('${file.path}','${file.sha}')" id="fi-${file.sha}">
+            <div class="tree-item" style="${pad}"
+                 data-path="${_esc(file.path)}"
+                 data-sha="${file.sha}"
+                 onclick="openFile(this.dataset.path, this.dataset.sha)">
                 <span class="tree-icon">${ft.icon}</span>
-                <span class="tree-name" title="${file.path}" style="color:${ft.color}">${file.name}</span>
+                <span class="tree-name" title="${_esc(file.path)}" style="color:${ft.color}">${_esc(file.name)}</span>
                 <span class="tree-arch" style="color:${arch.color}">${arch.sym}</span>
             </div>`;
     });
@@ -544,9 +549,8 @@ function renderNode(node, pathPrefix, depth) {
 
 function toggleDir(e, id) {
     e.stopPropagation();
-    const el = document.getElementById(id);
-    const expId = 'exp-' + id.replace('dir-','');
-    const exp = document.getElementById(expId);
+    const el  = document.getElementById(id);
+    const exp = document.getElementById('x' + id);
     if (!el) return;
     const open = el.classList.toggle('open');
     if (exp) exp.textContent = open ? '▼' : '▶';
@@ -562,9 +566,9 @@ async function openFile(path, sha) {
     currentFilePath = path;
     currentFileSha = sha;
 
-    // highlight
+    // highlight via data-attribute (sem IDs especiais)
     document.querySelectorAll('.tree-item').forEach(el => el.classList.remove('active'));
-    const fi = document.getElementById(`fi-${sha}`);
+    const fi = document.querySelector(`.tree-item[data-sha="${sha}"]`);
     if (fi) fi.classList.add('active');
 
     const ft = G.getFileType(path);
