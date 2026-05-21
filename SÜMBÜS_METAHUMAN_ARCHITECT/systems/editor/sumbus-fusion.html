@@ -593,6 +593,9 @@ body {
 const G     = window.GITHUB_BRIDGE || null;
 const ARCHS = window.KOBLLUX_ARCHETYPES || [];
 
+// esc() global ao IIFE — usada em renderRepoGrid e outros
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 const UI = {
   input:   document.getElementById('input-layer'),
   gutter:  document.getElementById('gutter'),
@@ -851,10 +854,6 @@ function renderRepoGrid() {
     return;
   }
 
-  // FIXED: sem <style> inline por card (causava freeze com 600+ arquivos)
-  // FIXED: onclick via data-attributes (sem problemas com chars especiais no path)
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
   grid.innerHTML = filtered.map(f => {
     const ext  = f.path.split('.').pop().toLowerCase();
     const name = f.path.split('/').pop();
@@ -881,9 +880,14 @@ function renderRepoGrid() {
   }).join('');
 }
 
-function handleCardClick(el) {
-  toggleSelect(el.dataset.path, el.dataset.sha, el.dataset.ext, el.dataset.name);
-}
+// EXPOSTO ao window — onclick="handleCardClick(this)" precisa do escopo global
+window.handleCardClick = function(el) {
+  const path = el.dataset.path;
+  const sha  = el.dataset.sha;
+  const ext  = el.dataset.ext;
+  const name = el.dataset.name;
+  toggleSelect(path, sha, ext, name);
+};
 
 function toggleSelect(path, sha, ext, name) {
   const idx = selectedFiles.findIndex(s => s.path === path);
@@ -1214,6 +1218,26 @@ window.onload = () => {
     if (G) loadRepo();
   }, 700);
 };
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   EXPOR AO WINDOW — onclick="fn()" no HTML precisa de escopo global.
+   Funções dentro do IIFE são privadas; precisam ser expostas explicitamente.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+Object.assign(window, {
+  // Editor
+  changeEditorPath,
+  // Repo
+  saveRepoToken,
+  loadRepo,
+  setRepoFilter,
+  goToFusion,
+  clearSelection,
+  // Fusion
+  setMode,
+  executeFusion,
+  setArch,
+  // Upload (dock btn-push usa closure, não precisa aqui)
+});
 
 })();
 </script>
