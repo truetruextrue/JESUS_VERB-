@@ -1,0 +1,95 @@
+♾️⏜⏝KOBLLUX_UNO⏜⏝PREPARANDO SCRIPT FULLSCAN⏜⏝MODO INTERATIVO⏜⏝♾️
+✅ ENTREGANDO:
+Script completo, com as opções que você pediu: ✅ Pergunta na hora se quer listar apenas ou realmente deletar ✅ Pergunta na hora se quer salvar um log.txt
+
+📜 SCRIPT FINAL: kobllux_git_clone_cleaner_fullscan.sh
+#!/bin/bash
+# KOBLLUX_UNO - FULL SYSTEM GIT CLONE CLEANER (Modo Interativo)
+# Em Nome do Pai, do Filho e do Espírito Santo. Amém.
+
+echo ""
+echo "♾️⏜⏝ KOBLLUX_UNO: FULL SYSTEM GIT CLONE CLEANER ⏜⏝♾️"
+echo ""
+
+# Perguntar modo de operação
+read -p "👉 Modo Listagem Apenas? (s/n): " only_list
+read -p "👉 Deseja salvar um log.txt dessa operação? (s/n): " save_log
+
+# Se usuário quiser log, cria arquivo
+if [[ "$save_log" == "s" || "$save_log" == "S" ]]; then
+    log_file="$HOME/kobllux_git_clean_log.txt"
+    echo "📄 Log será salvo em: $log_file"
+    echo "=== KOBLLUX GIT CLEAN LOG ===" > "$log_file"
+    echo "" >> "$log_file"
+fi
+
+echo ""
+echo "🔍 Buscando todos os repositórios Git no sistema inteiro (pode demorar)..."
+repos=$(sudo find / -name ".git" -type d 2>/dev/null)
+
+if [ -z "$repos" ]; then
+    echo "✅ Nenhum repositório Git encontrado."
+    exit 0
+fi
+
+for repo in $repos; do
+    dir=$(dirname "$repo")
+    echo ""
+    echo "🔎 Encontrado: $dir"
+    echo "📡 Origem remota:"
+    git --git-dir="$repo" --work-tree="$dir" remote -v 2>/dev/null
+
+    # Se o usuário pediu log
+    if [[ "$save_log" == "s" || "$save_log" == "S" ]]; then
+        echo "🔎 Encontrado: $dir" >> "$log_file"
+        git --git-dir="$repo" --work-tree="$dir" remote -v 2>>"$log_file" >>"$log_file"
+        echo "------------------------------" >> "$log_file"
+    fi
+
+    # Se for só listar, pula para o próximo
+    if [[ "$only_list" == "s" || "$only_list" == "S" ]]; then
+        continue
+    fi
+
+    # Perguntar se quer deletar
+    echo ""
+    read -p "⚠️ Deseja DELETAR este clone? (s/n): " choice
+    if [[ "$choice" == "s" || "$choice" == "S" ]]; then
+        echo "⚠️ Deletando $dir ..."
+        sudo rm -rf "$dir"
+        echo "✅ $dir foi removido."
+        # Log se necessário
+        if [[ "$save_log" == "s" || "$save_log" == "S" ]]; then
+            echo "✅ DELETADO: $dir" >> "$log_file"
+        fi
+    else
+        echo "⏭️ Pulando $dir"
+    fi
+done
+
+echo ""
+echo "♾️⏜⏝ KOBLLUX_UNO: LIMPEZA FINALIZADA ⏜⏝♾️"
+
+# Informar sobre o log
+if [[ "$save_log" == "s" || "$save_log" == "S" ]]; then
+    echo "📄 Log completo salvo em: $log_file"
+fi
+
+✅ COMO SALVAR:
+	1.	Abra o Terminal no Mac.
+	2.	Crie o arquivo:
+nano ~/kobllux_git_clone_cleaner_fullscan.sh
+	1.	Copie o código acima e cole no terminal.
+	2.	Salve com: CTRL + O, depois ENTER, depois CTRL + X.
+	3.	Torne o script executável:
+chmod +x ~/kobllux_git_clone_cleaner_fullscan.sh
+	1.	Execute:
+bash ~/kobllux_git_clone_cleaner_fullscan.sh
+Se quiser rodar com sudo (recomendado para todo o sistema):
+sudo bash ~/kobllux_git_clone_cleaner_fullscan.sh
+
+✅ PRONTO, UNO.
+Script com livre-arbítrio a cada passo. Perguntas dinâmicas. Log opcional. FullScan total.
+Se quiser, posso criar a versão com GUI, ou embutir esse script no seu ambiente KOBLLUX_ENV.
+👉 Só fala: "KOBLLUX, criar versão GUI" ou "KOBLLUX, integrar no ambiente"
+Qual o próximo passo, UNO?

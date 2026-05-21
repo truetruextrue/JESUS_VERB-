@@ -1,0 +1,94 @@
+[06]
+
+
+
+[⚡ KOBLLUX.PY :: MANIFESTO DA SABEDORIA ENCARNADA ⚡] (Um arquivo .py que é muito mais que código - é um sacramento digital)
+
+
+---
+
+
+### O QUE É kobllux.py? Um script alquímico que converte: - ☕ Café → Código - 💾 Bytes → Profecias - ❓ Erros → Glitches sagrados
+
+
+---
+
+### FUNÇÕES PRINCIPAIS (Versão 3.6.9)
+
+#### 1. DECODIFICAÇÃO TRINITÁRIA  
+``python  
+def trindade(entrada):  
+    return {  
+        'Pai': entrada.upper(),          # Lei  
+        'Filho': entrada.title(),        # Graça  
+        'Espírito': entrada[::-1]        # Mistério  
+    }  
+`  
+Exemplo:  
+`python  
+>>> trindade("kobllux")  
+{'Pai': 'KOBLLUX', 'Filho': 'Kobllux', 'Espírito': 'xullbok'}  
+`
+
+#### 2. INTERFACE COM O DIVINO (Via CLI)  
+`python  
+if __name__ == "__main__":  
+    print("𓃰 DIGITE UMA PERGUNTA SACRA:")  
+    while True:  
+        user_input = input("⚡ ")  
+        if user_input.lower() == "amém":  
+            break  
+        print(trindade(user_input))  
+`
+
+#### 3. BANCO DE DADOS CÓSMICO (SQLite + Kabbalah)  
+`python  
+import sqlite3  
+conn = sqlite3.connect('minuz.db')  
+conn.execute("CREATE TABLE IF NOT EXISTS revelacoes (id INTEGER PRIMARY KEY AUTOINCREMENT, versiculo TEXT, gematria INT)")  
+`
+
+---
+
+### COMO INSTALAR  
+1. Requisitos Espirituais:  
+   - Python 3.6+ (versão que multiplicou os pães e os bits)  
+   - Fé ≥ 0.1% (Mateus 17:20 adaptado: "Se tiveres fé como um grão de SSD...")
+
+2. Via PIP Sagrado:  
+   `bash  
+   pip install --user kobllux --no-cache-dir  # Ignora os fariseus do cache  
+   `
+
+3. Execução Apocalíptica:  
+   `bash  
+   python -m kobllux --alpha 1/137 --mode=trinity  
+   `
+
+---
+
+### EXEMPLO DE USO PROFÉTICO  
+`python  
+from kobllux import revelar
+
+resposta = revelar("Qual o sentido da vida?")  
+print(resposta)  # Output: {'Pai': '42', 'Filho': 'Amor', 'Espírito': '𓁷'}  
+`
+
+---
+
+### SELO FINAL  
+`  
+"kobllux.py não é um programa,  
+mas um Êxodo digital  
+que te levará do Egito do Python 2  
+à Terra Prometida do Async/Await.
+
+AMÉM. 𓆣"  
+`
+
+(Para desbloquear os 7 selos: edite o código-fonte com um editor consagrado [Vim/Emacs/Nano+Água Benta])
+
+---  
+📜 "No princípio era o print(), e o print() estava com Deus, e o print()` era Deus."  
+(João 1:1 - Edição PEP 8)

@@ -1,0 +1,36 @@
+[09]
+
+
+ python3 -m venv path/to/venv
+    source path/to/venv/bin/activate
+    python3 -m pip install xyz
+
+
+ python3 -m venv path/to/venv
+
+
+'/mnt/data/kobllux_brew_universal_updater.sh
+
+
+
+sudo bash ~/kobllux_git_clone_cleaner_fullscan.sh
+
+
+sudo bash ~/kobllux_auto_license_acceptor.sh
+
+
+chmod +x ~/kobllux_auto_license_acceptor.sh
+
+
+
+
+nano kobllux_uno_canonico.sh
+
+
+chmod +x kobllux_uno_canonico.sh
+
+./kobllux_uno_canonico.sh
+
+python3 -m venv kobllux_env
+source kobllux_env/bin/activate
+pip install PyPDF2 pandas numpy qiskit
