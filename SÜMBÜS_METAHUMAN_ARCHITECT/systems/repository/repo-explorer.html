@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-kobllux="repo-explorer">
+<head>
+<meta charset="UTF-8">
+<title>🌐 REPO EXPLORER · JESUS_VERB- · RHEA+ARTEMIS</title>
+<style>
+:root {
+    --bg:   #020617; --bg2: #0f172a; --bg3: #1e293b;
+    --c3:   #3b82f6; --c6:  #8b5cf6; --c9:  #10b981;
+    --warn: #f59e0b; --red: #ef4444; --text: #e2e8f0; --muted: #64748b;
+    --glass: rgba(15,23,42,0.9); --border: rgba(59,130,246,0.2);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono','Inter',monospace; min-height:100vh; font-size:13px; }
+
+/* Top bar */
+.topbar {
+    display:flex; align-items:center; gap:0.75rem; padding:0.6rem 1rem;
+    background:var(--bg2); border-bottom:1px solid var(--border);
+    flex-wrap:wrap;
+}
+.topbar h1 { font-size:1rem; font-weight:900; color:var(--c3); white-space:nowrap; }
+.repo-badge { padding:0.2rem 0.6rem; border-radius:0.3rem; background:rgba(59,130,246,0.15); color:var(--c3); font-size:0.75rem; }
+.stat-badge { padding:0.2rem 0.5rem; border-radius:0.3rem; font-size:0.72rem; border:1px solid; }
+.spacer { flex:1; }
+.token-wrap { display:flex; align-items:center; gap:0.4rem; }
+.token-input {
+    background:var(--bg3); border:1px solid var(--border); color:var(--text);
+    padding:0.3rem 0.6rem; border-radius:0.4rem; font-family:inherit; font-size:0.75rem;
+    width:220px; outline:none;
+}
+.token-input:focus { border-color:var(--c3); }
+.btn-sm {
+    padding:0.3rem 0.6rem; border-radius:0.4rem; border:1px solid var(--border);
+    background:rgba(59,130,246,0.1); color:var(--text); cursor:pointer;
+    font-family:inherit; font-size:0.75rem; transition:all 0.2s; white-space:nowrap;
+}
+.btn-sm:hover { background:rgba(59,130,246,0.25); border-color:var(--c3); }
+.btn-sm.primary { background:linear-gradient(135deg,var(--c3),var(--c6)); border:none; font-weight:700; }
+.btn-sm.success { background:rgba(16,185,129,0.15); border-color:var(--c9); color:var(--c9); }
+.btn-sm.danger  { background:rgba(239,68,68,0.1); border-color:var(--red); color:var(--red); }
+
+/* Filter bar */
+.filterbar {
+    display:flex; align-items:center; gap:0.4rem; padding:0.5rem 1rem;
+    background:var(--bg2); border-bottom:1px solid rgba(255,255,255,0.05);
+    flex-wrap:wrap;
+}
+.filter-btn {
+    padding:0.25rem 0.7rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.1);
+    background:transparent; color:var(--muted); cursor:pointer; font-family:inherit;
+    font-size:0.72rem; font-weight:700; transition:all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+    background:rgba(59,130,246,0.15); border-color:var(--c3); color:var(--c3);
+}
+.filter-count { font-size:0.65rem; opacity:0.7; margin-left:0.2rem; }
+
+/* 3-column layout */
+.layout {
+    display:grid; grid-template-columns:260px 1fr 280px;
+    height: calc(100vh - 88px);
+}
+@media(max-width:900px){ .layout{grid-template-columns:1fr;} .sidebar-right{display:none;} }
+
+/* TREE PANEL */
+.tree-panel {
+    border-right:1px solid rgba(255,255,255,0.06);
+    overflow-y:auto; background:var(--bg2);
+}
+.tree-header {
+    padding:0.6rem 0.75rem; font-size:0.72rem; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.08em;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    display:flex; justify-content:space-between; align-items:center;
+    position:sticky; top:0; background:var(--bg2); z-index:10;
+}
+.tree-item {
+    display:flex; align-items:center; gap:0.4rem;
+    padding:0.3rem 0.75rem; cursor:pointer; transition:background 0.15s;
+    white-space:nowrap; overflow:hidden; border-bottom:1px solid rgba(255,255,255,0.02);
+}
+.tree-item:hover { background:rgba(59,130,246,0.08); }
+.tree-item.active { background:rgba(59,130,246,0.15); border-left:2px solid var(--c3); }
+.tree-item.dir { color:var(--warn); }
+.tree-item.dir .tree-icon { color:var(--warn); }
+.tree-name { overflow:hidden; text-overflow:ellipsis; font-size:0.78rem; }
+.tree-arch { font-size:0.65rem; margin-left:auto; flex-shrink:0; }
+.tree-expand { width:12px; flex-shrink:0; color:var(--muted); font-size:0.7rem; }
+.tree-children { display:none; }
+.tree-children.open { display:block; }
+.tree-search {
+    width:100%; background:var(--bg3); border:1px solid var(--border);
+    border-radius:0.4rem; padding:0.35rem 0.6rem; color:var(--text);
+    font-family:inherit; font-size:0.78rem; outline:none; margin:0.5rem 0.75rem;
+    width:calc(100% - 1.5rem);
+}
+.tree-search:focus { border-color:var(--c3); }
+
+/* CONTENT PANEL */
+.content-panel {
+    display:flex; flex-direction:column; overflow:hidden; background:var(--bg);
+}
+.content-header {
+    padding:0.5rem 1rem; background:var(--bg2); border-bottom:1px solid rgba(255,255,255,0.05);
+    display:flex; align-items:center; gap:0.6rem; flex-shrink:0;
+}
+.content-path { font-size:0.78rem; color:var(--c3); font-weight:700; flex:1; overflow:hidden; text-overflow:ellipsis; }
+.content-body { flex:1; overflow:auto; position:relative; }
+.code-view {
+    padding:1rem; font-family:'JetBrains Mono',monospace;
+    font-size:0.8rem; line-height:1.6; white-space:pre-wrap; word-break:break-all;
+    color:#c9d1d9;
+}
+.line-num { color:#475569; user-select:none; margin-right:1rem; display:inline-block; min-width:3ch; text-align:right; }
+.empty-state {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    height:100%; color:var(--muted); gap:1rem; padding:2rem; text-align:center;
+}
+.empty-icon { font-size:3rem; }
+
+/* Upload drop zone inside content */
+.upload-zone {
+    border:2px dashed var(--border); border-radius:0.75rem;
+    padding:2rem; text-align:center; margin:1rem;
+    cursor:pointer; transition:all 0.2s;
+}
+.upload-zone:hover, .upload-zone.drag { border-color:var(--c3); background:rgba(59,130,246,0.05); }
+
+/* SIDEBAR RIGHT */
+.sidebar-right {
+    border-left:1px solid rgba(255,255,255,0.06);
+    overflow-y:auto; background:var(--bg2);
+    display:flex; flex-direction:column;
+}
+.sidebar-section { border-bottom:1px solid rgba(255,255,255,0.05); }
+.sidebar-title {
+    padding:0.5rem 0.75rem; font-size:0.7rem; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.08em;
+    display:flex; justify-content:space-between; align-items:center;
+    cursor:pointer;
+}
+.sidebar-body { padding:0.5rem 0.75rem; }
+
+/* Commits */
+.commit-item {
+    padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.04);
+    cursor:pointer;
+}
+.commit-item:hover .commit-msg { color:var(--c3); }
+.commit-sha { font-size:0.65rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+.commit-msg { font-size:0.75rem; color:var(--text); margin:0.15rem 0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:220px; }
+.commit-meta { font-size:0.65rem; color:var(--muted); }
+
+/* Workflow */
+.wf-item {
+    display:flex; align-items:center; gap:0.5rem;
+    padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.wf-name { flex:1; font-size:0.78rem; }
+.wf-btn { padding:0.2rem 0.6rem; border-radius:0.3rem; border:1px solid var(--c9); background:rgba(16,185,129,0.1); color:var(--c9); cursor:pointer; font-size:0.7rem; font-family:inherit; transition:all 0.2s; }
+.wf-btn:hover { background:rgba(16,185,129,0.25); }
+
+/* Archetype map */
+.arch-row {
+    display:flex; align-items:center; gap:0.5rem;
+    padding:0.3rem 0; font-size:0.72rem;
+    border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.arch-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+/* Status bar */
+.statusbar {
+    padding:0.3rem 1rem; background:var(--bg3); border-top:1px solid rgba(255,255,255,0.05);
+    font-size:0.7rem; color:var(--muted); display:flex; gap:1rem;
+    position:sticky; bottom:0;
+}
+
+/* Upload Modal */
+.modal-bg {
+    position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999;
+    display:flex; align-items:center; justify-content:center;
+    backdrop-filter:blur(8px); display:none;
+}
+.modal-bg.open { display:flex; }
+.modal {
+    background:var(--bg2); border:1px solid var(--border); border-radius:1rem;
+    padding:1.5rem; width:620px; max-width:95vw; max-height:90vh; overflow-y:auto;
+}
+.modal h2 { color:var(--c3); margin-bottom:1rem; font-size:1rem; }
+.form-row { margin-bottom:0.75rem; }
+.form-label { font-size:0.72rem; color:var(--muted); margin-bottom:0.25rem; display:block; }
+.form-input {
+    width:100%; background:var(--bg3); border:1px solid var(--border);
+    border-radius:0.4rem; padding:0.4rem 0.6rem; color:var(--text);
+    font-family:'JetBrains Mono',monospace; font-size:0.8rem; outline:none;
+    transition:border-color 0.2s;
+}
+.form-input:focus { border-color:var(--c3); }
+textarea.form-input { resize:vertical; min-height:200px; }
+.modal-actions { display:flex; gap:0.5rem; justify-content:flex-end; margin-top:1rem; }
+.form-drop {
+    border:2px dashed var(--border); border-radius:0.5rem;
+    padding:1.5rem; text-align:center; cursor:pointer; margin-bottom:0.75rem;
+    transition:all 0.2s;
+}
+.form-drop:hover, .form-drop.drag { border-color:var(--c3); background:rgba(59,130,246,0.05); }
+
+/* Toast */
+.toast {
+    position:fixed; bottom:1.5rem; right:1.5rem; z-index:10000;
+    padding:0.75rem 1.25rem; border-radius:0.6rem; font-size:0.82rem;
+    display:none; max-width:360px;
+    animation: slideIn 0.3s ease;
+}
+.toast.ok   { background:rgba(16,185,129,0.15); border:1px solid var(--c9); color:var(--c9); display:block; }
+.toast.err  { background:rgba(239,68,68,0.15);  border:1px solid var(--red); color:var(--red); display:block; }
+.toast.info { background:rgba(59,130,246,0.15); border:1px solid var(--c3); color:var(--c3); display:block; }
+@keyframes slideIn { from{transform:translateX(60px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+/* Syntax coloring helpers */
+.tk-kw   { color:#ff79c6; }
+.tk-str  { color:#f1fa8c; }
+.tk-num  { color:#bd93f9; }
+.tk-cm   { color:#6272a4; }
+.tk-fn   { color:#50fa7b; }
+.tk-tag  { color:#ff79c6; }
+.tk-attr { color:#50fa7b; }
+.loading { color:var(--muted); text-align:center; padding:2rem; font-size:0.85rem; }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+    <h1>🌐 REPO EXPLORER</h1>
+    <span class="repo-badge">truetruextrue/JESUS_VERB-</span>
+    <span class="stat-badge" id="sb-files" style="color:#3b82f6;border-color:#3b82f633">… arquivos</span>
+    <span class="stat-badge" id="sb-size"  style="color:#10b981;border-color:#10b98133">… KB</span>
+    <span class="stat-badge" id="sb-branch" style="color:#8b5cf6;border-color:#8b5cf633">main</span>
+    <div class="spacer"></div>
+    <div class="token-wrap">
+        <span style="color:var(--muted);font-size:0.72rem">🔑</span>
+        <input class="token-input" id="tokenInput" type="password" placeholder="GitHub Token (PAT) — opcional para leitura">
+        <button class="btn-sm" onclick="saveToken()">Salvar</button>
+        <button class="btn-sm primary" onclick="openUploadModal()">⬆ Upload</button>
+        <button class="btn-sm" onclick="loadAll()">🔄 Reload</button>
+    </div>
+</div>
+
+<!-- Filter bar -->
+<div class="filterbar">
+    <span style="color:var(--muted);font-size:0.72rem;margin-right:0.25rem">FILTRO:</span>
+    <button class="filter-btn active" onclick="setFilter('all',this)">ALL</button>
+    <button class="filter-btn" onclick="setFilter('html',this)" style="color:#e34c26">HTML <span class="filter-count" id="fc-html"></span></button>
+    <button class="filter-btn" onclick="setFilter('js',this)"   style="color:#f7df1e">JS <span class="filter-count" id="fc-js"></span></button>
+    <button class="filter-btn" onclick="setFilter('py',this)"   style="color:#3572A5">PY <span class="filter-count" id="fc-py"></span></button>
+    <button class="filter-btn" onclick="setFilter('json',this)" style="color:#10b981">JSON <span class="filter-count" id="fc-json"></span></button>
+    <button class="filter-btn" onclick="setFilter('css',this)"  style="color:#264de4">CSS <span class="filter-count" id="fc-css"></span></button>
+    <button class="filter-btn" onclick="setFilter('md',this)"   style="color:#94a3b8">MD <span class="filter-count" id="fc-md"></span></button>
+    <button class="filter-btn" onclick="setFilter('sh',this)"   style="color:#a855f7">SH <span class="filter-count" id="fc-sh"></span></button>
+    <button class="filter-btn" onclick="setFilter('yml',this)"  style="color:#f59e0b">YML <span class="filter-count" id="fc-yml"></span></button>
+    <div class="spacer"></div>
+    <input style="background:var(--bg3);border:1px solid var(--border);border-radius:0.4rem;padding:0.25rem 0.5rem;color:var(--text);font-family:inherit;font-size:0.72rem;outline:none;width:180px"
+           id="searchInput" placeholder="🔍 buscar arquivo..." oninput="searchTree(this.value)">
+</div>
+
+<!-- 3-column layout -->
+<div class="layout">
+
+    <!-- TREE PANEL -->
+    <div class="tree-panel" id="treePanel">
+        <div class="tree-header">
+            <span>ÁRVORE · <span id="treeCount">—</span> itens</span>
+            <button class="btn-sm" onclick="collapseAll()" style="font-size:0.65rem;padding:0.15rem 0.4rem">Fechar tudo</button>
+        </div>
+        <div id="treeRoot" class="loading">Carregando árvore...</div>
+    </div>
+
+    <!-- CONTENT PANEL -->
+    <div class="content-panel">
+        <div class="content-header" id="contentHeader">
+            <span class="content-path" id="contentPath">Selecione um arquivo na árvore</span>
+            <span id="contentType" style="font-size:0.7rem;color:var(--muted)"></span>
+            <span id="contentArch" style="font-size:0.75rem"></span>
+            <button class="btn-sm" id="downloadBtn" style="display:none" onclick="downloadCurrent()">⬇ Download</button>
+            <button class="btn-sm" id="editBtn" style="display:none" onclick="editCurrentFile()">✏ Editar</button>
+        </div>
+        <div class="content-body" id="contentBody">
+            <div class="empty-state">
+                <div class="empty-icon">🌐</div>
+                <div style="color:var(--text);font-size:0.9rem;font-weight:700">REPO EXPLORER · KOBLLUX_VIVO</div>
+                <div style="color:var(--muted);font-size:0.8rem">Selecione qualquer arquivo na árvore à esquerda para visualizar seu conteúdo</div>
+                <div style="color:var(--muted);font-size:0.75rem;margin-top:0.5rem">Arquétipo: RHEA (INTEGRATE) · 528Hz · "Eu sou a conexão entre todos os nós"</div>
+                <button class="btn-sm primary" onclick="loadAll()" style="margin-top:1rem;padding:0.5rem 1.5rem">🔄 Carregar Repositório</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR RIGHT -->
+    <div class="sidebar-right">
+
+        <!-- Commits -->
+        <div class="sidebar-section">
+            <div class="sidebar-title" onclick="toggleSection('commits')">
+                <span>⧗ COMMITS RECENTES</span>
+                <span id="commitToggle">▼</span>
+            </div>
+            <div class="sidebar-body" id="commitsBody">
+                <div class="loading">Carregando...</div>
+            </div>
+        </div>
+
+        <!-- Workflows -->
+        <div class="sidebar-section">
+            <div class="sidebar-title" onclick="toggleSection('workflows')">
+                <span>⚙ WORKFLOWS · GitHub Actions</span>
+                <span id="workflowToggle">▼</span>
+            </div>
+            <div class="sidebar-body" id="workflowsBody">
+                <div class="wf-item">
+                    <span class="wf-name">∆7 CADIAL · KOBLLUX SEAL</span>
+                    <button class="wf-btn" onclick="dispatchWf('cadial-seal.yml',{opcode:'0x07'})">▶ Run</button>
+                </div>
+                <div class="wf-item">
+                    <span class="wf-name">✝ VERBUM · Pages Deploy</span>
+                    <button class="wf-btn" onclick="dispatchWf('pages.yml',{force:'true'})">▶ Deploy</button>
+                </div>
+                <div style="margin-top:0.5rem">
+                    <a href="https://github.com/truetruextrue/JESUS_VERB-/actions" target="_blank"
+                       style="font-size:0.7rem;color:var(--c3);text-decoration:none">Ver todas as runs →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Archetype map -->
+        <div class="sidebar-section">
+            <div class="sidebar-title" onclick="toggleSection('archetypes')">
+                <span>⬡ MAPA ARQUETÍPICO</span>
+                <span id="archetypeToggle">▼</span>
+            </div>
+            <div class="sidebar-body" id="archetypesBody">
+                <div id="archMap" style="font-size:0.72rem"></div>
+            </div>
+        </div>
+
+        <!-- Current file info -->
+        <div class="sidebar-section">
+            <div class="sidebar-title">
+                <span>ℹ INFO DO ARQUIVO</span>
+            </div>
+            <div class="sidebar-body" id="fileInfoBody">
+                <div style="color:var(--muted);font-size:0.75rem">Nenhum arquivo selecionado</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal-bg" id="uploadModal">
+    <div class="modal">
+        <h2>⬆ UPLOAD / CRIAR ARQUIVO · KOBLLUX_VIVO</h2>
+        <p style="color:var(--muted);font-size:0.78rem;margin-bottom:1rem">Envia arquivos diretamente ao repositório via GitHub API. Requer token PAT com permissão de escrita.</p>
+
+        <!-- Drop zone -->
+        <div class="form-drop" id="dropZone" onclick="document.getElementById('fileInput').click()"
+             ondragover="event.preventDefault();this.classList.add('drag')"
+             ondragleave="this.classList.remove('drag')"
+             ondrop="handleDrop(event)">
+            <div style="font-size:2rem">📁</div>
+            <div style="color:var(--muted);font-size:0.82rem;margin-top:0.5rem">Arraste arquivos aqui ou clique para selecionar</div>
+            <input type="file" id="fileInput" style="display:none" multiple onchange="handleFileSelect(this)">
+        </div>
+
+        <div class="form-row">
+            <label class="form-label">Caminho no repositório (ex: SÜMBÜS_METAHUMAN_ARCHITECT/novopanel.html)</label>
+            <input class="form-input" id="uploadPath" placeholder="pasta/arquivo.extensão">
+        </div>
+        <div class="form-row">
+            <label class="form-label">Conteúdo do arquivo</label>
+            <textarea class="form-input" id="uploadContent" placeholder="Conteúdo do arquivo..."></textarea>
+        </div>
+        <div class="form-row">
+            <label class="form-label">Mensagem do commit</label>
+            <input class="form-input" id="uploadMessage" value="∆7 KOBLLUX_VIVO · upload via SÜMBÜS Explorer">
+        </div>
+        <div class="form-row">
+            <label class="form-label" style="color:var(--warn)">⚠ SHA existente (se atualizando arquivo que já existe — deixe vazio para criar)</label>
+            <input class="form-input" id="uploadSha" placeholder="sha do arquivo existente (opcional)">
+        </div>
+        <div class="modal-actions">
+            <button class="btn-sm" onclick="closeUploadModal()">Cancelar</button>
+            <button class="btn-sm primary" onclick="doUpload()">⬆ Enviar ao Repositório</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../../core/github-bridge.js"></script>
+<script src="../../core/kobllux-archetypes.js"></script>
+<script>
+const G = window.GITHUB_BRIDGE;
+const ARCH = window.KOBLLUX_ARCHETYPES;
+
+let allFiles = [];
+let activeFilter = 'all';
+let currentFilePath = null;
+let currentFileSha = null;
+
+// ── INIT ────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = G.getToken();
+    if (saved) document.getElementById('tokenInput').value = saved;
+    buildArchMap();
+    loadAll();
+});
+
+async function loadAll() {
+    loadTree();
+    loadCommits();
+}
+
+// ── TOKEN ────────────────────────────────────────────────────────────
+function saveToken() {
+    const t = document.getElementById('tokenInput').value.trim();
+    G.setToken(t);
+    toast(t ? 'Token salvo ✅' : 'Token removido', t ? 'ok' : 'info');
+    loadAll();
+}
+
+// ── TREE ─────────────────────────────────────────────────────────────
+async function loadTree() {
+    const root = document.getElementById('treeRoot');
+    root.innerHTML = '<div class="loading">⬡ ATLAS carregando árvore...</div>';
+
+    try {
+        const data = await G.fetchTree();
+        const items = data.tree.filter(i => i.type === 'blob');
+        allFiles = items;
+        updateFilterCounts(items);
+        renderFullTree(items);
+
+        // update stats
+        document.getElementById('treeCount').textContent = items.length;
+        document.getElementById('sb-files').textContent = items.length + ' arquivos';
+
+        // total size
+        const total = items.reduce((s, i) => s + (i.size || 0), 0);
+        document.getElementById('sb-size').textContent = G.formatSize(total);
+
+    } catch (e) {
+        root.innerHTML = `<div class="loading" style="color:var(--red)">Erro: ${e.message}</div>`;
+        toast('Erro ao carregar árvore: ' + e.message, 'err');
+    }
+}
+
+function updateFilterCounts(items) {
+    ['html','js','py','json','css','md','sh','yml'].forEach(ext => {
+        const el = document.getElementById(`fc-${ext}`);
+        if (el) el.textContent = '(' + items.filter(i => i.path.endsWith('.' + ext)).length + ')';
+    });
+}
+
+function getFilteredFiles() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    return allFiles.filter(f => {
+        const extMatch = activeFilter === 'all' || f.path.endsWith('.' + activeFilter);
+        const textMatch = !q || f.path.toLowerCase().includes(q);
+        return extMatch && textMatch;
+    });
+}
+
+function setFilter(ext, btn) {
+    activeFilter = ext;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderFullTree(getFilteredFiles());
+}
+
+function searchTree(q) {
+    renderFullTree(getFilteredFiles());
+}
+
+function renderFullTree(items) {
+    const root = document.getElementById('treeRoot');
+    // Build folder hierarchy
+    const tree = {};
+    items.forEach(item => {
+        const parts = item.path.split('/');
+        let node = tree;
+        for (let i = 0; i < parts.length - 1; i++) {
+            if (!node[parts[i]]) node[parts[i]] = { _files: [], _dirs: {} };
+            node = node[parts[i]]._dirs;
+        }
+        const fileName = parts[parts.length - 1];
+        const folder = parts.length > 1 ? parts.slice(0,-1).join('/') : '';
+        if (!node._files) node._files = [];
+        node._files.push({ ...item, name: fileName });
+    });
+
+    root.innerHTML = renderNode(tree, '', 0);
+    document.getElementById('treeCount').textContent = items.length;
+}
+
+function renderNode(node, pathPrefix, depth) {
+    let html = '';
+    const indent = depth * 12;
+    const pad = `padding-left:${8 + indent}px`;
+
+    // Folders first
+    const dirs = Object.keys(node).filter(k => k !== '_files' && k !== '_dirs').sort();
+    dirs.forEach(dir => {
+        const fullPath = pathPrefix ? pathPrefix + '/' + dir : dir;
+        const child = node[dir];
+        html += `
+            <div class="tree-item dir" style="${pad}" onclick="toggleDir(event,'dir-${fullPath.replace(/\//g,'__')}')">
+                <span class="tree-expand" id="exp-${fullPath.replace(/\//g,'__')}">▶</span>
+                <span class="tree-icon">📁</span>
+                <span class="tree-name">${dir}</span>
+            </div>
+            <div class="tree-children" id="dir-${fullPath.replace(/\//g,'__')}">
+                ${renderNode({ ...child._dirs, _files: child._files }, fullPath, depth + 1)}
+            </div>`;
+    });
+
+    // Files
+    const files = (node._files || []).sort((a,b) => a.name.localeCompare(b.name));
+    files.forEach(file => {
+        const ft = G.getFileType(file.path);
+        const arch = G.getArchetypeForPath(file.path);
+        html += `
+            <div class="tree-item" style="${pad}" onclick="openFile('${file.path}','${file.sha}')" id="fi-${file.sha}">
+                <span class="tree-icon">${ft.icon}</span>
+                <span class="tree-name" title="${file.path}" style="color:${ft.color}">${file.name}</span>
+                <span class="tree-arch" style="color:${arch.color}">${arch.sym}</span>
+            </div>`;
+    });
+
+    return html;
+}
+
+function toggleDir(e, id) {
+    e.stopPropagation();
+    const el = document.getElementById(id);
+    const expId = 'exp-' + id.replace('dir-','');
+    const exp = document.getElementById(expId);
+    if (!el) return;
+    const open = el.classList.toggle('open');
+    if (exp) exp.textContent = open ? '▼' : '▶';
+}
+
+function collapseAll() {
+    document.querySelectorAll('.tree-children').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('.tree-expand').forEach(el => el.textContent = '▶');
+}
+
+// ── FILE OPEN ────────────────────────────────────────────────────────
+async function openFile(path, sha) {
+    currentFilePath = path;
+    currentFileSha = sha;
+
+    // highlight
+    document.querySelectorAll('.tree-item').forEach(el => el.classList.remove('active'));
+    const fi = document.getElementById(`fi-${sha}`);
+    if (fi) fi.classList.add('active');
+
+    const ft = G.getFileType(path);
+    const arch = G.getArchetypeForPath(path);
+    const body = document.getElementById('contentBody');
+    body.innerHTML = '<div class="loading">↺ Carregando arquivo...</div>';
+
+    document.getElementById('contentPath').textContent = path;
+    document.getElementById('contentType').textContent = ft.label;
+    document.getElementById('contentArch').innerHTML = `<span style="color:${arch.color}">${arch.sym} ${arch.id}</span>`;
+    document.getElementById('downloadBtn').style.display = 'inline-block';
+    document.getElementById('editBtn').style.display = 'inline-block';
+
+    // file info
+    const fileData = allFiles.find(f => f.path === path);
+    document.getElementById('fileInfoBody').innerHTML = `
+        <div style="font-size:0.75rem">
+            <div class="arch-row"><span class="arch-dot" style="background:${ft.color}"></span><span style="color:${ft.color};font-weight:700">${ft.label}</span></div>
+            <div class="arch-row"><span class="arch-dot" style="background:${arch.color}"></span><span style="color:${arch.color}">ARQUÉTIPO: ${arch.sym} ${arch.id} · ${arch.hz}Hz</span></div>
+            ${fileData ? `<div class="arch-row" style="color:var(--muted)">Tamanho: ${G.formatSize(fileData.size)}</div>` : ''}
+            <div class="arch-row" style="color:var(--muted)">SHA: <span style="font-family:monospace">${sha.slice(0,8)}</span></div>
+        </div>`;
+
+    try {
+        const data = await G.fetchFile(path);
+        if (!data.content) { body.innerHTML = '<div class="loading">Arquivo binário ou vazio</div>'; return; }
+
+        const raw = G.decodeContent(data.content);
+        currentFileSha = data.sha;
+
+        // Display with line numbers
+        const lines = raw.split('\n');
+        const highlighted = lines.map((line, i) =>
+            `<span class="line-num">${i+1}</span>${escapeLine(line)}`
+        ).join('\n');
+
+        body.innerHTML = `<pre class="code-view">${highlighted}</pre>`;
+
+    } catch (e) {
+        body.innerHTML = `<div class="loading" style="color:var(--red)">Erro ao carregar: ${e.message}</div>`;
+    }
+}
+
+function escapeLine(line) {
+    return line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+let currentRaw = '';
+async function downloadCurrent() {
+    if (!currentFilePath) return;
+    try {
+        const data = await G.fetchFile(currentFilePath);
+        const raw = G.decodeContent(data.content);
+        const blob = new Blob([raw], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = currentFilePath.split('/').pop();
+        a.click(); URL.revokeObjectURL(url);
+        toast('Download iniciado', 'ok');
+    } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+function editCurrentFile() {
+    if (!currentFilePath) return;
+    // prefill upload modal with current file
+    document.getElementById('uploadPath').value = currentFilePath;
+    document.getElementById('uploadSha').value = currentFileSha || '';
+    document.getElementById('uploadMessage').value = `∆7 edit: ${currentFilePath}`;
+    // fetch content
+    G.fetchFile(currentFilePath).then(d => {
+        document.getElementById('uploadContent').value = G.decodeContent(d.content);
+        openUploadModal();
+    }).catch(e => toast('Erro: ' + e.message, 'err'));
+}
+
+// ── COMMITS ─────────────────────────────────────────────────────────
+async function loadCommits() {
+    const body = document.getElementById('commitsBody');
+    try {
+        const commits = await G.fetchCommits(15);
+        body.innerHTML = commits.map(c => `
+            <div class="commit-item" onclick="window.open('${c.html_url}','_blank')">
+                <div class="commit-sha">${c.sha.slice(0,7)}</div>
+                <div class="commit-msg" title="${c.commit.message}">${c.commit.message.split('\n')[0]}</div>
+                <div class="commit-meta">${c.commit.author.name} · ${G.timeAgo(c.commit.author.date)}</div>
+            </div>
+        `).join('');
+    } catch(e) {
+        body.innerHTML = `<div style="color:var(--red);font-size:0.75rem">${e.message}</div>`;
+    }
+}
+
+// ── WORKFLOWS ────────────────────────────────────────────────────────
+async function dispatchWf(file, inputs) {
+    if (!G.hasToken()) { toast('Token PAT necessário para disparar workflows', 'err'); return; }
+    try {
+        const ok = await G.dispatchWorkflow(file, inputs);
+        if (ok) {
+            toast(`✅ Workflow ${file} disparado!`, 'ok');
+            setTimeout(() => window.open(`https://github.com/${G.repo}/actions`, '_blank'), 1000);
+        }
+    } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+// ── UPLOAD ───────────────────────────────────────────────────────────
+function openUploadModal() {
+    document.getElementById('uploadModal').classList.add('open');
+}
+function closeUploadModal() {
+    document.getElementById('uploadModal').classList.remove('open');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('drag');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) readFileIntoForm(files[0]);
+}
+
+function handleFileSelect(input) {
+    if (input.files.length > 0) readFileIntoForm(input.files[0]);
+}
+
+function readFileIntoForm(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('uploadContent').value = e.target.result;
+        if (!document.getElementById('uploadPath').value) {
+            document.getElementById('uploadPath').value = 'SÜMBÜS_METAHUMAN_ARCHITECT/' + file.name;
+        }
+        document.getElementById('uploadMessage').value = `∆7 KOBLLUX_VIVO · upload: ${file.name}`;
+    };
+    reader.readAsText(file);
+}
+
+async function doUpload() {
+    const path    = document.getElementById('uploadPath').value.trim();
+    const content = document.getElementById('uploadContent').value;
+    const message = document.getElementById('uploadMessage').value.trim();
+    const sha     = document.getElementById('uploadSha').value.trim() || null;
+
+    if (!path)    { toast('Caminho obrigatório', 'err'); return; }
+    if (!content) { toast('Conteúdo vazio', 'err'); return; }
+    if (!message) { toast('Mensagem de commit obrigatória', 'err'); return; }
+
+    toast('Enviando...', 'info');
+    try {
+        const result = await G.createOrUpdateFile(path, content, message, sha);
+        toast(`✅ Arquivo salvo: ${path}`, 'ok');
+        closeUploadModal();
+        setTimeout(loadTree, 1500);
+        // notify parent
+        if (window.parent !== window) {
+            window.parent.postMessage({ type:'FILE_UPLOADED', path, sha: result.content?.sha }, '*');
+        }
+    } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+// ── SECTIONS TOGGLE ──────────────────────────────────────────────────
+function toggleSection(id) {
+    const el = document.getElementById(id === 'commits' ? 'commitsBody' : id === 'workflows' ? 'workflowsBody' : 'archetypesBody');
+    const tgl = document.getElementById(id + 'Toggle');
+    const open = el.style.display !== 'none';
+    el.style.display = open ? 'none' : 'block';
+    if (tgl) tgl.textContent = open ? '▶' : '▼';
+}
+
+// ── ARCHETYPE MAP ────────────────────────────────────────────────────
+function buildArchMap() {
+    const map = document.getElementById('archMap');
+    const archs = [
+        { id:'ATLAS',   sym:'⬡', color:'#3b82f6', role:'BOOT · Mapeia estrutura (00_CORE, dna)' },
+        { id:'NOVA',    sym:'✦', color:'#f59e0b', role:'SEED · Inspira novos arquivos (02_CICLO)' },
+        { id:'VITALIS', sym:'◉', color:'#10b981', role:'DELTA · Fluxo (circulatory, 03_FLUXO)' },
+        { id:'PULSE',   sym:'≋', color:'#8b5cf6', role:'PULSE · Ritmo (nervous, 09_LINHA)' },
+        { id:'ARTEMIS', sym:'◎', color:'#06b6d4', role:'DETECT · Varre .py, cadial, scan' },
+        { id:'SERENA',  sym:'❋', color:'#ec4899', role:'GUARD · Endócrino, emotion, status' },
+        { id:'KAOS',    sym:'⚡', color:'#ef4444', role:'CLEAN · Mutation, evolution, reindex' },
+        { id:'GENUS',   sym:'⬢', color:'#a855f7', role:'SYNTH · Synthesis, layer, kobllux_dna' },
+        { id:'LUMINE',  sym:'☀', color:'#fbbf24', role:'RENDER · Todos os .html, sensory' },
+        { id:'SOLUS',   sym:'◈', color:'#94a3b8', role:'QA · .css, manifest, quality' },
+        { id:'RHEA',    sym:'∞', color:'#34d399', role:'INTEGRATE · .json, bridge, 08_REDE' },
+        { id:'AION',    sym:'⧗', color:'#818cf8', role:'SEAL · _index, memory, seal' },
+    ];
+    map.innerHTML = archs.map(a => `
+        <div class="arch-row">
+            <span class="arch-dot" style="background:${a.color}"></span>
+            <span style="color:${a.color};font-weight:700;width:52px;flex-shrink:0">${a.sym} ${a.id}</span>
+            <span style="color:var(--muted);font-size:0.68rem">${a.role}</span>
+        </div>
+    `).join('');
+}
+
+// ── TOAST ────────────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type='info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `toast ${type}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.className = 'toast', 4000);
+}
+
+// listen from parent
+window.addEventListener('message', e => {
+    if (e.data?.type === 'OPEN_FILE') openFile(e.data.path, e.data.sha);
+});
+</script>
+</body>
+</html>

@@ -398,6 +398,32 @@
                     Abrir Roda Viva ∆³
                 </button>
             </div>
+
+            <!-- Repository Explorer — RHEA+ARTEMIS -->
+            <div class="system-card" id="repo-explorer" style="border-color:rgba(52,211,153,0.3);">
+                <div class="system-icon">🌐</div>
+                <h3 style="margin:0 0 0.5rem 0;color:#34d399;">REPO EXPLORER</h3>
+                <p style="color:#94a3b8;margin:0 0 1rem 0;font-size:0.9rem;">
+                    Árvore viva do repositório. Commits, upload, GitHub Actions. RHEA (528Hz) + ARTEMIS (672Hz)
+                </p>
+                <div class="system-status status-active" style="background:rgba(52,211,153,0.12);color:#34d399;border-color:rgba(52,211,153,0.3);">✅ GITHUB API</div>
+                <button onclick="openSystem('systems/repository/repo-explorer.html')" style="margin-top:1rem;padding:0.5rem 1rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);color:white;border-radius:0.5rem;cursor:pointer;width:100%;">
+                    Abrir Explorador do Repo
+                </button>
+            </div>
+
+            <!-- File Library — LUMINE -->
+            <div class="system-card" id="file-library" style="border-color:rgba(251,191,36,0.2);">
+                <div class="system-icon">📚</div>
+                <h3 style="margin:0 0 0.5rem 0;color:#fbbf24;">FILE LIBRARY · CODEX</h3>
+                <p style="color:#94a3b8;margin:0 0 1rem 0;font-size:0.9rem;">
+                    96 HTML · 225 PY · 185 JS · 136 JSON. Biblioteca completa com preview e upload. LUMINE (963Hz)
+                </p>
+                <div class="system-status status-active" style="background:rgba(251,191,36,0.1);color:#fbbf24;border-color:rgba(251,191,36,0.25);">✅ 642+ ARQUIVOS</div>
+                <button onclick="openSystem('systems/library/file-library.html')" style="margin-top:1rem;padding:0.5rem 1rem;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.35);color:white;border-radius:0.5rem;cursor:pointer;width:100%;">
+                    Abrir Biblioteca de Arquivos
+                </button>
+            </div>
         </div>
         
         <!-- Action Grid -->
@@ -426,7 +452,7 @@
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem;">
                 <div>
                     <div style="font-size: 0.9rem; color: #94a3b8;">SISTEMAS ATIVOS</div>
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-9);" id="activeSysDisplay">9/9</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--freq-9);" id="activeSysDisplay">11/11</div>
                 </div>
 
                 <div>
@@ -484,6 +510,8 @@
                 endocrine:    { active: true,  path: "systems/endocrine/status-indicator.html" },
                 motor:        { active: true,  path: "systems/motor/movement-engine.html" },
                 archetypes:   { active: true,  path: "ARQUETIPOS/arquetipo-vivo.html" },
+                repoExplorer: { active: true,  path: "systems/repository/repo-explorer.html" },
+                fileLibrary:  { active: true,  path: "systems/library/file-library.html" },
             },
             files: 24,
             totalFiles: 250,
