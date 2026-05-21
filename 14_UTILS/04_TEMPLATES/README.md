@@ -1,41 +1,21 @@
-# 04 Templates
+# ⬢ 04_TEMPLATES
+**Arquétipo:** `Genus` · **Opcode:** `0x0B` · **852Hz** · **VEEB-O** · **D8**  
+**Regra:** `SYNTH` · **Ação:** `TEMPORIZAR` · **Essência:** _Síntese · forma · construção_
 
-Templates para criação
+> 📍 `⌂ › 14_UTILS › 04_TEMPLATES`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** 14_UTILS
-- **Data de criação:** 2026-02-28 08:59:03
+← **[⬆ Subir](../..README.md)** (raiz)
 
-## 📋 Estrutura
+## Arquivos
 
-Esta pasta contém os seguintes elementos:
+- 🖥 `template.html`
+- 📋 `template.json`
+- 📄 `template.md`
+- 🐍 `template.py`
 
-```
-- template.json
-- template.md
-- template.py
-- template.html
-```
+---
 
-## 🔗 Conexões
-
-- **Fase relacionada:** 04_TEMPLATES
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

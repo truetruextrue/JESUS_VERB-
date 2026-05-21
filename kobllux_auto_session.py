@@ -8,17 +8,24 @@ Auto-session KOBLLUX: monitora inbox/, captura interações,
 alimenta memory.jsonl automaticamente com timer.
 
 Modos:
-  --watch          Monitora inbox/ e processa novos arquivos em tempo real
-  --timer N        Roda a Roda Viva a cada N minutos (padrão: 7)
-  --once           Executa uma vez e sai
-  --capture TEXTO  Salva texto como interação e processa
-  --session-end    Sela a sessão atual e grava no git
+  --watch               Monitora inbox/ e processa novos arquivos em tempo real
+  --timer N             Roda a Roda Viva a cada N minutos (padrão: 7)
+  --once                Executa uma vez e sai
+  --capture TEXTO       Salva texto como interação e processa
+  --capture-file PATH   Captura texto de arquivo (suporte a conversas longas)
+  --session-end         Sela a sessão atual e grava no git
+  --summary             Mostra estado da memória (total, by_arch, top_tags)
+  --context             Exibe contexto pronto para injetar no 78K-motor
+  --export-js           Exporta últimos 30 registros como JSON (localStorage)
+  --motor-inject        Gera JS snippet para colar no console KxaT/78K-motor
 
 Uso típico (Termux / background):
   python3 kobllux_auto_session.py --watch --timer 7 &
 
 Uso no Claude Code:
   python3 kobllux_auto_session.py --capture "conteúdo da conversa" --arch aion
+  python3 kobllux_auto_session.py --capture-file conversa.md --arch kaos
+  python3 kobllux_auto_session.py --motor-inject > inject.js
 """
 from __future__ import annotations
 
@@ -225,12 +232,45 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--capture",     help="Texto para capturar como interação")
     p.add_argument("--arch",        help="Arquétipo forçado para a captura")
     p.add_argument("--source",      default="auto-session", help="Nome da fonte")
-    p.add_argument("--session-end", action="store_true", help="Sela sessão e faz commit")
-    p.add_argument("--auto-commit", action="store_true", help="Commit automático após processar")
-    p.add_argument("--summary",     action="store_true", help="Mostra estado da memória")
-    p.add_argument("--context",     action="store_true", help="Exibe contexto para o motor")
-    p.add_argument("--verbose",     "-v", action="store_true")
+    p.add_argument("--session-end",   action="store_true", help="Sela sessão e faz commit")
+    p.add_argument("--auto-commit",   action="store_true", help="Commit automático após processar")
+    p.add_argument("--summary",       action="store_true", help="Mostra estado da memória")
+    p.add_argument("--context",       action="store_true", help="Exibe contexto para o motor")
+    p.add_argument("--export-js",     action="store_true", help="Exporta últimos 30 registros como JSON (localStorage)")
+    p.add_argument("--motor-inject",  action="store_true", help="Gera JS snippet para colar no console KxaT/78K-motor")
+    p.add_argument("--capture-file",  help="Captura texto de um arquivo (suporte a conversas longas)")
+    p.add_argument("--verbose",       "-v", action="store_true")
     return p
+
+
+def export_js(memory: "KoblluxMemory", n: int = 30) -> str:
+    """Exporta os últimos N registros como JSON — mesmo que kobllux_roda_viva --export-js."""
+    return memory.export_for_localStorage(n=n)
+
+
+def motor_inject_js(memory: "KoblluxMemory", n_context: int = 20, n_records: int = 30) -> str:
+    """
+    Gera snippet JS pronto para colar no console do KxaT/78K-motor.
+    Seta kobllux_last_result (formato motor) e KBLX_MEMORY (JSON completo).
+    """
+    context = memory.context_for_motor(n=n_context)
+    records_json = memory.export_for_localStorage(n=n_records)
+    ts  = datetime.now(timezone.utc).isoformat()
+
+    lines = [
+        "/* ── KOBLLUX · MEMORY INJECT · ∆7 ──────────────────────────── */",
+        f"/* ts: {ts} */",
+        "",
+        "// 1. Motor context (kobllux_last_result · formato 78K-motor)",
+        "localStorage.setItem('kobllux_last_result', " + json.dumps(context, ensure_ascii=False) + ");",
+        "",
+        "// 2. Memória completa (KBLX_MEMORY · KxaT session restore)",
+        "localStorage.setItem('KBLX_MEMORY', " + json.dumps(records_json, ensure_ascii=False) + ");",
+        "",
+        "/* ── FIM INJECT · VERDADE × INTEGRAR ÷ Δ = ∞ · ∆7 ─────────── */",
+        "console.log('%c[KOBLLUX·INJECT] %cMemória viva carregada · ∆7', 'color:#FF00FF;font-weight:bold', 'color:#c5a059');",
+    ]
+    return "\n".join(lines)
 
 
 def main():
@@ -250,12 +290,28 @@ def main():
         print(memory.context_for_motor(n=20))
         return
 
+    if args.export_js:
+        print(export_js(memory))
+        return
+
+    if args.motor_inject:
+        print(motor_inject_js(memory))
+        return
+
     # ── Captura de texto ───────────────────────────────────────────────────
+    if args.capture_file:
+        p = Path(args.capture_file)
+        if not p.exists():
+            log.error(f"Arquivo não encontrado: {p}")
+            sys.exit(1)
+        args.capture = p.read_text(encoding="utf-8", errors="ignore")
+        log.info(f"[RHEA ∞] Capturando arquivo: {p.name} · {len(args.capture)} chars")
+
     if args.capture:
         rec = capture_interaction(
             text=args.capture,
             arch=args.arch,
-            source=args.source,
+            source=args.capture_file or args.source,
         )
         print(f"[RHEA ∞] Capturado · arch={rec['arch']} · {rec['sym']} · {rec['hash']}")
         if args.auto_commit:

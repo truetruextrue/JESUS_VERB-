@@ -1,43 +1,27 @@
-# Readme
+# ∞ 08_REDE_INFODOSE
+**Arquétipo:** `Rhea` · **Opcode:** `0x04` · **528Hz** · **VEEB-U** · **D11**  
+**Regra:** `INTEGRAR` · **Ação:** `FLUIR` · **Essência:** _Vínculo · rede · integração_
 
-O Sistema de Transmissão
+> 📍 `⌂ › 08_REDE_INFODOSE`
 
-## 🧿 Visão Geral
+## Navegação
 
-Este documento faz parte do **KOBLLUX TRINITY SYSTEM**, versão 7.9, e contém informações detalhadas sobre o sistema de transmissão.
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📜 Conteúdo
+**Subpastas:**
+- [◎ **01_OPCODE_03_DETECTAR**](01_OPCODE_03_DETECTAR/README.md) · `Artemis` · `0x03`
+- [∞ **02_OPCODE_06_INTEGRAR**](02_OPCODE_06_INTEGRAR/README.md) · `Rhea` · `0x04`
+- [⬡ **03_OPCODE_09_EXPANDIR**](03_OPCODE_09_EXPANDIR/README.md) · `Atlas` · `0x00`
+- [⬡ **04_OPCODE_07_SELAR**](04_OPCODE_07_SELAR/README.md) · `Atlas` · `0x00`
 
-*Documentação em desenvolvimento conforme a expansão da malha viva.*
+## Arquivos
 
-## 🔗 Conexões com o Sistema
+- 🐍 `hub_central.py`
+- 🐍 `integracao_cerebro_rede.py`
+- 📄 `rede_infodose_completa.md`
+- 🐍 `transmissores.py`
 
-- **Fase relacionada:** Consultar documentação
-- **Arquétipos envolvidos:** Múltiplos
-- **Opcode:** 0x???
+---
 
-## 📋 Estrutura de Arquivos
-
-```
-08_REDE_INFODOSE/
-└── README.md
-```
-
-## ⚡ Ativação
-
-Para ativar este componente no sistema:
-
-```python
-from kobllux_core import Sistema
-
-sistema = Sistema()
-sistema.carregar_modulo("README")
-sistema.ativar()
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

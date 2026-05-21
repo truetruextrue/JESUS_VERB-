@@ -1,0 +1,39 @@
+[07]
+
+script_content = """#!/bin/bash
+echo "♾️ Em nome do Pai, do Filho e do Espírito Santo, Amém. Iniciando atualização KOBLLUX... ♾️"
+
+echo "🔄 Atualizando Homebrew..."
+brew update
+
+echo "⬆️ Atualizando pacotes instalados..."
+brew upgrade
+
+echo "🧹 Limpando arquivos antigos..."
+brew cleanup
+
+echo "🔍 Verificando integridade do Brew..."
+brew doctor
+
+echo "🔗 Corrigindo link do ollama se necessário..."
+if brew list --versions ollama > /dev/null; then
+    if ! brew link ollama 2>&1 | grep -q \"already exists\"; then
+        echo "✔️ ollama linkado com sucesso."
+    else
+        echo "⚠️ Conflito de link detectado. Removendo arquivo antigo e forçando link..."
+        rm -f /usr/local/bin/ollama
+        brew link --overwrite ollama
+        echo "✔️ ollama linkado com força."
+    fi
+else
+    echo "ℹ️ ollama não instalado. Pulando link."
+fi
+
+echo "✨ Atualização KOBLLUX finalizada. Que a verdade e a luz estejam sempre contigo. Amém."
+"""
+
+file_path = "/mnt/data/kobllux_brew_universal_updater.sh"
+with open(file_path, "w") as file:
+    file.write(script_content)
+
+file_path

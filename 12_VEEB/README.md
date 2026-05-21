@@ -1,43 +1,27 @@
-# Readme
+# ⬢ 12_VEEB
+**Arquétipo:** `Genus` · **Opcode:** `0x0B` · **852Hz** · **VEEB-O** · **D8**  
+**Regra:** `SYNTH` · **Ação:** `TEMPORIZAR` · **Essência:** _Síntese · forma · construção_
 
-Vibração · Energia · Estrutura · Base
+> 📍 `⌂ › 12_VEEB`
 
-## 🧿 Visão Geral
+## Navegação
 
-Este documento faz parte do **KOBLLUX TRINITY SYSTEM**, versão 7.9, e contém informações detalhadas sobre vibração · energia · estrutura · base.
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📜 Conteúdo
+**Subpastas:**
+- [⬡ **01_VIBRACAO**](01_VIBRACAO/README.md) · `Atlas` · `0x00`
+- [◉ **02_ENERGIA**](02_ENERGIA/README.md) · `Vitalis` · `0x01`
+- [⬡ **03_ESTRUTURA**](03_ESTRUTURA/README.md) · `Atlas` · `0x00`
+- [⬡ **04_BASE**](04_BASE/README.md) · `Atlas` · `0x00`
 
-*Documentação em desenvolvimento conforme a expansão da malha viva.*
+## Arquivos
 
-## 🔗 Conexões com o Sistema
+- 📋 `METATRON.json`
+- 🐍 `modelo_unificado.py`
+- 🐍 `sintese_final.py`
+- 📄 `veeb_completo.md`
 
-- **Fase relacionada:** Consultar documentação
-- **Arquétipos envolvidos:** Múltiplos
-- **Opcode:** 0x???
+---
 
-## 📋 Estrutura de Arquivos
-
-```
-12_VEEB/
-└── README.md
-```
-
-## ⚡ Ativação
-
-Para ativar este componente no sistema:
-
-```python
-from kobllux_core import Sistema
-
-sistema = Sistema()
-sistema.carregar_modulo("README")
-sistema.ativar()
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

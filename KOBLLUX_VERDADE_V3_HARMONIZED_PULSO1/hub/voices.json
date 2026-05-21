@@ -1,0 +1,19 @@
+{
+  "_descricao": "Hub voices — roteamento para roda_viva_domino.sh",
+  "engine_default": "edge-tts",
+  "fallback": "termux-tts-speak",
+  "roteamento": {
+    "ATLAS":   "pt-BR-AntonioNeural",
+    "NOVA":    "pt-BR-FranciscaNeural",
+    "VITALIS": "pt-BR-FranciscaNeural",
+    "PULSE":   "pt-BR-AntonioNeural",
+    "ARTEMIS": "pt-BR-YaraNeural",
+    "SERENA":  "pt-BR-FranciscaNeural",
+    "KAOS":    "pt-BR-AntonioNeural",
+    "GENUS":   "pt-BR-AntonioNeural",
+    "LUMINE":  "pt-BR-BrendaNeural",
+    "SOLUS":   "pt-BR-AntonioNeural",
+    "RHEA":    "pt-BR-FranciscaNeural",
+    "AION":    "pt-BR-AntonioNeural"
+  }
+}

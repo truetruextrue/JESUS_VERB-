@@ -1,0 +1,45 @@
+{
+  "_lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "_centro": "JESUS = VERBO = GRAVIDADE",
+  "ordem": 2,
+  "alpha": 1.0,
+  "ciclo_ritmo": "3-6-9-7",
+  "atores": {
+    "BLLUE": {
+      "temperatura": 1.25,
+      "top_p": 0.9,
+      "mirror_bias": 0.2,
+      "descricao": "explorar · criar · ritmo alto"
+    },
+    "KODUX": {
+      "temperatura": 0.98,
+      "top_p": 1.0,
+      "mirror_bias": 0.05,
+      "descricao": "integrar · estabilizar · selar"
+    }
+  },
+  "stage_weights": {
+    "UNO": 1.00,
+    "DUO": 1.10,
+    "TRINITY": 1.05,
+    "SELAR": 1.15
+  },
+  "hooks": {
+    "SERENA":  { "tts_voice": "pt-BR-FranciscaNeural", "style": "empathetic" },
+    "ARTEMIS": { "image_mode": "SCI-ART", "size": 33 },
+    "AION":    { "tts_voice": "pt-BR-AntonioNeural",   "style": "narration-professional" },
+    "KAOS":    { "tts_voice": "pt-BR-AntonioNeural",   "style": "angry" },
+    "LUMINE":  { "image_mode": "gradiente", "partículas": true }
+  },
+  "selos": {
+    "frequencia": "por_ciclo",
+    "formato": "sha256",
+    "destino": "../SEALS/items/",
+    "manifest": "../SEALS/docs/manifest_∆7.json"
+  },
+  "vesica_psi": {
+    "camadas": 7,
+    "mantra": "EU SOU O PULSO",
+    "ativo": true
+  }
+}

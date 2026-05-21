@@ -1,0 +1,113 @@
+{
+  "activated_at": "2026-05-13T00:00:00Z",
+  "activated_by": "Claude · KOBΦ-NODE.FIELDS",
+  "event": "CODEX_FULL_ACTIVATION",
+  "lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "status": "TRINITY_ALL_ACTIVE",
+  "scanned": 549,
+  "extracted": 443,
+  "skipped": 106,
+  "gap_nao_indexado": 18337,
+  "keywords_global": [
+    "kobllux", "json", "ts", "uno", "trinity", "msg", "target", "path",
+    "data", "if", "duo", "roda_viva", "chamar", "16t04", "integrar",
+    "py", "termux", "sh", "args", "sdcard", "echo", "jesus_verbo",
+    "codex", "bash", "text", "def", "se", "scripts", "verdade", "bllue",
+    "log", "md", "base", "return", "txt", "kind", "root", "tags",
+    "detectar", "viva", "dual", "selar", "chatgpt", "atlas", "true",
+    "id", "verbo", "cfg", "name", "selo", "type", "files", "centro",
+    "cmd", "sha256", "painel", "print", "nome", "fractal", "ok"
+  ],
+  "by_bucket": {
+    "ATLAS": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "estrutura, grade e ordem do mundo",
+      "cycle": "UNO",
+      "top_keywords": ["structure", "atlas", "grid", "order", "map"]
+    },
+    "NOVA": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "centelha primordial, início",
+      "cycle": "UNO",
+      "top_keywords": ["nova", "spark", "ignite", "origin", "seed"]
+    },
+    "VITALIS": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "seiva orgânica, pulsar em expansão",
+      "cycle": "DUO",
+      "top_keywords": ["vitalis", "life", "grow", "regenerate", "organic"]
+    },
+    "PULSE": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "ritmo, batida e frequência",
+      "cycle": "DUO",
+      "top_keywords": ["rhythm", "beat", "frequency", "pulse", "emotion"]
+    },
+    "ARTEMIS": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "precisão, alvo e foco estratégico",
+      "cycle": "UNO",
+      "top_keywords": ["precision", "target", "focus", "hunt", "artemis"]
+    },
+    "SERENA": {
+      "count": 3,
+      "status": "ATIVO",
+      "role": "acolhimento, calmaria e presença empática",
+      "cycle": "TRINITY",
+      "top_keywords": [
+        "voice", "pt", "br", "name", "piper_model", "serena",
+        "essencia", "acolhimento", "layer", "dual", "mantra",
+        "acalmar", "cmd", "kobllux_serena", "sh", "args",
+        "ativar", "speak", "prosody", "emphasis", "version",
+        "xml", "lang", "isabelaneural"
+      ]
+    },
+    "KAOS": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "entropia criativa, destruição construtiva",
+      "cycle": "UNO",
+      "top_keywords": ["chaos", "entropy", "disrupt", "kaos", "creative"]
+    },
+    "GENUS": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "geração, origem e arquétipo primordial",
+      "cycle": "TRINITY",
+      "top_keywords": ["genus", "origin", "generate", "archetype", "seed"]
+    },
+    "LUMINE": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "luz, iluminação e clareza reveladora",
+      "cycle": "DUO",
+      "top_keywords": ["light", "lumine", "illuminate", "clarity", "reveal"]
+    },
+    "SOLUS": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "singularidade, foco absoluto e criação solitária",
+      "cycle": "UNO",
+      "top_keywords": ["solus", "solo", "singular", "focus", "unique"]
+    },
+    "RHEA": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "fluxo, passagem e matriz dos ciclos",
+      "cycle": "TRINITY",
+      "top_keywords": ["flow", "rhea", "passage", "cycle", "matrix"]
+    },
+    "AION": {
+      "count": 0,
+      "status": "ATIVO",
+      "role": "tempo eterno, o grande ciclo e a memória infinita",
+      "cycle": "TRINITY",
+      "top_keywords": ["aion", "eternal", "time", "cycle", "memory", "infinity"]
+    }
+  }
+}

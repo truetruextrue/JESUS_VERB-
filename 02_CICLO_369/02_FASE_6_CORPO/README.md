@@ -1,40 +1,20 @@
-# 02 Fase 6 Corpo
+# ◉ 02_FASE_6_CORPO
+**Arquétipo:** `Vitalis` · **Opcode:** `0x01` · **528Hz** · **VEEB-O** · **D3**  
+**Regra:** `DELTA` · **Ação:** `PULSAR` · **Essência:** _Energia · momentum · ativação_
 
-Movimento e Ação
+> 📍 `⌂ › 02_CICLO_369 › 02_FASE_6_CORPO`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** 02_CICLO_369
-- **Data de criação:** 2026-02-28 08:59:02
+← **[⬆ Subir](../..README.md)** (raiz)
 
-## 📋 Estrutura
+## Arquivos
 
-Esta pasta contém os seguintes elementos:
+- 🐍 `corpo.py`
+- 📄 `movimento.md`
+- 🐍 `soma.py`
 
-```
-- corpo.py
-- movimento.md
-- soma.py
-```
+---
 
-## 🔗 Conexões
-
-- **Fase relacionada:** 02_FASE_6_CORPO
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

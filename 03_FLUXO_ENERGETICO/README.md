@@ -1,43 +1,23 @@
-# Readme
+# ◉ 03_FLUXO_ENERGETICO
+**Arquétipo:** `Vitalis` · **Opcode:** `0x01` · **528Hz** · **VEEB-O** · **D3**  
+**Regra:** `DELTA` · **Ação:** `PULSAR` · **Essência:** _Energia · momentum · ativação_
 
-A Vida em Movimento
+> 📍 `⌂ › 03_FLUXO_ENERGETICO`
 
-## 🧿 Visão Geral
+## Navegação
 
-Este documento faz parte do **KOBLLUX TRINITY SYSTEM**, versão 7.9, e contém informações detalhadas sobre a vida em movimento.
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📜 Conteúdo
+**Subpastas:**
+- [◉ **01_NIVEL_8D_UNIVERSAL**](01_NIVEL_8D_UNIVERSAL/README.md) · `Vitalis` · `0x01`
+- [≋ **02_NIVEL_9D_CORPO**](02_NIVEL_9D_CORPO/README.md) · `Pulse` · `0x0B`
 
-*Documentação em desenvolvimento conforme a expansão da malha viva.*
+## Arquivos
 
-## 🔗 Conexões com o Sistema
+- 🐍 `energia_vital.py`
+- 📄 `fluxo_energetico_completo.md`
 
-- **Fase relacionada:** Consultar documentação
-- **Arquétipos envolvidos:** Múltiplos
-- **Opcode:** 0x???
+---
 
-## 📋 Estrutura de Arquivos
-
-```
-03_FLUXO_ENERGETICO/
-└── README.md
-```
-
-## ⚡ Ativação
-
-Para ativar este componente no sistema:
-
-```python
-from kobllux_core import Sistema
-
-sistema = Sistema()
-sistema.carregar_modulo("README")
-sistema.ativar()
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

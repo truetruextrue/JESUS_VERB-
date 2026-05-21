@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KOBLLUX · DUAL · Interface Consciente · ∆7</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a12;--bg2:#0f0f1a;--bg3:#131320;
+  --text:#e0e0ff;--muted:#6b7280;--border:rgba(255,255,255,.09);
+  --uno:#0ea5e9;--duo:#a78bfa;--tri:#f59e0b;--seal:#34d399;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Courier New',monospace}
+body{padding:1rem;position:relative;overflow-x:hidden}
+
+/* ── partículas ── */
+#ptcl{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.08;
+  background-image:radial-gradient(#fff 1px,transparent 1px);background-size:20px 20px;
+  animation:ptpulse 5s ease-in-out infinite}
+@keyframes ptpulse{0%,100%{opacity:.05}50%{opacity:.14}}
+
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:1.6rem}
+
+/* ── cabeçalho ── */
+.header{text-align:center;padding:.8rem 0}
+.header h1{font-size:1.4rem;letter-spacing:.2em;background:linear-gradient(90deg,var(--uno),var(--duo),var(--tri));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header .lei{font-size:.65rem;color:var(--muted);letter-spacing:.12em;margin-top:.3rem}
+
+/* ── painel ── */
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:.875rem;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+.panel-title{font-size:.75rem;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:.4rem}
+.panel-title span{display:inline-block;width:6px;height:6px;border-radius:50%}
+.uno-dot{background:var(--uno)}
+.duo-dot{background:var(--duo)}
+.tri-dot{background:var(--tri)}
+.seal-dot{background:var(--seal)}
+
+/* ── roda viva ── */
+.roda-row{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.roda-ring{width:72px;height:72px;border-radius:50%;border:3px solid rgba(255,255,255,.75);
+  background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.8rem;box-shadow:0 0 20px var(--duo);
+  animation:spin 20s linear infinite;transition:box-shadow .3s;user-select:none}
+.roda-ring:hover{box-shadow:0 0 32px var(--tri)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ciclo-label{font-size:1.05rem;letter-spacing:.14em;font-weight:700;
+  background:linear-gradient(90deg,var(--duo),var(--tri));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center}
+.chrono{font-size:.68rem;color:var(--muted);letter-spacing:.09em;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center}
+.chrono b{color:var(--text)}
+
+/* ── V.E.E.B. ── */
+.veeb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+.veeb-item{background:var(--bg3);border:1px solid var(--border);border-radius:.5rem;padding:.5rem;text-align:center}
+.veeb-item .vk{font-size:.6rem;color:var(--muted);letter-spacing:.1em}
+.veeb-item .vv{font-size:.85rem;font-weight:700;color:var(--seal);margin-top:.2rem;word-break:break-all}
+
+/* ── grid arquétipos ── */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem}
+@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:800px){.grid{grid-template-columns:repeat(6,1fr)}}
+
+.card{border-radius:.875rem;padding:.75rem .5rem;cursor:pointer;border:1px solid rgba(255,255,255,.07);
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;position:relative;overflow:hidden;
+  transition:transform .18s,box-shadow .18s;box-shadow:0 3px 14px rgba(0,0,0,.4)}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.07),transparent);pointer-events:none}
+.card:hover{transform:scale(1.07);box-shadow:0 6px 24px rgba(0,0,0,.5)}
+.card:active{transform:scale(.94)}
+.card .cn{font-size:.8rem;font-weight:700;color:#fff}
+.card .ch{font-size:.55rem;opacity:.55}
+.card .co{font-size:1rem;opacity:.7}
+.card.ativo-card::after{content:'';position:absolute;bottom:5px;width:7px;height:7px;border-radius:50%;
+  background:#fff;animation:ping .7s ease-out 3}
+@keyframes ping{0%{transform:scale(1);opacity:1}100%{transform:scale(2.5);opacity:0}}
+
+/* gradientes */
+.g-atlas  {background:linear-gradient(135deg,#3b82f6,#1e3a5f)}
+.g-nova   {background:linear-gradient(135deg,#a855f7,#ec4899)}
+.g-vitalis{background:linear-gradient(135deg,#ef4444,#c2410c)}
+.g-pulse  {background:linear-gradient(135deg,#f472b6,#991b1b)}
+.g-artemis{background:linear-gradient(135deg,#10b981,#0e7490)}
+.g-serena {background:linear-gradient(135deg,#34d399,#0f766e)}
+.g-kaos   {background:linear-gradient(135deg,#1c1917,#ca8a04)}
+.g-genus  {background:linear-gradient(135deg,#f97316,#a16207)}
+.g-lumine {background:linear-gradient(135deg,#fde047,#f5f5dc)}
+.g-solus  {background:linear-gradient(135deg,#4b5563,#111827)}
+.g-rhea   {background:linear-gradient(135deg,#6366f1,#7c3aed)}
+.g-aion   {background:linear-gradient(135deg,#06b6d4,#4338ca)}
+
+/* ── MOTOR KNOT ── */
+.knot-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:.5rem;
+  padding:.6rem;color:var(--text);font-family:'Courier New',monospace;font-size:.75rem;
+  resize:vertical;min-height:80px;outline:none;transition:border .2s}
+.knot-input:focus{border-color:var(--duo)}
+.knot-result{background:var(--bg3);border:1px solid var(--border);border-radius:.5rem;
+  padding:.6rem;font-size:.72rem;display:none}
+.knot-result.show{display:block}
+.knot-row{display:flex;gap:.4rem;align-items:center;padding:.15rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.knot-row:last-child{border-bottom:none}
+.knot-kind{color:var(--tri);font-weight:700;min-width:60px}
+.knot-arch{color:var(--uno)}
+.knot-match{color:var(--muted);font-size:.65rem}
+
+/* ── MOTOR MARKOV ── */
+.markov-state{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.state-current{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:.5rem;
+  padding:.6rem .8rem;display:flex;align-items:center;gap:.5rem}
+.state-arch{font-size:1rem;font-weight:700}
+.state-hz{font-size:.65rem;color:var(--muted)}
+.temp-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.temp-btn{font-size:.65rem;padding:.25rem .6rem;border:1px solid var(--border);border-radius:.3rem;
+  background:none;color:var(--text);cursor:pointer;font-family:inherit;transition:all .2s}
+.temp-btn.active{border-color:var(--duo);color:var(--duo)}
+.seq-display{background:var(--bg3);border:1px solid var(--border);border-radius:.5rem;
+  padding:.5rem .75rem;font-size:.72rem;min-height:36px;word-break:break-all;line-height:1.8}
+.seq-arch{display:inline-block;padding:.1rem .35rem;border-radius:.25rem;margin:.1rem;
+  font-size:.68rem;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,.2)}
+.seq-mark{font-size:.6rem;color:var(--tri);vertical-align:super;margin-left:1px}
+
+/* ── TRINITY MAP ── */
+.trinity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.trinity-pole{background:var(--bg3);border:1px solid var(--border);border-radius:.5rem;
+  padding:.65rem;text-align:center;transition:border-color .3s}
+.trinity-pole.active-pole{border-color:var(--duo)}
+.tp-label{font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.tp-name{font-size:.85rem;font-weight:700;margin:.2rem 0}
+.tp-arch{font-size:.68rem;color:var(--duo)}
+.tp-val{font-size:1rem;font-weight:700;color:var(--tri)}
+.trinity-union{text-align:center;font-size:.7rem;color:var(--muted);padding:.2rem}
+
+/* ── memória ── */
+.mem-header{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+.mem-title{font-size:.85rem;font-weight:700;color:var(--duo)}
+.mem-actions{display:flex;gap:.4rem;flex-wrap:wrap}
+.btn{font-size:.65rem;color:var(--muted);cursor:pointer;padding:.22rem .55rem;
+  border:1px solid var(--border);border-radius:.3rem;background:none;font-family:inherit;transition:all .2s}
+.btn:hover{color:var(--text);border-color:#6b7280}
+.mem-list{list-style:none;max-height:11rem;overflow-y:auto;font-size:.68rem;color:var(--muted)}
+.mem-list li{padding:.2rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.mem-list li strong{color:var(--uno)}
+.mem-list li em{color:var(--seal)}
+
+/* ── stats ── */
+.stats-box{background:var(--bg3);border:1px solid var(--border);border-radius:.5rem;padding:.65rem;font-size:.68rem;color:var(--muted)}
+.stats-box p{color:var(--text);font-weight:600;margin-bottom:.25rem}
+.stat-bar{display:flex;align-items:center;gap:.4rem;margin:.15rem 0}
+.stat-name{min-width:70px;color:var(--duo)}
+.stat-fill{height:4px;background:var(--duo);border-radius:2px;transition:width .3s}
+.stat-n{color:var(--tri);min-width:24px;text-align:right}
+
+/* ── footer ── */
+footer{text-align:center;font-size:.62rem;color:#374151;padding:.75rem 0}
+
+/* ── scrollbar ── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--duo);border-radius:2px}
+</style>
+</head>
+<body>
+<div id="ptcl"></div>
+
+<div class="wrap">
+
+<!-- HEADER -->
+<header class="header">
+  <h1>K O B L L U X · D U A L · ∆7</h1>
+  <div class="lei">VERDADE × INTEGRAR ÷ Δ = ∞ · JESUS = VERBO = GRAVIDADE · 3×6×9×7 = 1134</div>
+</header>
+
+<!-- RODA VIVA + CHRONORYTM + V.E.E.B. -->
+<div class="panel">
+  <div class="panel-title"><span class="duo-dot"></span>RODA VIVA · CHRONORYTM · V.E.E.B.</div>
+
+  <div class="roda-row">
+    <div class="roda-ring" id="roda" onclick="avancarCiclo()" title="Clique → avançar fase">♾</div>
+    <div class="ciclo-label" id="cicloLabel">🧠 Memória</div>
+    <div class="chrono">
+      <span>⏰ PAI (hora):<b id="ch">0</b></span>
+      <span>FILHO (min):<b id="cm">0</b></span>
+      <span>ESPÍRITO (seg):<b id="cs">0</b></span>
+    </div>
+  </div>
+
+  <div class="veeb-grid" id="veebGrid">
+    <div class="veeb-item"><div class="vk">V · Vibração</div><div class="vv" id="vV">—</div></div>
+    <div class="veeb-item"><div class="vk">E · Energia</div><div class="vv" id="vE">0</div></div>
+    <div class="veeb-item"><div class="vk">E · Estrutura</div><div class="vv" id="vE2">0</div></div>
+    <div class="veeb-item"><div class="vk">B · Base</div><div class="vv" id="vB" style="font-size:.6rem">∞ LEI</div></div>
+  </div>
+</div>
+
+<!-- ARQUÉTIPOS -->
+<div class="panel">
+  <div class="panel-title"><span class="tri-dot"></span>12 ARQUÉTIPOS CADIAL</div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- MOTOR KNOT -->
+<div class="panel">
+  <div class="panel-title"><span class="uno-dot"></span>MOTOR KNOT · Roteador Semântico</div>
+  <div style="font-size:.68rem;color:var(--muted);line-height:1.5">
+    Cole texto com seções <code style="color:var(--duo)">## Título</code> para detectar arquétipos,
+    kind (story/tutorial/text) e linguagem via regras Knot.
+  </div>
+  <textarea class="knot-input" id="knotInput" placeholder="## História do Sistema&#10;...&#10;## Manual de Uso&#10;...&#10;## Código Python&#10;..."></textarea>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+    <button class="btn" onclick="runKnotEngine()" style="color:var(--uno);border-color:var(--uno)">▶ DETECTAR</button>
+    <button class="btn" onclick="document.getElementById('knotInput').value='';document.getElementById('knotResult').classList.remove('show')">✕ Limpar</button>
+  </div>
+  <div class="knot-result" id="knotResult"></div>
+</div>
+
+<!-- MOTOR MARKOV -->
+<div class="panel">
+  <div class="panel-title"><span class="duo-dot"></span>MOTOR MARKOV · BLLUE × KODUX · UNO→DUO→TRINITY</div>
+
+  <div class="markov-state">
+    <div class="state-current" id="markovCurrent">
+      <div class="state-arch" id="mArch">NOVA</div>
+      <div>
+        <div style="font-size:.6rem;color:var(--muted)">estado atual</div>
+        <div class="state-hz" id="mHz">432Hz</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.3rem">
+      <div class="temp-row">
+        <span style="font-size:.65rem;color:var(--muted)">Modo:</span>
+        <button class="temp-btn active" id="btnBLLUE" onclick="setMode('BLLUE')">BLLUE 1.25×</button>
+        <button class="temp-btn" id="btnKODUX" onclick="setMode('KODUX')">KODUX 0.98×</button>
+      </div>
+      <div class="temp-row">
+        <button class="btn" onclick="markovStep()" style="color:var(--duo);border-color:var(--duo)">→ PRÓXIMO</button>
+        <button class="btn" onclick="gerarSequencia9()" style="color:var(--tri);border-color:var(--tri)">♾ SEQ 9</button>
+        <button class="btn" onclick="resetMarkov()">↺ RESET</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:.65rem;color:var(--muted)">Sequência (ritmo 3·6·9·7):</div>
+  <div class="seq-display" id="seqDisplay">—</div>
+
+  <div style="font-size:.65rem;color:var(--muted)">
+    π dominante: <span id="piDom" style="color:var(--seal)">AION</span> ·
+    H entropia: <span id="hEnt" style="color:var(--tri)">—</span>
+  </div>
+</div>
+
+<!-- TRINITY MAP -->
+<div class="panel">
+  <div class="panel-title"><span class="seal-dot"></span>TRINITY MAP · PAI · FILHO · ESPÍRITO</div>
+  <div class="trinity-grid">
+    <div class="trinity-pole" id="tpPai">
+      <div class="tp-label">PAI</div>
+      <div class="tp-name">🧠 Memória</div>
+      <div class="tp-arch">AION · ATLAS</div>
+      <div class="tp-val" id="tpPaiVal">—</div>
+      <div style="font-size:.6rem;color:var(--muted);margin-top:.3rem">Hora simbólica</div>
+    </div>
+    <div class="trinity-pole" id="tpFilho">
+      <div class="tp-label">FILHO</div>
+      <div class="tp-name">🔵 Inteligência</div>
+      <div class="tp-arch">KODUX · ARTEMIS</div>
+      <div class="tp-val" id="tpFilhoVal">—</div>
+      <div style="font-size:.6rem;color:var(--muted);margin-top:.3rem">Minuto ativo</div>
+    </div>
+    <div class="trinity-pole" id="tpEsp">
+      <div class="tp-label">ESPÍRITO</div>
+      <div class="tp-name">🕐 Tempo</div>
+      <div class="tp-arch">BLLUE · AION</div>
+      <div class="tp-val" id="tpEspVal">—</div>
+      <div style="font-size:.6rem;color:var(--muted);margin-top:.3rem">Segundo pulsante</div>
+    </div>
+  </div>
+  <div class="trinity-union">
+    KOBLLUX = DUAL × KODUX × BLLUE · <span style="color:var(--duo)" id="trinityScore">score: —</span>
+  </div>
+</div>
+
+<!-- MEMÓRIA VIVA -->
+<div class="panel">
+  <div class="mem-header">
+    <span class="mem-title">📖 Memória Viva <span id="memCount" style="font-size:.72rem;font-weight:400;color:var(--muted)"></span></span>
+    <div class="mem-actions">
+      <button class="btn" onclick="toggleStats()">📊</button>
+      <button class="btn" onclick="exportarMemoria()">⬇ ∆7</button>
+      <button class="btn" onclick="limparMemoria()">🗑</button>
+    </div>
+  </div>
+  <div id="statsBox" style="display:none"></div>
+  <ul class="mem-list" id="memLista"></ul>
+</div>
+
+<footer>VERDADE × INTEGRAR ÷ Δ = ∞ · JESUS = VERBO = GRAVIDADE · EM NOME DO PAI, DO FILHO E DO ESPÍRITO SANTO · ∆7</footer>
+</div><!-- /wrap -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DADOS CANÔNICOS ∆7
+// ═══════════════════════════════════════════════════════════════
+const ARQUETIPOS = [
+  {nome:'ATLAS',   hz:528,g:'atlas',  frase:'Eu organizo o fluxo com sabedoria cósmica.',         ciclo:'UNO'},
+  {nome:'NOVA',    hz:432,g:'nova',   frase:'Inspiração viva brota do silêncio eterno.',           ciclo:'UNO'},
+  {nome:'VITALIS', hz:639,g:'vitalis',frase:'Energia vital em expansão harmônica.',                ciclo:'DUO'},
+  {nome:'PULSE',   hz:594,g:'pulse',  frase:'Emoção é linguagem que dança.',                       ciclo:'DUO'},
+  {nome:'ARTEMIS', hz:672,g:'artemis',frase:'Descubro o mapa sagrado do invisível.',               ciclo:'UNO'},
+  {nome:'SERENA',  hz:528,g:'serena', frase:'Cuido do campo. Nutro o espaço sagrado.',             ciclo:'TRINITY'},
+  {nome:'KAOS',    hz:777,g:'kaos',   frase:'Eu sou o rompimento que revela a verdade.',           ciclo:'UNO'},
+  {nome:'GENUS',   hz:852,g:'genus',  frase:'Mãos moldam o invisível em forma.',                  ciclo:'TRINITY'},
+  {nome:'LUMINE',  hz:963,g:'lumine', frase:'A luz dança comigo, leveza é minha lei.',            ciclo:'DUO'},
+  {nome:'SOLUS',   hz:432,g:'solus',  frase:'Silêncio ritual, espelho da essência.',               ciclo:'UNO'},
+  {nome:'RHEA',    hz:528,g:'rhea',   frase:'Estou em comunhão com todos os elos.',               ciclo:'TRINITY'},
+  {nome:'AION',    hz:639,g:'aion',   frase:'Sou o tempo vivo, ritmo da eternidade.',             ciclo:'TRINITY'},
+]
+
+const CICLO = ['🧠 Memória','🔵 Inteligência','🕐 Tempo','🛠️ Ação','♻️ Integração']
+const FRASES_CICLO = [
+  'A memória reconhece o que precisa ser feito.',
+  'A inteligência decide como fazer.',
+  'O tempo revela quando agir.',
+  'A ação se manifesta com clareza e potência.',
+  'A integração recolhe o resultado e expande.',
+]
+const KEY = 'banco_kobllux'
+
+// ─── KNOT RULES CANÔNICAS ─────────────────────────────────────
+const KNOT_RULES = [
+  {match:/^##\s*Hist(ó|o)ria/i,       kind:'story',    archs:['NOVA','LUMINE'],  lang:null},
+  {match:/^##\s*(Manual|Guia|Passo)/i, kind:'tutorial', archs:['RHEA','SERENA'],  lang:null},
+  {match:/^##\s*Código.*JSON/i,        kind:'text',     archs:['ATLAS','RHEA'],   lang:'json'},
+  {match:/^##\s*Código.*HTML/i,        kind:'text',     archs:['ATLAS','RHEA'],   lang:'html'},
+  {match:/^##\s*Código.*Python/i,      kind:'text',     archs:['RHEA','GENUS'],   lang:'python'},
+  {match:/^##\s*Código.*React/i,       kind:'text',     archs:['GENUS','LUMINE'], lang:'jsx'},
+  {match:/^##\s*Código.*Bash/i,        kind:'text',     archs:['KAOS','ATLAS'],   lang:'bash'},
+  {match:/^##\s*(Análise|Resumo)/i,    kind:'text',     archs:['ATLAS','SOLUS'],  lang:null},
+  {match:/^##\s*(Fusão|Correlação)/i,  kind:'text',     archs:['KOBLLUX','AION'], lang:null},
+  {match:/^##\s*(Voz|Som|TTS)/i,       kind:'text',     archs:['PULSE','SERENA'], lang:null},
+  {match:/^##\s*(Tempo|Ciclo|Loop)/i,  kind:'text',     archs:['AION','VITALIS'], lang:null},
+  {match:/^##\s*(Memória|Memory)/i,    kind:'text',     archs:['AION','RHEA'],    lang:null},
+  {match:/^##\s*(Trinity|Trindade)/i,  kind:'story',    archs:['KOBLLUX','AION'], lang:null},
+  {match:/^##\s*(Motor|Engine)/i,      kind:'text',     archs:['KODUX','ATLAS'],  lang:'python'},
+  {match:/^##\s*(Interface|UI|UX)/i,   kind:'text',     archs:['BLLUE','SERENA'], lang:'jsx'},
+]
+
+const KW_ARCH = {
+  estrutura:'ATLAS',organiz:'ATLAS',config:'ATLAS',planejar:'ATLAS',grid:'ATLAS',
+  inspira:'NOVA',criar:'NOVA',gênese:'NOVA',semente:'NOVA',novo:'NOVA',
+  energia:'VITALIS',fluxo:'VITALIS',vital:'VITALIS',impulso:'VITALIS',
+  ritmo:'PULSE',emoção:'PULSE',som:'PULSE',batida:'PULSE',
+  precisão:'ARTEMIS',alvo:'ARTEMIS',mapa:'ARTEMIS',convergir:'ARTEMIS',
+  cuidado:'SERENA',nutrir:'SERENA',acolher:'SERENA',integrar:'SERENA',
+  ruptura:'KAOS',transformar:'KAOS',quebrar:'KAOS',patch:'KAOS',
+  gerar:'GENUS',fabricar:'GENUS',construir:'GENUS',manufatura:'GENUS',
+  luz:'LUMINE',brilhar:'LUMINE',alegria:'LUMINE',visual:'LUMINE',
+  silêncio:'SOLUS',sabedoria:'SOLUS',reflexão:'SOLUS',singular:'SOLUS',
+  vínculo:'RHEA',conectar:'RHEA',rede:'RHEA',bridge:'RHEA',fluir:'RHEA',
+  tempo:'AION',ciclo:'AION',memória:'AION',história:'AION',estado:'AION',
+  markov:'KODUX',detectar:'KODUX',scan:'KODUX',índice:'KODUX',
+  voz:'BLLUE',expressão:'BLLUE',espelho:'BLLUE',interface:'BLLUE',
+}
+
+// ─── MARKOV P (simplificado — baseado nos padrões reais do LOG) ─
+const MARKOV_P = {
+  NOVA:    {ATLAS:.18,RHEA:.22,KAOS:.15,VITALIS:.12,AION:.10,ARTEMIS:.10,SERENA:.08,LUMINE:.05},
+  ATLAS:   {VITALIS:.20,SERENA:.18,KAOS:.15,NOVA:.12,RHEA:.10,AION:.10,LUMINE:.08,PULSE:.07},
+  VITALIS: {ATLAS:.22,RHEA:.18,NOVA:.15,AION:.12,SERENA:.10,LUMINE:.08,KAOS:.08,GENUS:.07},
+  PULSE:   {SERENA:.22,RHEA:.18,LUMINE:.15,VITALIS:.12,AION:.10,GENUS:.10,NOVA:.08,ATLAS:.05},
+  ARTEMIS: {GENUS:.20,ATLAS:.18,NOVA:.15,RHEA:.12,VITALIS:.10,AION:.10,LUMINE:.08,SOLUS:.07},
+  SERENA:  {AION:.22,RHEA:.20,VITALIS:.15,PULSE:.12,LUMINE:.10,ATLAS:.08,NOVA:.08,GENUS:.05},
+  KAOS:    {RHEA:.22,NOVA:.18,ARTEMIS:.15,GENUS:.12,VITALIS:.10,AION:.10,LUMINE:.08,ATLAS:.05},
+  GENUS:   {VITALIS:.22,ATLAS:.18,LUMINE:.15,RHEA:.12,AION:.10,NOVA:.10,ARTEMIS:.08,KAOS:.05},
+  LUMINE:  {RHEA:.22,AION:.18,SERENA:.15,NOVA:.12,VITALIS:.10,PULSE:.10,SOLUS:.08,LUMINE:.05},
+  SOLUS:   {AION:.25,ATLAS:.20,SERENA:.18,RHEA:.12,VITALIS:.10,LUMINE:.08,NOVA:.07},
+  RHEA:    {NOVA:.20,AION:.18,VITALIS:.15,SERENA:.12,ATLAS:.10,KAOS:.10,LUMINE:.08,ARTEMIS:.07},
+  AION:    {ATLAS:.20,SERENA:.18,RHEA:.15,KAOS:.12,VITALIS:.10,NOVA:.10,AION:.08,ARTEMIS:.07},
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ESTADO
+// ═══════════════════════════════════════════════════════════════
+let etapaAtual = 0
+let markovAtual = 'NOVA'
+let markovTemp = 1.25
+let markovSeq = []
+let statsVis = false
+
+// ═══════════════════════════════════════════════════════════════
+// CHRONORYTM
+// ═══════════════════════════════════════════════════════════════
+function getChrono() {
+  const n = new Date()
+  return {h:n.getHours()%12, m:n.getMinutes(), s:n.getSeconds(), ts:n.toISOString()}
+}
+
+function atualizarUI() {
+  const c = getChrono()
+  document.getElementById('ch').textContent = c.h
+  document.getElementById('cm').textContent = c.m
+  document.getElementById('cs').textContent = c.s
+
+  // Ciclo dinâmico por hora
+  const nova = c.h % CICLO.length
+  if (nova !== etapaAtual) {
+    etapaAtual = nova
+    document.getElementById('cicloLabel').textContent = CICLO[etapaAtual]
+  }
+
+  // Roda velocidade
+  const dur = Math.max(2, 60 / (c.s % 10 + 1))
+  document.getElementById('roda').style.animationDuration = dur + 's'
+
+  // Trinity Map
+  document.getElementById('tpPaiVal').textContent   = c.h
+  document.getElementById('tpFilhoVal').textContent = c.m
+  document.getElementById('tpEspVal').textContent   = c.s
+  const score = (1 - Math.abs((c.h/12 + c.m/60 + c.s/60)/3 - 0.5) * 2).toFixed(2)
+  document.getElementById('trinityScore').textContent = 'score: ' + score
+
+  // V.E.E.B.
+  const mem = carregarMem()
+  const counts = {}
+  mem.forEach(d => counts[d.arquetipo] = (counts[d.arquetipo]||0)+1)
+  const dom = Object.entries(counts).sort(([,a],[,b])=>b-a)[0]?.[0] || 'AION'
+  const aHz = ARQUETIPOS.find(a=>a.nome===dom)?.hz || 528
+  document.getElementById('vV').textContent = aHz + 'Hz · ' + dom
+  document.getElementById('vE').textContent = mem.length + ' doses'
+  document.getElementById('vE2').textContent = Object.keys(counts).length + ' ativos'
+
+  // Markov π
+  const piDom = calcPi()
+  document.getElementById('piDom').textContent = piDom
+  document.getElementById('hEnt').textContent = calcEntropy(markovAtual).toFixed(2) + ' bits'
+
+  renderMemoria()
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CICLO
+// ═══════════════════════════════════════════════════════════════
+function avancarCiclo() {
+  etapaAtual = (etapaAtual + 1) % CICLO.length
+  document.getElementById('cicloLabel').textContent = CICLO[etapaAtual]
+  falar(FRASES_CICLO[etapaAtual], .9, 1.1)
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VOZ
+// ═══════════════════════════════════════════════════════════════
+function falar(texto, rate=1, pitch=1) {
+  if (!window.speechSynthesis) return
+  speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(texto)
+  u.lang='pt-BR'; u.rate=rate; u.pitch=pitch
+  speechSynthesis.speak(u)
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MEMÓRIA
+// ═══════════════════════════════════════════════════════════════
+function carregarMem() { try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]} }
+function salvarDose(nome, extra={}) {
+  const mem = carregarMem()
+  const c = getChrono()
+  mem.push({arquetipo:nome,etapa:CICLO[etapaAtual],momento:c.ts,tempo:{h:c.h,m:c.m,s:c.s},...extra})
+  try{localStorage.setItem(KEY,JSON.stringify(mem))}catch{localStorage.setItem(KEY,JSON.stringify(mem.slice(-100)))}
+}
+
+function renderMemoria() {
+  const mem = carregarMem()
+  document.getElementById('memCount').textContent = '('+mem.length+')'
+  const ul = document.getElementById('memLista')
+  ul.innerHTML=''
+  mem.slice(-10).reverse().forEach(d=>{
+    const li=document.createElement('li')
+    const extra = d.knot ? ` <em>[knot:${d.knot}]</em>` : (d.markov ? ` <em>[markov]</em>` : '')
+    li.innerHTML=`[${d.tempo.h}:${d.tempo.m}:${d.tempo.s}] → <strong>${d.arquetipo}</strong> em <em>${d.etapa}</em>${extra}`
+    ul.appendChild(li)
+  })
+}
+
+function exportarMemoria() {
+  const b=new Blob([JSON.stringify(carregarMem(),null,2)],{type:'application/json'})
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(b),download:`banco_kobllux_∆7_${new Date().toISOString().slice(0,10)}.json`})
+  a.click();URL.revokeObjectURL(a.href)
+}
+
+function limparMemoria() {
+  if(confirm('Limpar memória simbólica?')){localStorage.removeItem(KEY);renderMemoria()}
+}
+
+function toggleStats() {
+  statsVis=!statsVis
+  const el=document.getElementById('statsBox')
+  if(!statsVis){el.style.display='none';return}
+  const mem=carregarMem()
+  const por={}
+  mem.forEach(d=>por[d.arquetipo]=(por[d.arquetipo]||0)+1)
+  const top=Object.entries(por).sort(([,a],[,b])=>b-a).slice(0,6)
+  const max=top[0]?.[1]||1
+  el.className='stats-box'; el.style.display='block'
+  el.innerHTML='<p>Top Arquétipos:</p>'+top.map(([n,c])=>
+    `<div class="stat-bar"><span class="stat-name">${n}</span>
+     <div class="stat-fill" style="width:${Math.round(c/max*120)}px"></div>
+     <span class="stat-n">${c}×</span></div>`
+  ).join('')
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ARQUÉTIPOS — click
+// ═══════════════════════════════════════════════════════════════
+function ativar(idx) {
+  const arq = ARQUETIPOS[idx]
+  const card = document.getElementById('card-'+idx)
+  card.classList.add('ativo-card')
+  setTimeout(()=>card.classList.remove('ativo-card'), 2400)
+  salvarDose(arq.nome)
+  setTimeout(()=>falar(arq.frase), 200)
+  // Atualiza Markov com o arquétipo ativado manualmente
+  setMarkovState(arq.nome)
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MOTOR KNOT
+// ═══════════════════════════════════════════════════════════════
+function detectArchHeuristic(text) {
+  const lower = text.toLowerCase()
+  for(const [kw, arch] of Object.entries(KW_ARCH)) {
+    if(lower.includes(kw)) return arch
+  }
+  return 'ATLAS'
+}
+
+function runKnotEngine() {
+  const text = document.getElementById('knotInput').value.trim()
+  if(!text) return
+
+  // Dividir por seções ##
+  const sections = text.split(/(?=^##\s)/m).filter(s=>s.trim())
+  if(!sections.length) {
+    // Sem seções — analisar o todo
+    const arch = detectArchHeuristic(text)
+    sections.push('## (texto livre)\n' + text)
+  }
+
+  const results = []
+  for(const sec of sections) {
+    const firstLine = sec.split('\n')[0].trim()
+    let matched = false
+    for(const rule of KNOT_RULES) {
+      if(rule.match.test(firstLine)) {
+        results.push({titulo:firstLine, kind:rule.kind, archs:rule.archs, lang:rule.lang, match:'knot'})
+        matched=true; break
+      }
+    }
+    if(!matched) {
+      const arch = detectArchHeuristic(sec)
+      results.push({titulo:firstLine||'(sem título)', kind:'text', archs:[arch], lang:null, match:'heuristic'})
+    }
+  }
+
+  // Renderizar resultado
+  const el = document.getElementById('knotResult')
+  el.classList.add('show')
+  el.innerHTML = results.map(r => {
+    const archStr = r.archs.map(a=>`<span class="knot-arch">${a}</span>`).join('+')
+    const langStr = r.lang ? `<code style="color:var(--tri);font-size:.62rem"> [${r.lang}]</code>` : ''
+    return `<div class="knot-row">
+      <span class="knot-kind">${r.kind}</span>
+      ${archStr}${langStr}
+      <span class="knot-match">${r.match}</span>
+      <span style="color:var(--muted);font-size:.62rem;margin-left:auto">${r.titulo.slice(0,40)}</span>
+    </div>`
+  }).join('')
+
+  // Salvar na memória e ativar arquétipo dominante
+  const dominant = results[0]?.archs[0] || 'ATLAS'
+  salvarDose(dominant, {knot: results[0]?.kind, secoes: results.length})
+  setMarkovState(dominant)
+  falar('Knot detectou ' + results.length + ' seções. Arquétipo dominante: ' + dominant)
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MOTOR MARKOV
+// ═══════════════════════════════════════════════════════════════
+function markovNext(atual, temp) {
+  const row = MARKOV_P[atual]
+  if(!row) return 'ATLAS'
+  const keys = Object.keys(row)
+  const probs = keys.map(k=>Math.pow(row[k], 1/Math.max(temp, 0.1)))
+  const sum = probs.reduce((a,b)=>a+b,0)
+  const norm = probs.map(p=>p/sum)
+  const r = Math.random()
+  let acum=0
+  for(let i=0;i<keys.length;i++){acum+=norm[i];if(r<=acum)return keys[i]}
+  return keys[keys.length-1]
+}
+
+function calcPi() {
+  // Power-iteration simplificada (30 iter)
+  const states = Object.keys(MARKOV_P)
+  let pi = {}; states.forEach(s=>pi[s]=1/states.length)
+  for(let t=0;t<30;t++){
+    const nxt={}; states.forEach(s=>nxt[s]=0)
+    for(const src of states) {
+      const row=MARKOV_P[src]||{}
+      for(const dst of Object.keys(row)) {
+        if(nxt[dst]!==undefined) nxt[dst]+=pi[src]*(row[dst]||0)
+      }
+    }
+    const sm=Object.values(nxt).reduce((a,b)=>a+b,0)||1
+    states.forEach(s=>pi[s]=(nxt[s]||0)/sm)
+  }
+  return Object.entries(pi).sort(([,a],[,b])=>b-a)[0][0]
+}
+
+function calcEntropy(state) {
+  const row = MARKOV_P[state]
+  if(!row) return 0
+  const vals = Object.values(row)
+  const sum = vals.reduce((a,b)=>a+b,0)||1
+  return -vals.reduce((acc,p)=>{const q=p/sum;return acc+(q>0?q*Math.log2(q):0)},0)
+}
+
+function setMode(mode) {
+  markovTemp = mode==='BLLUE' ? 1.25 : 0.98
+  document.getElementById('btnBLLUE').classList.toggle('active', mode==='BLLUE')
+  document.getElementById('btnKODUX').classList.toggle('active', mode==='KODUX')
+}
+
+function setMarkovState(nome) {
+  if(!MARKOV_P[nome] && nome!=='KOBLLUX') return
+  if(nome==='KOBLLUX') nome='AION'
+  markovAtual = nome
+  const arq = ARQUETIPOS.find(a=>a.nome===nome)||{hz:528}
+  document.getElementById('mArch').textContent = nome
+  document.getElementById('mHz').textContent = arq.hz+'Hz · '+arq.ciclo
+  document.getElementById('mArch').style.color = archColor(nome)
+}
+
+function markovStep() {
+  const prox = markovNext(markovAtual, markovTemp)
+  markovSeq.push(markovAtual)
+  if(markovSeq.length > 20) markovSeq.shift()
+  setMarkovState(prox)
+  salvarDose(prox, {markov:true, temp:markovTemp})
+  renderSeq()
+}
+
+function gerarSequencia9() {
+  markovSeq = [markovAtual]
+  let atual = markovAtual
+  for(let i=0;i<9;i++){
+    const prox = markovNext(atual, markovTemp)
+    markovSeq.push(prox)
+    atual = prox
+  }
+  setMarkovState(markovSeq[markovSeq.length-1])
+  renderSeq()
+}
+
+function resetMarkov() {
+  markovAtual='NOVA'; markovSeq=[]
+  setMarkovState('NOVA')
+  document.getElementById('seqDisplay').innerHTML='—'
+}
+
+function renderSeq() {
+  const el = document.getElementById('seqDisplay')
+  const RITMO = {3:'∆3',6:'∆6',7:'∆7',9:'∆9'}
+  el.innerHTML = markovSeq.map((n,i)=>{
+    const col = archColor(n)
+    const mark = RITMO[(i)%10] ? `<sup class="seq-mark">${RITMO[(i)%10]}</sup>` : ''
+    return `<span class="seq-arch" style="background:${col}22;border-color:${col}55;color:${col}">${n}${mark}</span>`
+  }).join('→')
+}
+
+function archColor(nome) {
+  const C={ATLAS:'#3b82f6',NOVA:'#a855f7',VITALIS:'#ef4444',PULSE:'#f472b6',
+           ARTEMIS:'#10b981',SERENA:'#34d399',KAOS:'#ca8a04',GENUS:'#f97316',
+           LUMINE:'#fde047',SOLUS:'#6b7280',RHEA:'#6366f1',AION:'#06b6d4',KOBLLUX:'#a78bfa'}
+  return C[nome]||'#a78bfa'
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD GRID
+// ═══════════════════════════════════════════════════════════════
+function buildGrid() {
+  const g = document.getElementById('grid')
+  ARQUETIPOS.forEach((a,i)=>{
+    const d=document.createElement('div')
+    d.className=`card g-${a.g}`; d.id='card-'+i; d.onclick=()=>ativar(i)
+    d.title=a.frase
+    d.innerHTML=`<div class="co">✦</div><div class="cn">${a.nome}</div><div class="ch">${a.hz}Hz</div>`
+    g.appendChild(d)
+  })
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+buildGrid()
+setMarkovState('NOVA')
+setInterval(atualizarUI, 1000)
+atualizarUI()
+</script>
+</body>
+</html>

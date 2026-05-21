@@ -1,38 +1,19 @@
-# 16 Ascii Art
+# ☀ 16_ASCII_ART
+**Arquétipo:** `Lumine` · **Opcode:** `0x0C` · **963Hz** · **VEEB-A** · **D9**  
+**Regra:** `RENDER` · **Ação:** `TRANSCENDER` · **Essência:** _Luz · visual · interface_
 
-Arte ASCII do Sistema
+> 📍 `⌂ › 16_ASCII_ART`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** Raiz
-- **Data de criação:** 2026-02-28 08:59:03
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📋 Estrutura
+**Subpastas:**
+- [⬡ **01_SELOS**](01_SELOS/README.md) · `Atlas` · `0x00`
+- [⬡ **02_MANDALAS**](02_MANDALAS/README.md) · `Atlas` · `0x00`
+- [⬡ **03_PORTAS**](03_PORTAS/README.md) · `Atlas` · `0x00`
 
-Esta pasta contém os seguintes elementos:
+---
 
-```
-
-```
-
-## 🔗 Conexões
-
-- **Fase relacionada:** 16_ASCII_ART
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

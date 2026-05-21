@@ -1,43 +1,24 @@
-# Readme
+# ◉ 06_ATIVACAO
+**Arquétipo:** `Vitalis` · **Opcode:** `0x01` · **528Hz** · **VEEB-O** · **D3**  
+**Regra:** `DELTA` · **Ação:** `PULSAR` · **Essência:** _Energia · momentum · ativação_
 
-A Chave do Sistema
+> 📍 `⌂ › 06_ATIVACAO`
 
-## 🧿 Visão Geral
+## Navegação
 
-Este documento faz parte do **KOBLLUX TRINITY SYSTEM**, versão 7.9, e contém informações detalhadas sobre a chave do sistema.
+← **[⬆ Subir](..README.md)** (raiz)
 
-## 📜 Conteúdo
+**Subpastas:**
+- [◉ **01_ATIVAR_DELTA**](01_ATIVAR_DELTA/README.md) · `Vitalis` · `0x01`
+- [∞ **02_ATIVAR_INTERDIMENSIONAL**](02_ATIVAR_INTERDIMENSIONAL/README.md) · `Rhea` · `0x04`
 
-*Documentação em desenvolvimento conforme a expansão da malha viva.*
+## Arquivos
 
-## 🔗 Conexões com o Sistema
+- 📄 `ativacao_completa.md`
+- 🐍 `chave_mestra.py`
+- 🐍 `firmware.py`
 
-- **Fase relacionada:** Consultar documentação
-- **Arquétipos envolvidos:** Múltiplos
-- **Opcode:** 0x???
+---
 
-## 📋 Estrutura de Arquivos
-
-```
-06_ATIVACAO/
-└── README.md
-```
-
-## ⚡ Ativação
-
-Para ativar este componente no sistema:
-
-```python
-from kobllux_core import Sistema
-
-sistema = Sistema()
-sistema.carregar_modulo("README")
-sistema.ativar()
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*

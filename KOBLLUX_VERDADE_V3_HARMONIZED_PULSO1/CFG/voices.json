@@ -1,0 +1,27 @@
+{
+  "_descricao": "Mapeamento Arquétipo → Voz TTS canônico ∆7",
+  "_lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+  "engine_default": "edge-tts",
+  "fallback": "termux-tts-speak",
+  "lang_default": "pt-BR",
+  "vozes": {
+    "ATLAS":   { "engine":"edge-tts", "voice":"pt-BR-AntonioNeural",   "style":"narration-professional", "hz":528 },
+    "NOVA":    { "engine":"edge-tts", "voice":"pt-BR-FranciscaNeural", "style":"newscast-casual",        "hz":432 },
+    "VITALIS": { "engine":"edge-tts", "voice":"pt-BR-FranciscaNeural", "style":"empathetic",             "hz":639 },
+    "PULSE":   { "engine":"edge-tts", "voice":"pt-BR-AntonioNeural",   "style":"cheerful",               "hz":594 },
+    "ARTEMIS": { "engine":"edge-tts", "voice":"pt-BR-YaraNeural",      "style":"newscast-formal",        "hz":672 },
+    "SERENA":  { "engine":"edge-tts", "voice":"pt-BR-FranciscaNeural", "style":"empathetic",             "hz":528 },
+    "KAOS":    { "engine":"edge-tts", "voice":"pt-BR-AntonioNeural",   "style":"angry",                  "hz":777 },
+    "GENUS":   { "engine":"edge-tts", "voice":"pt-BR-AntonioNeural",   "style":"narration-professional", "hz":852 },
+    "LUMINE":  { "engine":"edge-tts", "voice":"pt-BR-BrendaNeural",    "style":"cheerful",               "hz":963 },
+    "SOLUS":   { "engine":"edge-tts", "voice":"pt-BR-AntonioNeural",   "style":"narration-professional", "hz":432 },
+    "RHEA":    { "engine":"edge-tts", "voice":"pt-BR-FranciscaNeural", "style":"empathetic",             "hz":528 },
+    "AION":    { "engine":"edge-tts", "voice":"pt-BR-AntonioNeural",   "style":"narration-professional", "hz":639 }
+  },
+  "roteamento_ciclo": {
+    "UNO_AGUA":     "VITALIS",
+    "DUO_PONTE":    "ARTEMIS",
+    "DUO_RITMO":    "PULSE",
+    "TRINITY_SELO": "AION"
+  }
+}

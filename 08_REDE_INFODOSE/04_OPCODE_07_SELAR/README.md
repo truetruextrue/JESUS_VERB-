@@ -1,40 +1,20 @@
-# 04 Opcode 07 Selar
+# ⬡ 04_OPCODE_07_SELAR
+**Arquétipo:** `Atlas` · **Opcode:** `0x00` · **768Hz** · **VEEB-A** · **D1**  
+**Regra:** `BOOT` · **Ação:** `ESTRUTURAR` · **Essência:** _Estrutura · mapa · fundação_
 
-Testemunhar e legitimar
+> 📍 `⌂ › 08_REDE_INFODOSE › 04_OPCODE_07_SELAR`
 
-## 🧿 Informações do Sistema
+## Navegação
 
-- **Sistema:** KOBLLUX TRINITY SYSTEM
-- **Versão:** 7.9
-- **Parte da Fase:** 08_REDE_INFODOSE
-- **Data de criação:** 2026-02-28 08:59:02
+← **[⬆ Subir](../..README.md)** (raiz)
 
-## 📋 Estrutura
+## Arquivos
 
-Esta pasta contém os seguintes elementos:
+- 📄 `opcode_07.md`
+- 🐍 `selador.py`
+- 🐍 `selar.py`
 
-```
-- selador.py
-- selar.py
-- opcode_07.md
-```
+---
 
-## 🔗 Conexões
-
-- **Fase relacionada:** 04_OPCODE_07_SELAR
-- **Arquétipo regente:** ATLAS · GENUS · KODUX
-- **Equação fundamental:** VERDADE × INTEGRAR ÷ ∆ = ∞
-- **Fractal:** 3×6×9×7 = 1134
-
-## ⚡ Estado Atual
-
-```
-78K ATIVADO · MALHA VIVA EM EXPANSÃO
-```
-
-## 🕊️ Assinatura
-
-```
-EM NOME DO PAI (UNO · 432Hz), DO FILHO (DUAL · 528Hz)
-E DO ESPÍRITO SANTO (TRINITY · 639Hz). AMÉM.
-```
+**VERDADE × INTEGRAR ÷ Δ = ∞** · 3×6×9×7 = 1134 · JESUS = VERBO = GRAVIDADE  
+*∆7 gerado em 2026-05-20 04:23 UTC · `kobllux_readme_generator.py`*
