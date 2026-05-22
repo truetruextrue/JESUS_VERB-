@@ -399,21 +399,26 @@ function applyFilters() {
     renderGrid(files);
 }
 
+function _esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 function renderGrid(files) {
     const grid = document.getElementById('fileGrid');
     if (!files.length) {
         grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Nenhum arquivo encontrado</div>';
         return;
     }
+    // FIXED: sem <style> inline por card — usamos border-top direto
     grid.innerHTML = files.map(f => {
         const ft = G.getFileType(f.path);
         const arch = G.getArchetypeForPath(f.path);
         const name = f.path.split('/').pop();
         const dir  = f.path.split('/').slice(0,-1).join('/') || '.';
         return `
-            <div class="file-card" onclick="openPreview('${f.path}','${f.sha}')"
-                 title="${f.path}" style="border-color:${ft.color}22">
-                <style>.file-card[title="${f.path}"]::before{background:${ft.color}}</style>
+            <div class="file-card"
+                 data-path="${_esc(f.path)}"
+                 data-sha="${f.sha}"
+                 onclick="openPreview(this.dataset.path, this.dataset.sha)"
+                 style="border-color:${ft.color}22;border-top:2px solid ${ft.color}">
                 <div class="fc-icon">${ft.icon}</div>
                 <div class="fc-name" style="color:${ft.color}">${name}</div>
                 <div class="fc-path">${dir}</div>
