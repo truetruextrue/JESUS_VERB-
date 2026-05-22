@@ -1,0 +1,51 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  PORTAL NEXUS · TOKENS + COSMIC BACKDROP                ║
+   ║  Extraído de [0×00]_KOBLLUX_ARQUETIPOS_PORTAL_NEXUS.html ║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+:root.portal-nexus-theme,
+.portal-nexus-theme {
+  --pn-void: #02020a;
+  --pn-abyss: #060615;
+  --pn-deep: #0a0a20;
+  --pn-ink: #0f0f2e;
+  --pn-gold: #c9a84c;
+  --pn-gold-bright: #f0c060;
+  --pn-gold-glow: rgba(201,168,76,0.3);
+  --pn-cyan: #00e5ff;
+  --pn-cyan-dim: rgba(0,229,255,0.15);
+  --pn-violet: #8b5cf6;
+  --pn-violet-dim: rgba(139,92,246,0.2);
+  --pn-ember: #ff6b35;
+  --pn-pearl: #e8e0f0;
+  --pn-mist: rgba(232,224,240,0.6);
+  --pn-mono: 'Share Tech Mono', ui-monospace, Menlo, Consolas, monospace;
+  --pn-display: 'Cinzel Decorative', 'Cormorant Garamond', serif;
+  --pn-body: 'Rajdhani', 'DM Sans', system-ui, sans-serif;
+
+  /* Symbolbar carousel */
+  --kblx-btn-sz: 44px;
+  --kblx-visible: 3;
+  --kblx-vp-w: calc(var(--kblx-btn-sz) * var(--kblx-visible));
+}
+
+/* Cosmic backdrop · vive em #cosmos-bg para não conflitar com body */
+#cosmos-bg {
+  position: fixed; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#cosmos-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(139,92,246,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(0,229,255,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 70%);
+}
+#cosmos-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}

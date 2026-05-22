@@ -1,0 +1,46 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  PORTAL NEXUS · ANIMATIONS                              ║
+   ╚══════════════════════════════════════════════════════════╝ */
+@keyframes pn-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes pn-pulse-soft {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 0.9; }
+}
+@keyframes pn-spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pn-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes pn-fade-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes kblx-in {
+  from { opacity: 0; transform: translateY(-20px) scale(.95); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes kblx2-in {
+  from { opacity: 0; transform: translateY(-22px) scale(.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Aplica fade-in-up nas screens quando entram em viewport */
+.screen.is-active .inner > * {
+  animation: pn-fade-in-up .6s ease both;
+}
+
+/* Orb shimmer no symbolbar */
+#symbolBar .hud-info {
+  background: linear-gradient(135deg, var(--pn-gold) 0%, var(--pn-gold-bright) 40%, var(--pn-cyan) 70%, var(--pn-gold) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pn-shimmer 6s ease-in-out infinite;
+}

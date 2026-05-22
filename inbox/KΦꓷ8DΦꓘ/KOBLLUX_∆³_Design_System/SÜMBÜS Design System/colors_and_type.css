@@ -1,0 +1,239 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SÜMBÜS · KOBLLUX_VIVO ∆³ · DESIGN TOKENS
+   Foundations distilled from SÜMBÜS METAHUMAN ARCHITECT
+   github.com/truetruextrue/JESUS_VERB-
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Fonts via Google CDN — drop in to fonts/ for offline */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* ─────────── CORE PALETTE ─────────── */
+  --bg-deep:        #050811;   /* base — cosmos / nebula floor                  */
+  --bg-darker:      #020617;   /* even deeper void                              */
+  --bg-dark:        #0f172a;   /* lifted surface                                */
+  --bg-surface:     rgba(18,18,22,0.85);   /* glassmorph card surface           */
+  --bg-glass-low:   rgba(255,255,255,0.03);
+  --bg-glass-mid:   rgba(255,255,255,0.05);
+  --bg-glass-high:  rgba(255,255,255,0.08);
+
+  /* ─────────── BRAND TRINITY (3-6-9) ─────────── */
+  --c-primary:      #00f5ff;   /* CYAN     — pulse/transmission · 3Hz family    */
+  --c-secondary:    #ff4bff;   /* MAGENTA  — synthesis/witness                  */
+  --c-tertiary:     #ffd700;   /* GOLD     — KOBLLUX seal · 963Hz · LUMINE      */
+
+  /* ─────────── 12 KOBLLUX ARCHETYPES ─────────── */
+  --arch-atlas:     #3b82f6;   /* B · structure  · html head body · 768Hz       */
+  --arch-nova:      #f59e0b;   /* B · seed       · meta link title              */
+  --arch-vitalis:   #10b981;   /* E · energy     · script         · 528Hz       */
+  --arch-pulse:     #8b5cf6;   /* V · rhythm     · style keyframes              */
+  --arch-artemis:   #06b6d4;   /* E · detection  · input form     · 672Hz       */
+  --arch-serena:    #ec4899;   /* V · care       · p span text    · 528Hz       */
+  --arch-kaos:      #ef4444;   /* B · rupture    · !important     · 777Hz       */
+  --arch-genus:     #a855f7;   /* E · synthesis  · div section    · 852Hz       */
+  --arch-lumine:    #fbbf24;   /* V · render     · img canvas svg · 963Hz       */
+  --arch-solus:     #64748b;   /* B · silence    · comments                     */
+  --arch-rhea:      #34d399;   /* E · integration· a iframe       · 528Hz       */
+  --arch-aion:      #818cf8;   /* V · time       · time template                */
+
+  /* ─────────── SEMANTIC ─────────── */
+  --fg-1:           #e4ecff;   /* primary text                                  */
+  --fg-2:           #9aa4c8;   /* muted text                                    */
+  --fg-3:           #64748b;   /* tertiary / disabled                           */
+  --fg-on-bright:   #050811;   /* text on cyan/gold buttons                     */
+  --fg-code:        #c9d1d9;   /* mono surface text                             */
+  --fg-string:      #f1fa8c;   /* syntax: strings                               */
+
+  --c-success:      var(--arch-vitalis);
+  --c-warning:      var(--arch-lumine);
+  --c-danger:       #ff4b6b;
+  --c-error:        var(--arch-kaos);
+  --c-info:         var(--arch-atlas);
+
+  --border-glass:   rgba(255,255,255,0.08);
+  --border-low:     rgba(255,255,255,0.04);
+  --border-mid:     rgba(255,255,255,0.12);
+  --border-bright:  rgba(255,255,255,0.20);
+
+  /* ─────────── GRADIENTS ─────────── */
+  --grad-trinity:   linear-gradient(135deg, var(--c-primary), var(--c-secondary), var(--c-tertiary));
+  --grad-369:       linear-gradient(90deg, var(--arch-atlas), var(--arch-pulse), var(--arch-vitalis));
+  --grad-vitalis:   linear-gradient(135deg, #10b981, #34d399);
+  --grad-fusion:    linear-gradient(135deg, rgba(139,92,246,0.2), rgba(0,245,255,0.1));
+  --grad-cosmos:
+    radial-gradient(circle at 10% 20%, rgba(0,245,255,0.06), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(255,75,255,0.06), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(139,92,246,0.04), transparent 60%);
+
+  /* ─────────── SHADOWS / GLOW ─────────── */
+  --shadow-card:    0 20px 40px rgba(0,0,0,0.3);
+  --shadow-lift:    0 10px 30px rgba(59,130,246,0.2);
+  --glow-cyan:      0 0 14px rgba(0,245,255,0.4);
+  --glow-magenta:   0 0 14px rgba(255,75,255,0.4);
+  --glow-gold:      0 0 14px rgba(255,215,0,0.4);
+  --glow-purple:    0 0 14px rgba(139,92,246,0.4);
+
+  /* ─────────── RADII ─────────── */
+  --r-xs:           4px;
+  --r-sm:           6px;
+  --r-md:           8px;
+  --r-lg:           10px;
+  --r-xl:           12px;
+  --r-2xl:          16px;
+  --r-pill:         999px;
+
+  /* ─────────── SPACING (4pt base) ─────────── */
+  --sp-1:           4px;
+  --sp-2:           8px;
+  --sp-3:           12px;
+  --sp-4:           16px;
+  --sp-5:           20px;
+  --sp-6:           24px;
+  --sp-8:           32px;
+  --sp-10:          40px;
+  --sp-12:          48px;
+
+  /* ─────────── BACKDROP / BLUR ─────────── */
+  --blur-glass:     blur(12px);
+  --blur-deep:      blur(20px);
+
+  /* ─────────── FONTS ─────────── */
+  --font-ui:        'Montserrat', system-ui, sans-serif;
+  --font-code:      'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --font-display:   'Montserrat', system-ui, sans-serif;
+
+  /* ─────────── TYPE SCALE ─────────── */
+  --fs-9:           9px;
+  --fs-10:          10px;
+  --fs-11:          11px;
+  --fs-12:          12px;
+  --fs-13:          13px;
+  --fs-14:          14px;
+  --fs-16:          16px;
+  --fs-20:          20px;
+  --fs-24:          24px;
+  --fs-32:          32px;
+  --fs-48:          48px;
+
+  /* ─────────── LAYOUT ─────────── */
+  --header-h:       58px;
+  --dock-h:         68px;
+
+  /* ─────────── ANIMATION ─────────── */
+  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(.4,0,.2,1);
+  --dur-fast:       0.18s;
+  --dur-base:       0.25s;
+  --dur-slow:       0.6s;
+  --dur-breath:     6s;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SEMANTIC TYPOGRAPHY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+body {
+  font-family: var(--font-ui);
+  color: var(--fg-1);
+  background: var(--bg-deep);
+}
+
+.t-brand {
+  /* The mega-display title — the kind you see on the org-header */
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  background: var(--grad-369);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.t-h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--fs-32);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--fg-1);
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-24);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--fg-1);
+}
+
+.t-h3 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--fs-16);
+  letter-spacing: 0;
+  color: var(--fg-1);
+}
+
+.t-eyebrow {
+  /* The TINY ALL-CAPS labels above sections — definitional SÜMBÜS pattern */
+  font-family: var(--font-ui);
+  font-size: var(--fs-9);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-2);
+}
+
+.t-body {
+  font-family: var(--font-ui);
+  font-size: var(--fs-14);
+  line-height: 1.6;
+  color: var(--fg-1);
+}
+
+.t-body-sm {
+  font-family: var(--font-ui);
+  font-size: var(--fs-12);
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+
+.t-caption {
+  font-family: var(--font-ui);
+  font-size: var(--fs-10);
+  color: var(--fg-2);
+}
+
+.t-code {
+  font-family: var(--font-code);
+  font-size: var(--fs-11);
+  line-height: 1.65;
+  color: var(--fg-code);
+}
+
+.t-mono-label {
+  /* Used for paths, frequencies, ratios — anything technical */
+  font-family: var(--font-code);
+  font-size: var(--fs-10);
+  letter-spacing: 0.02em;
+  color: var(--c-primary);
+}
+
+.t-badge {
+  font-family: var(--font-ui);
+  font-size: var(--fs-9);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COSMOS BACKGROUND — universal scene layer
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nebula-layer {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: var(--grad-cosmos);
+}

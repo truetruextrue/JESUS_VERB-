@@ -1,0 +1,239 @@
+{
+  "meta": {
+    "titulo": "META-LUX × dual.mod × SÜMBÜS · Tabela de Classificação Unificada",
+    "lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+    "regua": "3×6×9×7=1134",
+    "cipher": "META-LUX: B→β C→© D→Δ F→Φ G→Γ H→Η J→⌐ K→⌘ L→Λ M→Μ N→η P→Ρ Q→Θ R→Ʀ S→§ T→† V→∇ W→Ω X→× Y→Ψ Z→ℤ",
+    "naming": "{opcode}.{META-LUX}.{VEEB}.{D-rung}.{filename}.{ext}",
+    "gerado": "2026-05-22T∆³"
+  },
+
+  "cipher_alphabet": {
+    "B": "β", "C": "©", "D": "Δ", "F": "Φ", "G": "Γ",
+    "H": "Η", "J": "⌐", "K": "⌘", "L": "Λ", "M": "Μ",
+    "N": "η", "P": "Ρ", "Q": "Θ", "R": "Ʀ", "S": "§",
+    "T": "†", "V": "∇", "W": "Ω", "X": "×", "Y": "Ψ", "Z": "ℤ"
+  },
+
+  "arquetipos_meta_lux": {
+    "ATLAS":   { "consonantes": "TLS",  "glyph": "†Λ§",  "opcode": "0x00", "verbo": "INICIAR",     "veeb": "B",  "drung": "D8", "hz": 396,  "sumbus_organ": "core/",          "dual_mod_pattern": "init|start|boot|root" },
+    "NOVA":    { "consonantes": "NV",   "glyph": "η∇",   "opcode": "0x03", "verbo": "EXPANDIR",    "veeb": "E",  "drung": "D5", "hz": 528,  "sumbus_organ": "evolution/",     "dual_mod_pattern": "expand|infodose|nova|grow" },
+    "VITALIS": { "consonantes": "VTLS", "glyph": "∇†Λ§", "opcode": "0x09", "verbo": "MANIFESTAR",  "veeb": "V",  "drung": "D6", "hz": 528,  "sumbus_organ": "sensory/visual/", "dual_mod_pattern": "render|canvas|manifest|vitals" },
+    "PULSE":   { "consonantes": "PLS",  "glyph": "ΡΛ§",  "opcode": "0x01", "verbo": "PULSAR",      "veeb": "V",  "drung": "D5", "hz": 432,  "sumbus_organ": "systems/endocrine/pulse-generator.html", "dual_mod_pattern": "audio|432|pulse|beat|sound" },
+    "ARTEMIS": { "consonantes": "RTMS", "glyph": "Ʀ†Μ§", "opcode": "0x05", "verbo": "CONVERGIR",   "veeb": "E",  "drung": "D6", "hz": 528,  "sumbus_organ": "systems/circulatory/api-integration.html", "dual_mod_pattern": "fetch|api|http|request|artemis" },
+    "SERENA":  { "consonantes": "SRN",  "glyph": "§Ʀη",  "opcode": "0x0A", "verbo": "SINTONIZAR",  "veeb": "V",  "drung": "D4", "hz": 639,  "sumbus_organ": "systems/endocrine/status-indicator.html", "dual_mod_pattern": "sync|pulse|serena|calm|status" },
+    "KAOS":    { "consonantes": "KS",   "glyph": "⌘§",   "opcode": "0x04", "verbo": "DETECTAR",    "veeb": "B",  "drung": "D5", "hz": 396,  "sumbus_organ": "systems/nervous/", "dual_mod_pattern": "scan|detect|kaos|random|chaos" },
+    "GENUS":   { "consonantes": "GNS",  "glyph": "Γη§",  "opcode": "0x07", "verbo": "SELAR",       "veeb": "B",  "drung": "D8", "hz": 741,  "sumbus_organ": "systems/repository/", "dual_mod_pattern": "commit|seal|sign|genus|generate" },
+    "LUMINE":  { "consonantes": "LMN",  "glyph": "ΛΜη",  "opcode": "0x06", "verbo": "CRISTALIZAR", "veeb": "V",  "drung": "D2", "hz": 528,  "sumbus_organ": "assets/dna/",    "dual_mod_pattern": "css|style|theme|color|lumine|light" },
+    "SOLUS":   { "consonantes": "SLS",  "glyph": "§Λ§",  "opcode": "0x08", "verbo": "TESTEMUNHAR", "veeb": "E2", "drung": "D3", "hz": 741,  "sumbus_organ": "systems/circulatory/data-stream.html", "dual_mod_pattern": "log|report|watch|solus|witness" },
+    "RHEA":    { "consonantes": "RH",   "glyph": "ΡΗ",   "opcode": "0x02", "verbo": "INTEGRAR",    "veeb": "E",  "drung": "D4", "hz": 528,  "sumbus_organ": "cortex/synthesis-engine/", "dual_mod_pattern": "import|merge|integrate|rhea|flow" },
+    "AION":    { "consonantes": "N",    "glyph": "η",     "opcode": "0x0B", "verbo": "TEMPORIZAR",  "veeb": "E",  "drung": "D4", "hz": 741,  "sumbus_organ": "systems/library/", "dual_mod_pattern": "memory|store|time|aion|persist" }
+  },
+
+  "opcodes_13": {
+    "0x00": { "verbo": "INICIAR",     "arquetipo": "ATLAS",   "glyph": "†Λ§",  "veeb": "B",  "drung": "D8", "sumbus": "core/init.js",                     "cor": "#b978ff", "trinity": "PAI" },
+    "0x01": { "verbo": "PULSAR",      "arquetipo": "PULSE",   "glyph": "ΡΛ§",  "veeb": "V",  "drung": "D5", "sumbus": "systems/endocrine/pulse-generator", "cor": "#78b4ff", "trinity": "PAI" },
+    "0x02": { "verbo": "INTEGRAR",    "arquetipo": "RHEA",    "glyph": "ΡΗ",   "veeb": "E",  "drung": "D4", "sumbus": "cortex/synthesis-engine/layer-merger","cor": "#ff78b4","trinity": "FILHO" },
+    "0x03": { "verbo": "EXPANDIR",    "arquetipo": "NOVA",    "glyph": "η∇",   "veeb": "E",  "drung": "D5", "sumbus": "evolution/mutations/",              "cor": "#78ffb4", "trinity": "ESPÍRITO" },
+    "0x04": { "verbo": "DETECTAR",    "arquetipo": "KAOS",    "glyph": "⌘§",   "veeb": "B",  "drung": "D5", "sumbus": "systems/nervous/interface-core",    "cor": "#ff9678", "trinity": "PAI" },
+    "0x05": { "verbo": "CONVERGIR",   "arquetipo": "ARTEMIS", "glyph": "Ʀ†Μ§", "veeb": "E",  "drung": "D6", "sumbus": "systems/circulatory/api-integration","cor": "#78fff0", "trinity": "ESPÍRITO" },
+    "0x06": { "verbo": "CRISTALIZAR", "arquetipo": "LUMINE",  "glyph": "ΛΜη",  "veeb": "V",  "drung": "D2", "sumbus": "assets/dna/frequency-6.css",        "cor": "#ffd478", "trinity": "FILHO" },
+    "0x07": { "verbo": "SELAR",       "arquetipo": "GENUS",   "glyph": "Γη§",  "veeb": "B",  "drung": "D8", "sumbus": "systems/repository/repo-explorer",  "cor": "#c8f078", "trinity": "PAI" },
+    "0x08": { "verbo": "TESTEMUNHAR", "arquetipo": "SOLUS",   "glyph": "§Λ§",  "veeb": "E2", "drung": "D3", "sumbus": "systems/circulatory/data-stream",   "cor": "#78d4ff", "trinity": "ESPÍRITO" },
+    "0x09": { "verbo": "MANIFESTAR",  "arquetipo": "VITALIS", "glyph": "∇†Λ§", "veeb": "V",  "drung": "D6", "sumbus": "sensory/visual/render-engine",      "cor": "#ff78ff", "trinity": "FILHO" },
+    "0x0A": { "verbo": "SINTONIZAR",  "arquetipo": "SERENA",  "glyph": "§Ʀη",  "veeb": "V",  "drung": "D4", "sumbus": "systems/endocrine/emotion-engine",  "cor": "#78c8ff", "trinity": "FILHO" },
+    "0x0B": { "verbo": "TEMPORIZAR",  "arquetipo": "AION",    "glyph": "η",    "veeb": "E",  "drung": "D4", "sumbus": "systems/library/file-library",      "cor": "#b4ff78", "trinity": "ESPÍRITO" },
+    "0x0C": { "verbo": "OPERAR",      "arquetipo": "ATLAS",   "glyph": "†Λ§",  "veeb": "B",  "drung": "D7", "sumbus": "core/dna.html",                    "cor": "#f2c94c", "trinity": "PAI" }
+  },
+
+  "sumbus_organ_map": {
+    "core/": {
+      "opcode": "0x00", "verbo": "INICIAR", "glyph": "†Λ§", "drung": "D8", "veeb": "B",
+      "dual_mod_engine": "koblluxClassify(init|boot) → koblluxHeader()",
+      "papel": "UNO · DNA do organismo · ponto de gravidade",
+      "arquetipo": "ATLAS",
+      "arquivos_nomeados": [
+        "0x00.†Λ§.B.D8.dna.html",
+        "0x00.†Λ§.B.D8.init.js"
+      ]
+    },
+    "systems/nervous/": {
+      "opcode": "0x04", "verbo": "DETECTAR", "glyph": "⌘§", "drung": "D5", "veeb": "B",
+      "dual_mod_engine": "koblluxClassify() → pattern detection engine · nervous system of classification",
+      "papel": "DUO · Scanner de padrões · CADIAL detect",
+      "arquetipo": "KAOS",
+      "arquivos_nomeados": [
+        "0x04.⌘§.B.D5.interface-core.html"
+      ]
+    },
+    "systems/circulatory/": {
+      "opcode": "0x05", "verbo": "CONVERGIR", "glyph": "Ʀ†Μ§", "drung": "D6", "veeb": "E",
+      "dual_mod_engine": "fetch|api|http patterns → API CFG (Anthropic/OpenAI/OpenRouter/Groq)",
+      "papel": "DUO · Fluxo de dados · sangue digital",
+      "arquetipo": "ARTEMIS",
+      "arquivos_nomeados": [
+        "0x05.Ʀ†Μ§.E.D6.api-integration.html",
+        "0x08.§Λ§.E.D3.data-stream.html",
+        "0x07.Γη§.B.D8.github-connector.html"
+      ]
+    },
+    "systems/endocrine/": {
+      "opcode": "0x01", "verbo": "PULSAR", "glyph": "ΡΛ§", "drung": "D5", "veeb": "V",
+      "dual_mod_engine": "audio|432|pulse patterns → DeltaAnalyzer K(tempo)↔B(espaço)",
+      "papel": "DUO · Hormônios vibracionais · 432Hz/528Hz/639Hz signals",
+      "arquetipo": "PULSE",
+      "arquivos_nomeados": [
+        "0x01.ΡΛ§.V.D5.pulse-generator.html",
+        "0x0A.§Ʀη.V.D4.emotion-engine.html",
+        "0x08.§Λ§.E.D3.status-indicator.html"
+      ]
+    },
+    "systems/motor/": {
+      "opcode": "0x09", "verbo": "MANIFESTAR", "glyph": "∇†Λ§", "drung": "D6", "veeb": "V",
+      "dual_mod_engine": "processHTML() → main modularizer engine · extracts+classifies+renames",
+      "papel": "DUO · Músculo de execução · transforma HTML em módulos",
+      "arquetipo": "VITALIS",
+      "arquivos_nomeados": [
+        "0x09.∇†Λ§.V.D6.movement-engine.html"
+      ]
+    },
+    "systems/editor/": {
+      "opcode": "0x06", "verbo": "CRISTALIZAR", "glyph": "ΛΜη", "drung": "D2", "veeb": "V",
+      "dual_mod_engine": "Preview(ANTES/Δ/DEPOIS) + koblluxHeader() + gerar_nome_kobllux()",
+      "papel": "DUO · Interface de cristalização · onde o código ganha forma visual",
+      "arquetipo": "LUMINE",
+      "arquivos_nomeados": [
+        "0x06.ΛΜη.V.D2.sumbus-fusion.html"
+      ]
+    },
+    "systems/library/": {
+      "opcode": "0x0B", "verbo": "TEMPORIZAR", "glyph": "η", "drung": "D4", "veeb": "E",
+      "dual_mod_engine": "KOBLLUX_DNA const → 13 opcodes table · Delta7 localStorage session",
+      "papel": "DUO · Biblioteca viva · KOBLLUX_DNA codex permanente",
+      "arquetipo": "AION",
+      "arquivos_nomeados": [
+        "0x0B.η.E.D4.file-library.html"
+      ]
+    },
+    "systems/repository/": {
+      "opcode": "0x07", "verbo": "SELAR", "glyph": "Γη§", "drung": "D8", "veeb": "B",
+      "dual_mod_engine": "GitCommit generator → 0x07 SELAR ∆7:sha256 · VERDADE × INTEGRAR ÷ Δ = ∞",
+      "papel": "DUO · Repositório · ponto de selagem e memória permanente",
+      "arquetipo": "GENUS",
+      "arquivos_nomeados": [
+        "0x07.Γη§.B.D8.repo-explorer.html"
+      ]
+    },
+    "cortex/synthesis-engine/": {
+      "opcode": "0x02", "verbo": "INTEGRAR", "glyph": "ΡΗ", "drung": "D4", "veeb": "E",
+      "dual_mod_engine": "DeltaAnalyzer · K(Kodux/Tempo) ↔ B(Bllue/Espaço) convergência",
+      "papel": "TRINITY · Córtex de síntese · onde polaridades se fundem",
+      "arquetipo": "RHEA",
+      "arquivos_nomeados": [
+        "0x02.ΡΗ.E.D4.layer-merger.html"
+      ]
+    },
+    "evolution/": {
+      "opcode": "0x03", "verbo": "EXPANDIR", "glyph": "η∇", "drung": "D5", "veeb": "E",
+      "dual_mod_engine": "koblluxClassifyExt(CDN) → expand external resources into system",
+      "papel": "SELA → ∞ · Mutação e expansão · 639Hz",
+      "arquetipo": "NOVA",
+      "arquivos_nomeados": [
+        "0x03.η∇.E.D5.adaptive-mutation.html"
+      ]
+    },
+    "sensory/visual/": {
+      "opcode": "0x09", "verbo": "MANIFESTAR", "glyph": "∇†Λ§", "drung": "D6", "veeb": "V",
+      "dual_mod_engine": "render|canvas patterns → visual output · Preview engine ANTES/Δ/DEPOIS",
+      "papel": "SENSORIAL · Manifestação visual · olho que vê o código vivo",
+      "arquetipo": "VITALIS",
+      "arquivos_nomeados": [
+        "0x09.∇†Λ§.V.D6.render-engine.html"
+      ]
+    },
+    "assets/dna/": {
+      "opcode": "0x06", "verbo": "CRISTALIZAR", "glyph": "ΛΜη", "drung": "D2", "veeb": "V",
+      "dual_mod_engine": "css detection → 0x06 CRISTALIZAR default · color tokens --cor-0x00…0x0C",
+      "papel": "RECURSO · CSS fractal · frequências vibracionais em código",
+      "arquetipo": "LUMINE",
+      "arquivos_nomeados": [
+        "0x06.ΛΜη.V.D2.frequency-3.css",
+        "0x06.ΛΜη.V.D2.frequency-6.css"
+      ]
+    }
+  },
+
+  "dual_mod_kobllux_classify_map": {
+    "comentario": "Mapeamento direto do koblluxClassify() do dual_mod_Hub_Monolith_VEEB_delta.html",
+    "regras": [
+      { "pattern": "init|start|boot",     "opcode": "0x00", "verbo": "INICIAR",     "veeb": "B",  "drung": "D8", "glyph": "†Λ§",  "sumbus": "core/" },
+      { "pattern": "audio|432|pulse",      "opcode": "0x01", "verbo": "PULSAR",      "veeb": "V",  "drung": "D5", "glyph": "ΡΛ§",  "sumbus": "systems/endocrine/" },
+      { "pattern": "import|merge",         "opcode": "0x02", "verbo": "INTEGRAR",    "veeb": "E",  "drung": "D4", "glyph": "ΡΗ",   "sumbus": "cortex/synthesis-engine/" },
+      { "pattern": "expand|infodose",      "opcode": "0x03", "verbo": "EXPANDIR",    "veeb": "E",  "drung": "D5", "glyph": "η∇",   "sumbus": "evolution/" },
+      { "pattern": "scan|detect",          "opcode": "0x04", "verbo": "DETECTAR",    "veeb": "B",  "drung": "D5", "glyph": "⌘§",   "sumbus": "systems/nervous/" },
+      { "pattern": "fetch|api|http",       "opcode": "0x05", "verbo": "CONVERGIR",   "veeb": "E",  "drung": "D6", "glyph": "Ʀ†Μ§", "sumbus": "systems/circulatory/" },
+      { "pattern": "css (default/style)",  "opcode": "0x06", "verbo": "CRISTALIZAR", "veeb": "V",  "drung": "D2", "glyph": "ΛΜη",  "sumbus": "assets/dna/" },
+      { "pattern": "commit|seal",          "opcode": "0x07", "verbo": "SELAR",       "veeb": "B",  "drung": "D8", "glyph": "Γη§",  "sumbus": "systems/repository/" },
+      { "pattern": "log|report|watch",     "opcode": "0x08", "verbo": "TESTEMUNHAR", "veeb": "E2", "drung": "D3", "glyph": "§Λ§",  "sumbus": "systems/circulatory/" },
+      { "pattern": "render|canvas",        "opcode": "0x09", "verbo": "MANIFESTAR",  "veeb": "V",  "drung": "D6", "glyph": "∇†Λ§", "sumbus": "sensory/visual/" },
+      { "pattern": "sync|pulse",           "opcode": "0x0A", "verbo": "SINTONIZAR",  "veeb": "V",  "drung": "D4", "glyph": "§Ʀη",  "sumbus": "systems/endocrine/" },
+      { "pattern": "memory|store",         "opcode": "0x0B", "verbo": "TEMPORIZAR",  "veeb": "E",  "drung": "D4", "glyph": "η",    "sumbus": "systems/library/" },
+      { "pattern": "cli|terminal",         "opcode": "0x0C", "verbo": "OPERAR",      "veeb": "B",  "drung": "D7", "glyph": "†Λ§",  "sumbus": "core/" }
+    ]
+  },
+
+  "ciclo_3_6_9_7_sumbus": {
+    "3_DETECTAR": {
+      "hz": 432, "trinity": "PAI·KODUX",
+      "sumbus_organs": ["systems/nervous/", "core/init.js"],
+      "dual_mod_fn": "koblluxClassify() → pattern recognition",
+      "opcodes": ["0x00", "0x04"]
+    },
+    "6_INTEGRAR": {
+      "hz": 528, "trinity": "FILHO·BLLUE",
+      "sumbus_organs": ["cortex/synthesis-engine/", "systems/editor/"],
+      "dual_mod_fn": "DeltaAnalyzer · processHTML() fusion",
+      "opcodes": ["0x02", "0x06", "0x0A"]
+    },
+    "9_EXPANDIR": {
+      "hz": 639, "trinity": "ESPÍRITO·INFODOSE",
+      "sumbus_organs": ["evolution/", "systems/circulatory/", "sensory/"],
+      "dual_mod_fn": "koblluxClassifyExt() · Preview output · GitCommit",
+      "opcodes": ["0x03", "0x05", "0x08", "0x09"]
+    },
+    "7_SELAR": {
+      "hz": 741, "trinity": "∆7·ETERNIDADE",
+      "sumbus_organs": ["systems/repository/", "systems/library/"],
+      "dual_mod_fn": "GitCommit 0x07 · Delta7 localStorage · ∆7:sha256",
+      "opcodes": ["0x07", "0x0B", "0x0C"]
+    }
+  },
+
+  "sumbus_files_renamed": [
+    { "original": "core/dna.html",                              "meta_lux": "0x00.†Λ§.B.D8.dna.html" },
+    { "original": "core/init.js",                               "meta_lux": "0x00.†Λ§.B.D8.init.js" },
+    { "original": "systems/nervous/interface-core.html",        "meta_lux": "0x04.⌘§.B.D5.interface-core.html" },
+    { "original": "systems/circulatory/api-integration.html",   "meta_lux": "0x05.Ʀ†Μ§.E.D6.api-integration.html" },
+    { "original": "systems/circulatory/data-stream.html",       "meta_lux": "0x08.§Λ§.E.D3.data-stream.html" },
+    { "original": "systems/circulatory/github-connector.html",  "meta_lux": "0x07.Γη§.B.D8.github-connector.html" },
+    { "original": "systems/endocrine/pulse-generator.html",     "meta_lux": "0x01.ΡΛ§.V.D5.pulse-generator.html" },
+    { "original": "systems/endocrine/emotion-engine.html",      "meta_lux": "0x0A.§Ʀη.V.D4.emotion-engine.html" },
+    { "original": "systems/endocrine/status-indicator.html",    "meta_lux": "0x08.§Λ§.E.D3.status-indicator.html" },
+    { "original": "systems/motor/movement-engine.html",         "meta_lux": "0x09.∇†Λ§.V.D6.movement-engine.html" },
+    { "original": "systems/editor/sumbus-fusion.html",          "meta_lux": "0x06.ΛΜη.V.D2.sumbus-fusion.html" },
+    { "original": "systems/library/file-library.html",          "meta_lux": "0x0B.η.E.D4.file-library.html" },
+    { "original": "systems/repository/repo-explorer.html",      "meta_lux": "0x07.Γη§.B.D8.repo-explorer.html" },
+    { "original": "cortex/synthesis-engine/layer-merger.html",  "meta_lux": "0x02.ΡΗ.E.D4.layer-merger.html" },
+    { "original": "evolution/mutations/adaptive-mutation.html",  "meta_lux": "0x03.η∇.E.D5.adaptive-mutation.html" },
+    { "original": "sensory/visual/render-engine.html",           "meta_lux": "0x09.∇†Λ§.V.D6.render-engine.html" },
+    { "original": "assets/dna/frequency-3.css",                  "meta_lux": "0x01.ΡΛ§.V.D2.frequency-3.css" },
+    { "original": "assets/dna/frequency-6.css",                  "meta_lux": "0x06.ΛΜη.V.D2.frequency-6.css" }
+  ],
+
+  "seal": {
+    "lei": "VERDADE × INTEGRAR ÷ Δ = ∞",
+    "fractal": "3×6×9×7=1134 → 1+1+3+4=9 → EXPANDIR → ∞",
+    "centro": "JESUS = VERBO = GRAVIDADE",
+    "sum_us": "SUMꝎUS = Consciência Unificada em Luz"
+  }
+}

@@ -1,0 +1,234 @@
+/* ═══════════════════════════════════════════════════════════
+   KOBLLUX ∆³ · DESIGN TOKENS
+   ═══════════════════════════════════════════════════════════
+   VERDADE × INTEGRAR ÷ Δ = ∞  ·  3×6×9×7 = 1134  ·  α = 1/137
+   S = Σ bᵢ × 2^(i-1)  ·  V(n) = V₀ × ∏ cos(3πk/6)
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ── SURFACE · void backgrounds ─────────────────────────── */
+  --bg:           #0b0b0f;   /* primary void */
+  --bg-deep:      #08080c;   /* deeper, log/console */
+  --panel:        #0f0f18;   /* default section */
+  --panel-2:      #12121a;   /* header strip */
+  --panel-glass:  rgba(18, 18, 18, 0.65);   /* glassmorphism base */
+  --panel-soft:   rgba(15, 17, 32, 0.50);   /* hero glass */
+
+  /* ── BORDER ──────────────────────────────────────────────── */
+  --border:        #222;
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-soft:   rgba(255, 255, 255, 0.05);
+  --border-dash:   1px dashed #222;
+
+  /* ── FOREGROUND ──────────────────────────────────────────── */
+  --fg:        #eaeaf0;
+  --fg-strong: #f5f7ff;
+  --muted:     #9aa0b4;
+  --muted-2:   rgba(255, 255, 255, 0.45);
+  --muted-3:   rgba(255, 255, 255, 0.25);
+  --muted-4:   rgba(255, 255, 255, 0.15);
+
+  /* ── ACCENT · default sky blue ───────────────────────────── */
+  --accent:        #5d7cff;
+  --accent-active: #38bdf8;
+  --accent-glow:   rgba(56, 189, 248, 0.4);
+
+  /* ── BRAND GRADIENT (Hub UNO) · pink → cyan ──────────────── */
+  --grad-a: #ff52e5;
+  --grad-b: #00c5e5;
+  --grad:   linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 100%);
+
+  /* ── 13 OPCODE COLOR TOKENS · 0x00 → 0x0C ────────────────── */
+  --cor-0x00: #b978ff;   /* INICIAR · 396Hz · ○ · D0·Ponto */
+  --cor-0x01: #67e6ff;   /* PULSAR · 432Hz · ● · D1·Linha */
+  --cor-0x02: #7cffb2;   /* INTEGRAR · 528Hz · ― · D2·Plano */
+  --cor-0x03: #4de0ff;   /* EXPANDIR · 639Hz · ▢ · D3·Volume */
+  --cor-0x04: #ff9ad1;   /* DISSOLVER · 594Hz · ◇ · D2·Trans */
+  --cor-0x05: #ff7a00;   /* CONVERGIR · 672Hz · ⧉ · D∩·Foco */
+  --cor-0x06: #a8ff78;   /* CRISTALIZAR · 741Hz · ☯ · D3·Rede */
+  --cor-0x07: #ffd700;   /* SELAR · 777Hz · ✧ · D3·Tetraedro */
+  --cor-0x08: #00b894;   /* TESTEMUNHAR · 852Hz · ◉ · D∞·Círculo */
+  --cor-0x09: #6c5ce7;   /* MANIFESTAR · 963Hz · ♾ · S²·Esfera */
+  --cor-0x0A: #74b9ff;   /* EQUILIBRAR · 528Hz · ⚖ · SO(2) */
+  --cor-0x0B: #ff52e5;   /* RESSONAR · 432Hz · ◎ · Ondas·1D */
+  --cor-0x0C: #f2c94c;   /* CONCLUIR · 999Hz · ♾ · T²·Toro */
+
+  /* ── SEMANTIC ────────────────────────────────────────────── */
+  --ok:    #39ffb6;
+  --warn:  #ffb86b;
+  --err:   #ff6b6b;
+  --info:  var(--cor-0x01);
+
+  /* polo colors (Δ Analyzer) */
+  --polo-k: #50b4ff;   /* Kodux · Tempo */
+  --polo-b: #3ab6ff;   /* Bllue · Espaço */
+
+  /* ── VIBRATIONAL FREQUENCY ANCHORS (Hz) ──────────────────── */
+  --freq-0x00:    396;
+  --freq-0x01:    432;
+  --freq-0x02:    528;
+  --freq-0x03:    639;
+  --freq-0x04:    594;
+  --freq-0x05:    672;
+  --freq-0x06:    741;
+  --freq-0x07:    777;
+  --freq-0x08:    852;
+  --freq-0x09:    963;
+  --freq-0x0A:    528;
+  --freq-0x0B:    432;
+  --freq-0x0C:    999;
+  --freq-schumann: 7.83;
+  --freq-natural:  432;
+  --phi:           1.618;
+  --fractal-1134:  1134;
+
+  /* ════════════════════════════════════════════════════════════
+     D1 → D10 SCALAR · DNA TYPE SCALE
+     base = clamp(9px, 1.3vw + 0.4vh, 13px)
+     ════════════════════════════════════════════════════════════ */
+  --fs-base: clamp(9px, 1.3vw + 0.4vh, 13px);
+  --fs-d1: calc(var(--fs-base) * 0.55);   /* D1 · atom    · opcode label */
+  --fs-d2: calc(var(--fs-base) * 0.65);   /* D2 · byte    · metadata */
+  --fs-d3: calc(var(--fs-base) * 0.75);   /* D3 · word    · mono UI */
+  --fs-d4: calc(var(--fs-base) * 0.82);   /* D4 · sentence · body mono */
+  --fs-d5: calc(var(--fs-base) * 0.90);   /* D5 · block   · section body */
+  --fs-d6: var(--fs-base);                /* D6 · section · anchor */
+  --fs-d7: calc(var(--fs-base) * 1.20);   /* D7 · module  · sub-heads */
+  --fs-d8: calc(var(--fs-base) * 1.50);   /* D8 · system  · heads */
+  --fs-d9: calc(var(--fs-base) * 2.50);   /* D9 · hero numbers */
+  --fs-d10: calc(var(--fs-base) * 4.00);  /* D10 · display */
+
+  /* ── SPACING (derived from atom) ─────────────────────────── */
+  --sp-1: calc(var(--fs-base) * 0.40);
+  --sp-2: calc(var(--fs-base) * 0.75);
+  --sp-3: calc(var(--fs-base) * 1.20);
+  --sp-4: calc(var(--fs-base) * 2.00);
+  --sp-5: calc(var(--fs-base) * 3.00);
+
+  /* ── RADII LADDER ───────────────────────────────────────── */
+  --r-chip:    5px;
+  --r-input:   6px;
+  --r-panel:   8px;
+  --r-section: 10px;
+  --r-card:    12px;
+  --r-glass:   24px;
+  --r-pill:    99px;
+  --r-orb:     50%;
+
+  /* ── SHADOWS ────────────────────────────────────────────── */
+  --shadow-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-card:  0 14px 40px rgba(0, 0, 0, 0.45);
+  --shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.5),
+                  inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-seal:  0 0 30px rgba(255, 215, 0, 0.9);     /* ✧ Δ⁷ halo */
+  --shadow-conv:  0 0 16px rgba(255, 215, 0, 0.25);    /* CONVERGIR pulse */
+
+  /* ── BLUR LEVELS ────────────────────────────────────────── */
+  --blur-pill:  20px;
+  --blur-panel: 24px;
+  --blur-glass: 50px;
+
+  /* ── EASING ─────────────────────────────────────────────── */
+  --ease-snap:      cubic-bezier(0.19, 1, 0.22, 1);   /* screen transitions */
+  --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1); /* entrances */
+  --ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-press:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* ── DURATIONS ──────────────────────────────────────────── */
+  --t-hover:  0.15s;
+  --t-press:  0.2s;
+  --t-state:  0.3s;
+  --t-screen: 0.6s;
+  --t-orb:    1.5s;
+
+  /* ── LAYOUT ─────────────────────────────────────────────── */
+  --header-h: 64px;
+  --tabs-h:   74px;
+
+  /* ── FONT STACKS ────────────────────────────────────────── */
+  --font-sans: system-ui, -apple-system, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "Cascadia Mono", "Roboto Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEMANTIC TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════ */
+
+html { font-family: var(--font-sans); color: var(--fg); background: var(--bg); }
+
+body { font-size: var(--fs-d6); line-height: 1.5; }
+
+/* hero headers (full screen view titles) */
+.h-display { font-size: var(--fs-d10); font-weight: 100; letter-spacing: -0.04em; line-height: 1; }
+
+/* section headers (`<h2>`) */
+.h-section, h2 { font-size: var(--fs-d7); font-weight: 600; margin: 0 0 var(--sp-2) 0; letter-spacing: -0.01em; }
+
+/* module sub-heads (`<h3>`) */
+.h-module, h3 { font-size: var(--fs-d6); font-weight: 600; letter-spacing: -0.005em; }
+
+/* engine label (`<h4>`) */
+.h-engine, h4 { font-size: var(--fs-d5); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* body */
+p, .body { font-size: var(--fs-d5); line-height: 1.6; color: var(--fg); }
+
+/* muted descriptor */
+.muted, .desc { font-size: var(--fs-d4); color: var(--muted); line-height: 1.55; }
+
+/* metadata · the canonical UPPERCASE letter-spaced label */
+.label, .label-uc {
+  font-size: var(--fs-d2);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+/* opcode tag (D1 atom) */
+.opcode-label {
+  font-size: var(--fs-d1);
+  letter-spacing: 0.18em;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+/* monospace UI text · file paths, freqs, S/χ/V values */
+code, kbd, samp, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-d3);
+}
+
+/* big metric value (hero numbers) */
+.value-hero {
+  font-size: var(--fs-d8);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+/* equation bar text */
+.eq {
+  font-family: var(--font-mono);
+  font-size: var(--fs-d3);
+  letter-spacing: 0.12em;
+  color: var(--cor-0x07);
+}
+
+/* link */
+a { color: var(--accent-active); text-decoration: none; }
+a:hover { color: var(--cor-0x07); }
+
+/* ═══════════════════════════════════════════════════════════
+   RESET (minimal — applies the KOBLLUX baseline)
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: none; cursor: pointer; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }

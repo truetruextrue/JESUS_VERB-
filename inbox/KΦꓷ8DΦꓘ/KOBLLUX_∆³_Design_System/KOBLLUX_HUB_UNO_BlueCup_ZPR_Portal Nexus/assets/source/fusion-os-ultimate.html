@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Fusion OS Vision — Ultimate</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#000000">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #000000;
+      --glass-base: rgba(18, 18, 18, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-highlight: rgba(255, 255, 255, 0.15);
+      --active-color: #38BDF8;
+      --active-glow: rgba(56,189,248,0.4);
+      --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
+    html,body { height:100%; margin:0; padding:0; background:var(--bg); color:#fff; font-family: var(--font-main); overflow: hidden; }
+    button { cursor: pointer; border:none; background:none; color:inherit; font-family:inherit; }
+
+    .orb-bg {
+      position: fixed; width: 80vw; height: 80vw; border-radius: 50%;
+      filter: blur(100px); opacity: 0.25; z-index: -1;
+      transition: background 1.5s ease;
+      animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #orb-top { top: -20%; left: -20%; background: var(--active-color); }
+    #orb-bottom { bottom: -20%; right: -20%; background: #4f46e5; animation-delay: -10s; }
+    @keyframes float { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px, 60px) scale(1.1); } }
+
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+    .v-glass {
+      background: var(--glass-base);
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05);
+      border-radius: 24px;
+      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.3s;
+    }
+    .v-glass:active { transform: scale(0.98); background: rgba(30,30,30,0.7); }
+
+    .v-pill {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 99px;
+      padding: 8px 18px;
+      font-weight: 600; font-size: 12px; letter-spacing: 0.05em;
+      transition: 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .v-pill:active { background: rgba(255,255,255,0.1); transform: scale(0.96); }
+
+    #universe-viewport {
+      display: flex;
+      width: 400vw; height: 100vh;
+      transform: translateX(-100vw);
+      transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      will-change: transform;
+    }
+    .screen-panel { width:100vw; height:100vh; flex-shrink:0; position:relative; overflow-y: auto; overflow-x: hidden; padding-bottom: 140px; }
+
+    .memory-card {
+      overflow: hidden; margin-bottom: 8px;
+      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+      cursor: pointer; position: relative;
+    }
+    .memory-card.expanded {
+      background: rgba(30, 30, 30, 0.6);
+      border-color: var(--active-color);
+      box-shadow: 0 0 40px var(--active-glow);
+      margin: 20px 0; z-index: 10; transform: scale(1.02);
+    }
+    .memory-card .card-content { max-height: 0; opacity: 0; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+    .memory-card.expanded .card-content { max-height: 400px; opacity: 1; margin-top: 16px; }
+
+    header {
+      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+      padding: 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center; pointer-events: none;
+    }
+    header > * { pointer-events: auto; }
+
+    .voice-wave { display: flex; gap: 3px; align-items: center; height: 16px; opacity: 0; transition: opacity 0.3s; }
+    .voice-wave.speaking { opacity: 1; }
+    .bar { width: 3px; background: var(--active-color); border-radius: 2px; animation: sound 0s infinite linear alternate; }
+    .voice-wave.speaking .bar { animation-duration: 0.4s; }
+    @keyframes sound { 0% { height: 4px; } 100% { height: 16px; } }
+
+    #nav-indicator {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 14px; z-index: 100;
+      background: rgba(10,10,10,0.7); backdrop-filter: blur(20px);
+      padding: 12px 20px; border-radius: 99px; border: 1px solid rgba(255,255,255,0.08);
+    }
+    .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.2); border-radius: 50%; transition: 0.4s; }
+    .dot.active { background: #fff; transform: scale(1.5); box-shadow: 0 0 12px rgba(255,255,255,0.6); }
+
+    #global-player {
+      position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(40px) scale(0.9);
+      width: 90vw; max-width: 420px; height: 236px;
+      z-index: 90; opacity: 0; pointer-events: none;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    #global-player.active { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0) scale(1); }
+    #global-player.minimized { height: 60px; width: 260px; bottom: 100px; border-radius: 99px; }
+
+    #particles-js { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    /* ═══════════════════════════════════════════════════════════
+       ORB VISUAL ENGINE · 0x09·MANIFESTAR
+       GIF (loop passivo) ↔ VIDEO (ativo com áudio)
+    ═══════════════════════════════════════════════════════════ */
+    #orb-arch-visual {
+      position: absolute; inset: 0; border-radius: 50%;
+      overflow: hidden; opacity: 0;
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1);
+      z-index: 1;
+    }
+    #orb-arch-visual.active { opacity: 1; }
+
+    #orb-arch-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; border-radius: 50%;
+      transition: opacity 0.5s;
+    }
+
+    /* VIDEO no orbe */
+    #orb-arch-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; border-radius: 50%;
+      display: none;
+      transition: opacity 0.4s;
+    }
+    #orb-arch-video.playing { display: block; }
+
+    /* Sobreposição escura no visual */
+    #orb-arch-visual::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: 50%;
+      background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.6) 100%);
+      z-index: 2; pointer-events: none;
+    }
+
+    /* Ícone padrão */
+    #orb-default-icon {
+      transition: opacity 0.5s;
+      position: relative; z-index: 2;
+    }
+
+    /* Badge opcode */
+    #orb-opcode-badge {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      font-family: 'SF Mono', monospace; font-size: 9px; letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.55); z-index: 3;
+      white-space: nowrap; pointer-events: none;
+      text-shadow: 0 0 8px var(--active-color);
+    }
+
+    /* Botão SYNC no orbe */
+    #orb-sync-ring {
+      position: absolute; inset: -4px; border-radius: 50%;
+      border: 2px solid transparent;
+      transition: border-color 0.4s, box-shadow 0.4s;
+      z-index: 4; pointer-events: none;
+    }
+    #orb-sync-ring.playing {
+      border-color: var(--active-color);
+      box-shadow: 0 0 30px var(--active-glow), inset 0 0 20px var(--active-glow);
+      animation: orbPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes orbPulse {
+      0%, 100% { box-shadow: 0 0 20px var(--active-glow); }
+      50%       { box-shadow: 0 0 50px var(--active-glow), 0 0 80px var(--active-glow); }
+    }
+
+    /* Indicador de play central */
+    #orb-play-hint {
+      position: absolute; inset: 0; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 5; pointer-events: none;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    #hero-orb:hover #orb-play-hint { opacity: 1; }
+    #hero-orb.orb-playing #orb-play-hint { opacity: 0; }
+    .play-hint-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* arch-slider + drawer */
+    #aw { overflow-x:auto; overflow-y:visible; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    #aw::-webkit-scrollbar { display:none; }
+    .ar { display:flex; gap:10px; padding:2px; width:max-content; }
+    .at { flex-shrink:0; width:108px; cursor:pointer; border-radius:12px; overflow:hidden;
+          border:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.3);
+          transition:border-color .2s,transform .15s; }
+    .at:active { transform:scale(0.95); }
+    .at.aton { border-color:var(--active-color); box-shadow:0 0 14px rgba(56,189,248,0.2); }
+    .att { width:100%; aspect-ratio:16/9; position:relative; overflow:hidden;
+           background:#000; display:flex; align-items:center; justify-content:center; }
+    .att img { width:100%; height:100%; object-fit:cover; opacity:.6; transition:opacity .2s; }
+    .at:hover .att img { opacity:1; }
+    .atp { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+    .atpb { width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.55);
+            display:flex; align-items:center; justify-content:center; font-size:9px; color:#fff;
+            transition:background .15s; }
+    .at:hover .atpb { background:var(--active-color); }
+    .atn { padding:5px 6px; text-align:center; font-size:9px; font-weight:700;
+           letter-spacing:.12em; text-transform:uppercase; }
+    #adw { overflow:hidden; max-height:0; transition:max-height .45s cubic-bezier(.19,1,.22,1),opacity .3s;
+           opacity:0; margin-top:0; }
+    #adw.adwopen { max-height:420px; opacity:1; margin-top:10px; }
+    .adwi { border-radius:13px; background:rgba(8,8,20,0.93); backdrop-filter:blur(20px);
+            border:1px solid rgba(255,255,255,0.08); padding:12px; }
+    .adts { display:flex; margin-bottom:8px; border-radius:7px; overflow:hidden; }
+    .adt { flex:1; padding:6px 3px; background:rgba(0,0,0,0.4); border:none;
+           border-right:1px solid rgba(255,255,255,0.05); color:rgba(255,255,255,.35);
+           font-size:9px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer;
+           transition:all .12s; }
+    .adt:last-child { border-right:none; }
+    .adt.adton { color:var(--active-color); background:rgba(255,255,255,.04);
+                 border-bottom:2px solid var(--active-color); }
+    .adp { display:none; font-size:11px; line-height:1.7; color:rgba(255,255,255,.75);
+           max-height:210px; overflow-y:auto; }
+    .adp.adpon { display:block; }
+    .adpg,.adpa { font-family:'SF Mono',monospace; font-size:10px; white-space:pre; line-height:1.5; }
+    .adcb { margin-top:8px; width:100%; padding:7px; background:transparent;
+            border:1px solid var(--active-color); border-radius:7px; color:var(--active-color);
+            font-size:10px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer;
+            transition:background .12s; }
+    .adcb:hover { background:rgba(255,255,255,.03); }
+    .adcb.adcbon { border-color:#39ff5a; color:#39ff5a; }
+
+    .hidden { display: none !important; }
+    .gh-tab-on {
+      background: rgba(var(--active-color-rgb, 56,189,248), 0.12) !important;
+      border-color: var(--active-color) !important;
+      color: var(--active-color) !important;
+    }
+    .fade-in { animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+    #modal-overlay { backdrop-filter: blur(15px); background: rgba(0,0,0,0.6); }
+    #modal-content { transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
+  </style>
+</head>
+<body class="text-gray-100">
+
+  <div id="particles-js"></div>
+  <div id="orb-top" class="orb-bg"></div>
+  <div id="orb-bottom" class="orb-bg"></div>
+
+  <header>
+    <div class="v-pill" onclick="Identity.openInfodoseModal()">
+      <div id="header-status" class="w-2 h-2 rounded-full shadow-[0_0_10px_currentColor]" style="background-color: var(--active-color); color: var(--active-color);"></div>
+      <span id="displayUserHeader" class="uppercase">PILOTO</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div id="tts-indicator" class="voice-wave hidden">
+        <div class="bar" style="animation-delay: -0.2s"></div>
+        <div class="bar" style="animation-delay: -0.1s"></div>
+        <div class="bar"></div>
+        <div class="bar" style="animation-delay: -0.3s"></div>
+      </div>
+      <div class="v-pill" onclick="Identity.showInfodoseModal()">
+        <span id="displayArchetypeBadge" class="uppercase text-[10px] tracking-widest text-white/80">...</span>
+      </div>
+    </div>
+  </header>
+
+  <div id="universe-viewport">
+
+    <!-- CORTEX -->
+    <section class="screen-panel pt-32 px-6" id="view-cortex">
+      <div class="max-w-3xl mx-auto h-full flex flex-col">
+        <div class="flex justify-between items-end mb-8 fade-in">
+          <div>
+            <h1 class="text-5xl font-thin tracking-tighter text-white">Córtex</h1>
+            <p class="text-xs text-white/40 font-bold tracking-widest mt-2 uppercase">Arquivo Mnemônico</p>
+          </div>
+          <button onclick="Cortex.openNewMemory()" class="v-pill bg-white/10 hover:bg-white/20 border-white/20">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Cristal</span>
+          </button>
+        </div>
+        <div class="v-glass p-1 mb-8 flex items-center gap-3 px-4 fade-in" style="border-radius:18px; animation-delay: 0.1s;">
+          <i data-lucide="search" class="w-4 h-4 text-white/40"></i>
+          <input id="memory-search" oninput="Cortex.render()" class="bg-transparent w-full h-11 text-sm placeholder-white/20 font-medium" placeholder="Buscar nas matrizes..." />
+        </div>
+        <div id="crystal-container" class="pb-24 fade-in" style="animation-delay:0.2s"></div>
+      </div>
+    </section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- NEXUS – com carrossel vertical de 13 slots (Metatron)      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="screen-panel flex flex-col items-center justify-center relative" id="view-nexus">
+  <div class="text-center z-10 fade-in w-full px-6">
+    
+    <!-- (o ORB mantido exatamente como estava) -->
+    <div id="hero-orb" class="w-72 h-72 mx-auto rounded-full relative cursor-pointer mb-10 transition-transform duration-500 hover:scale-105" onclick="Orb.sync()">
+      <div class="absolute inset-0 rounded-full border border-white/20 animate-[spin_12s_linear_infinite]"></div>
+      <div class="absolute inset-4 rounded-full border border-white/10 animate-[spin_18s_linear_infinite_reverse]"></div>
+      <div id="orb-sync-ring"></div>
+      <div id="orb-arch-visual">
+        <img id="orb-arch-img" src="" alt="" draggable="false">
+        <video id="orb-arch-video" src="" preload="metadata" draggable="false" playsinline webkit-playsinline></video>
+      </div>
+      <div class="absolute inset-0 flex items-center justify-center" id="orb-default-icon">
+        <div class="w-36 h-36 bg-white/5 backdrop-blur-3xl rounded-full border border-white/10 shadow-[0_0_80px_var(--active-glow)] flex items-center justify-center">
+          <i data-lucide="aperture" class="w-14 h-14 text-white/90"></i>
+        </div>
+      </div>
+      <div id="orb-play-hint">
+        <div class="play-hint-icon"><i data-lucide="play" class="w-5 h-5 text-white fill-white ml-1"></i></div>
+      </div>
+      <div id="orb-opcode-badge">○ 0x00 · INICIAR · 396Hz</div>
+    </div>
+
+    <h1 id="hero-title" class="text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/30">FUSION</h1>
+    <p id="archetype-status-text" class="mt-4 text-xs text-white/40 uppercase tracking-[0.2em] font-bold">Inicializando...</p>
+
+    <!-- CARROSSEL VERTICAL DOS 13 SLOTS (METATRON) -->
+    <div class="mt-12 w-full max-w-md mx-auto">
+      <div id="carousel-13" class="carousel-vertical"></div>
+    </div>
+
+    <div class="mt-8 flex gap-4 justify-center">
+      <button onclick="Navigation.to(0)" class="v-pill hover:bg-white/10 border-white/10"><i data-lucide="brain-circuit" class="w-4 h-4 text-white/70"></i> Córtex</button>
+      <button onclick="Navigation.to(2)" class="v-pill hover:bg-white/10 border-white/10"><i data-lucide="play-circle" class="w-4 h-4 text-white/70"></i> DualTube</button>
+      <button onclick="Navigation.to(3)" class="v-pill hover:bg-white/10 border-white/10"><i data-lucide="github" class="w-4 h-4 text-white/70"></i> Repositório</button>
+    </div>
+    <div class="mt-4">
+       <p id="drk-line" class="text-[10px] text-white/20 italic font-serif">"O silêncio é a resposta."</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEGUNDA CAMADA (horizontal) – global -->
+<div id="secondLayer" class="second-layer">
+  <div class="horizontal-track" id="horizTrack"></div>
+</div>
+
+<!-- MODAL PARA TOQUE LONGO -->
+<div id="linkModal" class="modal">
+  <div class="modal-content">
+    <i class="fa-solid fa-link" style="font-size: 2rem; color: var(--gold)"></i>
+    <h3 style="margin: 15px 0">Link / Imagem / Vídeo</h3>
+    <input type="text" id="modalUrl" placeholder="https://...">
+    <div>
+      <button id="saveLink">Salvar</button>
+      <button id="cancelModal">Cancelar</button>
+    </div>
+  </div>
+</div>
+    <!-- DUALTUBE -->
+    <section class="screen-panel pt-32 px-6" id="view-dualtube">
+      <div class="max-w-4xl mx-auto pb-24">
+        <div class="flex justify-between items-end mb-10 fade-in">
+          <div>
+            <h2 class="text-5xl font-thin tracking-tighter">Stream</h2>
+            <p class="text-xs text-white/40 uppercase tracking-widest mt-2 font-bold">Curadoria de Sinais</p>
+          </div>
+          <div class="text-right">
+             <div class="text-3xl font-bold tracking-tighter" id="dt-watched-count">0</div>
+             <div class="text-[9px] text-white/30 uppercase tracking-widest">Sincronizados</div>
+          </div>
+        </div>
+        <div id="video-categories" class="space-y-12 fade-in" style="animation-delay:0.1s"></div>
+        <div class="mt-12 p-6 v-glass border-dashed border-white/10 flex flex-col items-center justify-center text-center opacity-50 hover:opacity-100 transition">
+             <i data-lucide="box" class="w-6 h-6 mb-2 text-white/40"></i>
+             <p class="text-xs text-white/40">Área Dinâmica (Sandbox)</p>
+             <button onclick="UI.loadExternalHTML(prompt('URL do App:'))" class="mt-2 text-[10px] underline text-white/30 hover:text-white">Carregar HTML</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GITHUB -->
+    <section class="screen-panel pt-32 px-6" id="view-github">
+      <div class="max-w-4xl mx-auto pb-24">
+        <div class="flex justify-between items-end mb-8 fade-in">
+          <div>
+            <h2 class="text-5xl font-thin tracking-tighter">Repositório</h2>
+            <p class="text-xs text-white/40 uppercase tracking-widest mt-2 font-bold">⧉ 0x05 · CONVERGIR · GitHub Feed</p>
+          </div>
+          <div class="text-right">
+            <div class="text-3xl font-bold tracking-tighter" id="gh-video-count">0</div>
+            <div class="text-[9px] text-white/30 uppercase tracking-widest">Sinais</div>
+          </div>
+        </div>
+
+        <!-- URL Input -->
+        <div class="v-glass p-4 mb-6 fade-in" style="animation-delay:0.1s">
+          <p class="text-[10px] text-white/30 uppercase tracking-widest mb-3 font-bold">⧉ Fonte GitHub · URL JSON</p>
+          <div class="flex gap-3">
+            <input id="gh-repo-url"
+              class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-[var(--active-color)]/50 transition font-mono"
+              placeholder="https://raw.githubusercontent.com/user/repo/main/feed.json">
+            <button onclick="GitHub.load()"
+              class="v-pill bg-[var(--active-color)]/10 border-[var(--active-color)]/30 text-[var(--active-color)] hover:bg-[var(--active-color)]/20">
+              Carregar
+            </button>
+          </div>
+          <!-- Schema hint -->
+          <details class="mt-2">
+            <summary class="text-[9px] text-white/20 cursor-pointer">ver formato JSON</summary>
+            <pre class="text-[9px] text-white/20 mt-2 font-mono leading-relaxed">{
+  "title": "Meu Feed",
+  "categories": [
+    { "cat": "Vídeos", "vids": ["ytId", "https://...mp4"] }
+  ],
+  "podcasts": [
+    { "cat": "Podcast",
+      "eps": [{"title":"EP 01","url":"https://...mp3","cover":"https://...jpg"}] }
+  ]
+}</pre>
+          </details>
+        </div>
+
+        <!-- Status -->
+        <div id="gh-status" class="text-[9px] text-white/25 font-mono mb-4 fade-in pl-1" style="animation-delay:0.12s"></div>
+
+        <!-- TABS: Vídeos | Podcasts -->
+        <div class="flex gap-2 mb-6">
+          <button id="gh-tab-videos"
+            class="v-pill gh-tab-on text-xs"
+            onclick="GitHub.setTab('videos')">
+            <i data-lucide="play-circle" class="w-3 h-3"></i> Vídeos
+          </button>
+          <button id="gh-tab-podcasts"
+            class="v-pill text-xs"
+            style="display:none"
+            onclick="GitHub.setTab('podcasts')">
+            <i data-lucide="headphones" class="w-3 h-3"></i> Podcasts
+          </button>
+        </div>
+
+        <!-- Panels -->
+        <div id="gh-panel-videos"  class="space-y-12 fade-in" style="animation-delay:0.2s"></div>
+        <div id="gh-panel-podcasts" class="space-y-4 fade-in" style="display:none;animation-delay:0.2s"></div>
+
+        <!-- Empty state -->
+        <div id="gh-empty" class="mt-12 p-8 v-glass border-dashed border-white/10 flex flex-col items-center justify-center text-center opacity-50">
+          <i data-lucide="github" class="w-8 h-8 mb-3 text-white/30"></i>
+          <p class="text-sm text-white/40 mb-1">Nenhum repositório carregado</p>
+          <p class="text-[10px] text-white/20">Cole a URL do JSON acima</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- NAV -->
+  <div id="nav-indicator">
+    <div class="dot" id="dot-0" onclick="Navigation.to(0)"></div>
+    <div class="dot active" id="dot-1" onclick="Navigation.to(1)"></div>
+    <div class="dot" id="dot-2" onclick="Navigation.to(2)"></div>
+    <div class="dot" id="dot-3" onclick="Navigation.to(3)"></div>
+  </div>
+
+  <!-- GLOBAL PLAYER -->
+  <div id="global-player" class="v-glass overflow-hidden">
+    <div class="absolute top-3 right-3 z-20 flex gap-2">
+      <button onclick="Player.minimize()" class="w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition border border-white/5">
+        <i data-lucide="minus" class="w-3 h-3 text-white"></i>
+      </button>
+      <button onclick="Player.stop()" class="w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center hover:bg-red-500/30 transition border border-white/5">
+        <i data-lucide="x" class="w-3 h-3 text-white"></i>
+      </button>
+    </div>
+    <div id="player-frame-wrap" class="w-full h-full bg-black"></div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-overlay" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4">
+    <div id="modal-content" class="v-glass p-6 w-full max-w-2xl max-h-[85vh] overflow-y-auto transform scale-95 opacity-0"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="di_toast" class="fixed top-28 left-1/2 -translate-x-1/2 z-[300] pointer-events-none flex flex-col items-center gap-2"></div>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════
+       KOBLLUX_DNA · FONTE ÚNICA · 13 OPCODES × V.E.E.B.
+    ═══════════════════════════════════════════════════════════ */
+    const KOBLLUX_DNA = {
+      fractal:{ seq:[3,6,9,7], product:1134, alpha:1/137 },
+      opcodes:{
+        '0x00':{nome:'INICIAR',    freq:396, geom:'○', cor:'#b978ff', dim:'D0·Ponto'  },
+        '0x01':{nome:'PULSAR',     freq:432, geom:'●', cor:'#67e6ff', dim:'D1·Linha'  },
+        '0x02':{nome:'INTEGRAR',   freq:528, geom:'―', cor:'#7cffb2', dim:'D2·Plano'  },
+        '0x03':{nome:'EXPANDIR',   freq:639, geom:'▢', cor:'#4de0ff', dim:'D3·Volume' },
+        '0x04':{nome:'DISSOLVER',  freq:594, geom:'◇', cor:'#ff9ad1', dim:'D2·Trans'  },
+        '0x05':{nome:'CONVERGIR',  freq:672, geom:'⧉', cor:'#ff7a00', dim:'D∩·Foco'  },
+        '0x06':{nome:'CRISTALIZAR',freq:741, geom:'☯', cor:'#a8ff78', dim:'D3·Rede'   },
+        '0x07':{nome:'SELAR',      freq:777, geom:'✧', cor:'#ffd700', dim:'D3·Tetrae' },
+        '0x08':{nome:'TESTEMUNHAR',freq:852, geom:'◉', cor:'#00b894', dim:'D∞·Círculo'},
+        '0x09':{nome:'MANIFESTAR', freq:963, geom:'♾', cor:'#6c5ce7', dim:'S²·Esfera' },
+        '0x0A':{nome:'EQUILIBRAR', freq:528, geom:'⚖', cor:'#74b9ff', dim:'SO(2)'     },
+        '0x0B':{nome:'RESSONAR',   freq:432, geom:'◎', cor:'#ff52e5', dim:'Ondas·1D'  },
+        '0x0C':{nome:'CONCLUIR',   freq:999, geom:'♾', cor:'#f2c94c', dim:'T²·Toro'   }
+      },
+      chi(V,E,F){return V-E+F;},
+      S_binary(bits){return bits.reduce((s,b,i)=>s+b*Math.pow(2,i),0);}
+    };
+
+    const ARCH_OPCODE = {
+      ATLAS:'0x02', NOVA:'0x01', VITALIS:'0x03', PULSE:'0x0B',
+      ARTEMIS:'0x05', SERENA:'0x0A', KAOS:'0x04', GENUS:'0x09',
+      LUMINE:'0x07', SOLUS:'0x08', RHEA:'0x06', HORUS:'0x0C'
+    };
+
+    /* ═══════════════════════════════════════════════════════════
+       ARCHETYPES_DB · gif + mp4 por arquétipo
+       gif  = loop silencioso (estado passivo)
+       mp4  = vídeo com áudio (estado ativo ao clicar orbe)
+    ═══════════════════════════════════════════════════════════ */
+    const ARCHETYPES_DB = {
+      "ATLAS":   { id:"atlas",   name:"Atlas",   desc:"Estrutura & Governo",  colors:{main:"#38BDF8"}, drk:"A ordem externa reflete a clareza interna.",    vid:"Bt_rLbMjJDk", gif:"assets/archetypes/atlas.gif",   mp4:"assets/archetypes/atlas.mp4"   },
+      "NOVA":    { id:"nova",    name:"Nova",    desc:"Inovação & Fluxo",     colors:{main:"#F97316"}, drk:"O erro é apenas um dado não processado.",        vid:"",            gif:"assets/archetypes/nova.gif",    mp4:"assets/archetypes/nova.mp4"    },
+      "VITALIS": { id:"vitalis", name:"Vitalis", desc:"Energia & Ação",       colors:{main:"#22C55E"}, drk:"O corpo sabe antes da mente duvidar.",           vid:"_0wVkryxanE", gif:"assets/archetypes/vitalis.gif", mp4:"assets/archetypes/vitalis.mp4" },
+      "PULSE":   { id:"pulse",   name:"Pulse",   desc:"Ritmo & Emoção",       colors:{main:"#EC4899"}, drk:"Sinta a batida do caos e dance com ela.",        vid:"Id2NI9tv1r4", gif:"assets/archetypes/pulse.gif",   mp4:"assets/archetypes/pulse.mp4"   },
+      "ARTEMIS": { id:"artemis", name:"Artemis", desc:"Foco & Caça",          colors:{main:"#A855F7"}, drk:"Defina o alvo. O resto é apenas ruído.",         vid:"FbutKMpd8MY", gif:"assets/archetypes/artemis.gif", mp4:"assets/archetypes/artemis.mp4" },
+      "SERENA":  { id:"serena",  name:"Serena",  desc:"Paz & Harmonia",       colors:{main:"#7DD3FC"}, drk:"No centro do furacão, existe um ponto imóvel.",  vid:"hfQ1L6fCfAo", gif:"assets/archetypes/serena.gif",  mp4:"assets/archetypes/serena.mp4"  },
+      "KAOS":    { id:"kaos",    name:"Kaos",    desc:"Mudança & Entropia",   colors:{main:"#FACC15"}, drk:"Quebre o padrão hoje. Amanhã nasce o novo.",     vid:"Tq99vQNQ6dQ", gif:"assets/archetypes/kaos.gif",    mp4:"assets/archetypes/kaos.mp4"    },
+      "GENUS":   { id:"genus",   name:"Genus",   desc:"Criação & Arte",       colors:{main:"#E5E7EB"}, drk:"A excelência habita nos detalhes.",               vid:"DTDfkHwuMic", gif:"assets/archetypes/genus.gif",   mp4:"assets/archetypes/genus.mp4"   },
+      "LUMINE":  { id:"lumine",  name:"Lumine",  desc:"Brilho & Carisma",     colors:{main:"#FDE047"}, drk:"Irradie sem medo.",                               vid:"1L9_rFmIGJ8", gif:"assets/archetypes/lumine.gif",  mp4:"assets/archetypes/lumine.mp4"  },
+      "SOLUS":   { id:"solus",   name:"Solus",   desc:"Vazio & Verdade",      colors:{main:"#0EA5E9"}, drk:"O silêncio revela mais que mil estímulos.",       vid:"qldgs0aLdB0", gif:"assets/archetypes/solus.gif",   mp4:"assets/archetypes/solus.mp4"   },
+      "RHEA":    { id:"rhea",    name:"Rhea",    desc:"Cuidado & Raiz",       colors:{main:"#16A34A"}, drk:"Nutra a raiz e o fruto virá.",                    vid:"Bt_rLbMjJDk", gif:"assets/archetypes/rhea.gif",    mp4:"assets/archetypes/rhea.mp4"    },
+      "HORUS":   { id:"horus",   name:"Horus",   desc:"Visão & Estratégia",   colors:{main:"#5500FF"}, drk:"Observe o todo antes de agir.",                   vid:"_0wVkryxanE", gif:"assets/archetypes/horus.gif",   mp4:"assets/archetypes/horus.mp4"   }
+    };
+
+    const KEYS = {
+      CORTEX: 'di_cortex_v27_ult',
+      USER: 'di_userName',
+      ARCHETYPE: 'di_activeArchetype',
+      STATS: 'di_videoStats',
+    };
+
+    const STATE = {
+      screen: 1,
+      cortex: { crystals: [] },
+      currentArchetype: 'ATLAS',
+      expandedCardId: null,
+      dualtubeStats: JSON.parse(localStorage.getItem(KEYS.STATS) || '{}'),
+    };
+
+    /* ═══════════════════════════════════════════════════════════
+       ORB ENGINE · 0x09·MANIFESTAR
+       GIF (loop passivo) ↔ MP4 (ativo com áudio)
+       Clique → play MP4 → onended → volta GIF
+       FIX: usa oncanplay para evitar "interrupted by new load"
+    ═══════════════════════════════════════════════════════════ */
+    const Orb = {
+      _playing: false,
+      _loading: false,
+
+      sync: function() {
+        if (Orb._loading) return; /* debounce durante carregamento */
+
+        const data  = ARCHETYPES_DB[STATE.currentArchetype];
+        const video = document.getElementById('orb-arch-video');
+        const img   = document.getElementById('orb-arch-img');
+        const orb   = document.getElementById('hero-orb');
+        const ring  = document.getElementById('orb-sync-ring');
+
+        if (Orb._playing) {
+          Orb.stop();
+          return;
+        }
+
+        if (!data.mp4) {
+          toast('↯ Nenhum MP4 para ' + STATE.currentArchetype);
+          return;
+        }
+
+        Orb._loading = true;
+        toast('◎ carregando · ' + data.name);
+
+        /* Limpa handlers antigos */
+        video.oncanplay = null;
+        video.onended   = null;
+        video.onerror   = null;
+
+        /* Define src ANTES de registrar canplay */
+        video.src = data.mp4;
+
+        video.onerror = function() {
+          Orb._loading = false;
+          toast('⚠ Arquivo não encontrado: ' + data.mp4);
+          Orb._resetVisual(video, img, orb, ring);
+        };
+
+        video.oncanplay = function() {
+          video.oncanplay = null; /* dispara uma só vez */
+          Orb._loading = false;
+          Orb._playing = true;
+
+          img.style.opacity = '0';
+          video.classList.add('playing');
+          orb.classList.add('orb-playing');
+          ring.classList.add('playing');
+
+          video.play().catch(function(e) {
+            toast('⚠ ' + (e.message || 'erro de reprodução'));
+            Orb.stop();
+          });
+
+          toast('▶ ' + data.name + ' · sincronizando');
+
+          video.onended = function() { Orb.stop(); };
+        };
+
+        video.load(); /* dispara o carregamento */
+      },
+
+      stop: function() {
+        const video = document.getElementById('orb-arch-video');
+        const img   = document.getElementById('orb-arch-img');
+        const orb   = document.getElementById('hero-orb');
+        const ring  = document.getElementById('orb-sync-ring');
+
+        Orb._playing = false;
+        Orb._loading = false;
+        video.oncanplay = null;
+        video.onended   = null;
+        video.pause();
+        video.removeAttribute('src');
+        video.load(); /* reset limpo sem disparar erros */
+        Orb._resetVisual(video, img, orb, ring);
+      },
+
+      _resetVisual: function(video, img, orb, ring) {
+        video.classList.remove('playing');
+        orb.classList.remove('orb-playing');
+        ring.classList.remove('playing');
+        img.style.opacity = '1';
+      }
+    };
+
+    /* ═══════════════════════════════════════════════════════════
+       UPDATE ORB VISUAL · carrega GIF (loop) + preload MP4
+    ═══════════════════════════════════════════════════════════ */
+    function updateOrbVisual(arch) {
+      /* Para vídeo se estiver tocando antes de trocar arquétipo */
+      Orb.stop();
+
+      const data   = ARCHETYPES_DB[arch];
+      const visual = document.getElementById('orb-arch-visual');
+      const img    = document.getElementById('orb-arch-img');
+      const video  = document.getElementById('orb-arch-video');
+      const icon   = document.getElementById('orb-default-icon');
+      const badge  = document.getElementById('orb-opcode-badge');
+
+      if (!visual || !img) return;
+
+      const gifSrc   = data.gif;
+      const thumbSrc = data.vid ? `https://img.youtube.com/vi/${data.vid}/hqdefault.jpg` : '';
+
+      /* Testa GIF local → fallback thumbnail YouTube */
+      const testImg = new Image();
+      testImg.onload = function() {
+        img.src = gifSrc;
+        img.style.opacity = '1';
+        visual.classList.add('active');
+        if (icon) icon.style.opacity = '0';
+      };
+      testImg.onerror = function() {
+        if (thumbSrc) {
+          img.src = thumbSrc;
+          img.style.opacity = '1';
+          visual.classList.add('active');
+          if (icon) icon.style.opacity = '0.2';
+        }
+      };
+      testImg.src = gifSrc;
+
+      /* Badge opcode */
+      const opc = ARCH_OPCODE[arch];
+      if (badge && opc && KOBLLUX_DNA.opcodes[opc]) {
+        const od = KOBLLUX_DNA.opcodes[opc];
+        badge.textContent = `${od.geom} ${opc} · ${od.nome} · ${od.freq}Hz`;
+      }
+
+      /* Atualiza cor das partículas */
+      if (window.pJSDom && window.pJSDom.length > 0) {
+        try {
+          const ps = window.pJSDom[0].pJS;
+          ps.particles.line_linked.color = data.colors.main;
+          ps.fn.particlesRefresh();
+        } catch(e) {}
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ARCHETYPE SYSTEM
+    ═══════════════════════════════════════════════════════════ */
+    const Archetype = {
+      set: (key) => {
+        STATE.currentArchetype = key;
+        localStorage.setItem(KEYS.ARCHETYPE, key);
+        const data = ARCHETYPES_DB[key];
+        document.documentElement.style.setProperty('--active-color', data.colors.main);
+        document.documentElement.style.setProperty('--active-glow', data.colors.main);
+        document.getElementById('orb-top').style.background = data.colors.main;
+        updateOrbVisual(key);
+        updateHeader();
+
+        const opc = ARCH_OPCODE[key];
+        if (opc && KOBLLUX_DNA.opcodes[opc]) {
+          const od = KOBLLUX_DNA.opcodes[opc];
+          const badge = document.getElementById('displayArchetypeBadge');
+          if (badge) badge.setAttribute('title', `${opc}·${od.nome}·${od.freq}Hz`);
+        }
+      }
+    };
+
+    function updateHeader() {
+      const arch = STATE.currentArchetype;
+      const data = ARCHETYPES_DB[arch];
+      document.getElementById('displayArchetypeBadge').innerText = arch;
+      document.getElementById('archetype-status-text').innerText = data.desc;
+      document.getElementById('drk-line').innerText = `"${data.drk}"`;
+      document.getElementById('hero-title').style.backgroundImage = `linear-gradient(to bottom, #fff, ${data.colors.main})`;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       GITHUB ENGINE · 0x05·CONVERGIR
+       Suporta: YouTube IDs, URLs mp4/webm diretos, podcasts mp3/ogg
+       JSON schema:
+       {
+         "title": "...",
+         "categories": [{"cat":"...","vids":["ytId","https://...mp4"]}],
+         "podcasts":   [{"cat":"...","eps":[{"title":"...","url":"...mp3","cover":"...jpg"}]}]
+       }
+    ═══════════════════════════════════════════════════════════ */
+    const GitHub = {
+      CACHE_KEY: 'kobllux_gh_data',
+      URL_KEY:   'kobllux_gh_url',
+      _tab: 'videos', /* 'videos' | 'podcasts' */
+
+      load: async function() {
+        const inp = document.getElementById('gh-repo-url');
+        const url = inp.value.trim();
+        if (!url) { toast('⧉ Insira a URL do repositório'); return; }
+        toast('⧉ Convergindo repositório...');
+        document.getElementById('gh-status').textContent = '0x05·CONVERGIR · carregando...';
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          localStorage.setItem(GitHub.CACHE_KEY, JSON.stringify(data));
+          localStorage.setItem(GitHub.URL_KEY, url);
+          GitHub.render(data);
+          toast('✧ ' + (data.title || 'Repositório') + ' · carregado');
+        } catch(e) {
+          document.getElementById('gh-status').textContent = '0x04·DISSOLVER · ' + e.message;
+          toast('Erro: ' + e.message);
+        }
+      },
+
+      /* Renderiza card de mídia (YouTube ID ou URL direta) */
+      _videoCard: function(src, stats) {
+        const isUrl = /^https?:\/\//.test(src);
+        const isAudio = /\.(mp3|ogg|wav|aac|m4a)(\?|$)/i.test(src);
+        const isDirectVideo = isUrl && /\.(mp4|webm|mov)(\?|$)/i.test(src);
+
+        let thumb, label, onclick;
+
+        if (isDirectVideo) {
+          /* Vídeo direto: thumbnail é frame do vídeo (usa poster vazio por enquanto) */
+          thumb = ''; /* sem thumbnail → mostra ícone */
+          label = src.split('/').pop().replace(/\.[^.]+$/, '');
+          onclick = `Player.play('${src.replace(/'/g,"\\'")}', '${label}')`;
+        } else if (!isUrl) {
+          /* YouTube ID */
+          thumb = `https://img.youtube.com/vi/${src}/mqdefault.jpg`;
+          label = src;
+          onclick = `Player.play('${src}')`;
+        } else {
+          thumb = '';
+          label = src.split('/').pop();
+          onclick = `Player.play('${src.replace(/'/g,"\\'")}', '${label}')`;
+        }
+
+        const seen = stats[src] ? '<div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[9px] font-bold text-[var(--active-color)] border border-[var(--active-color)]/30">VISTO</div>' : '';
+        const thumbEl = thumb
+          ? `<img src="${thumb}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition duration-700">`
+          : `<div class="w-full h-full flex items-center justify-center bg-black/40"><i data-lucide="${isAudio?'music':'film'}" class="w-8 h-8 text-white/30"></i></div>`;
+
+        return `<div class="flex-shrink-0 w-64 aspect-video rounded-2xl overflow-hidden relative cursor-pointer group border border-white/5 hover:border-[var(--active-color)]/50 transition-all snap-start shadow-2xl" onclick="${onclick}">
+          ${thumbEl}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-5">
+            <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-[var(--active-color)] transition">
+              <i data-lucide="play" class="w-4 h-4 text-white fill-white"></i>
+            </div>
+            ${isDirectVideo ? `<span class="ml-3 text-[10px] text-white/60 truncate max-w-[120px]">${label}</span>` : ''}
+          </div>
+          ${seen}
+        </div>`;
+      },
+
+      /* Renderiza card de podcast */
+      _podcastCard: function(ep) {
+        const title = ep.title || ep.url.split('/').pop();
+        const cover = ep.cover || '';
+        const url   = ep.url;
+        return `<div class="v-glass p-4 flex items-center gap-4 cursor-pointer hover:border-[var(--active-color)]/40 transition" onclick="Player.play('${url.replace(/'/g,"\\'")}', '${title.replace(/'/g,"\\'")}')">
+          <div class="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-black/40 flex items-center justify-center border border-white/10">
+            ${cover ? `<img src="${cover}" class="w-full h-full object-cover">` : '<i data-lucide="headphones" class="w-6 h-6 text-white/40"></i>'}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium text-white/90 truncate">${title}</div>
+            <div class="text-[10px] text-white/30 mt-1 font-mono truncate">${url.split('/').pop()}</div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-[var(--active-color)]/10 border border-[var(--active-color)]/30 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="play" class="w-3 h-3 text-[var(--active-color)] fill-current"></i>
+          </div>
+        </div>`;
+      },
+
+      setTab: function(tab) {
+        GitHub._tab = tab;
+        document.getElementById('gh-tab-videos').classList.toggle('gh-tab-on', tab === 'videos');
+        document.getElementById('gh-tab-podcasts').classList.toggle('gh-tab-on', tab === 'podcasts');
+        document.getElementById('gh-panel-videos').style.display = tab === 'videos' ? '' : 'none';
+        document.getElementById('gh-panel-podcasts').style.display = tab === 'podcasts' ? '' : 'none';
+      },
+
+      render: function(data) {
+        if (!data) {
+          const c = localStorage.getItem(GitHub.CACHE_KEY);
+          if (!c) return;
+          data = JSON.parse(c);
+          const savedUrl = localStorage.getItem(GitHub.URL_KEY);
+          if (savedUrl) document.getElementById('gh-repo-url').value = savedUrl;
+        }
+
+        const cats     = data.categories || [];
+        const podcasts = data.podcasts   || [];
+        const stats    = STATE.dualtubeStats;
+        const totalV   = cats.reduce((s,c)=>s+(c.vids||[]).length, 0);
+        const totalP   = podcasts.reduce((s,c)=>s+(c.eps||[]).length, 0);
+
+        document.getElementById('gh-video-count').innerText = totalV + totalP;
+        document.getElementById('gh-empty').style.display = (totalV + totalP) ? 'none' : '';
+        document.getElementById('gh-status').textContent =
+          `0x09·MANIFESTAR · ${totalV} vídeos · ${totalP} podcasts · ${cats.length + podcasts.length} categorias`;
+
+        /* VÍDEOS */
+        document.getElementById('gh-panel-videos').innerHTML = cats.map(c =>
+          `<div>
+            <h3 class="text-lg font-medium mb-4 pl-3 border-l-2 border-white/10 text-white/80">${c.cat}</h3>
+            <div class="flex gap-4 overflow-x-auto pb-6 snap-x px-1">
+              ${(c.vids||[]).map(v => GitHub._videoCard(v, stats)).join('')}
+            </div>
+          </div>`
+        ).join('') || '<p class="text-white/20 text-sm text-center py-8">Nenhum vídeo no JSON</p>';
+
+        /* PODCASTS */
+        document.getElementById('gh-panel-podcasts').innerHTML = podcasts.map(c =>
+          `<div>
+            <h3 class="text-lg font-medium mb-4 pl-3 border-l-2 border-[var(--active-color)]/40 text-white/80">
+              <i data-lucide="headphones" class="inline w-4 h-4 mr-2 opacity-50"></i>${c.cat}
+            </h3>
+            <div class="flex flex-col gap-3 mb-8">
+              ${(c.eps||[]).map(ep => GitHub._podcastCard(ep)).join('')}
+            </div>
+          </div>`
+        ).join('') || '<p class="text-white/20 text-sm text-center py-8">Nenhum podcast · adicione "podcasts" ao JSON</p>';
+
+        /* Mostra aba de podcast se houver conteúdo */
+        if (totalP > 0) document.getElementById('gh-tab-podcasts').style.display = '';
+
+        lucide.createIcons();
+      },
+
+      init: function() {
+        const c = localStorage.getItem(GitHub.CACHE_KEY);
+        if (c) { try { GitHub.render(JSON.parse(c)); } catch(e) {} }
+      }
+    };
+
+    /* NAVIGATION */
+    const Navigation = {
+      to: (idx) => {
+        STATE.screen = idx;
+        document.getElementById('universe-viewport').style.transform = `translateX(-${idx * 100}vw)`;
+        [0,1,2,3].forEach(i => {
+          const d = document.getElementById(`dot-${i}`);
+          if (d) { if(i === idx) d.classList.add('active'); else d.classList.remove('active'); }
+        });
+        if (idx === 3) GitHub.render();
+      }
+    };
+
+    function setupGestures() {
+      let tsX = 0;
+      document.addEventListener('touchstart', e => tsX = e.touches[0].clientX, {passive:true});
+      document.addEventListener('touchend', e => {
+        const diff = tsX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 80) {
+          if (diff > 0 && STATE.screen < 3) Navigation.to(STATE.screen + 1);
+          if (diff < 0 && STATE.screen > 0) Navigation.to(STATE.screen - 1);
+        }
+      }, {passive:true});
+    }
+
+    /* CORTEX */
+    const Cortex = {
+      render: () => {
+        const container = document.getElementById('crystal-container');
+        const query = document.getElementById('memory-search').value.toLowerCase();
+        const filtered = (STATE.cortex.crystals || []).filter(c =>
+          c.content.toLowerCase().includes(query) || (c.tags && c.tags.some(t => t.includes(query)))
+        );
+        container.innerHTML = filtered.map(c => {
+          const isExpanded = STATE.expandedCardId === c.id;
+          return `
+          <div class="v-glass memory-card p-6 ${isExpanded ? 'expanded' : ''}" onclick="Cortex.toggle(${c.id})">
+            <div class="card-header">
+              <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1 flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[var(--active-color)]"></span> REGISTRO #${c.id}
+                </span>
+                <div class="text-xl font-medium text-white/90 leading-tight" style="${isExpanded?'white-space:normal':'white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:80vw;'}">${c.content}</div>
+              </div>
+              <div class="text-white/30 transition-transform ${isExpanded?'rotate-180':''}">
+                <i data-lucide="chevron-down"></i>
+              </div>
+            </div>
+            <div class="card-content">
+              <p class="text-base text-white/80 leading-relaxed font-light mt-4 mb-6 pl-4 border-l-2 border-[var(--active-color)]">${c.content}</p>
+              <div class="flex justify-between items-center pt-4 border-t border-white/5">
+                <div class="flex gap-2">${(c.tags||[]).map(t => `<span class="text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 uppercase tracking-wider text-white/60">${t}</span>`).join('')}</div>
+                <div class="flex gap-2">
+                  <button onclick="event.stopPropagation(); TTS.speak('${c.content.replace(/'/g,"\\'").replace(/\n/g," ")}')" class="p-3 rounded-full bg-white/5 hover:bg-white/10 transition">
+                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="event.stopPropagation(); Cortex.delete(${c.id})" class="p-3 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 transition">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        }).join('');
+        lucide.createIcons();
+      },
+      toggle: (id) => { STATE.expandedCardId = (STATE.expandedCardId === id) ? null : id; Cortex.render(); },
+      openNewMemory: () => {
+        Modal.show(`
+          <h3 class="text-2xl font-thin mb-6">Novo Cristal</h3>
+          <textarea id="new-mem-txt" class="w-full h-40 bg-black/30 border border-white/10 rounded-2xl p-4 text-white placeholder-white/20 focus:border-cyan-400/50 transition outline-none resize-none text-lg" placeholder="Digite seu pensamento..."></textarea>
+          <input id="new-mem-tags" class="w-full mt-4 bg-black/30 border border-white/10 rounded-xl p-4 text-sm focus:border-cyan-400/50 outline-none transition" placeholder="Tags (separadas por vírgula)">
+          <div class="flex justify-end gap-3 mt-8">
+            <button onclick="Modal.hide()" class="v-pill hover:bg-white/10">Cancelar</button>
+            <button onclick="Cortex.save()" class="v-pill bg-[var(--active-color)]/20 border-[var(--active-color)]/50 text-[var(--active-color)] hover:bg-[var(--active-color)]/30">Cristalizar</button>
+          </div>`);
+        setTimeout(()=>document.getElementById('new-mem-txt').focus(), 100);
+      },
+      save: () => {
+        const txt = document.getElementById('new-mem-txt').value;
+        if(!txt) return;
+        const tags = document.getElementById('new-mem-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+        STATE.cortex.crystals.unshift({ id: Date.now(), content: txt, tags, date: Date.now() });
+        localStorage.setItem(KEYS.CORTEX, JSON.stringify(STATE.cortex));
+        Cortex.render(); Modal.hide(); toast('Memória salva.');
+      },
+      delete: (id) => {
+        if(!confirm('Dissolver memória?')) return;
+        STATE.cortex.crystals = STATE.cortex.crystals.filter(c => c.id !== id);
+        localStorage.setItem(KEYS.CORTEX, JSON.stringify(STATE.cortex));
+        Cortex.render();
+      }
+    };
+
+    /* ═══════════════════════════════════════════════════════════
+       PLAYER UNIVERSAL
+       Detecta: YouTube ID | URL vídeo (mp4/webm) | URL áudio (mp3/ogg/wav)
+    ═══════════════════════════════════════════════════════════ */
+    const Player = {
+      _type: null,
+
+      /* Detecta tipo de mídia */
+      _detect: function(src) {
+        if (!src) return 'none';
+        if (/^https?:\/\//.test(src)) {
+          if (/\.(mp3|ogg|wav|aac|m4a|flac)(\?|$)/i.test(src)) return 'audio';
+          if (/\.(mp4|webm|mov|mkv|avi)(\?|$)/i.test(src)) return 'video';
+          if (/youtube\.com|youtu\.be/.test(src)) {
+            const m = src.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
+            return m ? {type:'yt', id:m[1]} : 'none';
+          }
+          return 'video'; /* URL genérica → tenta como vídeo */
+        }
+        /* Assume YouTube ID (11 chars alfanuméricos) */
+        return 'yt';
+      },
+
+      play: function(src, title) {
+        const gp = document.getElementById('global-player');
+        const fw = document.getElementById('player-frame-wrap');
+        const type = Player._detect(src);
+        Player._type = type;
+
+        let html = '';
+
+        if (type === 'yt' || (type && type.type === 'yt')) {
+          const id = (type.id) ? type.id : src;
+          html = `<iframe width="100%" height="100%"
+            src="https://www.youtube.com/embed/${id}?autoplay=1&modestbranding=1&controls=1&rel=0"
+            frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+          STATE.dualtubeStats[id] = { ts: Date.now() };
+          localStorage.setItem(KEYS.STATS, JSON.stringify(STATE.dualtubeStats));
+          DualTube.render();
+
+        } else if (type === 'audio') {
+          const arch = STATE.currentArchetype;
+          const mc   = ARCHETYPES_DB[arch] ? ARCHETYPES_DB[arch].colors.main : '#38BDF8';
+          html = `
+            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);padding:20px;gap:16px;">
+              <div style="font-size:10px;letter-spacing:3px;color:${mc};text-transform:uppercase;opacity:0.7">◎ PODCAST</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;max-width:90%;line-height:1.5;">${title||'Episódio'}</div>
+              <audio id="podcast-audio" src="${src}" autoplay controls
+                style="width:100%;max-width:340px;accent-color:${mc};outline:none;">
+              </audio>
+              <div id="podcast-wave" style="display:flex;gap:3px;align-items:center;height:20px;opacity:0.6;">
+                ${[...Array(12)].map((_,i)=>`<div style="width:3px;background:${mc};border-radius:2px;animation:sound ${0.3+i%4*0.1}s infinite alternate linear;height:${4+Math.sin(i)*8}px"></div>`).join('')}
+              </div>
+            </div>`;
+
+        } else if (type === 'video') {
+          html = `
+            <video src="${src}" autoplay controls playsinline
+              style="width:100%;height:100%;object-fit:contain;background:#000;">
+            </video>`;
+
+        } else {
+          toast('⚠ Formato não reconhecido');
+          return;
+        }
+
+        fw.innerHTML = html;
+        gp.classList.remove('hidden');
+        setTimeout(() => { gp.classList.add('active'); gp.classList.remove('minimized'); }, 50);
+      },
+
+      minimize: () => { document.getElementById('global-player').classList.toggle('minimized'); },
+
+      stop: () => {
+        const gp = document.getElementById('global-player');
+        gp.classList.remove('active');
+        setTimeout(() => {
+          gp.classList.add('hidden');
+          document.getElementById('player-frame-wrap').innerHTML = '';
+        }, 500);
+      }
+    };
+
+    const DualTube = {
+      data: [
+        { cat: 'Frequências e Rituais',  vids: ["Bt_rLbMjJDk", "_0wVkryxanE", "Id2NI9tv1r4"] },
+        { cat: 'Arquitetura Cognitiva',  vids: ["qldgs0aLdB0", "FbutKMpd8MY", "1L9_rFmIGJ8"] },
+        { cat: 'Meditações Profundas',   vids: ["hfQ1L6fCfAo", "Tq99vQNQ6dQ", "DTDfkHwuMic"] }
+      ],
+      render: () => {
+        const el = document.getElementById('video-categories');
+        const stats = STATE.dualtubeStats;
+        document.getElementById('dt-watched-count').innerText = Object.keys(stats).length;
+        el.innerHTML = DualTube.data.map(c => `
+          <div>
+            <h3 class="text-lg font-medium mb-4 pl-3 border-l-2 border-white/10 text-white/80">${c.cat}</h3>
+            <div class="flex gap-4 overflow-x-auto pb-6 snap-x px-1">
+              ${c.vids.map(id => `
+                <div class="flex-shrink-0 w-64 aspect-video rounded-2xl overflow-hidden relative cursor-pointer group border border-white/5 hover:border-[var(--active-color)]/50 transition-all snap-start shadow-2xl" onclick="Player.play('${id}')">
+                  <img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition duration-700">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-5">
+                    <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-[var(--active-color)] transition">
+                      <i data-lucide="play" class="w-4 h-4 text-white fill-white"></i>
+                    </div>
+                  </div>
+                  ${stats[id] ? '<div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[9px] font-bold text-[var(--active-color)] border border-[var(--active-color)]/30">VISTO</div>' : ''}
+                </div>`).join('')}
+            </div>
+          </div>`).join('');
+        lucide.createIcons();
+      }
+    };
+
+    /* TTS */
+    const TTS = {
+      synth: window.speechSynthesis, voices: [],
+      init: () => {
+        if (!TTS.synth) return;
+        setTimeout(() => {
+          TTS.voices = TTS.synth.getVoices();
+          if (TTS.voices.length === 0) TTS.synth.onvoiceschanged = () => { TTS.voices = TTS.synth.getVoices(); };
+        }, 100);
+      },
+      speak: (text) => {
+        if (TTS.synth.speaking) { TTS.synth.cancel(); document.getElementById('tts-indicator').classList.add('hidden'); return; }
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'pt-BR'; u.rate = 1.1;
+        const v = TTS.voices.find(v => v.lang.includes('pt-BR'));
+        if (v) u.voice = v;
+        u.onstart = () => { const i = document.getElementById('tts-indicator'); i.classList.remove('hidden'); i.classList.add('speaking'); };
+        u.onend   = () => { const i = document.getElementById('tts-indicator'); i.classList.remove('speaking'); setTimeout(()=>i.classList.add('hidden'),300); };
+        TTS.synth.speak(u);
+      }
+    };
+
+    /* MODAL */
+    const Modal = {
+      show: (html) => {
+        const ov = document.getElementById('modal-overlay');
+        const ct = document.getElementById('modal-content');
+        ct.innerHTML = html; ov.classList.remove('hidden');
+        setTimeout(() => { ct.style.opacity='1'; ct.style.transform='scale(1)'; }, 10);
+      },
+      hide: () => {
+        const ov = document.getElementById('modal-overlay');
+        const ct = document.getElementById('modal-content');
+        ct.style.opacity='0'; ct.style.transform='scale(0.95)';
+        setTimeout(() => ov.classList.add('hidden'), 300);
+      }
+    };
+
+    /* ARCH PROMPTS */
+    var AP = {
+      ATLAS:   {i:"Titã de pedra estelar, circuitos dourados, cartas astrais holográficas.",a:"Invoco Atlas [▦], Orquestrador Cósmico. Organize minha intenção. kblx.A()+kblx.N()+kblx.O()",g:"ATLAS · D8 · Tetrae V=4 E=6 F=4 χ=2\nFreq:528Hz #38BDF8\nkblx.A()→↗ .N()→◎ .O()→◯",s:"╔══ ATLAS ══╗\n  ▦ MEMÓRIA\n  A()+N()+O()\n╚══════════╝"},
+      NOVA:    {i:"Figura etérea em gênese. Nebulosa de luz cristalizando símbolos.",a:"Invoco Nova [✧], Gênese Criadora. Acenda a inspiração primordial. kblx.G()+kblx.E()+kblx.Q()",g:"NOVA · S² χ=2 Ponto→Esfera\nFreq:528Hz #F97316\nkblx.G()→⚡ .E()→∞ .Q()→✦",s:"╔══ NOVA ═══╗\n  ✧ GÊNESE\n  G()+E()+Q()\n╚══════════╝"},
+      VITALIS: {i:"Entidade robótica aerodinâmica em surto de movimento sobre luz pura.",a:"Invoco Vitalis [⚡], Centelha da Ação. Infunda urgência agora. kblx.V()+kblx.P()+kblx.I()",g:"VITALIS · D1 Vetor V=2 E=1\nFreq:396Hz #22C55E\nkblx.V()→↯ .P()→↝ .I()→`",s:"╔═ VITALIS ═╗\n  ⚡ AÇÃO\n  V()+P()+I()\n╚══════════╝"},
+      PULSE:   {i:"Sensor biônico gracioso. Corpo fluido traduz emoção em ondas.",a:"Invoco Pulse [♫], Sensor Biônico. Sintonize minha vibração. kblx.F()+kblx.H()+kblx.R()",g:"PULSE · Onda f=528Hz λ=v/f\n#EC4899\nkblx.F()→⋰ .H()→∽ .R()→)))",s:"╔══ PULSE ══╗\n  ♫ VIBRAÇÃO\n  F()+H()+R()\n╚══════════╝"},
+      ARTEMIS: {i:"Exploradora robótica em floresta digital.",a:"Invoco Artemis [⚑], Exploradora do Invisível. Revele padrões ocultos. kblx.C()+kblx.T()+kblx.S()",g:"ARTEMIS · Árvore DFS E=V-1\nFreq:417Hz #A855F7\nkblx.C()→⊂ .T()→→ .S()→~",s:"╔═ ARTEMIS ═╗\n  ⚑ DESCOBERTA\n  C()+T()+S()\n╚══════════╝"},
+      SERENA:  {i:"Guardiã biomecânica perolada. Mãos nutrindo semente de luz.",a:"Invoco Serena [♡], Guardiã do Sagrado. O que precisa de cuidado? kblx.U()+kblx.L()+kblx.N()",g:"SERENA · Toro χ=0 g=1\nFreq:639Hz #7DD3FC\nkblx.U()→∪ .L()→— .N()→◎",s:"╔══ SERENA ═╗\n  ♡ CURA\n  U()+L()+N()\n╚══════════╝"},
+      KAOS:    {i:"Força entrópica em ruptura criativa. Vórtex de fogo e glitch.",a:"Invoco Kaos [☢], Fogo Transmutador. O que precisa ser quebrado? kblx.G()+kblx.X()+kblx.I()",g:"KAOS · Lorenz D≈2.06\nFreq:285Hz #FACC15\nkblx.G()→⚡ .X()→✖ .I()→`",s:"╔══ KAOS ═══╗\n  ☢ TRANSMUT.\n  G()+X()+I()\n╚══════════╝"},
+      GENUS:   {i:"Mestre artesão em oficina cósmica. Mãos tecendo fios de luz fractais.",a:"Invoco Genus [✎], Mestre Artesão. Forje minha visão. kblx.M()+kblx.T()+kblx.W()",g:"GENUS · Mesh 3D V=n E=3n/2\nFreq:741Hz #E5E7EB\nkblx.M()→■ .T()→→ .W()→⪯",s:"╔══ GENUS ══╗\n  ✎ CONST.\n  M()+T()+W()\n╚══════════╝"},
+      LUMINE:  {i:"Figura cibernética radiante. Metal polido reflete Luz Primordial.",a:"Invoco Lumine [💡], Luz Primordial. Onde a conexão genuína espera? kblx.E()+kblx.Q()+kblx.R()",g:"LUMINE · Grafo Kn ρ=1\nFreq:852Hz #FDE047\nkblx.E()→∞ .Q()→✦ .R()→)))",s:"╔═ LUMINE ══╗\n  💡 LUZ\n  E()+Q()+R()\n╚══════════╝"},
+      SOLUS:   {i:"Figura meditativa. Face de obsidiana revela galáxias.",a:"Invoco Solus [🌑], Espelho do Abismo. O que meu deserto ensina? kblx.N()+kblx.Z()+kblx.O()",g:"SOLUS · Ponto Fixo D=0 S→0\nFreq:963Hz #0EA5E9\nkblx.N()→◎ .Z()→⛢ .O()→◯",s:"╔══ SOLUS ══╗\n  🌑 ESSÊNCIA\n  N()+Z()+O()\n╚══════════╝"},
+      RHEA:    {i:"Tecelã de almas dissolvendo forma em rede de fios infinitos.",a:"Invoco Rhea [∞], Tecelã de Almas. Teça os fios das conexões. kblx.U()+kblx.L()+kblx.H()",g:"RHEA · Rede Escala-Livre P(k)~k^-γ\nFreq:639Hz #16A34A\nkblx.U()→∪ .L()→— .H()→∽",s:"╔══ RHEA ═══╗\n  ∞ VÍNCULO\n  U()+L()+H()\n╚══════════╝"},
+      HORUS:   {i:"Estrategista de visão ampla. Olho que vê padrões ocultos.",a:"Invoco Horus [👁], Visão Estratégica. Mostre o padrão completo. kblx.C()+kblx.T()+kblx.Z()",g:"HORUS · T² Toro χ=0 g=1\nFreq:999Hz #5500FF\nkblx.C()→⊂ .T()→→ .Z()→⛢",s:"╔══ HORUS ══╗\n  👁 VISÃO\n  C()+T()+Z()\n╚══════════╝"}
+    };
+
+    var _ak=null, _at2='i';
+
+    function _abuildtile(k, d) {
+      var t = document.createElement('div');
+      t.className='at'; t.dataset.key=k;
+      var yt='https://img.youtube.com/vi/'+d.vid+'/mqdefault.jpg';
+      var s2=d.gif||yt;
+      var img=document.createElement('img'); img.alt=k; img.src=s2;
+      img.onerror=function(){this.src=yt;};
+      var att=document.createElement('div'); att.className='att';
+      var atp=document.createElement('div'); atp.className='atp';
+      var atpb=document.createElement('div'); atpb.className='atpb'; atpb.textContent='▶';
+      atp.appendChild(atpb); att.appendChild(img); att.appendChild(atp);
+      var atn=document.createElement('div');
+      atn.className='atn'; atn.style.color=d.colors.main; atn.textContent=k;
+      t.appendChild(att); t.appendChild(atn);
+      t.addEventListener('click',function(){ _atoggle(k); });
+      return t;
+    }
+
+    function _atoggle(key) {
+      var dw=document.getElementById('adw');
+      if (!dw) return;
+      if (_ak===key && dw.classList.contains('adwopen')) {
+        dw.classList.remove('adwopen'); _ak=null;
+        document.querySelectorAll('.at').forEach(function(t){t.classList.remove('aton');});
+        return;
+      }
+      _ak=key; _at2='i';
+      Archetype.set(key);
+      document.querySelectorAll('.at').forEach(function(t){t.classList.toggle('aton',t.dataset.key===key);});
+      _arender(key);
+      dw.classList.add('adwopen');
+    }
+
+    function _arender(key) {
+      var inner=document.querySelector('#adw .adwi');
+      if (!inner) return;
+      var d=ARCHETYPES_DB[key]||{}, p=AP[key]||{};
+      var opc=ARCH_OPCODE[key], od=(KOBLLUX_DNA&&KOBLLUX_DNA.opcodes[opc])||{};
+      var mc=d.colors?d.colors.main:'#fff';
+      inner.innerHTML=
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
+          '<span style="font-size:11px;font-weight:700;letter-spacing:.1em;color:'+mc+'">'+
+            key+' '+(od.geom||'')+' '+(od.freq||'')+'Hz'+
+          '</span>'+
+          '<span style="font-size:9px;color:rgba(255,255,255,.3);font-family:monospace">'+
+            (opc||'')+' · '+(od.nome||'')+
+          '</span>'+
+        '</div>'+
+        '<div class="adts">'+
+          '<button class="adt adton" onclick="_asetab(\'i\',this)">Img</button>'+
+          '<button class="adt" onclick="_asetab(\'a\',this)">Ask</button>'+
+          '<button class="adt" onclick="_asetab(\'g\',this)">Geo</button>'+
+          '<button class="adt" onclick="_asetab(\'s\',this)">ASCII</button>'+
+        '</div>'+
+        '<div class="adp adpon" id="adp_i">'+(p.i||d.desc||'—')+'</div>'+
+        '<div class="adp" id="adp_a">'+(p.a||'—')+'</div>'+
+        '<div class="adp adpg" id="adp_g">'+(p.g||'—')+'</div>'+
+        '<div class="adp adpa" id="adp_s">'+(p.s||'—')+'</div>'+
+        '<button class="adcb" onclick="_acopy()">⊙ Copiar Prompt</button>';
+    }
+
+    function _asetab(tab,btn) {
+      _at2=tab;
+      ['i','a','g','s'].forEach(function(t){
+        var p=document.getElementById('adp_'+t);
+        if(p) p.classList.toggle('adpon',t===tab);
+      });
+      btn.closest('.adts').querySelectorAll('.adt').forEach(function(b){b.classList.remove('adton');});
+      btn.classList.add('adton');
+    }
+
+    function _acopy() {
+      var p=document.getElementById('adp_'+_at2);
+      if(!p) return;
+      var btn=document.querySelector('.adcb');
+      navigator.clipboard.writeText(p.innerText).then(function(){
+        btn.textContent='✓ Copiado!'; btn.classList.add('adcbon');
+        setTimeout(function(){btn.textContent='⊙ Copiar Prompt';btn.classList.remove('adcbon');},2200);
+      }).catch(function(){toast('Erro ao copiar');});
+    }
+
+    const Identity = {
+      openInfodoseModal: () => {
+        Modal.show(
+          '<div class="flex justify-between items-center mb-4">'+
+            '<h3 class="text-xl font-bold">Matriz Neural</h3>'+
+            '<button onclick="Modal.hide()" class="v-pill hover:bg-white/10">Fechar</button>'+
+          '</div>'+
+          '<p style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">arraste · toque para prompts</p>'+
+          '<div id="aw"><div class="ar" id="ar_row"></div></div>'+
+          '<div id="adw"><div class="adwi"></div></div>'
+        );
+        requestAnimationFrame(function(){
+          var row=document.getElementById('ar_row');
+          if(!row) return;
+          Object.keys(ARCHETYPES_DB).forEach(function(k){
+            row.appendChild(_abuildtile(k,ARCHETYPES_DB[k]));
+          });
+        });
+      },
+      showInfodoseModal: () => Identity.openInfodoseModal()
+    };
+
+    const UI = {
+      loadExternalHTML: (url) => {
+        if(!url) return;
+        toast('Carregando sandbox: '+url);
+      }
+    };
+
+    function toast(msg) {
+      const c=document.getElementById('di_toast');
+      const el=document.createElement('div');
+      el.className="v-pill bg-black/60 border-white/10 backdrop-blur-xl text-xs shadow-2xl";
+      el.innerText=msg; c.appendChild(el);
+      setTimeout(()=>el.remove(),3000);
+    }
+
+    /* INIT */
+    window.addEventListener('load', () => {
+      lucide.createIcons();
+
+      const savedArch = localStorage.getItem(KEYS.ARCHETYPE);
+      if (savedArch && ARCHETYPES_DB[savedArch]) Archetype.set(savedArch);
+      else Archetype.set('ATLAS');
+
+      const savedCortex = localStorage.getItem(KEYS.CORTEX);
+      if (savedCortex) STATE.cortex = JSON.parse(savedCortex);
+      else STATE.cortex.crystals = [{ id:1, content:"Bem-vindo ao Fusion OS. Clique no orbe para sincronizar com seu arquétipo.", tags:["sistema"], date:Date.now() }];
+
+      DualTube.render();
+      Cortex.render();
+      GitHub.init();
+      TTS.init();
+      setupGestures();
+
+      /* Particles */
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          particles: {
+            number:  { value:45, density:{enable:true,value_area:900} },
+            color:   { value:['#00c5e5','#8b5cf6','#67e6ff','#a855f7'] },
+            shape:   { type:'circle' },
+            opacity: { value:0.35, random:true, anim:{enable:true,speed:0.8,opacity_min:0.05,sync:false} },
+            size:    { value:2.5, random:true, anim:{enable:true,speed:1.5,size_min:0.5,sync:false} },
+            line_linked: { enable:true, distance:140, color:'#38BDF8', opacity:0.12, width:1 },
+            move: { enable:true, speed:1.2, direction:'none', random:true, straight:false, out_mode:'out', attract:{enable:true,rotateX:600,rotateY:1200} }
+          },
+          interactivity: {
+            detect_on:'canvas',
+            events: { onhover:{enable:true,mode:'grab'}, onclick:{enable:true,mode:'bubble'}, resize:true },
+            modes: {
+              grab:   { distance:180, line_linked:{opacity:0.45,color:'#00c5e5'} },
+              bubble: { distance:250, size:8, duration:0.4, opacity:0.8, speed:3 },
+              push:   { particles_nb:3 }
+            }
+          },
+          retina_detect: true
+        });
+      }
+
+      setTimeout(() => Navigation.to(1), 100);
+    });
+  </script>
+  
+  <div>
+     
+     
+
+  
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+  
+  
+  <!-- Ambient Blobs -->
+  <div class="ambient-light"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+  <div id="snap-zone"></div>
+  <div class="toaster-wrap" id="toasterWrap"></div>
+
+  <!-- CONTAINER PARA CENTRALIZAR INICIALMENTE -->
+  <div class="container">
+    <div class="fusion-card closed" id="mainCard">
+
+      <div class="card-header" id="cardHeader">
+        <div class="avatar-slot" id="avatarTarget" title="Gerenciar Chaves (Cofre)"></div>
+        <div class="text-block">
+          <div class="greeting-row">
+            <span class="txt-thin" id="lblHello">Oi,</span>
+            <span class="txt-heavy" id="lblName">Convidado</span>
+          </div>
+          <div class="brand-dual">DUAL</div>
+        </div>
+        <div class="clock-widget">
+          <div class="time-display" id="clockTime">00:00</div>
+          <span class="status-led">ONLINE</span>
+        </div>
+        <button class="hud-menu-btn" id="hudMenuBtn" title="Menu Rápido"><i data-lucide="menu"></i></button>
+      </div>
+      
+      <div class="orb-menu-trigger" id="orbMenuTrigger" title="Menu Rápido">●●●</div>
+      <div class="drag-handle"></div>
+
+      <div class="small-preview" id="smallPreview" title="Gerenciar Chaves">
+        <div class="mini-avatar" id="smallMiniAvatar"></div>
+        <div class="small-text" id="smallText">Aguardando ativação...</div>
+        <div class="ident-badge" id="smallIdent">--</div>
+      </div>
+
+      <div class="card-body" id="cardBody">
+        <!-- Main Input User -->
+        <div class="input-wrapper stagger-item">
+          <input type="text" class="cyber-input" id="inputUser" placeholder="Identifique-se..." autocomplete="off">
+        </div>
+
+        <!-- Section 1: ASCII Activation -->
+        <div class="activation-wrap stagger-item">
+          <div class="activation-toggle" onclick="toggleSection('activationCard')">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--neon-cyan)"></div>
+              <strong style="letter-spacing:1px;font-size:0.9rem">Ativação ASCII</strong>
+            </div>
+            <div style="margin-left:auto;font-size:0.82rem;color:rgba(255,255,255,0.6)">BASE v1</div>
+          </div>
+          <div id="activationCard" class="activation-card activation-hidden">
+            <div style="display:flex;align-items:flex-start;gap:10px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="mini-avatar" id="actMiniAvatar"></div>
+                <div><div style="font-weight:700">CÉREBRO</div><div style="font-size:0.78rem;opacity:0.6"><span id="actName">User</span></div></div>
+              </div>
+              <div class="activation-badge" id="actBadge" style="margin-left:auto; color:var(--neon-cyan); font-size:0.8em">v:--</div>
+            </div>
+            <pre id="actPre" class="activation-pre">Carregando...</pre>
+            <div class="activation-controls" style="display:flex;gap:8px;margin-top:8px">
+              <button class="trigger-btn" id="copyActBtn">COPIAR</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: System & Neural (Config) -->
+        <div class="activation-wrap stagger-item">
+            <div class="activation-toggle" onclick="toggleSection('systemCard')">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:10px;height:10px;border-radius:99px;background:var(--neon-purple)"></div>
+                  <strong style="letter-spacing:1px;font-size:0.9rem">SYSTEM &amp; NEURAL</strong>
+                </div>
+                <div style="margin-left:auto;font-size:0.82rem;color:rgba(255,255,255,0.6)">CONFIG</div>
+            </div>
+            <div id="systemCard" class="activation-card activation-hidden">
+                <div class="col">
+                   <div class="section-title">IDENTIDADE DA INFODOSE</div>
+                   <input type="text" id="infodoseNameInput" placeholder="Nome: World System..." style="width:100%;margin-bottom:8px;padding:8px;border-radius:6px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);color:#fff">
+                   
+                   <div class="section-title" style="margin-top:8px">CONEXÃO NEURAL (SK)</div>
+                   <input type="password" id="apiKeyInput" placeholder="sk-or-..." autocomplete="off" style="width:100%;margin-bottom:6px;padding:8px;border-radius:6px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);color:#fff">
+                   
+                   <div class="model-toggle">
+                      <select id="modelSelect" class="btn">
+                        <option value="" disabled="">Selecione Modelo</option>
+                        <option value="nvidia/nemotron-3-nano-30b-a3b:free">NemoTron (Free)</option>
+                        <option value="allenai/molmo-2-8b:free">MolMo (Free)</option>
+                        <option value="mistralai/devstral-2512:free">DevStral</option>
+                        <option value="openai/gpt-oss-120b:free">OSS120b</option>
+                      </select>
+                   </div>
+                   
+                   <div class="panel-divider" style="margin:10px 0; border-top:1px solid rgba(255,255,255,0.05)"></div>
+                   <button id="saveSystemBtn" class="trigger-btn" style="margin-top:12px;background:var(--neon-cyan);color:#000;border:none;font-weight:700">SALVAR CONFIGURAÇÃO</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stagger-item" style="margin-top:4px">
+            <div class="stat-lbl" style="margin-bottom:6px; font-size:0.6rem; color:rgba(255,255,255,0.4)">INTERFACE MODE</div>
+            <div style="display:flex; gap:8px;">
+                <button class="trigger-btn mode-btn active-mode" id="btnModeCard" onclick="setMode('card')" style="flex:1" title="Modo Padrão">CARD</button>
+                <button class="trigger-btn mode-btn" id="btnModeOrb" onclick="setMode('orb')" style="flex:1" title="Flutuante">ORB</button>
+                <button class="trigger-btn mode-btn" id="btnModeHud" onclick="setMode('hud')" style="flex:1" title="Barra de Topo">HUD</button>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- KEYS MANAGER MODAL -->
+  <div id="keysModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card" role="dialog">
+      <div class="keys-header">
+        <div>
+          <div id="keysTitle" style="font-weight:800;font-size:1.1rem;color:var(--neon-cyan)">USER KEYS MANAGER</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:0.85rem">Gerencie suas chaves API com segurança local (Cofre).</div>
+        </div>
+        <button id="closeKeysBtn" class="small-btn">X</button>
+      </div>
+      <div class="key-list" id="keyList"></div>
+      <div class="form-section" style="margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.05)">
+        <div class="form-grid">
+          <input id="keyNameInput" placeholder="Nome da chave (ex: Principal)">
+          <input id="keyTokenInput" type="password" placeholder="Token / ESK (Opcional)">
+        </div>
+        <button id="addKeyBtn" class="small-btn" style="width:100%;margin-top:8px;background:rgba(255,255,255,0.1)">ADICIONAR CHAVE</button>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:space-between;margin-top:15px;border-top:1px solid rgba(255,255,255,0.05);padding-top:12px">
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:5px">
+          <i data-lucide="shield-check" style="width:14px"></i> <span id="vaultStatusText">Cofre Aberto</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button id="lockVaultBtn" class="small-btn danger">BLOQUEAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VAULT UNLOCK MODAL -->
+  <div id="vaultModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card">
+      <div class="vault-icon"><i data-lucide="lock" style="width:24px;height:24px"></i></div>
+      <h3 style="margin:0 0 10px 0;font-weight:800">ACESSO AO COFRE</h3>
+      <p style="margin:0 0 15px 0;font-size:0.9rem;color:rgba(255,255,255,0.6)">Seus dados estão criptografados. Digite a senha para desbloquear.</p>
+      <input type="password" id="vaultPassInput" class="cyber-input" style="text-align:center;margin-bottom:12px" placeholder="Senha...">
+      <div style="display:flex;gap:8px;justify-content:center">
+         <button id="vaultCancelBtn" class="small-btn">Cancelar</button>
+         <button id="vaultUnlockBtn" class="small-btn active-btn">DESBLOQUEAR</button>
+      </div>
+    </div>
+  </div>
+
+
+
+<script src="https://kodux78k.github.io/oi-Dual/js/modules/inline-000.js"></script>
+
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://w.soundcloud.com/player/api.js"></script>
+
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/M0D/DBZP/css/ss5.css">
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/css/kob-dox-nanai-v4.css">
+
+    <link rel="stylesheet" href="https://kodux78k.github.io/oi-Dual/css/main.css">
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/css/kob-dox-nanai.css">
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/M0D/V-core/css/main-root.css">
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/css/kob-framefix.css">
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/css/0x01_pulsar_V_D5-2.css">
+
+<!-- 
+
+
+
+<script src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kob-mstr-0.js"></script> 
+
+<script src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kob-mstr.js"></script>
+
+
+-->
+
+<script src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kob-mstr-0.js"></script> 
+
+  <style>
+    :root {
+      --z-base: 0;
+      --z-content: 100;
+      --z-widget: 500;
+      --z-overlay: 1000;
+      --z-system: 5000;
+    }
+
+    
+    #bodyPlayer{
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .kob-tts-dock,
+    #kodux-widget,
+    [data-idle-target]{
+      transition: transform .35s ease, opacity .65s ease;
+      will-change: transform, opacity;
+      box-shadow: none !important;
+    }
+
+    .kob-tts-dock.idle,
+    #kodux-widget.idle,
+    [data-idle-target].idle{
+      opacity: .18;
+      transform: scale(.87);
+    }
+
+    .kob-tts-dock:hover,
+    #kodux-widget:hover,
+    [data-idle-target]:hover{
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+
+<div>
+<!-- 
+
+
+
+<link rel="stylesheet" href="https://kodux78k.github.io/oi-Dual/css/main.css">
+
+-->
+
+
+  <!-- Ambient Blobs --
+  <div class="ambient-light"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+  <div id="snap-zone"></div>
+  <div class="toaster-wrap" id="toasterWrap"></div>
+
+  <div id="bodyPlayer" data-mode="player" class="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
+
+    <div class="absolute inset-0 z-0 opacity-10 pointer-events-none flex items-center justify-center select-none">
+    
+<!--  <h1 id="appTitle" class="text-6xl font-black tracking-[0.5em] text-white">åY€</h1>
+      <script>
+        const el = document.getElementById('appTitle');
+
+        function getUserName() {
+          return (
+            localStorage.getItem('di_userName') ||
+            localStorage.getItem('userName') ||
+            localStorage.getItem('infodose:username') ||
+            'åY€'
+          );
+        }
+
+        function updateName() {
+          if (el) el.textContent = getUserName().toUpperCase();
+        }
+
+        updateName();
+        window.addEventListener('storage', updateName);
+      </script> -->
+
+
+
+</div>
+
+    <div id="root">
+      <div class="wrap">
+        <div class="content">
+          <iframe id="frame" src="https://kodux78k.github.io/oiDual-VwR/index.html"></iframe>
+          <div id="kob-tts-outline"></div>
+        </div>
+
+        <div class="symbol-bar floating" id="symbolBar">
+          <div class="toggle-wrap">
+            <button class="symbol-button main-toggle" id="toggleBtn" title="Menu / Iniciar">≡</button>
+          </div>
+
+          <div class="symbol-wrap">
+            <button class="symbol-button" id="btn-prev" title="Voltar Bloco">◀</button>
+          </div>
+
+          <div class="symbol-wrap">
+            <button class="symbol-button" id="btn-play" title="Play/Pause">▶</button>
+          </div>
+
+          <div class="symbol-wrap">
+            <button class="symbol-button" id="btn-next" title="Próximo Bloco">▶▶</button>
+          </div>
+
+          <button class="symbol-button" id="btn-arch" title="Trocar Arquétipo de Voz">
+            <div class="orb-microphone-container">
+              <div class="tts-orb-mini">
+                <div class="orb" id="main-orb">
+                  <div class="orb-core"></div>
+                </div>
+              </div>
+            </div>
+          </button>
+
+ <div class="symbol-wrap">
+          <button class="symbol-button" data-id="phi" data-url="https://kodux78k.github.io/oiDual-VwR/index.html">Φ</button>
+        </div>
+        <div class="symbol-wrap">
+          <button class="symbol-button" data-id="viv" data-url="https://kodux78k.github.io/oiDual--Y-/M0D/78FFD/">꩜</button>
+        </div>
+        <div class="symbol-wrap">
+          <button class="symbol-button" data-id="home" data-url="https://kodux78k.github.io/oiDual-idHome/">◌</button>
+        </div>
+        <div class="symbol-wrap">
+          <button class="symbol-button" data-id="doc" data-url="https://kodux78k.github.io/info-Doc/index.html">◘</button>
+        </div>
+
+        <div class="hud-info" id="hudStatus">KOBLLUX · ORB NEXUS</div>
+      </div>
+    </div>
+
+    <!-- === OVERLAY DE ARQUÉTIPOS (áudio/tts) === -->
+    <div id="arch-overlay"></div>
+
+        
+        </div>
+      </div>
+    </div>
+
+
+ 
+
+
+    <div id="yt-container" class="absolute -left-[9999px]"></div>
+    <div id="sc-container" class="absolute -left-[9999px]"></div>
+    <audio id="local-audio" crossorigin="anonymous"></audio>
+
+    <div id="kodux-widget" data-idle-target class="state-ball" style="right: 20px; bottom: 100px;">
+      <div id="content-ball" class="w-full h-full flex items-center justify-center text-[var(--primary)]">
+        <i class="ph-fill ph-vinyl-record animate-spin" style="animation-duration: 4s; font-size: 28px;"></i>
+      </div>
+
+      <div id="content-preview" class="hidden-content w-full h-full flex items-center px-3 gap-3">
+        <img id="prev-cover" src="https://picsum.photos/100" class="w-12 h-12 rounded-full object-cover border border-[var(--primary)] shadow-lg preview-clickable cursor-pointer transition-transform hover:scale-105" onclick="openFullFromPreview(event)">
+        <div class="flex-1 overflow-hidden preview-clickable cursor-pointer" onclick="openFullFromPreview(event)">
+          <h4 id="prev-title" class="text-[11px] font-bold text-white truncate glow-text">Kodux System</h4>
+          <p id="prev-artist" class="text-[9px] text-[var(--muted)] truncate">Aguardando...</p>
+        </div>
+        <button onclick="togglePlay(event)" class="text-white hover:text-[var(--primary)] transition z-10">
+          <i id="prev-play-icon" class="ph-fill ph-play-circle text-4xl"></i>
+        </button>
+      </div>
+
+      <div id="content-footer" class="hidden-content w-full h-full flex flex-col relative">
+        <div class="absolute top-0 left-0 w-full h-1 bg-white/5 cursor-pointer" id="footer-progress-click">
+          <div id="footer-progress-bar" class="h-full bg-[var(--primary)] w-0 shadow-[0_0_10px_var(--primary)]"></div>
+        </div>
+
+        <div class="drag-header flex-1 flex items-center px-6 gap-4">
+          <img id="foot-cover" src="https://picsum.photos/100" class="w-14 h-14 rounded-xl object-cover shadow-xl border border-white/10">
+          <div class="flex-1 overflow-hidden cursor-pointer" onclick="updateWidgetState('full')">
+            <h4 id="foot-title" class="text-sm font-bold text-white truncate">Kodux System</h4>
+            <p id="foot-artist" class="text-xs text-[var(--muted)] truncate">Aguardando...</p>
+          </div>
+          <div class="flex items-center gap-5">
+            <button onclick="playPrev(event)" class="text-[var(--muted)] hover:text-white"><i class="ph-fill ph-skip-back text-2xl"></i></button>
+            <button onclick="togglePlay(event)" class="text-white hover:scale-110 transition"><i id="foot-play-icon" class="ph-fill ph-play-circle text-5xl"></i></button>
+            <button onclick="playNext(event)" class="text-[var(--muted)] hover:text-white"><i class="ph-fill ph-skip-forward text-2xl"></i></button>
+            <button onclick="collapseToBall(event)" class="text-[var(--muted)] ml-2"><i class="ph ph-minus-circle text-2xl"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-full" class="hidden-content flex flex-col w-full h-full relative">
+        <div class="drag-header w-full p-5 flex justify-between items-center bg-white/5 border-b border-white/5">
+          <div class="flex items-center gap-3">
+            <i class="ph-fill ph-lightning text-[var(--primary)] text-xl"></i>
+            <span class="text-sm font-black tracking-widest glow-text">ORÁCULO DUAL</span>
+          </div>
+          <button onclick="collapseToBall(event)" class="text-[var(--muted)] hover:text-white p-2 bg-white/5 rounded-lg">
+            <i class="ph ph-caret-down-bold"></i>
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-5 pb-36 soft-scroll">
+          <div class="mb-4">
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 soft-scroll" id="playlist-tabs"></div>
+          </div>
+
+          <div class="flex gap-2 mb-4">
+            <div class="flex-1 relative">
+              <i class="ph ph-link absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"></i>
+              <input type="text" id="link-input" placeholder="YouTube ou SoundCloud link" class="glass-input w-full rounded-xl pl-10 pr-4 py-3 text-xs">
+            </div>
+            <select id="destination-select" class="glass-select rounded-xl px-3 text-xs min-w-[135px]">
+              <option value="all">Todas</option>
+            </select>
+            <button onclick="addLink()" class="btn-primary px-4 rounded-xl shadow-lg">
+              <i class="ph ph-plus-bold"></i>
+            </button>
+          </div>
+
+          <div class="flex gap-2 mb-4 items-center">
+            <div class="flex-1 relative">
+              <i class="ph ph-folder-simple absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"></i>
+              <input type="text" id="new-playlist-input" placeholder="Criar nova playlist" class="glass-input w-full rounded-xl pl-10 pr-4 py-3 text-xs">
+            </div>
+            <button onclick="createPlaylist()" class="btn-primary px-4 rounded-xl shadow-lg">
+              <i class="ph ph-folder-plus"></i>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-sm font-bold text-white">Playlists carregadas</h3>
+              <p class="text-[10px] text-[var(--muted)]">Toque para trocar de grupo, criar, remover ou organizar.</p>
+            </div>
+          </div>
+
+          <div id="playlist-container" class="flex flex-col gap-3"></div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full bg-black/80 backdrop-blur-xl border-t border-[var(--primary)] p-6">
+          <input type="range" id="main-progress" min="0" max="100" value="0" class="w-full mb-4">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4 overflow-hidden">
+              <img id="main-cover" src="https://picsum.photos/100" class="w-14 h-14 rounded-xl border border-white/20 object-cover">
+              <div class="overflow-hidden">
+                <h4 id="main-title" class="text-sm font-bold text-white truncate">Oráculo</h4>
+                <p id="main-artist" class="text-[10px] text-[var(--muted)] truncate">Sistema KODUX v2.5</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-5 shrink-0">
+              <button onclick="playPrev()" class="text-white text-2xl"><i class="ph-fill ph-skip-back"></i></button>
+              <button onclick="togglePlay()" class="w-14 h-14 rounded-full bg-[var(--primary)] text-black flex items-center justify-center shadow-[0_0_20px_var(--primary)]">
+                <i id="main-play-icon" class="ph-fill ph-play text-3xl ml-1"></i>
+              </button>
+              <button onclick="playNext()" class="text-white text-2xl"><i class="ph-fill ph-skip-forward"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://kodux78k.github.io/oiDual--Y-/M0D/DBZP/js/ss5.js"></script>
+  <script src="https://kodux78k.github.io/oiDual--Y-/js/kob-LVb.js"></script>
+  <script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kobdh0-main.js"></script>
+  <script src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/0x03_expandir_V_D7.js"></script>
+  <script src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/0x07_selar_B_D3.js"></script>
+
+  <script src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kob-outline-uni.js"></script>
+
+  <script>
+    (() => {
+      const bodyPlayer = document.getElementById('bodyPlayer');
+      const idleSelector = '.kob-tts-dock, #kodux-widget, [data-idle-target]';
+      let idleTimer = null;
+
+      function getIdleTargets() {
+        return document.querySelectorAll(idleSelector);
+      }
+
+      function setIdleState(isIdle) {
+        getIdleTargets().forEach(el => el.classList.toggle('idle', isIdle));
+      }
+
+      function resetIdle() {
+        setIdleState(false);
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => setIdleState(true), 1870);
+      }
+
+      function setMode(mode = 'player') {
+        if (!bodyPlayer) return;
+        bodyPlayer.dataset.mode = mode;
+      }
+
+      window.KoduxShell = {
+        setMode,
+        resetIdle
+      };
+
+      ['pointerdown', 'pointermove', 'touchstart', 'mousemove', 'scroll'].forEach(ev => {
+        document.addEventListener(ev, resetIdle, { passive: true });
+      });
+
+      document.addEventListener('keydown', resetIdle);
+
+      setMode(bodyPlayer?.dataset.mode || 'player');
+      resetIdle();
+    })();
+    
+    // ========== CARROSSEL VERTICAL 13 SLOTS (METATRON) ==========
+const container13 = document.getElementById('carousel-13');
+const slotsData = [];
+
+// Gerar 13 slots
+for (let i = 1; i <= 13; i++) {
+  const slot = document.createElement('div');
+  slot.className = 'slot';
+  slot.innerHTML = `<i class="fa-regular fa-circle"></i><span>Ponto ${i}</span>`;
+  slot.dataset.idx = i;
+  container13.appendChild(slot);
+  slotsData.push({ element: slot, link: null });
+}
+
+// Toque longo e clique
+let longTimer = null, currentSlotForModal = null;
+
+function openLinkModal(slot) {
+  const idx = slot.dataset.idx;
+  const data = slotsData[idx-1];
+  document.getElementById('modalUrl').value = data.link || '';
+  currentSlotForModal = slot;
+  document.getElementById('linkModal').classList.add('active');
+}
+
+function handleSlotClick(slot) {
+  // Animação push
+  slot.classList.add('push');
+  setTimeout(() => slot.classList.remove('push'), 200);
+
+  // Destaque escala
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('active-slot'));
+  slot.classList.add('active-slot');
+
+  const idx = slot.dataset.idx;
+  const link = slotsData[idx-1].link;
+  const secondLayer = document.getElementById('secondLayer');
+  const horizTrack = document.getElementById('horizTrack');
+  horizTrack.innerHTML = '';
+
+  if (link) {
+    for (let i=1; i<=6; i++) {
+      const card = document.createElement('div');
+      card.className = 'horiz-card';
+      card.innerHTML = `<i class="fa-solid fa-link"></i><strong>Opção ${i}</strong><br><span style="font-size:12px">${link.substring(0,30)}</span>`;
+      card.addEventListener('click', () => window.open(link, '_blank'));
+      horizTrack.appendChild(card);
+    }
+  } else {
+    for (let i=1; i<=8; i++) {
+      const card = document.createElement('div');
+      card.className = 'horiz-card';
+      card.innerHTML = `<i class="fa-regular fa-image"></i><strong>Frame ${i}</strong><br><span style="font-size:10px">Conexão ${idx} → ${i}</span>`;
+      horizTrack.appendChild(card);
+    }
+  }
+  secondLayer.classList.add('open');
+}
+
+slotsData.forEach((item, idx) => {
+  const slot = item.element;
+  let touchTimer = null;
+  slot.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    touchTimer = setTimeout(() => openLinkModal(slot), 3000);
+  });
+  slot.addEventListener('touchend', () => {
+    if (touchTimer) clearTimeout(touchTimer);
+    handleSlotClick(slot);
+  });
+  slot.addEventListener('touchmove', () => {
+    if (touchTimer) clearTimeout(touchTimer);
+  });
+  // mouse para desktop
+  let mouseTimer = null;
+  slot.addEventListener('mousedown', () => {
+    mouseTimer = setTimeout(() => openLinkModal(slot), 3000);
+  });
+  slot.addEventListener('mouseup', () => {
+    if (mouseTimer) clearTimeout(mouseTimer);
+    handleSlotClick(slot);
+  });
+  slot.addEventListener('mouseleave', () => {
+    if (mouseTimer) clearTimeout(mouseTimer);
+  });
+});
+
+// Fechar segunda camada ao clicar fora
+document.addEventListener('click', (e) => {
+  const layer = document.getElementById('secondLayer');
+  if (layer.classList.contains('open') && !layer.contains(e.target) && !e.target.closest('.slot')) {
+    layer.classList.remove('open');
+  }
+});
+
+// Salvar link do modal
+document.getElementById('saveLink').addEventListener('click', () => {
+  const url = document.getElementById('modalUrl').value.trim();
+  if (currentSlotForModal) {
+    const idx = currentSlotForModal.dataset.idx;
+    slotsData[idx-1].link = url;
+    const icon = currentSlotForModal.querySelector('i');
+    icon.className = url ? 'fa-solid fa-link' : 'fa-regular fa-circle';
+  }
+  document.getElementById('linkModal').classList.remove('active');
+  currentSlotForModal = null;
+});
+document.getElementById('cancelModal').addEventListener('click', () => {
+  document.getElementById('linkModal').classList.remove('active');
+  currentSlotForModal = null;
+});
+
+// CSS adicional (caso não esteja presente)
+const style = document.createElement('style');
+style.textContent = `
+  .carousel-vertical { display: flex; flex-direction: column; gap: 16px; align-items: center; margin-top: 20px; max-height: 380px; overflow-y: auto; padding: 8px; }
+  .slot { width: 260px; height: 70px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 40px; display: flex; align-items: center; justify-content: center; gap: 15px; backdrop-filter: blur(8px); cursor: pointer; transition: all 0.3s cubic-bezier(0.23,1,0.32,1); }
+  .slot.active-slot { transform: scale(1.15); border-color: var(--gold); box-shadow: var(--gold-glow); background: rgba(240,199,117,0.15); }
+  .carousel-vertical:has(.slot.active-slot) .slot:not(.active-slot) { transform: scale(0.85); opacity: 0.5; filter: blur(1px); }
+  .slot.push { transform: scale(1.3) translateY(-8px); transition: 0.15s cubic-bezier(0.2,1.2,0.8,1); box-shadow: 0 0 0 3px var(--gold), var(--gold-glow); }
+  .second-layer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); border-top: 1px solid var(--gold); padding: 20px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2,0.9,0.4,1.1); z-index: 200; height: 45vh; overflow-x: auto; white-space: nowrap; }
+  .second-layer.open { transform: translateY(0); }
+  .horizontal-track { display: inline-flex; gap: 20px; height: 100%; align-items: center; }
+  .horiz-card { width: 200px; height: 250px; background: rgba(255,255,255,0.05); border-radius: 24px; border: 1px solid rgba(255,255,255,0.15); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.2s; }
+  .horiz-card:hover { transform: scale(1.02); border-color: var(--gold); }
+`;
+document.head.appendChild(style);
+    
+  </script>
+
+
+  
+  
+  
+  
+</body>
+</html>

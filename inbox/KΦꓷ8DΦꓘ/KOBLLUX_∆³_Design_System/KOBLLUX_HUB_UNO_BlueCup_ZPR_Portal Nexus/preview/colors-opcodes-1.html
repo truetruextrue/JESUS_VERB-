@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background:var(--bg); color:var(--fg); padding:18px 22px; font-family:var(--font-sans); }
+.row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start; }
+.col { display:flex; flex-direction:column; gap:8px; }
+.swatch { width:100%; height:42px; border-radius:var(--r-panel); border:1px solid var(--border-strong); position:relative; overflow:hidden; }
+.swatch .ring { position:absolute; inset:0; border-radius:inherit; box-shadow:var(--shadow-inset); pointer-events:none; }
+.cell { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.cell .name { font-family:var(--font-mono); font-size:var(--fs-d2); letter-spacing:.12em; color:var(--fg); text-transform:uppercase; white-space:nowrap; }
+.cell .hex  { font-family:var(--font-mono); font-size:var(--fs-d1); color:var(--muted); letter-spacing:.1em; }
+.cell .meta { font-family:var(--font-mono); font-size:var(--fs-d1); color:var(--muted); }
+</style></head><body>
+<div class="row" style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px">
+
+<div class="cell">
+  <div class="swatch" style="background:#b978ff"><div class="ring"></div></div>
+  <div style="display:flex;align-items:baseline;gap:6px">
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d4);color:#b978ff">0x00</span>
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d6);color:#b978ff;line-height:1">○</span>
+  </div>
+  <div class="name" style="color:#b978ff">INICIAR</div>
+  <div class="hex">#B978FF</div>
+  <div class="meta">396 Hz</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#67e6ff"><div class="ring"></div></div>
+  <div style="display:flex;align-items:baseline;gap:6px">
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d4);color:#67e6ff">0x01</span>
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d6);color:#67e6ff;line-height:1">●</span>
+  </div>
+  <div class="name" style="color:#67e6ff">PULSAR</div>
+  <div class="hex">#67E6FF</div>
+  <div class="meta">432 Hz</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#7cffb2"><div class="ring"></div></div>
+  <div style="display:flex;align-items:baseline;gap:6px">
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d4);color:#7cffb2">0x02</span>
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d6);color:#7cffb2;line-height:1">―</span>
+  </div>
+  <div class="name" style="color:#7cffb2">INTEGRAR</div>
+  <div class="hex">#7CFFB2</div>
+  <div class="meta">528 Hz</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#4de0ff"><div class="ring"></div></div>
+  <div style="display:flex;align-items:baseline;gap:6px">
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d4);color:#4de0ff">0x03</span>
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d6);color:#4de0ff;line-height:1">▢</span>
+  </div>
+  <div class="name" style="color:#4de0ff">EXPANDIR</div>
+  <div class="hex">#4DE0FF</div>
+  <div class="meta">639 Hz</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#ff9ad1"><div class="ring"></div></div>
+  <div style="display:flex;align-items:baseline;gap:6px">
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d4);color:#ff9ad1">0x04</span>
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d6);color:#ff9ad1;line-height:1">◇</span>
+  </div>
+  <div class="name" style="color:#ff9ad1">DISSOLVER</div>
+  <div class="hex">#FF9AD1</div>
+  <div class="meta">594 Hz</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#ff7a00"><div class="ring"></div></div>
+  <div style="display:flex;align-items:baseline;gap:6px">
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d4);color:#ff7a00">0x05</span>
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d6);color:#ff7a00;line-height:1">⧉</span>
+  </div>
+  <div class="name" style="color:#ff7a00">CONVERGIR</div>
+  <div class="hex">#FF7A00</div>
+  <div class="meta">672 Hz</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#a8ff78"><div class="ring"></div></div>
+  <div style="display:flex;align-items:baseline;gap:6px">
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d4);color:#a8ff78">0x06</span>
+    <span style="font-family:var(--font-mono);font-size:var(--fs-d6);color:#a8ff78;line-height:1">☯</span>
+  </div>
+  <div class="name" style="color:#a8ff78">CRISTALIZAR</div>
+  <div class="hex">#A8FF78</div>
+  <div class="meta">741 Hz</div>
+</div>
+</div></body></html>
