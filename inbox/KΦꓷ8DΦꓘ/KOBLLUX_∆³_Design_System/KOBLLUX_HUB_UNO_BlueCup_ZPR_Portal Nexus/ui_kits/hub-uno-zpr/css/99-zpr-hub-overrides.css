@@ -1,0 +1,82 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  ZPR × HUB UNO · OVERRIDES FINAIS                       ║
+   ║  • Todas as <section.view> ficam visíveis (uma por cell)║
+   ║  • Frames auto-ajustáveis ao conteúdo                   ║
+   ║  • Tabbar nativa oculta (symbolbar substitui)           ║
+   ║  • Header do HUB UNO oculto (chrome ZPR no lugar)       ║
+   ║  • Scroll interno apenas em listas longas               ║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+/* Header nativo + tabbar nativa do HUB UNO: ocultos */
+header.mast { display: none !important; }
+nav.tabbar  { display: none !important; }
+
+/* Forçar todas as views visíveis para o engine ZPR enxergá-las
+   simultaneamente nas células do grid. O router original
+   (07-hub-router-main.js) deixa de controlar a navegação. */
+main { display: contents !important; }
+main > section.view,
+section.view {
+  display: block !important;
+  position: relative !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  margin: 0 !important;
+  padding: 8px 4px !important;
+}
+
+/* Cards e painéis crescem com o conteúdo */
+.card, .v-glass, .panel, .pane,
+.session-panel, .appsCard, .appCard,
+.appsGrid, .localAppsCard {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+/* Scroll interno SÓ em feeds longos */
+#logs, #sysLogPrev, #chatFeed, #iaFeed, .scroller {
+  max-height: 60vh !important;
+  overflow-y: auto !important;
+}
+
+/* Symbolbar fica no rodapé */
+#symbolBar.symbol-bar.floating {
+  position: fixed !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+  z-index: 9000;
+}
+
+/* Reserva espaço pra symbolbar não cobrir conteúdo */
+.screen > .inner { padding-bottom: 160px !important; }
+
+/* Dock pode flutuar à direita; aqui escondemos para evitar conflito visual */
+#dock { display: none !important; }
+
+/* sessionsAnchor + custom-bg ficam invisíveis mas no DOM (para scripts que dependem) */
+#sessionsAnchor, #custom-bg { position: fixed !important; pointer-events: none; }
+#sessionsAnchor:empty { display: none; }
+
+/* BlueCup local panel · escopado em #v-apps + #ls-panel */
+.bluecup-local-shell { display: block; margin-top: 12px; }
+.bluecup-local-shell .card.localAppsCard {
+  background: rgba(0,0,0,0.32);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.bluecup-local-shell details > summary {
+  padding: 12px 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,.04), transparent);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.bluecup-local-shell .content { padding: 12px 14px; }
+
+/* Garante que o LS panel apareça acima da symbolbar */
+#ls-panel { z-index: 9100 !important; }

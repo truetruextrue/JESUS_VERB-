@@ -1,0 +1,53 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  LS PANEL · TABS                                        ║
+   ║  Aba secundária BlueCup dentro do #ls-panel do HUB UNO  ║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+#ls-panel .ls-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+#ls-panel .ls-tab {
+  flex: 1;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-bottom: none;
+  color: rgba(232,224,240,0.5);
+  font-family: var(--pn-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  transition: all .18s;
+}
+#ls-panel .ls-tab.active {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.4);
+  color: var(--pn-gold, #c9a84c);
+  box-shadow: inset 0 -2px 0 var(--pn-gold, #c9a84c);
+}
+#ls-panel .ls-tab:hover:not(.active) {
+  background: rgba(255,255,255,0.04);
+  color: rgba(232,224,240,0.85);
+}
+#ls-panel .ls-tabpanel { display: none; }
+#ls-panel .ls-tabpanel.active { display: block; }
+
+/* Quando a aba do BlueCup está ativa, escopamos o painel BlueCup */
+#ls-panel .ls-tabpanel-bluecup {
+  padding: 12px;
+}
+#ls-panel .ls-tabpanel-bluecup .bluecup-local-shell .card.localAppsCard {
+  background: rgba(0,0,0,0.32);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+#ls-panel .ls-tabpanel-bluecup details > summary {
+  padding: 10px 12px;
+  font-size: 11px;
+}
+#ls-panel .ls-tabpanel-bluecup .content { padding: 10px 12px; }

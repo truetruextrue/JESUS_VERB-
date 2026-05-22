@@ -1,0 +1,35 @@
+/* Estilos da frequência 3Hz */
+:root {
+    --frequency-3: #3b82f6;
+    --frequency-6: #8b5cf6;
+    --frequency-9: #10b981;
+}
+
+body[data-organism-state="booting"] {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+    padding: 2rem;
+}
+
+#organism-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.system-status-item {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    background: rgba(255,255,255,0.05);
+    border-radius: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.system-status-item .status {
+    color: var(--frequency-3);
+    font-weight: bold;
+}
