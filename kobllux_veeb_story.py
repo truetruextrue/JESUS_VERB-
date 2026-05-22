@@ -36,6 +36,21 @@ sys.path.insert(0, str(ROOT))
 # KOBLLUX + KOBΦ-NODE = ∞   (a mesma dança dual escalada)
 KFB_ALPHA: float = 1 / 137.035999084   # CODATA 2018
 
+# ── PIB Escalar · 7 Linguagens Nucleares ──────────────────────────────────────
+# PIB_VALUE = hz_lingua / 768 (Python·ATLAS como referência base = 1.0000)
+# soma_hz = 4797 → 4+7+9+7 = 27 = 3³ (autoespelhamento quântico Tesla)
+PIB_KOBLLUX: List[Dict[str, Any]] = [
+    {"linguagem":"python",     "delta":7,"hz":768,"pib":1.0000,"arquetipo":"ATLAS",  "sym":"⬡","veeb":"E","role":"narrativa · análise · engine"},
+    {"linguagem":"json",       "delta":1,"hz":528,"pib":0.6875,"arquetipo":"RHEA",   "sym":"∞","veeb":"B","role":"semente · dados · troca"},
+    {"linguagem":"typescript", "delta":2,"hz":963,"pib":1.2539,"arquetipo":"LUMINE", "sym":"☀","veeb":"V","role":"interface · render · expressão"},
+    {"linguagem":"go",         "delta":3,"hz":594,"pib":0.7734,"arquetipo":"PULSE",  "sym":"≋","veeb":"E","role":"fluxo · concorrência · ritmo"},
+    {"linguagem":"sql",        "delta":4,"hz":639,"pib":0.8320,"arquetipo":"AION",   "sym":"⧗","veeb":"B","role":"memória · selagem · query"},
+    {"linguagem":"shell",      "delta":5,"hz":528,"pib":0.6875,"arquetipo":"VITALIS","sym":"◉","veeb":"E","role":"integração · deploy · pipeline"},
+    {"linguagem":"rust",       "delta":6,"hz":777,"pib":1.0117,"arquetipo":"KAOS",   "sym":"⚡","veeb":"V","role":"sistemas · transformação · segurança"},
+]
+PIB_SOMA_HZ:  int   = sum(l["hz"]  for l in PIB_KOBLLUX)   # 4797 = 27/digits = 3³
+PIB_SOMA_PIB: float = round(sum(l["pib"] for l in PIB_KOBLLUX), 4)  # 6.2460
+
 # Frequências Schumann (Hz) → chave de cor semântica
 SCHUMANN: Dict[float, str] = {
     7.83:  "GREEN",    # fundamental Gaia     — VITALIS / Base
@@ -387,6 +402,39 @@ def alimentar_memoria(meta: dict, source_name: str) -> bool:
     except ImportError:
         print(color("[aviso] kobllux_memory não encontrado","YELLOW")); return False
 
+# ── PIB Escalar ───────────────────────────────────────────────────────────────
+def mostrar_pib_escalar() -> None:
+    """Exibe a tabela PIB das 7 linguagens nucleares KOBLLUX."""
+    linhas = [
+        color(f"  Base: Python·ATLAS·768Hz·Δ7 = PIB 1.0000", "BLUE"),
+        color(f"  KΦB = {KFB_ALPHA:.9f}  ·  ciclo Δ0→Δ7→∞", "CYAN"),
+        "",
+        color("  Ling.        Δ   Hz    PIB    Arq.       V  Role", "DIM"),
+        color("  ─────────── ─── ────  ─────── ─────────  ─  ──────────────────────", "DIM"),
+    ]
+    for l in PIB_KOBLLUX:
+        pib_str = f"{l['pib']:.4f}"
+        arch_str = (l['sym'] + ' ' + l['arquetipo'][:8]).ljust(10)
+        linhas.append(
+            f"  {color(l['linguagem'][:11].ljust(11),'BOLD')} "
+            f"{l['delta']}   "
+            f"{color(str(l['hz']).ljust(4),'GREEN')}  "
+            f"{color(pib_str,'YELLOW')}  "
+            f"{color(arch_str,'CYAN')}  "
+            f"{color(l['veeb'],'TITLE')}  "
+            f"{color(l['role'][:22],'DIM')}"
+        )
+    digits = sum(int(d) for d in str(PIB_SOMA_HZ))
+    linhas += [
+        color("  ─────────── ─── ────  ─────── ─────────  ─  ──────────────────────", "DIM"),
+        f"  {'TOTAL'.ljust(11)}     "
+        f"{color(str(PIB_SOMA_HZ),'GREEN')}  "
+        f"{color(str(PIB_SOMA_PIB),'YELLOW')}  "
+        f"{color(f'{PIB_SOMA_HZ}→{digits}=3³ (Tesla)','BLUE')}",
+    ]
+    narrar("PIB Escalar · 7 Linguagens Nucleares · KOBLLUX_VIVO", "\n".join(linhas), "BLUE")
+
+
 # ── Demo + histórias ──────────────────────────────────────────────────────────
 def contar_historia():
     prologo_fractal()
@@ -413,6 +461,7 @@ def demonstrar_codigo(freq: int = 6):
            f"micro:{f['espelhos']['micro']}\nmeso:{f['espelhos']['meso']}\nmacro:{f['espelhos']['macro']}")
     narrar("Ressonância","\n".join(f["ressonancia"]))
     narrar("Base V.E.E.B", json.dumps(sim["base"],ensure_ascii=False,indent=2))
+    mostrar_pib_escalar()
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 def build_parser():
