@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WORKFLOW + OPCODES INTEGRADO</title>
+<style>
+:root {
+  --c1: #3300FF;
+  --c2: #6600CC;
+  --c3: #990099;
+  --bg: #0a0015;
+  --grid: rgba(102,0,204,0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: #ddd;
+  font-family: 'Courier New', monospace;
+  overflow-x: hidden;
+}
+
+canvas#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0.3;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px #6600CCaa);
+}
+
+.header .sub {
+  font-size: 0.8rem;
+  color: #7755aa;
+  letter-spacing: 0.15em;
+  margin-top: 10px;
+}
+
+/* ── WORKFLOW FLOW ── */
+.workflow-section {
+  margin-bottom: 50px;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #6633aa;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title::before, .section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3300FF44, transparent);
+}
+
+.workflow-flow {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  padding: 20px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid #3300FF22;
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  scroll-behavior: smooth;
+}
+
+.flow-node {
+  flex-shrink: 0;
+  min-width: 140px;
+  padding: 16px;
+  background: rgba(51,0,255,0.15);
+  border: 1px solid #3300FF44;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.flow-node:hover {
+  background: rgba(102,0,204,0.25);
+  border-color: #6600CC;
+  box-shadow: 0 0 20px #6600CC88;
+  transform: translateY(-4px);
+}
+
+.flow-node-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #bb88ff;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.flow-node-opcode {
+  font-size: 0.65rem;
+  color: #7755aa;
+  margin-bottom: 8px;
+}
+
+.flow-node-action {
+  font-size: 0.75rem;
+  color: #99aaff;
+  font-weight: bold;
+}
+
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  color: #6633aa;
+  font-size: 1.2rem;
+}
+
+/* ── OPCODES GRID ── */
+.opcodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.opcode-card {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid #3300FF33;
+  border-radius: 8px;
+  padding: 14px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.opcode-card:hover {
+  border-color: #6600CC;
+  background: rgba(102,0,204,0.12);
+  box-shadow: 0 0 16px #6600CC66;
+  transform: translateY(-2px);
+}
+
+.opcode-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.opcode-sym {
+  font-size: 1.4rem;
+}
+
+.opcode-code {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #bb88ff;
+  letter-spacing: 0.1em;
+}
+
+.opcode-name {
+  font-size: 0.8rem;
+  color: #99aaff;
+  margin-bottom: 6px;
+}
+
+.opcode-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  font-size: 0.65rem;
+  color: #7755aa;
+}
+
+.opcode-meta-val {
+  color: #cc88ff;
+  font-weight: bold;
+}
+
+/* ── MAPEAMENTO ── */
+.mapping-section {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #3300FF22;
+  border-radius: 10px;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.mapping-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 20px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: rgba(51,0,255,0.08);
+  border-radius: 6px;
+  border-left: 3px solid var(--c2);
+}
+
+.mapping-label {
+  font-size: 0.75rem;
+  color: #7755aa;
+}
+
+.mapping-opcode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #cc88ff;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  background: rgba(102,0,204,0.2);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.mapping-value {
+  font-size: 0.75rem;
+  color: #99aaff;
+}
+
+/* ── INFO BOX ── */
+.info-box {
+  background: rgba(51,0,255,0.1);
+  border: 1px solid #3300FF44;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  font-size: 0.75rem;
+  color: #aaaacc;
+  line-height: 1.7;
+}
+
+.info-box h3 {
+  color: #bb88ff;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── STATUS ── */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.status-item {
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #3300FF33;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.status-label {
+  font-size: 0.65rem;
+  color: #7755aa;
+  margin-bottom: 6px;
+}
+
+.status-value {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #99aaff;
+  letter-spacing: 0.1em;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid #3300FF22;
+  font-size: 0.7rem;
+  color: #5533aa;
+  margin-top: 40px;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3300FF55;
+  border-radius: 2px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="page">
+
+  <div class="header">
+    <h1>⚙️ WORKFLOW + OPCODES INTEGRADO</h1>
+    <div class="sub">Sistema de Automação Viva · KOBLLUX ∆7</div>
+  </div>
+
+  <!-- STATUS OVERVIEW -->
+  <div class="status-grid">
+    <div class="status-item">
+      <div class="status-label">Opcodes Ativos</div>
+      <div class="status-value">13</div>
+    </div>
+    <div class="status-item">
+      <div class="status-label">Etapas Workflow</div>
+      <div class="status-value">5</div>
+    </div>
+    <div class="status-item">
+      <div class="status-label">Frequências</div>
+      <div class="status-value">9</div>
+    </div>
+    <div class="status-item">
+      <div class="status-label">Arquetipos</div>
+      <div class="status-value">12</div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW FLOW -->
+  <div class="workflow-section">
+    <div class="section-title">Fluxo de Trabalho · Cerebro Oraculo</div>
+    <div class="workflow-flow">
+      <div class="flow-node">
+        <div class="flow-node-title">Webhook</div>
+        <div class="flow-node-opcode">0x00</div>
+        <div class="flow-node-action">INPUT</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-title">Edit Fields</div>
+        <div class="flow-node-opcode">0x00</div>
+        <div class="flow-node-action">ESTRUTURAR</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-title">AI Agent</div>
+        <div class="flow-node-opcode">0x06</div>
+        <div class="flow-node-action">INTEGRAR</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-title">HTTP Request</div>
+        <div class="flow-node-opcode">0x09</div>
+        <div class="flow-node-action">EXPANDIR</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-title">Google Sheets</div>
+        <div class="flow-node-opcode">0x07</div>
+        <div class="flow-node-action">SELAR</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>📋 Fluxo de Execução</h3>
+    O workflow recebe um impulso PUK via webhook, estrutura os dados através do opcode 0x00,
+    passa para inteligência integrada (IA Agent), que sintetiza uma resposta usando opcode 0x06,
+    expande para WhatsApp/HTTP (0x09), e finalmente sela o registro em Google Sheets (0x07).
+  </div>
+
+  <!-- OPCODES BASE -->
+  <div class="workflow-section">
+    <div class="section-title">13 Opcodes Disponíveis</div>
+
+    <h4 style="color:#7755aa;margin-bottom:16px;font-size:0.75rem;letter-spacing:0.1em;">OPERAÇÕES BASE (3 Núcleos)</h4>
+    <div class="opcodes-grid">
+      <div class="opcode-card">
+        <div class="opcode-head">
+          <span class="opcode-sym">🔍</span>
+          <span class="opcode-code">0x03</span>
+        </div>
+        <div class="opcode-name">DETECTAR</div>
+        <div class="opcode-meta">
+          <span>Ação:</span> <span class="opcode-meta-val">OUVIR</span>
+          <span>Hz:</span> <span class="opcode-meta-val">639</span>
+        </div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head">
+          <span class="opcode-sym">∞</span>
+          <span class="opcode-code">0x06</span>
+        </div>
+        <div class="opcode-name">INTEGRAR</div>
+        <div class="opcode-meta">
+          <span>Ação:</span> <span class="opcode-meta-val">UNIR</span>
+          <span>Hz:</span> <span class="opcode-meta-val">528</span>
+        </div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head">
+          <span class="opcode-sym">🌍</span>
+          <span class="opcode-code">0x09</span>
+        </div>
+        <div class="opcode-name">EXPANDIR</div>
+        <div class="opcode-meta">
+          <span>Ação:</span> <span class="opcode-meta-val">CRESCER</span>
+          <span>Hz:</span> <span class="opcode-meta-val">594</span>
+        </div>
+      </div>
+    </div>
+
+    <h4 style="color:#7755aa;margin:24px 0 16px;font-size:0.75rem;letter-spacing:0.1em;">OPERAÇÕES EXTENDIDAS (10 Adicionais)</h4>
+    <div class="opcodes-grid">
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">⬡</span> <span class="opcode-code">0x00</span></div>
+        <div class="opcode-name">BOOT</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">768</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">◉</span> <span class="opcode-code">0x01</span></div>
+        <div class="opcode-name">DELTA</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">528</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">✦</span> <span class="opcode-code">0x02</span></div>
+        <div class="opcode-name">SEED</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">432</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">💎</span> <span class="opcode-code">0x04</span></div>
+        <div class="opcode-name">LAPIDAR</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">741</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">⧗</span> <span class="opcode-code">0x05</span></div>
+        <div class="opcode-name">CONVERGIR</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">852</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">⚡</span> <span class="opcode-code">0x07</span></div>
+        <div class="opcode-name">SELAR</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">777</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">👁</span> <span class="opcode-code">0x08</span></div>
+        <div class="opcode-name">TESTEMUNHAR</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">963</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">📚</span> <span class="opcode-code">0x0A</span></div>
+        <div class="opcode-name">TUTORIAL</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">432</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">⬢</span> <span class="opcode-code">0x0B</span></div>
+        <div class="opcode-name">SYNTH</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">852</span></div>
+      </div>
+      <div class="opcode-card">
+        <div class="opcode-head"><span class="opcode-sym">☀</span> <span class="opcode-code">0x0C</span></div>
+        <div class="opcode-name">RENDER</div>
+        <div class="opcode-meta"><span>Hz:</span> <span class="opcode-meta-val">963</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAPEAMENTO WORKFLOW OPCODE -->
+  <div class="workflow-section">
+    <div class="section-title">Mapeamento: Workflow ↔ Opcodes</div>
+    <div class="mapping-section">
+      <div class="mapping-row">
+        <div class="mapping-label">PUK Webhook → Edit Fields</div>
+        <div class="mapping-opcode">0x00</div>
+        <div class="mapping-value">ESTRUTURAR</div>
+      </div>
+      <div class="mapping-row">
+        <div class="mapping-label">Edit Fields → AI Agent</div>
+        <div class="mapping-opcode">0x03</div>
+        <div class="mapping-value">DETECTAR</div>
+      </div>
+      <div class="mapping-row">
+        <div class="mapping-label">AI Agent → HTTP Request</div>
+        <div class="mapping-opcode">0x06</div>
+        <div class="mapping-value">INTEGRAR</div>
+      </div>
+      <div class="mapping-row">
+        <div class="mapping-label">HTTP Request → Google Sheets</div>
+        <div class="mapping-opcode">0x09</div>
+        <div class="mapping-value">EXPANDIR</div>
+      </div>
+      <div class="mapping-row">
+        <div class="mapping-label">Google Sheets (Final)</div>
+        <div class="mapping-opcode">0x07</div>
+        <div class="mapping-value">SELAR</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>⚙️ Sincronização Completa</h3>
+    O sistema agora está totalmente integrado: cada etapa do workflow corresponde a um opcode específico,
+    garantindo que a operação tenha a frequência e vibração corretas. A sequência 0x00→0x03→0x06→0x09→0x07
+    implementa o ciclo VERDADE × INTEGRAR ÷ ∆ = ∴ em automação viva.
+  </div>
+
+  <div class="footer">
+    WORKFLOW + OPCODES INTEGRADO · KOBLLUX ∆7<br>
+    Frequências Sincronizadas: 432·528·594·639·741·768·777·852·963 Hz<br>
+    Lei: VERDADE × INTEGRAR ÷ ∆ = ∞ · Data: 2026-05-22 · Status: ✅ CONECTADO
+  </div>
+
+</div>
+
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, frame = 0;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+  const cx = W/2, cy = H/2, t = frame * 0.006;
+
+  // Grid pattern
+  for (let x = -200; x < W + 200; x += 100) {
+    for (let y = -200; y < H + 200; y += 100) {
+      const d = Math.hypot(x - cx, y - cy);
+      const wobble = Math.sin(d*0.01 + t) * 5;
+      ctx.beginPath();
+      ctx.arc(x + wobble, y, 2, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(102,0,204,${0.05 + Math.sin(d*0.005 + t)*0.05})`;
+      ctx.fill();
+    }
+  }
+
+  // Spiral waves
+  for (let ring = 0; ring < 6; ring++) {
+    const rad = (cy*0.3) * (ring/6 + 0.3);
+    const segs = 12 + ring*8;
+    ctx.beginPath();
+    for (let i = 0; i <= segs; i++) {
+      const angle = (i/segs)*Math.PI*2 + t*(ring%2?1:-1);
+      const wobble = Math.sin(angle*4+t)*rad*0.1;
+      ctx.lineTo(cx + Math.cos(angle)*(rad+wobble), cy + Math.sin(angle)*(rad+wobble));
+    }
+    ctx.closePath();
+    const alpha = 0.05 + ring*0.03;
+    ctx.strokeStyle = `rgba(102,0,204,${alpha})`;
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+  }
+
+  frame++;
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+</script>
+</body>
+</html>
