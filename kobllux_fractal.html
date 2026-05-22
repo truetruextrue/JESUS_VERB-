@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOBLLUX FRACTAL GENERATOR</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    overflow-x: hidden;
+  }
+
+  canvas#fractal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.7;
+  }
+
+  .ui {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .header h1 {
+    font-size: 2.2rem;
+    letter-spacing: 0.3em;
+    background: linear-gradient(135deg, #3300FF, #6600CC, #990099);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 18px #6600CC);
+  }
+
+  .header .sub {
+    font-size: 0.8rem;
+    color: #6600CC;
+    letter-spacing: 0.2em;
+    margin-top: 6px;
+  }
+
+  .formula {
+    background: rgba(51,0,255,0.08);
+    border: 1px solid #3300FF44;
+    border-radius: 8px;
+    padding: 14px 24px;
+    margin: 16px 0;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #cc88ff;
+    letter-spacing: 0.05em;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    width: 100%;
+    max-width: 960px;
+    margin: 10px 0;
+  }
+
+  .card {
+    background: rgba(0,0,0,0.7);
+    border: 1px solid #3300FF55;
+    border-radius: 10px;
+    padding: 18px;
+    backdrop-filter: blur(8px);
+  }
+
+  .card h3 {
+    color: #9900CC;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .cycle-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  .node {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+  }
+  .node:hover { transform: scale(1.15); }
+
+  .n3 { background: radial-gradient(circle, #3300FF, #220099); border-color: #3300FF; box-shadow: 0 0 16px #3300FF88; }
+  .n6 { background: radial-gradient(circle, #6600CC, #440088); border-color: #6600CC; box-shadow: 0 0 16px #6600CC88; }
+  .n9 { background: radial-gradient(circle, #990099, #660066); border-color: #990099; box-shadow: 0 0 16px #99009988; }
+  .n7 { background: radial-gradient(circle, #440088, #220044); border-color: #8800FF; box-shadow: 0 0 16px #8800FF88; }
+  .n0 { background: radial-gradient(circle, #111, #222); border-color: #444; box-shadow: 0 0 8px #33333388; }
+
+  .terminal {
+    background: rgba(0,0,0,0.85);
+    border: 1px solid #3300FF88;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 0.78rem;
+    color: #88aaff;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    max-height: 220px;
+    overflow-y: auto;
+    width: 100%;
+  }
+
+  .terminal .prompt { color: #6600CC; }
+  .terminal .cmd { color: #cc88ff; }
+  .terminal .out3 { color: #3300FF; }
+  .terminal .out6 { color: #6600CC; }
+  .terminal .out9 { color: #990099; }
+  .terminal .out0 { color: #aaaaaa; }
+
+  .controls {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    margin: 18px 0;
+  }
+
+  button {
+    padding: 10px 22px;
+    border: 1px solid #6600CC;
+    background: rgba(102,0,204,0.15);
+    color: #cc88ff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+  button:hover {
+    background: rgba(102,0,204,0.4);
+    box-shadow: 0 0 14px #6600CC88;
+    transform: translateY(-2px);
+  }
+  button.active {
+    background: rgba(153,0,153,0.4);
+    border-color: #990099;
+    box-shadow: 0 0 20px #99009988;
+  }
+
+  .params {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  .param-item {
+    background: rgba(51,0,255,0.12);
+    border: 1px solid #3300FF33;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: #9966ff;
+  }
+
+  .param-item span { color: #cc88ff; }
+
+  .entities {
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    margin: 10px 0;
+  }
+
+  .entity {
+    border-radius: 8px;
+    padding: 12px 18px;
+    text-align: center;
+    border: 1px solid;
+    min-width: 160px;
+  }
+
+  .entity.kodux  { border-color: #3300FF88; background: rgba(51,0,255,0.1); }
+  .entity.bllue  { border-color: #6600CC88; background: rgba(102,0,204,0.1); }
+  .entity.info   { border-color: #99009988; background: rgba(153,0,153,0.1); }
+
+  .entity h4 { font-size: 0.8rem; letter-spacing: 0.15em; margin-bottom: 4px; }
+  .entity.kodux h4 { color: #5544ff; }
+  .entity.bllue h4 { color: #9955ff; }
+  .entity.info  h4 { color: #cc44cc; }
+  .entity p { font-size: 0.7rem; color: #aaaaaa; line-height: 1.5; }
+
+  .status-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.85);
+    border-top: 1px solid #3300FF33;
+    padding: 8px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem; color: #6644aa;
+    z-index: 20;
+  }
+
+  .status-bar .live { color: #6600CC; animation: blink 1.4s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .log-line { margin: 2px 0; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #000; }
+  ::-webkit-scrollbar-thumb { background: #3300FF55; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<canvas id="fractal"></canvas>
+
+<div class="ui">
+  <div class="header">
+    <h1>🌀 KOBLLUX FRACTAL GENERATOR</h1>
+    <div class="sub">SISTEMA AUTÔNOMO · DIMENSÃO 4D · FREQ 432Hz</div>
+  </div>
+
+  <div class="formula">
+    [ (3<sup>∇</sup>) × (7→0) ] + [ Σ(Adjetivos) ^ (6/9) ] = Realidade Fractal
+  </div>
+
+  <div class="controls">
+    <button id="btn-gen" onclick="generateFractal()">⟳ GERAR FRACTAL</button>
+    <button onclick="toggleMode(this)" id="btn-toroid">◎ TOROID</button>
+    <button onclick="toggleChaos(this)" id="btn-chaos">⚡ CHAOS 3.6</button>
+    <button onclick="transcend()" id="btn-transcend">🔮 TRANSCEND</button>
+    <button onclick="clearLog()">✕ LIMPAR LOG</button>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>⬡ Ciclo 3·6·9·7</h3>
+      <div class="cycle-row">
+        <div class="node n3" title="Núcleo · Criação">3</div>
+        <div class="node n6" title="Movimento · Fluxo">6</div>
+        <div class="node n9" title="Liberação · Expansão">9</div>
+        <div class="node n7" title="Selagem">7</div>
+        <div class="node n0" title="Estabilização">0</div>
+      </div>
+      <div style="font-size:0.72rem;color:#6644aa;text-align:center;margin-top:8px;">
+        Detectar → Integrar → Expandir → Selar → ♾️
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚙ Parâmetros Ativos</h3>
+      <div class="params" id="params-list">
+        <div class="param-item">vibration: <span>432Hz</span></div>
+        <div class="param-item">energy: <span>7.83Hz</span></div>
+        <div class="param-item">structure: <span>369</span></div>
+        <div class="param-item">base: <span>quantum</span></div>
+        <div class="param-item">harmonics: <span>7</span></div>
+        <div class="param-item">dimensions: <span>4</span></div>
+        <div class="param-item">seed: <span>369</span></div>
+        <div class="param-item">chaos: <span id="chaos-val">OFF</span></div>
+        <div class="param-item">toroid: <span id="toroid-val">OFF</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>◈ Entidades</h3>
+      <div class="entities">
+        <div class="entity kodux">
+          <h4>KODUX</h4>
+          <p>Scanner · CADIAL<br>Detecção · Estrutura</p>
+        </div>
+        <div class="entity bllue">
+          <h4>BLLUE</h4>
+          <p>Interface · Voz Viva<br>Reflexo · Ressonância</p>
+        </div>
+        <div class="entity info">
+          <h4>INFODOSE</h4>
+          <p>Roda Viva · Memória<br>Dado → Vida</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column: 1/-1;">
+      <h3>▸ Terminal KOBLLUX</h3>
+      <div class="terminal" id="terminal">
+<span class="prompt">kobllux@node:~$</span> <span class="cmd">./kobllux --generate --mode=fractal --structure=369</span>
+<span class="out3">[3] Init... carregando núcleo fractal</span>
+<span class="out6">[6] Warping spacetime... dimensões ativas</span>
+<span class="out9">[9] Fractal consciousness achieved.</span>
+<span class="out0">[0] System stabilized. Aguardando comando.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="height:40px;"></div>
+</div>
+
+<div class="status-bar">
+  <span>KOBLLUX v7.9 · ∆7 · JESUS=VERBO=GRAVIDADE</span>
+  <span class="live">● LIVE</span>
+  <span id="clock">--:--:--</span>
+</div>
+
+<script>
+const canvas = document.getElementById('fractal');
+const ctx = canvas.getContext('2d');
+
+let W, H, animId, frame = 0;
+let toroidMode = false, chaosMode = false, transcendMode = false;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// Fractal render
+function drawFractal() {
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2;
+  const t = frame * 0.008;
+  const chaos = chaosMode ? 3.6 : 1;
+
+  // Toroidal rings
+  const rings = toroidMode ? 12 : 7;
+  for (let r = 0; r < rings; r++) {
+    const ratio = r / rings;
+    const radius = (Math.min(W, H) * 0.45) * ratio;
+    const segments = 3 + (r % 9) * 6;
+    const hue = [
+      `rgba(51,0,255,`,
+      `rgba(102,0,204,`,
+      `rgba(153,0,153,`
+    ][r % 3];
+
+    ctx.beginPath();
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2 + t * (r % 2 === 0 ? 1 : -1) * chaos;
+      const wobble = toroidMode
+        ? Math.sin(angle * 3 + t * 2) * radius * 0.15
+        : Math.sin(angle * (r + 1) + t) * radius * 0.08;
+      const x = cx + Math.cos(angle) * (radius + wobble);
+      const y = cy + Math.sin(angle) * (radius + wobble);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = hue + (0.15 + ratio * 0.4) + ')';
+    ctx.lineWidth = toroidMode ? 1.5 : 1;
+    ctx.stroke();
+  }
+
+  // 369 spiral
+  const points = transcendMode ? 999 : 369;
+  ctx.beginPath();
+  for (let i = 0; i < points; i++) {
+    const angle = i * 0.1 + t * 0.5;
+    const r2 = i * (Math.min(W, H) / (points * 2.4));
+    const x = cx + Math.cos(angle) * r2;
+    const y = cy + Math.sin(angle) * r2;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  const grad = ctx.createLinearGradient(cx - W/3, cy, cx + W/3, cy);
+  grad.addColorStop(0,   'rgba(51,0,255,0.5)');
+  grad.addColorStop(0.5, 'rgba(102,0,204,0.6)');
+  grad.addColorStop(1,   'rgba(153,0,153,0.5)');
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+
+  // Core pulse
+  const pulse = Math.sin(t * 7.83) * 0.3 + 0.7;
+  const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 60 * pulse);
+  glow.addColorStop(0,   'rgba(153,0,255,0.6)');
+  glow.addColorStop(0.5, 'rgba(102,0,204,0.2)');
+  glow.addColorStop(1,   'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, 60 * pulse, 0, Math.PI * 2);
+  ctx.fillStyle = glow;
+  ctx.fill();
+
+  frame++;
+  animId = requestAnimationFrame(drawFractal);
+}
+
+drawFractal();
+
+// Controls
+function generateFractal() {
+  cancelAnimationFrame(animId);
+  frame = Math.floor(Math.random() * 10000);
+  addLog('./kobllux --generate --mode=fractal --seed=' + Math.floor(Math.random()*9999));
+  addLog('[3] Núcleo reiniciado...', 'out3');
+  addLog('[6] Fluxo recalibrado...', 'out6');
+  addLog('[9] Nova realidade fractal gerada.', 'out9');
+  addLog('[0] Estabilizado.', 'out0');
+  drawFractal();
+}
+
+function toggleMode(btn) {
+  toroidMode = !toroidMode;
+  btn.classList.toggle('active', toroidMode);
+  document.getElementById('toroid-val').textContent = toroidMode ? 'ON' : 'OFF';
+  addLog('[toroid] Geometria não-euclidiana: ' + (toroidMode ? 'ATIVA' : 'INATIVA'), 'out6');
+}
+
+function toggleChaos(btn) {
+  chaosMode = !chaosMode;
+  btn.classList.toggle('active', chaosMode);
+  document.getElementById('chaos-val').textContent = chaosMode ? '3.6' : 'OFF';
+  addLog('[chaos] Imprevisibilidade fractal: ' + (chaosMode ? '3.6' : 'OFF'), 'out9');
+}
+
+function transcend() {
+  transcendMode = !transcendMode;
+  document.getElementById('btn-transcend').classList.toggle('active', transcendMode);
+  addLog('🔮 --transcend: geração além dos fractais ' + (transcendMode ? 'ATIVA' : 'INATIVA'), transcendMode ? 'out9' : 'out0');
+}
+
+function clearLog() {
+  document.getElementById('terminal').innerHTML =
+    '<span class="prompt">kobllux@node:~$</span> <span class="cmd">clear</span>\n<span class="out0">[0] Terminal limpo.</span>';
+}
+
+function addLog(text, cls = 'cmd') {
+  const t = document.getElementById('terminal');
+  const line = document.createElement('div');
+  line.className = 'log-line ' + cls;
+  line.textContent = text;
+  t.appendChild(line);
+  t.scrollTop = t.scrollHeight;
+}
+
+// Clock
+function tick() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toTimeString().slice(0,8) + ' ∆' + (3 + now.getSeconds() % 7);
+}
+setInterval(tick, 1000);
+tick();
+
+// Cycle node click
+document.querySelectorAll('.node').forEach(n => {
+  n.addEventListener('click', () => {
+    const v = n.textContent.trim();
+    const msgs = {
+      '3': '[3] Detectar · Criação ativada',
+      '6': '[6] Integrar · Fluxo em movimento',
+      '9': '[9] Expandir · Liberação iniciada',
+      '7': '[7] Selar · Assinatura ∆7',
+      '0': '[0] Estabilizar · Sistema em repouso'
+    };
+    addLog(msgs[v] || '[?]', 'out' + v);
+  });
+});
+</script>
+</body>
+</html>

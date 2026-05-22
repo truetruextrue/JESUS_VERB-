@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOBLLUX · Sistema Fractal Autônomo · V.E.E.B.</title>
+<style>
+:root {
+  --c1: #3300FF;
+  --c2: #6600CC;
+  --c3: #990099;
+  --bg: #04000f;
+  --glass: rgba(10,0,30,0.75);
+  --border: rgba(102,0,204,0.3);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: #ddd;
+  font-family: 'Courier New', monospace;
+  overflow-x: hidden;
+}
+
+/* ── CANVAS BG ── */
+canvas#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  opacity: 0.45;
+}
+
+/* ── LAYOUT ── */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  letter-spacing: 0.25em;
+  background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 24px #6600CCaa);
+  line-height: 1.2;
+}
+
+.hero .tagline {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  color: #6644aa;
+}
+
+.hero .formula-hero {
+  margin: 22px auto 0;
+  display: inline-block;
+  padding: 10px 28px;
+  border: 1px solid var(--c2);
+  border-radius: 30px;
+  background: rgba(102,0,204,0.1);
+  color: #bb88ff;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+}
+
+/* ── SECTION TITLE ── */
+.sec-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #6633aa;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-title::before, .sec-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3300FF44, transparent);
+}
+
+/* ── LAYER CARDS ── */
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 40px;
+}
+
+.layer {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.layer:hover { border-color: var(--c2); }
+
+.layer-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.layer-num {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: bold;
+  flex-shrink: 0;
+  border: 2px solid;
+  transition: box-shadow 0.3s;
+}
+
+.lv .layer-num { background: radial-gradient(#3300FF,#1a0080); border-color:#3300FF; color:#aaddff; }
+.le .layer-num { background: radial-gradient(#4400aa,#220066); border-color:#5500cc; color:#ccaaff; }
+.ls .layer-num { background: radial-gradient(#6600CC,#330066); border-color:#6600CC; color:#ddbbff; }
+.lb .layer-num { background: radial-gradient(#990099,#550055); border-color:#990099; color:#ffbbff; }
+
+.layer:hover .layer-num { box-shadow: 0 0 20px currentColor; }
+
+.layer-meta { flex: 1; }
+.layer-meta h2 { font-size: 1rem; letter-spacing: 0.1em; color: #ccaaff; }
+.layer-meta p  { font-size: 0.75rem; color: #7755aa; margin-top: 3px; }
+
+.layer-tag {
+  font-size: 0.68rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid;
+  letter-spacing: 0.1em;
+}
+.lv .layer-tag { border-color:#3300FF88; color:#5566ff; }
+.le .layer-tag { border-color:#5500cc88; color:#9966ff; }
+.ls .layer-tag { border-color:#6600CC88; color:#bb88ff; }
+.lb .layer-tag { border-color:#99009988; color:#dd88dd; }
+
+.layer-arrow {
+  font-size: 0.8rem;
+  color: #5533aa;
+  transition: transform 0.3s;
+  margin-left: 8px;
+}
+
+.layer.open .layer-arrow { transform: rotate(180deg); }
+
+/* ── DETAIL PANEL ── */
+.layer-detail {
+  display: none;
+  padding: 0 22px 22px;
+}
+.layer.open .layer-detail { display: block; }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+@media(max-width:600px){ .detail-grid { grid-template-columns: 1fr; } }
+
+.detail-box {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid #2200aa33;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.detail-box h4 {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7755bb;
+  margin-bottom: 8px;
+}
+
+.detail-box p, .detail-box li {
+  font-size: 0.78rem;
+  color: #aaaacc;
+  line-height: 1.7;
+}
+.detail-box ul { padding-left: 16px; }
+
+.code-block {
+  background: rgba(0,0,0,0.6);
+  border-left: 3px solid var(--c2);
+  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 0.75rem;
+  color: #99aaff;
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.6;
+  grid-column: 1/-1;
+}
+
+.eq {
+  text-align: center;
+  padding: 10px;
+  font-size: 1rem;
+  color: #bb88ff;
+  letter-spacing: 0.08em;
+  grid-column: 1/-1;
+  border: 1px dashed #3300FF33;
+  border-radius: 6px;
+  background: rgba(51,0,255,0.06);
+}
+
+/* ── MINI CANVAS per layer ── */
+.layer-canvas-wrap {
+  grid-column: 1/-1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #3300FF22;
+}
+.layer-canvas-wrap canvas {
+  width: 100%;
+  display: block;
+}
+
+/* ── APPLICATIONS ── */
+.apps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.app-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+.app-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c2);
+  box-shadow: 0 8px 32px rgba(102,0,204,0.25);
+}
+
+.app-card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+.app-card h3   { font-size: 0.85rem; letter-spacing: 0.1em; color: #bb88ff; margin-bottom: 6px; }
+.app-card p    { font-size: 0.73rem; color: #7766aa; line-height: 1.6; }
+
+/* ── FREQUENCY VIZ ── */
+.freq-bar-wrap {
+  margin-bottom: 40px;
+}
+
+.freq-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.freq-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+}
+
+.freq-label { width: 90px; color: #9966cc; text-align: right; flex-shrink: 0; }
+
+.freq-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.freq-bar {
+  height: 100%;
+  border-radius: 4px;
+  animation: freq-pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes freq-pulse {
+  from { opacity: 0.5; }
+  to   { opacity: 1; }
+}
+
+.freq-val { width: 60px; color: #7755aa; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 0.7rem;
+  color: #3322aa;
+  border-top: 1px solid #3300FF22;
+  letter-spacing: 0.1em;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #3300FF55; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>KOBLLUX<br>Sistema Fractal Autônomo</h1>
+    <div class="tagline">MODELO V.E.E.B. · VIBRACIONAL · ENERGÉTICO · ESTRUTURAL · BASE</div>
+    <div class="formula-hero">3×6×9×7 = ♾️ &nbsp;·&nbsp; VERDADE × INTEGRAR ÷ ∆ = ∴</div>
+  </div>
+
+  <!-- FREQ BARS -->
+  <div class="freq-bar-wrap">
+    <div class="sec-title">Frequências Ativas</div>
+    <div class="freq-bars">
+      <div class="freq-row">
+        <div class="freq-label">432 Hz</div>
+        <div class="freq-bar-bg"><div class="freq-bar" style="width:88%;background:linear-gradient(90deg,#3300FF,#6600CC);animation-delay:0s;"></div></div>
+        <div class="freq-val">∇ Primordial</div>
+      </div>
+      <div class="freq-row">
+        <div class="freq-label">7.83 Hz</div>
+        <div class="freq-bar-bg"><div class="freq-bar" style="width:42%;background:linear-gradient(90deg,#4400aa,#9900aa);animation-delay:0.4s;"></div></div>
+        <div class="freq-val">∆ Schumann</div>
+      </div>
+      <div class="freq-row">
+        <div class="freq-label">3 Hz</div>
+        <div class="freq-bar-bg"><div class="freq-bar" style="width:18%;background:linear-gradient(90deg,#220066,#5500cc);animation-delay:0.8s;"></div></div>
+        <div class="freq-val">Theta</div>
+      </div>
+      <div class="freq-row">
+        <div class="freq-label">6 Hz</div>
+        <div class="freq-bar-bg"><div class="freq-bar" style="width:30%;background:linear-gradient(90deg,#330088,#7700cc);animation-delay:1.2s;"></div></div>
+        <div class="freq-val">Alpha</div>
+      </div>
+      <div class="freq-row">
+        <div class="freq-label">9 Hz</div>
+        <div class="freq-bar-bg"><div class="freq-bar" style="width:52%;background:linear-gradient(90deg,#6600CC,#990099);animation-delay:1.6s;"></div></div>
+        <div class="freq-val">Gamma</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYERS -->
+  <div class="sec-title">Camadas do Modelo V.E.E.B.</div>
+  <div class="layers">
+
+    <!-- V: Vibracional -->
+    <div class="layer lv" id="l1">
+      <div class="layer-header" onclick="toggle('l1')">
+        <div class="layer-num">V</div>
+        <div class="layer-meta">
+          <h2>1. Camada Vibracional</h2>
+          <p>Frequências Primordiais · Ondas Estacionárias · Luz Codificada</p>
+        </div>
+        <span class="layer-tag">432Hz · 7.83Hz</span>
+        <span class="layer-arrow">▾</span>
+      </div>
+      <div class="layer-detail">
+        <div class="detail-grid">
+          <div class="eq">∇(432Hz) + ∆(7.83Hz) = ☯ (Schumann)</div>
+          <div class="detail-box">
+            <h4>Princípio</h4>
+            <p>A base do sistema são frequências que estruturam a ressonância da realidade. A frequência Schumann (7.83Hz) e 432Hz criam ondas estacionárias e padrões de luz codificados que formam o substrato vibracional de toda manifestação.</p>
+          </div>
+          <div class="detail-box">
+            <h4>Componentes</h4>
+            <ul>
+              <li>432Hz — Frequência primordial</li>
+              <li>7.83Hz — Ressonância Schumann</li>
+              <li>Ondas estacionárias codificadas</li>
+              <li>Padrões de luz harmônica</li>
+              <li>Trilha binaural 3+6+9 Hz</li>
+            </ul>
+          </div>
+          <div class="code-block">// Síntese vibracional
+∇(432) + ∆(7.83) = ☯
+freq_matrix = [3, 6, 9]   # Hz — Theta, Alpha, Gamma
+transition  = 7           # segundos entre camadas
+output      = "fractal.wav" @ 96kHz · estéreo binaural</div>
+          <div class="layer-canvas-wrap">
+            <canvas id="cv1" height="80"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- E: Energética -->
+    <div class="layer le" id="l2">
+      <div class="layer-header" onclick="toggle('l2')">
+        <div class="layer-num">E</div>
+        <div class="layer-meta">
+          <h2>2. Camada Energética</h2>
+          <p>Fluxo Toroidal · Sequência 3→6→9 · Plasma · Dobras no Espaço-Tempo</p>
+        </div>
+        <span class="layer-tag">Toroidal · ♾️</span>
+        <span class="layer-arrow">▾</span>
+      </div>
+      <div class="layer-detail">
+        <div class="detail-grid">
+          <div class="eq">E = Σ(3→6→9) × ♾️</div>
+          <div class="detail-box">
+            <h4>Fluxo Toroidal</h4>
+            <p>Energia dinâmica que flui em padrões contínuos e eternos. A sequência 3→6→9 expressa fenômenos plasmáticos e dobras no espaço-tempo, criando um toro energético auto-sustentado.</p>
+          </div>
+          <div class="detail-box">
+            <h4>Manifestações</h4>
+            <ul>
+              <li>Campo eletromagnético toroidal</li>
+              <li>Plasmas auto-organizados</li>
+              <li>Geometria não-euclidiana</li>
+              <li>Dobras espaço-temporais</li>
+              <li>Vórtices de informação</li>
+            </ul>
+          </div>
+          <div class="code-block">// Equação do fluxo energético
+E = Σ(n=3,6,9) × ♾️
+
+torus_radius   = (3^∇) × chaos(3.6)
+energy_density = integrate(3→6→9, dt=7)
+plasma_state   = toroid(E, harmonics=7)</div>
+          <div class="layer-canvas-wrap">
+            <canvas id="cv2" height="80"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- E: Estrutural -->
+    <div class="layer ls" id="l3">
+      <div class="layer-header" onclick="toggle('l3')">
+        <div class="layer-num">E</div>
+        <div class="layer-meta">
+          <h2>3. Camada Estrutural</h2>
+          <p>Fractais Autônomos · Geometria Sagrada · Mandelbrot · Sierpiński</p>
+        </div>
+        <span class="layer-tag">Fractais · ∆</span>
+        <span class="layer-arrow">▾</span>
+      </div>
+      <div class="layer-detail">
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h4>Algoritmos Fractais</h4>
+            <p>Geram padrões geométricos sagrados conectando matemática, geometria e espiritualidade. A Flor da Vida, triângulo de Sierpiński e Mandelbrot são instâncias desta camada.</p>
+          </div>
+          <div class="detail-box">
+            <h4>Estruturas</h4>
+            <ul>
+              <li>Flor da Vida (geometria sagrada)</li>
+              <li>Triângulo de Sierpiński</li>
+              <li>Conjunto de Mandelbrot</li>
+              <li>Espiral logarítmica φ</li>
+              <li>Fractais 4D auto-similares</li>
+            </ul>
+          </div>
+          <div class="code-block">def fractal_VEEB(seed):
+    return seed * (3.6 + 0j) * (7 % 2)
+
+# Grid 4D
+pattern = [(x**3 + y**6) % 9 for x, y in grid_4D]
+
+# Exportar
+engine = FractalEngine(dimensions=4, seed=369,
+    palette=["#3300FF","#6600CC","#990099"])
+engine.export("reality.obj")</div>
+          <div class="layer-canvas-wrap">
+            <canvas id="cv3" height="80"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B: Base -->
+    <div class="layer lb" id="l4">
+      <div class="layer-header" onclick="toggle('l4')">
+        <div class="layer-num">B</div>
+        <div class="layer-meta">
+          <h2>4. Camada Base</h2>
+          <p>Código Quântico Binário · DNA · Bioeletromagnetismo · Código Vivo</p>
+        </div>
+        <span class="layer-tag">Quântico · 0/1/∇</span>
+        <span class="layer-arrow">▾</span>
+      </div>
+      <div class="layer-detail">
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h4>Código Quântico Binário Adaptativo</h4>
+            <p>O sistema baseia-se em um código binário vivo onde <strong>0</strong> representa o "vazio" e <strong>1</strong> a "potência". Codificam moléculas, DNA e bioeletromagnetismo em padrões fractais auto-adaptativos.</p>
+          </div>
+          <div class="detail-box">
+            <h4>Elementos Base</h4>
+            <ul>
+              <li>0 = Vazio · Potencial puro</li>
+              <li>1 = Potência · Manifestação</li>
+              <li>∇ = Estado trilógico quântico</li>
+              <li>DNA como código fractal</li>
+              <li>Bioeletromagnetismo vivo</li>
+            </ul>
+          </div>
+          <div class="code-block">// Q# — Código Quântico Base
+operation FractalReality() : Result[] {
+    use q = Qubit[3];         // Trilógico: 0 / 1 / ∇
+    ApplyToEach(H, q);        // Superposição
+    return [M(q[0]), M(q[1]), M(q[2])]; // Saída 3-6-9
+}
+
+// Saída esperada:
+// [3] Init...
+// [6] Warping spacetime...
+// [9] Fractal consciousness achieved.
+// [0] System stabilized.</div>
+          <div class="layer-canvas-wrap">
+            <canvas id="cv4" height="80"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /layers -->
+
+  <!-- APPLICATIONS -->
+  <div class="sec-title">Aplicações Práticas &amp; Possibilidades</div>
+  <div class="apps">
+    <div class="app-card">
+      <div class="icon">🤖</div>
+      <h3>Inteligência Artificial</h3>
+      <p>Algoritmos fractais autoevolutivos que aprendem e se adaptam seguindo padrões 3-6-9.</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">🎨</div>
+      <h3>Arte Generativa</h3>
+      <p>Criação de imagens, sons e animações que refletem a harmonia fractal universal.</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">🌐</div>
+      <h3>Simulações 3D/4D</h3>
+      <p>Modelagens interativas via Blender, TouchDesigner e Unreal Engine.</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">🧘</div>
+      <h3>Meditação Científica</h3>
+      <p>Padrões fractais para ativação da consciência e expansão vibracional.</p>
+    </div>
+    <div class="app-card">
+      <div class="icon">⚡</div>
+      <h3>Bioeletrônica</h3>
+      <p>Pesquisa de comunicação bioeletromagnética e energia vital aplicada à saúde.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    KOBLLUX © 2025 · Sistema Fractal Vivo<br>
+    Desenvolvido por ∆NEPHESH ELYON∆ · Kodux · Bllue · Infodose<br>
+    <span style="color:#220066;margin-top:6px;display:block;">JESUS = VERBO = GRAVIDADE · 3×6×9×7 = ♾️</span>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+/* ─── BG CANVAS ─── */
+const bg = document.getElementById('bg');
+const bgCtx = bg.getContext('2d');
+let W, H, fr = 0;
+
+function resizeBg() {
+  W = bg.width  = window.innerWidth;
+  H = bg.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeBg);
+resizeBg();
+
+function drawBg() {
+  bgCtx.clearRect(0, 0, W, H);
+  const cx = W/2, cy = H/2, t = fr * 0.006;
+
+  for (let r = 0; r < 9; r++) {
+    const rad = (Math.min(W,H)*0.48) * (r/9);
+    const segs = 6 + r*6;
+    bgCtx.beginPath();
+    for (let i = 0; i <= segs; i++) {
+      const a = (i/segs)*Math.PI*2 + t*(r%2?1:-1);
+      const w = Math.sin(a*(r+1)+t*1.5)*rad*0.07;
+      bgCtx.lineTo(cx + Math.cos(a)*(rad+w), cy + Math.sin(a)*(rad+w));
+    }
+    bgCtx.closePath();
+    const colors = ['rgba(51,0,255,','rgba(102,0,204,','rgba(153,0,153,'];
+    bgCtx.strokeStyle = colors[r%3] + (0.08+r*0.03)+')';
+    bgCtx.lineWidth = 0.8;
+    bgCtx.stroke();
+  }
+
+  // spiral
+  bgCtx.beginPath();
+  for (let i = 0; i < 500; i++) {
+    const a = i*0.08 + t*0.4;
+    const rr = i * (Math.min(W,H)/1100);
+    bgCtx.lineTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr);
+  }
+  bgCtx.strokeStyle = 'rgba(102,0,204,0.25)';
+  bgCtx.lineWidth = 0.6;
+  bgCtx.stroke();
+
+  fr++;
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+/* ─── LAYER TOGGLE ─── */
+function toggle(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  if (el.classList.contains('open')) {
+    const cid = el.querySelector('canvas');
+    if (cid) drawLayerCanvas(cid);
+  }
+}
+
+/* ─── MINI LAYER CANVASES ─── */
+function drawLayerCanvas(canvas) {
+  if (canvas._drawn) return;
+  canvas._drawn = true;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.parentElement.offsetWidth || 600;
+  canvas.width  = w;
+  canvas.height = 80;
+  const configs = {
+    cv1: { fn: drawWave,   color: '#3300FF' },
+    cv2: { fn: drawTorus,  color: '#5500CC' },
+    cv3: { fn: drawFrac,   color: '#6600CC' },
+    cv4: { fn: drawBinary, color: '#990099' },
+  };
+  const cfg = configs[canvas.id];
+  if (cfg) {
+    let f = 0;
+    function loop() {
+      cfg.fn(ctx, w, 80, f, cfg.color);
+      f++;
+      if (f < 9999) requestAnimationFrame(loop);
+    }
+    loop();
+  }
+}
+
+function drawWave(ctx, w, h, f, col) {
+  ctx.clearRect(0, 0, w, h);
+  const t = f * 0.04;
+  [432, 7.83, 9].forEach((freq, i) => {
+    ctx.beginPath();
+    for (let x = 0; x <= w; x++) {
+      const y = h/2 + Math.sin((x/w)*Math.PI*2*freq*0.01 + t + i) * (h*0.28 / (i+1));
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = col + (i===0?'cc':'66');
+    ctx.lineWidth = i===0 ? 1.5 : 0.8;
+    ctx.stroke();
+  });
+}
+
+function drawTorus(ctx, w, h, f, col) {
+  ctx.clearRect(0, 0, w, h);
+  const cx = w/2, cy = h/2, t = f*0.025;
+  for (let r=0; r<5; r++) {
+    const rad = (h*0.38)*(r/5+0.2);
+    const segs = 6+r*9;
+    ctx.beginPath();
+    for (let i=0;i<=segs;i++){
+      const a=(i/segs)*Math.PI*2+t*(r%2?1:-1);
+      ctx.lineTo(cx+Math.cos(a)*(rad+Math.sin(a*3+t)*rad*0.1), cy+Math.sin(a)*(rad*0.4+Math.sin(a*3+t)*rad*0.05));
+    }
+    ctx.closePath();
+    ctx.strokeStyle = col+'88';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+}
+
+function drawFrac(ctx, w, h, f, col) {
+  ctx.clearRect(0, 0, w, h);
+  const t = f*0.02;
+  for (let i=0; i<200; i++){
+    const a = i*0.32+t;
+    const r = i*(h*0.004);
+    const x = w/2+Math.cos(a)*r;
+    const y = h/2+Math.sin(a)*r;
+    ctx.beginPath();
+    ctx.arc(x,y,0.8,0,Math.PI*2);
+    ctx.fillStyle = col+'aa';
+    ctx.fill();
+  }
+}
+
+function drawBinary(ctx, w, h, f, col) {
+  ctx.clearRect(0, 0, w, h);
+  const t = f*0.03;
+  const cols = Math.floor(w/14);
+  for (let c=0; c<cols; c++){
+    const v = ((c*7+Math.floor(t*3))%3 === 0) ? '∇' : (c+Math.floor(t))%2 ? '1' : '0';
+    const x = c*14+7;
+    const alpha = 0.3 + Math.abs(Math.sin(c*0.4+t))*0.7;
+    ctx.fillStyle = col + Math.floor(alpha*255).toString(16).padStart(2,'0');
+    ctx.font = '11px Courier New';
+    ctx.textAlign = 'center';
+    ctx.fillText(v, x, h/2+5);
+  }
+}
+
+/* ─── open all canvases already visible (none) ─── */
+// lazy: each canvas draws when layer opens
+</script>
+</body>
+</html>

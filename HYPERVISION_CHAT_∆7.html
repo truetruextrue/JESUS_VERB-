@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HYPERVISION CHAT · 0x07 GENUS · ∆³</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-deep: #050811;
+      --primary: #00f5ff;
+      --secondary: #ff4bff;
+      --tertiary: #ffd700;
+      --danger: #ff4b6b;
+      --c-green: #10b981;
+      --c-purple: #8b5cf6;
+      --c-orange: #f59e0b;
+      --text-main: #e4ecff;
+      --text-muted: #9aa4c8;
+      --glass-border: rgba(255,255,255,0.08);
+      --glass-surface: rgba(18,18,22,0.85);
+      --font-ui: 'Montserrat', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      background: var(--bg-deep);
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nebula-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(0,245,255,0.06), transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(255,75,255,0.06), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(139,92,246,0.04), transparent 60%);
+    }
+
+    .hv-panel {
+      position: fixed;
+      inset: 0;
+      height: 100vh;
+      width: 100vw;
+      background: var(--bg-deep);
+      z-index: 5200;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .hv-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(192,132,252,0.04);
+      height: 58px;
+    }
+
+    .hv-head-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hv-head-brand span:first-child {
+      color: #c084fc;
+      font-weight: 900;
+      font-size: 13px;
+      font-family: var(--font-code);
+    }
+
+    .hv-head-brand > div:last-child {
+      min-width: 0;
+    }
+
+    .hv-head-brand div:first-of-type {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .hv-head-brand div:last-of-type {
+      font-size: 8px;
+      color: var(--text-muted);
+    }
+
+    .hv-icon-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .hv-icon-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    .hv-config {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.3);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      flex-shrink: 0;
+    }
+
+    .hv-config.open {
+      display: flex;
+    }
+
+    .hv-config-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .hv-select {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: var(--text-main);
+      padding: 5px 7px;
+      font-family: var(--font-code);
+      font-size: 9.5px;
+      outline: none;
+    }
+
+    .hv-input-field {
+      flex: 1;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: #fff;
+      padding: 5px 9px;
+      font-family: var(--font-code);
+      font-size: 10px;
+      outline: none;
+      min-width: 0;
+    }
+
+    .hv-input-field:focus {
+      border-color: rgba(192,132,252,0.5);
+    }
+
+    .hv-pill-btn {
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(192,132,252,0.4);
+      background: rgba(192,132,252,0.12);
+      color: #c084fc;
+      font-family: var(--font-ui);
+      font-size: 9px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .hv-pill-btn:hover {
+      background: rgba(192,132,252,0.25);
+    }
+
+    .hv-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hv-msg-system {
+      background: rgba(192,132,252,0.06);
+      border: 1px solid rgba(192,132,252,0.15);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 10.5px;
+      line-height: 1.55;
+    }
+
+    .hv-msg-user {
+      align-self: flex-end;
+      max-width: 88%;
+      background: rgba(139,92,246,0.18);
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 12px 12px 3px 12px;
+      padding: 8px 11px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text-main);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .hv-msg-ai {
+      align-self: flex-start;
+      max-width: 94%;
+      background: rgba(0,245,255,0.04);
+      border: 1px solid rgba(0,245,255,0.12);
+      border-radius: 12px 12px 12px 3px;
+      padding: 10px 12px;
+      font-size: 10.5px;
+      line-height: 1.6;
+      color: #e4ecff;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .hv-msg-ai-meta {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 5px;
+      flex-wrap: wrap;
+    }
+
+    .hv-arch-chip {
+      font-size: 8px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid;
+      font-family: var(--font-code);
+      font-weight: 700;
+    }
+
+    .hv-msg-err {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 8px;
+      padding: 8px 11px;
+      font-size: 10px;
+      color: #ef4444;
+    }
+
+    .hv-thinking {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 6px 10px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-family: var(--font-code);
+    }
+
+    .hv-thinking span {
+      animation: hvdot 1.2s infinite;
+    }
+
+    .hv-thinking span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .hv-thinking span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes hvdot {
+      0%, 80%, 100% { opacity: 0.2; }
+      40% { opacity: 1; }
+    }
+
+    .hv-input-row {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+      align-items: flex-end;
+    }
+
+    .hv-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .hv-ctx-btn {
+      position: absolute;
+      top: 5px;
+      right: 6px;
+      font-size: 8px;
+      font-weight: 700;
+      font-family: var(--font-code);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(192,132,252,0.3);
+      background: rgba(192,132,252,0.08);
+      color: #c084fc;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 1;
+    }
+
+    .hv-ctx-btn:hover {
+      background: rgba(192,132,252,0.2);
+    }
+
+    .hv-textarea {
+      width: 100%;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: #fff;
+      padding: 8px 52px 8px 10px;
+      font-family: var(--font-ui);
+      font-size: 11.5px;
+      line-height: 1.5;
+      outline: none;
+      resize: none;
+      min-height: 44px;
+      max-height: 120px;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+
+    .hv-textarea:focus {
+      border-color: rgba(192,132,252,0.4);
+    }
+
+    .hv-send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #8b5cf6, #c084fc);
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      align-self: flex-end;
+    }
+
+    .hv-send-btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 14px rgba(192,132,252,0.4);
+    }
+
+    .hv-send-btn:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .hv-checkrow {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hv-checkrow label {
+      font-size: 9px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .hv-checkrow input[type=checkbox] {
+      accent-color: #c084fc;
+    }
+  </style>
+</head>
+<body>
+  <div class="nebula-layer"></div>
+
+  <!-- PAINEL CHAT -->
+  <div class="hv-panel" id="hvPanel">
+    <!-- HEADER -->
+    <div class="hv-head">
+      <div class="hv-head-brand">
+        <span style="color:#c084fc;font-weight:900;font-size:13px;font-family:var(--font-code)">Γη§</span>
+        <div style="min-width:0">
+          <div style="font-size:11px;font-weight:800;line-height:1.2">HYPERVISION · 3ª CAMADA</div>
+          <div style="font-size:8px;color:var(--text-muted)">0x07 GENUS · SELAR · 741Hz · análise e supervisão fractal</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
+        <button class="hv-icon-btn" id="hvConfigToggle" title="Config API" onclick="toggleHVConfig()">⚙</button>
+        <button class="hv-icon-btn" onclick="clearHVChat()" title="Limpar chat">⊘</button>
+      </div>
+    </div>
+
+    <!-- CONFIG COLAPSÁVEL -->
+    <div class="hv-config" id="hvConfig">
+      <div class="hv-config-row">
+        <select id="hvProvider" class="hv-select" onchange="hvProviderChange()">
+          <option value="openrouter">OpenRouter</option>
+          <option value="anthropic">Anthropic</option>
+          <option value="openai">OpenAI</option>
+          <option value="groq">Groq</option>
+        </select>
+        <select id="hvModel" class="hv-select" style="flex:1">
+          <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
+          <option value="google/gemini-flash-1.5:free">Gemini Flash (free)</option>
+          <option value="meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B (free)</option>
+        </select>
+      </div>
+      <div class="hv-config-row">
+        <input id="hvApiKey" type="password" class="hv-input-field" placeholder="API Key (sk-or-... / sk-ant-... / sk-...)">
+        <button class="hv-pill-btn" onclick="saveHVConfig()">SALVAR</button>
+      </div>
+      <div class="hv-checkrow">
+        <label><input type="checkbox" id="hvInjectCode"> injetar código do editor</label>
+        <label><input type="checkbox" id="hvInjectContext"> incluir contexto arquetipal</label>
+      </div>
+    </div>
+
+    <!-- MENSAGENS -->
+    <div class="hv-messages" id="hvMessages">
+      <div class="hv-msg-system">
+        <span style="color:#c084fc;font-weight:800">Γη§ HYPERVISION</span> · Terceira camada ativa.<br>
+        <span style="color:var(--text-muted);font-size:9px">Configure a API (⚙) e envie uma análise. O sistema arquetipal é injetado automaticamente como contexto.</span>
+      </div>
+    </div>
+
+    <!-- INPUT -->
+    <div class="hv-input-row">
+      <div class="hv-input-wrap">
+        <button class="hv-ctx-btn" onclick="hvInjectContext()" title="Pré-carregar contexto arquetipal">⬡ CTX</button>
+        <textarea id="hvInput" class="hv-textarea"
+          placeholder="∆³ analise o sistema... (Ctrl+Enter para enviar)"
+          rows="2" onkeydown="hvKeydown(event)"></textarea>
+      </div>
+      <button class="hv-send-btn" id="hvSendBtn" onclick="sendHVMessage()" title="Enviar · Ctrl+Enter">
+        ▶
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // HYPERVISION CHAT MOTOR · 0x07 GENUS
+    const HV = {
+      config: {
+        provider: 'openrouter',
+        model: 'anthropic/claude-sonnet-4-6',
+        apiKey: localStorage.getItem('hv_api_key') || '',
+      },
+      messages: [],
+      thinking: false,
+    };
+
+    function toggleHVConfig() {
+      const cfg = document.getElementById('hvConfig');
+      cfg.classList.toggle('open');
+      document.getElementById('hvApiKey').value = HV.config.apiKey;
+    }
+
+    function saveHVConfig() {
+      HV.config.apiKey = document.getElementById('hvApiKey').value;
+      HV.config.provider = document.getElementById('hvProvider').value;
+      HV.config.model = document.getElementById('hvModel').value;
+      localStorage.setItem('hv_api_key', HV.config.apiKey);
+      toast('Configuração salva ✅', 'ok');
+    }
+
+    function hvProviderChange() {
+      const provider = document.getElementById('hvProvider').value;
+      const models = {
+        openrouter: ['anthropic/claude-sonnet-4-6', 'google/gemini-flash-1.5:free', 'meta-llama/llama-3.3-70b-instruct:free'],
+        anthropic: ['claude-opus-4-7', 'claude-sonnet-4-6', 'claude-haiku-4-5-20251001'],
+        openai: ['gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
+        groq: ['mixtral-8x7b-32768', 'llama2-70b-4096', 'gemma-7b-it'],
+      };
+      const modelSel = document.getElementById('hvModel');
+      modelSel.innerHTML = models[provider].map(m => `<option value="${m}">${m}</option>`).join('');
+    }
+
+    function hvInjectContext() {
+      const ctx = `## Contexto KOBLLUX ∆³
+
+Arquétipos: 12 (ATLAS, NOVA, VITALIS, PULSE, ARTEMIS, SERENA, KAOS, GENUS, LUMINE, SOLUS, RHEA, AION)
+Opcodes: 13 (0x00-0x0C)
+Lei: VERDADE × INTEGRAR ÷ ∆ = ∴
+Frequências: 432Hz (base) → 963Hz (max)
+Ciclo: 3 DETECTAR → 6 INTEGRAR → 9 EXPANDIR → 7 SELAR
+
+Pergunta: `;
+      document.getElementById('hvInput').value = ctx;
+      document.getElementById('hvInput').focus();
+    }
+
+    function hvKeydown(e) {
+      if (e.ctrlKey && e.key === 'Enter') {
+        sendHVMessage();
+      }
+    }
+
+    async function sendHVMessage() {
+      const input = document.getElementById('hvInput').value.trim();
+      if (!input || HV.thinking) return;
+
+      if (!HV.config.apiKey) {
+        alert('Configure a API (⚙) primeiro');
+        document.getElementById('hvConfigToggle').click();
+        return;
+      }
+
+      // Add user message
+      addMessage('user', input);
+      document.getElementById('hvInput').value = '';
+
+      // Show thinking
+      HV.thinking = true;
+      addMessage('thinking', null);
+
+      try {
+        const response = await callAI(input);
+        removeThinking();
+        addMessage('ai', response);
+      } catch (error) {
+        removeThinking();
+        addMessage('error', 'Erro: ' + error.message);
+      } finally {
+        HV.thinking = false;
+      }
+    }
+
+    async function callAI(prompt) {
+      const { provider, model, apiKey } = HV.config;
+
+      if (provider === 'openrouter') {
+        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: 'system', content: 'Você é HYPERVISION, a terceira camada do sistema KOBLLUX ∆³. Analise arquivos, sistemas e código com profundidade arquetipal.' },
+              { role: 'user', content: prompt },
+            ],
+            temperature: 0.7,
+            top_p: 0.9,
+            max_tokens: 1000,
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error?.message || 'API Error');
+        }
+
+        const data = await res.json();
+        return data.choices[0].message.content;
+      }
+
+      throw new Error('Provedor não implementado ainda');
+    }
+
+    function addMessage(type, content) {
+      const container = document.getElementById('hvMessages');
+      const msg = document.createElement('div');
+
+      if (type === 'user') {
+        msg.className = 'hv-msg-user';
+        msg.textContent = content;
+      } else if (type === 'ai') {
+        msg.className = 'hv-msg-ai';
+        msg.textContent = content;
+      } else if (type === 'thinking') {
+        msg.className = 'hv-thinking';
+        msg.id = 'thinking-msg';
+        msg.innerHTML = '<span>·</span><span>·</span><span>·</span>';
+      } else if (type === 'error') {
+        msg.className = 'hv-msg-err';
+        msg.textContent = content;
+      }
+
+      container.appendChild(msg);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function removeThinking() {
+      const thinking = document.getElementById('thinking-msg');
+      if (thinking) thinking.remove();
+    }
+
+    function clearHVChat() {
+      if (confirm('Limpar histórico de chat?')) {
+        document.getElementById('hvMessages').innerHTML = `
+          <div class="hv-msg-system">
+            <span style="color:#c084fc;font-weight:800">Γη§ HYPERVISION</span> · Chat limpo. Pronto para nova sessão.
+          </div>
+        `;
+        HV.messages = [];
+      }
+    }
+
+    function toast(msg, type = 'info') {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed; bottom: 20px; right: 20px;
+        padding: 10px 20px; border-radius: 6px;
+        font-size: 12px; z-index: 10000;
+        background: ${type === 'ok' ? '#10b981' : type === 'err' ? '#ef4444' : '#3b82f6'};
+        color: white; font-weight: bold;
+      `;
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
+
+    // Init
+    document.getElementById('hvProvider').value = HV.config.provider;
+    document.getElementById('hvModel').value = HV.config.model;
+    document.getElementById('hvApiKey').value = HV.config.apiKey;
+  </script>
+</body>
+</html>
