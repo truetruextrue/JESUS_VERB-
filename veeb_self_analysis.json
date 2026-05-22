@@ -1,0 +1,476 @@
+{
+  "narrative": "Prólogo — O viajante chega: «kobllux_veeb_story.py»\nConselho das Consoantes (imports):\n  · Módulos: argparse, ast, json, re, sys, textwrap\n  · De: __future__: annotations | dataclasses: dataclass, asdict | enum: Enum | pathlib: Path | typing: Any, Dict, Iterable, List, Optional\nCasas-Forma (classes): Classificacao, Perfil, Registro, Resumo, VEEBEngine, Camada, ColetorAST\nPortais de ação (funções):\n  · apply_theme(name)\n  · color(txt, key)\n  · narrar(titulo, texto, c)\n  · prologo_fractal(sem parâmetros)\n  · A_atribuir(self, nome, idade, ativo, cor, tamanho)\n  · E_escolher(self, perfil)\n  · I_iterar(self, freq)\n  · O_organizar(self, registros)\n  · U_unir(self, perfil, resumo)\n  · simular(self, nome, idade, freq)\n  · autoespelhamento(padrao, escalar)\n  · ressonancia(camada)\nObjetos nomeados: ANSI, CICLO_0_7, FREQS, MAIOR, MENOR, NO_COLOR, ROOT, TRIADICA, arch, arch_sc, args, barra, base, c, cl\nFluxo: if=35 · for=4 · try=4\nEspeciais: lambda=1 · comps=13\nDesfechos (return): 25\nArquétipo dominante: GENUS ({'genus': 82, 'artemis': 70, 'serena': 54, 'aion': 50, 'atlas': 28, 'kaos': 20, 'kodux': 18, 'vitalis': 12, 'lumine': 4})\nEpílogo — A Pirâmide Lembra: dados+fluxo+forma = Base viva. ∆7",
+  "title": "kobllux_veeb_story.py",
+  "imports": [
+    "argparse",
+    "ast",
+    "json",
+    "re",
+    "sys",
+    "textwrap"
+  ],
+  "from_imports": [
+    "__future__: annotations",
+    "dataclasses: dataclass, asdict",
+    "enum: Enum",
+    "pathlib: Path",
+    "typing: Any, Dict, Iterable, List, Optional",
+    "kobllux_memory: KoblluxMemory"
+  ],
+  "functions": [
+    {
+      "name": "apply_theme",
+      "args": [
+        "name"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "color",
+      "args": [
+        "txt",
+        "key"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "narrar",
+      "args": [
+        "titulo",
+        "texto",
+        "c"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "prologo_fractal",
+      "args": [],
+      "deco": 0
+    },
+    {
+      "name": "A_atribuir",
+      "args": [
+        "self",
+        "nome",
+        "idade",
+        "ativo",
+        "cor",
+        "tamanho"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "E_escolher",
+      "args": [
+        "self",
+        "perfil"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "I_iterar",
+      "args": [
+        "self",
+        "freq"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "O_organizar",
+      "args": [
+        "self",
+        "registros"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "U_unir",
+      "args": [
+        "self",
+        "perfil",
+        "resumo"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "simular",
+      "args": [
+        "self",
+        "nome",
+        "idade",
+        "freq"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "autoespelhamento",
+      "args": [
+        "padrao",
+        "escalar"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "ressonancia",
+      "args": [
+        "camada"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "encenar_fractal",
+      "args": [],
+      "deco": 0
+    },
+    {
+      "name": "__init__",
+      "args": [
+        "self"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_Import",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_ImportFrom",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_FunctionDef",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_AsyncFunctionDef",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_ClassDef",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_Assign",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_If",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_For",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_While",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_Return",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_Try",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_With",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_Lambda",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_Yield",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_ListComp",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_DictComp",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_SetComp",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "visit_GeneratorExp",
+      "args": [
+        "self",
+        "n"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "_arch_scores",
+      "args": [
+        "col"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "add",
+      "args": [
+        "a",
+        "v"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "_tema_auto",
+      "args": [
+        "source"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "explicar_codigo_fonte",
+      "args": [
+        "source",
+        "titulo"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "alimentar_memoria",
+      "args": [
+        "meta",
+        "source_name"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "contar_historia",
+      "args": [],
+      "deco": 0
+    },
+    {
+      "name": "demonstrar_codigo",
+      "args": [
+        "freq"
+      ],
+      "deco": 0
+    },
+    {
+      "name": "build_parser",
+      "args": [],
+      "deco": 0
+    },
+    {
+      "name": "main",
+      "args": [
+        "argv"
+      ],
+      "deco": 0
+    }
+  ],
+  "classes": [
+    {
+      "name": "Classificacao",
+      "methods": []
+    },
+    {
+      "name": "Perfil",
+      "methods": []
+    },
+    {
+      "name": "Registro",
+      "methods": []
+    },
+    {
+      "name": "Resumo",
+      "methods": []
+    },
+    {
+      "name": "VEEBEngine",
+      "methods": [
+        "A_atribuir",
+        "E_escolher",
+        "I_iterar",
+        "O_organizar",
+        "U_unir",
+        "simular"
+      ]
+    },
+    {
+      "name": "Camada",
+      "methods": []
+    },
+    {
+      "name": "ColetorAST",
+      "methods": [
+        "__init__",
+        "visit_Import",
+        "visit_ImportFrom",
+        "visit_FunctionDef",
+        "visit_AsyncFunctionDef",
+        "visit_ClassDef",
+        "visit_Assign",
+        "visit_If",
+        "visit_For",
+        "visit_While",
+        "visit_Return",
+        "visit_Try",
+        "visit_With",
+        "visit_Lambda",
+        "visit_Yield",
+        "visit_ListComp",
+        "visit_DictComp",
+        "visit_SetComp",
+        "visit_GeneratorExp"
+      ]
+    }
+  ],
+  "assignments": [
+    "ROOT",
+    "ANSI",
+    "NO_COLOR",
+    "ANSI",
+    "MAIOR",
+    "MENOR",
+    "barra",
+    "p",
+    "c",
+    "passos",
+    "r",
+    "soma",
+    "r",
+    "base",
+    "p",
+    "cl",
+    "passos",
+    "resumo",
+    "base",
+    "TRIADICA",
+    "CICLO_0_7",
+    "FREQS",
+    "mi",
+    "me",
+    "ma",
+    "trilha",
+    "args",
+    "methods",
+    "pat",
+    "col",
+    "tree",
+    "col",
+    "nome",
+    "partes",
+    "args",
+    "fluxo",
+    "extras",
+    "arch_sc",
+    "dominant",
+    "meta",
+    "mem",
+    "arch",
+    "tags",
+    "summary",
+    "sim",
+    "f",
+    "p",
+    "args",
+    "NO_COLOR",
+    "source",
+    "titulo",
+    "source",
+    "titulo",
+    "t"
+  ],
+  "flow": {
+    "ifs": 35,
+    "fors": 4,
+    "whiles": 0,
+    "trys": 4
+  },
+  "special": {
+    "lambdas": 1,
+    "yields": 0,
+    "async": 0
+  },
+  "returns": 25,
+  "veeb_arch": {
+    "genus": 82,
+    "artemis": 70,
+    "serena": 54,
+    "aion": 50,
+    "atlas": 28,
+    "kaos": 20,
+    "kodux": 18,
+    "vitalis": 12,
+    "lumine": 4
+  },
+  "dominant_arch": "genus"
+}

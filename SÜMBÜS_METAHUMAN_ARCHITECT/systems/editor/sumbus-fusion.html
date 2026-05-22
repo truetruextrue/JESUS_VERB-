@@ -214,33 +214,275 @@ body {
 }
 .repo-search:focus { border-color:var(--c-green); }
 
+/* ── REPO GRID — 2 colunas simétricas mobile-first ── */
 .repo-grid {
-  flex:1; overflow-y:auto; padding:10px;
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:7px;
-  align-content:start;
+  flex:1; overflow-y:auto; padding:8px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));  /* minmax(0,1fr) = colunas estritamente iguais */
+  gap:8px; align-content:start;
 }
+@media(min-width:480px){ .repo-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(min-width:700px){ .repo-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+
+/* ── REPO CARD — mobile robustness fix ──
+   Não usar -webkit-line-clamp em flex items no Android Chrome:
+   colapsa para 0px. Usar height fixo calculado por linhas.        */
 .repo-card {
-  background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07);
-  border-radius:8px; padding:9px; cursor:pointer; transition:all 0.2s;
-  position:relative; overflow:hidden;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:12px;
+  padding:11px 10px 9px;
+  cursor:pointer; transition:transform .18s, box-shadow .18s;
+  position:relative;
   user-select:none;
+  display:flex; flex-direction:column;
+  min-height:128px;           /* altura aumentada — icon+previewbtn+nome+path+footer */
+  min-width:0;                /* prevent grid blowout */
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
-.repo-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
-.repo-card:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.4); }
+.repo-card:active { transform:scale(0.96); }
 .repo-card.selected {
   border-color:var(--c-purple);
-  background:rgba(139,92,246,0.12);
-  box-shadow:0 0 12px rgba(139,92,246,0.3);
+  background:rgba(139,92,246,0.14);
+  box-shadow:0 0 14px rgba(139,92,246,0.22);
 }
 .repo-card.selected::after {
-  content:'✓'; position:absolute; top:5px; right:7px;
-  color:var(--c-purple); font-weight:900; font-size:11px;
+  content:'✓'; position:absolute; top:7px; right:9px;
+  color:var(--c-purple); font-weight:900; font-size:14px;
 }
-.rc-icon { font-size:1.4rem; margin-bottom:4px; }
-.rc-name { font-size:9.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-bottom:2px; }
-.rc-path { font-size:8px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.rc-footer { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
-.rc-badge { font-size:7.5px; font-weight:700; padding:1px 4px; border-radius:3px; border:1px solid; }
+
+/* Linha topo: ícone + dois botões (ℹ e 👁) */
+.rc-top {
+  display:flex; align-items:flex-start;
+  justify-content:space-between; margin-bottom:5px; gap:4px;
+}
+.rc-icon {
+  font-size:1.75rem; line-height:1; flex-shrink:0;
+}
+.rc-btns { display:flex; gap:4px; align-items:center; flex-shrink:0; }
+.rc-info-btn, .rc-prev-btn {
+  width:26px; height:26px; border-radius:50%;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.07);
+  color:var(--text-muted); font-size:13px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; line-height:1;
+  transition:background .2s, color .2s;
+}
+.rc-info-btn:active { background:rgba(59,130,246,0.35); color:var(--primary); }
+.rc-prev-btn:active { background:rgba(0,245,255,0.3); color:var(--primary); }
+
+/* ── PREVIEW FILE MODAL ── */
+.prev-modal {
+  position:fixed; inset:0; background:rgba(2,6,23,0.96);
+  z-index:6000; display:none; flex-direction:column;
+  backdrop-filter:blur(8px);
+}
+.prev-modal.open { display:flex; }
+.prev-modal-head {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 14px; background:rgba(5,8,17,0.99);
+  border-bottom:1px solid rgba(255,255,255,0.08); flex-shrink:0;
+}
+.prev-modal-icon { font-size:1.3rem; flex-shrink:0; }
+.prev-modal-title { flex:1; font-size:12px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.prev-modal-sub { font-size:9px; color:var(--text-muted); }
+.prev-close {
+  width:32px; height:32px; border-radius:50%;
+  background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4);
+  color:#ef4444; font-size:16px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.prev-modal-body { flex:1; overflow:hidden; position:relative; }
+.prev-iframe { width:100%; height:100%; border:none; background:#fff; display:none; }
+.prev-iframe.active { display:block; }
+.prev-code {
+  width:100%; height:100%; overflow:auto; padding:14px;
+  font-family:var(--font-code); font-size:11px; line-height:1.65;
+  white-space:pre-wrap; word-break:break-word;
+  color:#c9d1d9; background:var(--bg-deep); display:none;
+}
+.prev-code.active { display:block; }
+.prev-loading {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--text-muted); font-size:11px; font-family:var(--font-code);
+  animation:flicker 1.5s infinite;
+}
+/* ── fim PREVIEW MODAL ── */
+
+/* ── EDITOR SYNTAX HIGHLIGHT LAYER ── */
+.code-area { flex:1; position:relative; overflow:hidden; }
+
+/* FIX SCROLL: overflow:scroll + sem scrollbars = pode receber scrollTop via JS */
+.highlight-layer {
+  position:absolute; inset:0; padding:12px;
+  font-family:var(--font-code); font-size:12.5px; line-height:1.65;
+  white-space:pre; pointer-events:none;
+  tab-size:2; z-index:1; word-break:normal;
+  overflow:scroll;             /* permite scroll sincronizado via JS */
+  scrollbar-width:none;        /* Firefox: sem scrollbar visível */
+}
+.highlight-layer::-webkit-scrollbar { display:none; } /* Chrome: sem scrollbar */
+.hl-line { display:block; min-height:1.65em; border-radius:2px; }
+
+/* FIX ANDROID: textarea VISÍVEL mas coberta pelo highlight layer com fundo sólido */
+/* Usar background no highlight elimina necessidade de color:transparent problemático */
+#input-layer {
+  position:absolute; inset:0; padding:12px;
+  font-family:var(--font-code); font-size:12.5px; line-height:1.65;
+  white-space:pre; border:none; outline:none; overflow:auto;
+  tab-size:2; width:100%; height:100%;
+  background:transparent;
+  color:rgba(232,224,240,0.06);  /* quase invisível — highlight cobre */
+  caret-color:var(--primary);    /* cursor sempre visível */
+  resize:none; z-index:3;        /* acima do highlight para receber eventos */
+  -webkit-text-fill-color:rgba(232,224,240,0.06);
+}
+/* Highlight atrás com fundo sólido — cobre o texto do textarea */
+.highlight-layer {
+  background:var(--bg-deep);  /* fundo sólido para cobrir texto do textarea */
+  z-index:2;
+}
+
+/* Gutter: linhas coloridas por arquétipo */
+.gutter {
+  width:44px; background:rgba(0,0,0,0.35); border-right:1px solid var(--glass-border);
+  overflow:hidden; font-family:var(--font-code); font-size:11.5px; flex-shrink:0;
+  padding:12px 0;
+}
+.g-line {
+  display:block; text-align:center; line-height:1.65em;
+  font-size:11px; transition:color .1s;
+}
+
+/* ── VEEB ORB — arquétipo da linha atual ── */
+.veeb-orb {
+  display:flex; align-items:center; gap:5px; flex-shrink:0;
+  padding:2px 8px 2px 5px; border-radius:99px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(0,0,0,0.3); cursor:default;
+  transition:border-color .3s, background .3s;
+}
+.veeb-orb-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:var(--primary); flex-shrink:0;
+  animation:veebpulse 2s infinite;
+  transition:background .3s, box-shadow .3s;
+}
+@keyframes veebpulse { 0%,100%{opacity:.5;transform:scale(.9)} 50%{opacity:1;transform:scale(1.15)} }
+.veeb-orb-txt {
+  font-size:8.5px; font-weight:700; color:var(--primary);
+  font-family:var(--font-code); letter-spacing:.05em;
+  transition:color .3s;
+}
+/* ── fim HIGHLIGHT ── */
+
+/* ━━━━━ METALUX PANEL ━━━━━ */
+.mx-panel { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; padding:12px; background:var(--bg-deep); }
+.mx-section { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:12px; }
+.mx-title { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted); margin-bottom:8px; display:flex; align-items:center; gap:5px; }
+.mx-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+.mx-badge { padding:3px 8px; border-radius:99px; font-size:9px; font-weight:700; border:1px solid; display:inline-flex; align-items:center; gap:4px; }
+.mx-compat-row { display:flex; align-items:center; gap:6px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:9px; }
+.mx-compat-bar { flex:1; height:4px; border-radius:2px; background:rgba(255,255,255,0.07); overflow:hidden; }
+.mx-compat-fill { height:100%; border-radius:2px; transition:width .5s ease; }
+.mx-seed-box { background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:10px; font-family:var(--font-code); font-size:9.5px; line-height:1.6; color:#c9d1d9; white-space:pre-wrap; word-break:break-all; max-height:220px; overflow-y:auto; }
+.mx-btn { padding:5px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.05); color:var(--text-main); cursor:pointer; font-family:var(--font-ui); font-size:9.5px; font-weight:700; transition:all .2s; }
+.mx-btn:hover { background:rgba(255,255,255,0.1); }
+.mx-btn.primary { background:linear-gradient(135deg,#3b82f6,#8b5cf6); border:none; }
+.mx-eye { font-size:1.8rem; filter:drop-shadow(0 0 8px currentColor); transition:filter .3s; }
+.mx-eye.active { animation:eye-pulse 2s infinite; }
+@keyframes eye-pulse { 0%,100%{filter:drop-shadow(0 0 4px currentColor)} 50%{filter:drop-shadow(0 0 18px currentColor)} }
+.mx-select { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:var(--text-main); padding:5px 8px; font-family:var(--font-code); font-size:9.5px; outline:none; }
+.mx-pib-row { display:flex; align-items:center; gap:5px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:9px; cursor:pointer; border-radius:4px; transition:background .15s; }
+.mx-pib-row:hover { background:rgba(255,255,255,0.04); }
+
+/* Nome — height fixo = 2 linhas (font 12px × line-height 1.45 × 2) */
+.rc-name {
+  font-size:12px; font-weight:700; line-height:1.45;
+  height:35px;           /* 12 × 1.45 × 2 ≈ 34.8px → 35px */
+  overflow:hidden;
+  word-break:break-word;
+  margin-bottom:3px;
+}
+
+/* Caminho — 1 linha com ellipsis */
+.rc-path {
+  font-size:9px; color:var(--text-muted);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  margin-bottom:auto;     /* empurra footer para baixo */
+}
+
+/* Footer: badge + tamanho */
+.rc-footer {
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:6px; margin-top:6px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.rc-badge {
+  font-size:9px; font-weight:700; padding:2px 6px;
+  border-radius:4px; border:1px solid;
+}
+.rc-size { font-size:9px; color:var(--text-muted); font-weight:600; }
+
+/* ── INFO BOTTOM SHEET (mobile) ── */
+.info-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  z-index:4999; display:none;
+  backdrop-filter:blur(4px);
+}
+.info-overlay.open { display:block; }
+.info-sheet {
+  position:fixed; bottom:-100%; left:0; right:0;
+  background:var(--bg-deep);
+  border-top:2px solid var(--c3, #3b82f6);
+  border-radius:18px 18px 0 0;
+  z-index:5000; transition:bottom 0.32s cubic-bezier(.4,0,.2,1);
+  max-height:78vh; display:flex; flex-direction:column;
+}
+.info-sheet.open { bottom:0; }
+.info-handle {
+  width:40px; height:4px; background:rgba(255,255,255,0.2);
+  border-radius:2px; margin:10px auto 0; flex-shrink:0;
+}
+.info-head {
+  padding:10px 16px 8px; display:flex; align-items:center; gap:8px;
+  border-bottom:1px solid rgba(255,255,255,0.07); flex-shrink:0;
+}
+.info-head-icon { font-size:1.4rem; }
+.info-head-title { flex:1; font-size:12px; font-weight:700; overflow:hidden; }
+.info-head-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.info-head-path { font-size:9px; color:var(--text-muted); }
+.info-close {
+  background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3);
+  color:#ef4444; width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  font-size:14px; flex-shrink:0;
+}
+.info-body { overflow-y:auto; padding:12px 16px 24px; flex:1; }
+.info-section { margin-bottom:12px; }
+.info-section-title {
+  font-size:9px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--text-muted);
+  margin-bottom:6px; padding-bottom:4px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.info-chips { display:flex; flex-wrap:wrap; gap:4px; }
+.info-chip {
+  padding:3px 8px; border-radius:99px; font-size:9px; font-weight:600;
+  border:1px solid; font-family:var(--font-code);
+  background:rgba(255,255,255,0.04);
+}
+.info-stat-row {
+  display:flex; justify-content:space-between; padding:4px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:10px;
+}
+.info-stat-label { color:var(--text-muted); }
+.info-stat-val   { font-weight:700; font-family:var(--font-code); }
+.info-loading { text-align:center; padding:2rem; color:var(--text-muted); font-size:10px; }
+/* ── fim INFO SHEET ── */
 
 .repo-footer {
   padding:8px 12px; background:rgba(0,0,0,0.5); border-top:1px solid var(--glass-border);
@@ -388,6 +630,7 @@ body {
     <button class="t-tab" data-view="memory"><i data-lucide="database"></i> RAM</button>
     <button class="t-tab" data-view="repo"><i data-lucide="git-branch"></i> REPO</button>
     <button class="t-tab" data-view="fusion"><i data-lucide="zap"></i> FUSÃO</button>
+    <button class="t-tab" data-view="metalux" title="METALUX Bridge + HORUS Eye">⬡ MX</button>
   </div>
 
   <div class="sel-badge" id="selBadge" onclick="switchTab('fusion')">
@@ -406,11 +649,19 @@ body {
       <span class="editor-path" id="editorPath" title="Clique para mudar caminho" onclick="changeEditorPath()">novo_arquivo.html</span>
       <button class="tool-btn" id="btn-format" title="Formatar"><i data-lucide="align-left"></i></button>
       <button class="tool-btn" id="btn-wrap" title="Word Wrap"><i data-lucide="wrap-text"></i></button>
+      <!-- VEEB ORB — arquétipo da linha atual -->
+      <div class="veeb-orb" id="veebOrb" title="Arquétipo da linha atual (VEEB)">
+        <div class="veeb-orb-dot" id="veebDot"></div>
+        <span class="veeb-orb-txt" id="veebTxt">ATLAS</span>
+      </div>
       <button class="tool-btn" id="btn-clear" title="Limpar"><i data-lucide="trash-2"></i></button>
     </div>
     <div class="editor-frame">
       <div class="gutter" id="gutter">1</div>
       <div class="code-area">
+        <!-- Highlight layer (atrás) — cores arquetípicas KOBLLUX -->
+        <div id="codeHighlight" class="highlight-layer" aria-hidden="true"></div>
+        <!-- Input (frente) — texto transparente, cursor visível -->
         <textarea id="input-layer" spellcheck="false" autocapitalize="off"
           placeholder="<h1>∆³ KOBLLUX_VIVO</h1>"></textarea>
       </div>
@@ -565,6 +816,81 @@ body {
 
     </div>
   </section>
+
+  <!-- ── METALUX · HORUS EYE ──────────────────────────────── -->
+  <section id="view-metalux" class="view">
+    <div class="mx-panel">
+
+      <!-- HORUS EYE — análise do código atual -->
+      <div class="mx-section">
+        <div class="mx-title">👁 HORUS EYE · Visão do Código Atual</div>
+        <div class="mx-row">
+          <span class="mx-eye" id="mxEye" style="color:#fbbf24">👁</span>
+          <div style="flex:1">
+            <div class="mx-row" style="flex-wrap:wrap;gap:5px" id="mxBadges">
+              <span class="mx-badge" style="color:#94a3b8;border-color:#334155">· analisar ·</span>
+            </div>
+            <div style="font-size:9px;color:var(--text-muted);margin-top:4px" id="mxSigs"></div>
+          </div>
+          <button class="mx-btn primary" onclick="runHorusEye()">👁 ANALISAR</button>
+        </div>
+      </div>
+
+      <!-- PIB TABLE — tabela de compatibilidade fractal -->
+      <div class="mx-section">
+        <div class="mx-title">⬡ PIB FRACTAL · Compatibilidade com o Código</div>
+        <div id="mxCompatTable">
+          <div style="font-size:9px;color:var(--text-muted)">Execute HORUS para ver compatibilidade</div>
+        </div>
+      </div>
+
+      <!-- BRIDGE SEED GENERATOR -->
+      <div class="mx-section">
+        <div class="mx-title">🌉 METALUX BRIDGE · Gerar Seed de Conexão</div>
+        <div class="mx-row">
+          <span style="font-size:9px;color:var(--text-muted)">De:</span>
+          <select class="mx-select" id="mxFromLang">
+            <option value="auto">AUTO (HORUS)</option>
+            <option value="python">Python Δ7</option>
+            <option value="json">JSON Δ1</option>
+            <option value="typescript">TypeScript Δ2</option>
+            <option value="go">Go Δ3</option>
+            <option value="sql">SQL Δ4</option>
+            <option value="shell">Shell Δ5</option>
+            <option value="rust">Rust Δ6</option>
+          </select>
+          <span style="font-size:9px;color:var(--text-muted)">→</span>
+          <select class="mx-select" id="mxToLang">
+            <option value="typescript">TypeScript Δ2</option>
+            <option value="go">Go Δ3</option>
+            <option value="rust">Rust Δ6</option>
+            <option value="python">Python Δ7</option>
+            <option value="json">JSON Δ1</option>
+            <option value="sql">SQL Δ4</option>
+            <option value="shell">Shell Δ5</option>
+          </select>
+        </div>
+        <div class="mx-row" style="gap:5px;margin-bottom:8px">
+          <button class="mx-btn primary" onclick="generateBridgeSeed()">⬡ Gerar Bridge</button>
+          <button class="mx-btn" onclick="injectSeedToEditor()">⬇ Injetar no Editor</button>
+          <button class="mx-btn" onclick="generateUniversalSeed()">∞ Universal JSON</button>
+        </div>
+        <div class="mx-seed-box" id="mxSeedBox">// Execute HORUS e escolha as linguagens para gerar o bridge seed</div>
+      </div>
+
+      <!-- PIB TABLE COMPLETA -->
+      <div class="mx-section">
+        <div class="mx-title">📊 PIB ESCALAR · 7 Linguagens · KΦB=0.007297353</div>
+        <div id="mxPibTable">
+          <!-- populated by JS -->
+        </div>
+        <div style="font-size:8.5px;color:var(--text-muted);margin-top:6px;text-align:center">
+          soma_hz=4797 → 4+7+9+7=27=3³ · soma_pib=6.2460 · ASSINATURA=1134=3×6×9×7
+        </div>
+      </div>
+
+    </div>
+  </section>
 </main>
 
 <!-- ━━━━━ DOCK ━━━━━ -->
@@ -580,9 +906,47 @@ body {
 
 <div id="toaster"></div>
 
+<!-- PREVIEW FILE MODAL -->
+<div class="prev-modal" id="prevModal">
+  <div class="prev-modal-head">
+    <span class="prev-modal-icon" id="prevIcon">📄</span>
+    <div style="flex:1;overflow:hidden">
+      <div class="prev-modal-title" id="prevTitle">—</div>
+      <div class="prev-modal-sub" id="prevSub">—</div>
+    </div>
+    <div class="prev-close" onclick="closeFilePreview()">✕</div>
+  </div>
+  <div class="prev-modal-body">
+    <div class="prev-loading" id="prevLoading">↺ carregando...</div>
+    <iframe class="prev-iframe" id="prevFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+    <div class="prev-code" id="prevCodeEl"></div>
+  </div>
+</div>
+
+<!-- INFO BOTTOM SHEET -->
+<div class="info-overlay" id="infoOverlay" onclick="closeInfoSheet()"></div>
+<div class="info-sheet" id="infoSheet">
+  <div class="info-handle"></div>
+  <div class="info-head">
+    <span class="info-head-icon" id="infoIcon">📄</span>
+    <div class="info-head-title">
+      <div class="info-head-name" id="infoName">—</div>
+      <div class="info-head-path" id="infoPath">—</div>
+    </div>
+    <div class="info-close" onclick="closeInfoSheet()">✕</div>
+  </div>
+  <div class="info-body" id="infoBody">
+    <div class="info-loading">Toque ℹ em um arquivo para ver detalhes</div>
+  </div>
+</div>
+
 <!-- ━━━━━ SCRIPTS ━━━━━ -->
-<script src="../../core/github-bridge.js"></script>
-<script src="../../core/kobllux-archetypes.js"></script>
+	<script src="https://truetruextrue.github.io/JESUS_VERB-/SÜMBÜS_METAHUMAN_ARCHITECT/core/github-bridge.js"></script>
+	<script src="https://truetruextrue.github.io/JESUS_VERB-/SÜMBÜS_METAHUMAN_ARCHITECT/core/kobllux-archetypes.js"></script>
+	<!-- METALUX BRIDGE + HORUS EYE — fractal PIB compatibility -->
+	<script src="https://truetruextrue.github.io/JESUS_VERB-/KOBLLUX_VEEB/kobllux_metalux_bridge.js"></script>
+
+   
 <script>
 (function() {
 'use strict';
@@ -592,6 +956,9 @@ body {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const G     = window.GITHUB_BRIDGE || null;
 const ARCHS = window.KOBLLUX_ARCHETYPES || [];
+
+// esc() global ao IIFE — usada em renderRepoGrid e outros
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 const UI = {
   input:   document.getElementById('input-layer'),
@@ -640,8 +1007,12 @@ function toast(msg, type='info') {
 }
 
 function updateGutter() {
-  const lines = UI.input.value.split('\n').length;
-  UI.gutter.innerHTML = Array(lines).fill(0).map((_,i)=>i+1).join('<br>');
+  const lines = UI.input.value.split('\n');
+  const ext = (state.editorPath.split('.').pop() || 'html').toLowerCase();
+  UI.gutter.innerHTML = lines.map((line, i) => {
+    const color = getLineNumColor(line, ext);
+    return `<span class="g-line" style="color:${color}">${i+1}</span>`;
+  }).join('');
 }
 
 function logToUI(msg, type='') {
@@ -683,14 +1054,14 @@ document.getElementById('btn-undo').onclick = () => {
   history.future.push(history.present);
   history.present = history.past.pop();
   UI.input.value = history.present;
-  updateGutter(); updateHistoryBtns();
+  updateGutter(); updateHighlight(); updateVeebOrb(); updateHistoryBtns();
 };
 document.getElementById('btn-redo').onclick = () => {
   if (!history.future.length) return;
   history.past.push(history.present);
   history.present = history.future.pop();
   UI.input.value = history.present;
-  updateGutter(); updateHistoryBtns();
+  updateGutter(); updateHighlight(); updateVeebOrb(); updateHistoryBtns();
 };
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -721,7 +1092,7 @@ document.getElementById('btn-format').onclick = () => {
       return ind + l;
     });
     UI.input.value = result.join('\n');
-    updateGutter();
+    updateGutter(); updateHighlight(); updateVeebOrb();
     saveHistory(UI.input.value);
     toast('FORMATADO', 'ok');
   } catch { toast('Erro ao formatar', 'err'); }
@@ -810,6 +1181,10 @@ function saveRepoToken() {
 }
 
 async function loadRepo() {
+  if (!G) {
+    document.getElementById('repoGrid').innerHTML = '<div class="loading-anim" style="grid-column:1/-1;color:var(--danger)">GitHub Bridge não carregou. Verifique o caminho dos scripts.</div>';
+    return;
+  }
   const grid = document.getElementById('repoGrid');
   grid.innerHTML = '<div class="loading-anim" style="grid-column:1/-1">⬡ ATLAS carregando árvore...</div>';
   try {
@@ -850,24 +1225,59 @@ function renderRepoGrid() {
   grid.innerHTML = filtered.map(f => {
     const ext  = f.path.split('.').pop().toLowerCase();
     const name = f.path.split('/').pop();
-    const dir  = f.path.split('/').slice(0,-1).slice(-2).join('/');
+    // Mostra as 2 últimas partes do caminho (pasta/subpasta) para não ficar longo
+    const pathParts = f.path.split('/');
+    const dir  = pathParts.length > 2 ? pathParts.slice(-3,-1).join('/') : pathParts.slice(0,-1).join('/');
     const ft   = TYPE_MAP[ext] || { label:ext.toUpperCase(), color:'#475569', bg:'rgba(71,85,105,0.1)', icon:'📁' };
     const sel  = selectedFiles.some(s => s.path === f.path);
+    const borderColor = sel ? 'var(--c-purple)' : ft.color + '22';
+    const size = G && G.formatSize ? G.formatSize(f.size) : '';
     return `
-      <div class="repo-card ${sel?'selected':''}" id="rc-${f.sha}"
-           onclick="toggleSelect('${f.path}','${f.sha}','${ext}','${name.replace(/'/g,"\\'")}')"
-           style="border-color:${sel?'var(--c-purple)':ft.color+'22'}">
-        <style>#rc-${f.sha}::before{background:${ft.color}}</style>
-        <div class="rc-icon">${ft.icon}</div>
-        <div class="rc-name" style="color:${ft.color}" title="${f.path}">${name}</div>
-        <div class="rc-path">${dir}</div>
+      <div class="repo-card ${sel?'selected':''}"
+           data-path="${esc(f.path)}"
+           data-sha="${f.sha}"
+           data-ext="${ext}"
+           data-name="${esc(name)}"
+           data-size="${esc(size)}"
+           onclick="handleCardClick(this)"
+           style="border-color:${borderColor};border-top:2px solid ${ft.color}">
+        <div class="rc-top">
+          <span class="rc-icon">${ft.icon}</span>
+          <div class="rc-btns">
+            <button class="rc-prev-btn"
+                    data-path="${esc(f.path)}"
+                    data-ext="${ext}"
+                    data-icon="${ft.icon}"
+                    data-name="${esc(name)}"
+                    onclick="event.stopPropagation();showFilePreview(this)"
+                    title="Prévia do arquivo">👁</button>
+            <button class="rc-info-btn"
+                    data-path="${esc(f.path)}"
+                    data-ext="${ext}"
+                    data-icon="${ft.icon}"
+                    data-size="${esc(size)}"
+                    onclick="event.stopPropagation();showFileInfo(this)"
+                    title="Classes, IDs, detalhes">ℹ</button>
+          </div>
+        </div>
+        <div class="rc-name" style="color:${ft.color}">${esc(name)}</div>
+        <div class="rc-path">${esc(dir)}</div>
         <div class="rc-footer">
           <span class="rc-badge" style="color:${ft.color};border-color:${ft.color}44;background:${ft.bg}">${ft.label}</span>
-          <span style="font-size:7.5px;color:var(--text-muted)">${G.formatSize ? G.formatSize(f.size) : ''}</span>
+          <span class="rc-size">${size}</span>
         </div>
       </div>`;
   }).join('');
 }
+
+// EXPOSTO ao window — onclick="handleCardClick(this)" precisa do escopo global
+window.handleCardClick = function(el) {
+  const path = el.dataset.path;
+  const sha  = el.dataset.sha;
+  const ext  = el.dataset.ext;
+  const name = el.dataset.name;
+  toggleSelect(path, sha, ext, name);
+};
 
 function toggleSelect(path, sha, ext, name) {
   const idx = selectedFiles.findIndex(s => s.path === path);
@@ -922,6 +1332,492 @@ window.removeSel = i => {
   updateSelectionUI();
   renderRepoGrid();
 };
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   INFO SHEET — classes · IDs · detalhes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+async function showFileInfo(btn) {
+  const path  = btn.dataset.path;
+  const ext   = btn.dataset.ext;
+  const icon  = btn.dataset.icon;
+  const size  = btn.dataset.size;
+  const name  = path.split('/').pop();
+  const dir   = path.split('/').slice(0,-1).slice(-2).join('/');
+
+  // Open sheet immediately with loading state
+  document.getElementById('infoIcon').textContent = icon;
+  document.getElementById('infoName').textContent = name;
+  document.getElementById('infoPath').textContent = dir;
+  document.getElementById('infoBody').innerHTML = '<div class="info-loading">↺ carregando...</div>';
+  document.getElementById('infoSheet').style.borderTopColor = TYPE_MAP[ext]?.color || '#3b82f6';
+  document.getElementById('infoSheet').classList.add('open');
+  document.getElementById('infoOverlay').classList.add('open');
+
+  // Binary/large file guard
+  const isBinary = ['png','jpg','jpeg','gif','svg','ico','woff','woff2','ttf','eot','pdf','zip'].includes(ext);
+
+  try {
+    if (isBinary) {
+      renderInfoStats({ size, lines: '—', type: ext.toUpperCase(), classes:[], ids:[], vars:[], fns:[], keys:[] });
+      return;
+    }
+    const data = await G.fetchFile(path);
+    if (!data.content) { renderInfoStats({ size, lines:'—', type:ext.toUpperCase(), classes:[],ids:[],vars:[],fns:[],keys:[] }); return; }
+    const raw = G.decodeContent(data.content);
+    const lines = raw.split('\n').length;
+    const parsed = parseFileInfo(raw, ext);
+    renderInfoStats({ size, lines, type: ext.toUpperCase(), ...parsed, path, ext });
+  } catch(e) {
+    document.getElementById('infoBody').innerHTML =
+      `<div class="info-loading" style="color:var(--danger)">Erro: ${e.message}</div>`;
+  }
+}
+
+function parseFileInfo(raw, ext) {
+  const uniq = arr => [...new Set(arr)].sort();
+  const classes=[], ids=[], vars=[], fns=[], keys=[];
+
+  if (ext === 'css') {
+    // classes: .name { ou .name,
+    const cMatch = raw.matchAll(/\.(-?[a-zA-Z_][a-zA-Z0-9_-]*)[\s{,>+~:[\n]/g);
+    for (const m of cMatch) if (!m[1].startsWith('-')) classes.push(m[1]);
+    // IDs: #name {
+    const iMatch = raw.matchAll(/#([a-zA-Z_][a-zA-Z0-9_-]*)[\s{,>+~:[\n]/g);
+    for (const m of iMatch) ids.push(m[1]);
+    // CSS vars: --var-name
+    const vMatch = raw.matchAll(/--([a-zA-Z][a-zA-Z0-9_-]+)\s*:/g);
+    for (const m of vMatch) vars.push('--' + m[1]);
+  }
+  else if (ext === 'html') {
+    // class="" attributes
+    const cMatch = raw.matchAll(/class="([^"]+)"/g);
+    for (const m of cMatch) m[1].split(/\s+/).forEach(c => { if(c) classes.push(c); });
+    // id="" attributes
+    const iMatch = raw.matchAll(/\bid="([^"]+)"/g);
+    for (const m of iMatch) ids.push(m[1]);
+    // <script> function names
+    const fnMatch = raw.matchAll(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g);
+    for (const m of fnMatch) fns.push(m[1]);
+  }
+  else if (ext === 'js') {
+    // function declarations
+    const fnMatch = raw.matchAll(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g);
+    for (const m of fnMatch) fns.push(m[1]);
+    // arrow / const fn
+    const arMatch = raw.matchAll(/(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*(?:async\s*)?\(/g);
+    for (const m of arMatch) fns.push(m[1]);
+    // const/let/var declarations (non-functions)
+    const vMatch = raw.matchAll(/(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*[=;,]/g);
+    for (const m of vMatch) vars.push(m[1]);
+    // class definitions
+    const clMatch = raw.matchAll(/class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g);
+    for (const m of clMatch) classes.push(m[1]);
+  }
+  else if (ext === 'json') {
+    try {
+      const obj = JSON.parse(raw);
+      if (typeof obj === 'object' && obj !== null) {
+        Object.keys(obj).slice(0, 30).forEach(k => keys.push(k));
+      }
+    } catch {}
+  }
+  else if (ext === 'py') {
+    // def function_name
+    const fnMatch = raw.matchAll(/^def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/gm);
+    for (const m of fnMatch) fns.push(m[1]);
+    // class ClassName
+    const clMatch = raw.matchAll(/^class\s+([a-zA-Z_][a-zA-Z0-9_]*)/gm);
+    for (const m of clMatch) classes.push(m[1]);
+  }
+  else if (ext === 'md') {
+    // headings
+    const hMatch = raw.matchAll(/^#{1,3}\s+(.+)$/gm);
+    for (const m of hMatch) keys.push(m[1].trim().slice(0,40));
+  }
+
+  return {
+    classes: uniq(classes).slice(0,40),
+    ids:     uniq(ids).slice(0,20),
+    vars:    uniq(vars).slice(0,20),
+    fns:     uniq(fns).slice(0,30),
+    keys:    uniq(keys).slice(0,20),
+  };
+}
+
+function renderInfoStats({ size, lines, type, classes, ids, vars, fns, keys, path, ext }) {
+  const ft = TYPE_MAP[ext] || { color:'#94a3b8' };
+  const chip = (label, color) =>
+    `<span class="info-chip" style="color:${color};border-color:${color}44">${esc(label)}</span>`;
+
+  let html = `<div class="info-section">
+    <div class="info-section-title">📊 Estatísticas</div>
+    <div class="info-stat-row"><span class="info-stat-label">Tipo</span><span class="info-stat-val" style="color:${ft.color}">${type}</span></div>
+    <div class="info-stat-row"><span class="info-stat-label">Tamanho</span><span class="info-stat-val">${size || '—'}</span></div>
+    <div class="info-stat-row"><span class="info-stat-label">Linhas</span><span class="info-stat-val">${lines}</span></div>
+  </div>`;
+
+  if (classes.length) html += `<div class="info-section">
+    <div class="info-section-title">🎨 Classes (${classes.length})</div>
+    <div class="info-chips">${classes.map(c => chip('.'+c,'#264de4')).join('')}</div>
+  </div>`;
+
+  if (ids.length) html += `<div class="info-section">
+    <div class="info-section-title"># IDs (${ids.length})</div>
+    <div class="info-chips">${ids.map(i => chip('#'+i,'#e34c26')).join('')}</div>
+  </div>`;
+
+  if (vars.length) html += `<div class="info-section">
+    <div class="info-section-title">⚙ Variáveis / Props (${vars.length})</div>
+    <div class="info-chips">${vars.map(v => chip(v,'#94a3b8')).join('')}</div>
+  </div>`;
+
+  if (fns.length) html += `<div class="info-section">
+    <div class="info-section-title">⚡ Funções (${fns.length})</div>
+    <div class="info-chips">${fns.map(f => chip(f+'()','#f7df1e')).join('')}</div>
+  </div>`;
+
+  if (keys.length) html += `<div class="info-section">
+    <div class="info-section-title">🗝 Chaves / Seções (${keys.length})</div>
+    <div class="info-chips">${keys.map(k => chip(k,'#10b981')).join('')}</div>
+  </div>`;
+
+  // Button to open in fusion with this file pre-selected
+  if (path) html += `<div style="margin-top:8px">
+    <button onclick="closeInfoSheet();preSelectFile('${esc(path)}')"
+      style="width:100%;padding:10px;background:rgba(139,92,246,0.15);border:1px solid var(--c-purple);color:var(--c-purple);border-radius:8px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer">
+      ⚡ Selecionar para FUSÃO
+    </button>
+  </div>`;
+
+  document.getElementById('infoBody').innerHTML = html;
+}
+
+function closeInfoSheet() {
+  document.getElementById('infoSheet').classList.remove('open');
+  document.getElementById('infoOverlay').classList.remove('open');
+}
+
+function preSelectFile(path) {
+  const file = repoFiles.find(f => f.path === path);
+  if (!file) return;
+  const ext  = path.split('.').pop().toLowerCase();
+  const name = path.split('/').pop();
+  if (!selectedFiles.some(s => s.path === path)) {
+    selectedFiles.push({ path, sha: file.sha, ext, name });
+    updateSelectionUI();
+    renderRepoGrid();
+  }
+  switchTab('fusion');
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PREVIEW FILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+async function showFilePreview(btn) {
+  const path = btn.dataset.path;
+  const ext  = btn.dataset.ext;
+  const name = btn.dataset.name || path.split('/').pop();
+  const ft   = TYPE_MAP[ext] || { icon:'📄', color:'#94a3b8', label:ext.toUpperCase() };
+
+  const modal   = document.getElementById('prevModal');
+  const loading = document.getElementById('prevLoading');
+  const frame   = document.getElementById('prevFrame');
+  const codeEl  = document.getElementById('prevCodeEl');
+
+  document.getElementById('prevIcon').textContent  = ft.icon;
+  document.getElementById('prevTitle').textContent = name;
+  document.getElementById('prevTitle').style.color = ft.color;
+  document.getElementById('prevSub').textContent   = path;
+
+  // reset state
+  loading.style.display = 'flex';
+  frame.className   = 'prev-iframe';
+  codeEl.className  = 'prev-code';
+  frame.srcdoc      = '';
+  codeEl.innerHTML  = '';
+  modal.classList.add('open');
+
+  const renderAsFrame = ['html', 'md', 'svg'].includes(ext);
+  const isBinary = ['png','jpg','jpeg','gif','ico','woff','woff2','ttf','pdf','zip'].includes(ext);
+
+  try {
+    if (isBinary) {
+      loading.style.display = 'none';
+      codeEl.className = 'prev-code active';
+      codeEl.innerHTML = `<span style="color:var(--text-muted)">[arquivo binário — preview não disponível]</span>`;
+      return;
+    }
+    const data = await G.fetchFile(path);
+    const raw  = G.decodeContent(data.content);
+    loading.style.display = 'none';
+
+    if (ext === 'html') {
+      frame.className = 'prev-iframe active';
+      frame.srcdoc = raw;
+    } else if (ext === 'md') {
+      frame.className = 'prev-iframe active';
+      frame.srcdoc = `<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        <style>
+          body{font-family:system-ui,sans-serif;padding:20px;max-width:720px;margin:0 auto;color:#1e293b;line-height:1.7}
+          h1{color:#1e40af}h2{color:#1d4ed8}h3{color:#2563eb}
+          code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:.9em}
+          pre{background:#0f172a;color:#e2e8f0;padding:16px;border-radius:8px;overflow-x:auto}
+          blockquote{border-left:4px solid #3b82f6;margin:0;padding-left:16px;color:#475569}
+          a{color:#2563eb}hr{border:none;border-top:1px solid #e2e8f0}
+        </style></head><body>${simpleMarkdown(raw)}</body></html>`;
+    } else {
+      codeEl.className = 'prev-code active';
+      codeEl.innerHTML = colorLine(raw.slice(0, 8000), ext)
+        + (raw.length > 8000 ? `\n<span style="color:var(--text-muted)">... (${raw.length - 8000} chars truncados)</span>` : '');
+    }
+  } catch(e) {
+    loading.style.display = 'none';
+    codeEl.className = 'prev-code active';
+    codeEl.innerHTML = `<span style="color:var(--danger)">Erro: ${esc(e.message)}</span>`;
+  }
+}
+
+function closeFilePreview() {
+  document.getElementById('prevModal').classList.remove('open');
+  document.getElementById('prevFrame').srcdoc = '';
+}
+
+function simpleMarkdown(md) {
+  return md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/^---$/gm,'<hr>')
+    .replace(/^[-*] (.+)$/gm,'<li>$1</li>')
+    .replace(/\n\n/g,'</p><p>');
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SYNTAX HIGHLIGHT — KOBLLUX ARCHETYPE COLORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+// Cores por arquétipo para cada tipo de tag
+const HL = {
+  ATLAS:   '#3b82f6',  // html head body doctype — estrutura
+  NOVA:    '#f59e0b',  // meta link title        — semente
+  VITALIS: '#10b981',  // script                 — energia
+  PULSE:   '#8b5cf6',  // style keyframes        — ritmo
+  ARTEMIS: '#06b6d4',  // input form button      — detecção
+  SERENA:  '#ec4899',  // p span h1-6 text       — cuidado
+  KAOS:    '#ef4444',  // !important, errors     — ruptura
+  GENUS:   '#a855f7',  // div section article    — síntese
+  LUMINE:  '#fbbf24',  // img canvas video svg   — renderização
+  SOLUS:   '#64748b',  // comments               — silêncio
+  RHEA:    '#34d399',  // a iframe embed         — integração
+  AION:    '#818cf8',  // time data template     — tempo
+  STRING:  '#f1fa8c',
+  NUMBER:  '#bd93f9',
+  KEYWORD: '#ff79c6',
+  PROP:    '#8be9fd',
+  FN:      '#50fa7b',
+};
+
+function getLineBg(line) {
+  const l = line.trim();
+  if (/<!--/.test(l))                          return HL.SOLUS   + '14'; // comentário
+  if (/<\/?(?:html|head|body)\b/i.test(l)
+   || /<!DOCTYPE/i.test(l))                    return HL.ATLAS   + '12'; // estrutura
+  if (/<\/?script\b/i.test(l))                 return HL.VITALIS + '12'; // script
+  if (/<\/?style\b/i.test(l)
+   || /@keyframes/i.test(l))                   return HL.PULSE   + '10'; // estilo
+  if (/<(?:meta|link|title|base)\b/i.test(l))  return HL.NOVA    + '10'; // seed
+  if (/<\/?(?:div|section|article|main|aside|nav|header|footer)\b/i.test(l)) return HL.GENUS + '0d';
+  if (/<\/?(?:img|canvas|video|audio|svg|figure)\b/i.test(l))  return HL.LUMINE + '0d';
+  if (/<\/?(?:input|button|form|select|label)\b/i.test(l))     return HL.ARTEMIS+ '0d';
+  if (/<\/?(?:a|iframe|embed)\b/i.test(l))     return HL.RHEA   + '0d';
+  if (/<\/?(?:time|data|template|dialog)\b/i.test(l)) return HL.AION + '0d';
+  return 'transparent';
+}
+
+function getLineNumColor(line, ext) {
+  if (ext !== 'html' && ext !== 'css' && ext !== 'js') return 'rgba(255,255,255,0.18)';
+  const bg = getLineBg(line);
+  if (bg === 'transparent') return 'rgba(255,255,255,0.18)';
+  // derive color from first 7 chars of bg (the hex color)
+  return bg.slice(0,7) + 'cc';
+}
+
+function colorLine(raw, ext) {
+  if (!raw) return '';
+  const lines = raw.split('\n');
+  return lines.map(line => {
+    const escaped = line
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
+    return applyTokenColors(escaped, ext);
+  }).join('\n');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// FIX CRÍTICO: o problema anterior — regex de strings "..."
+// modificava os atributos style="color:..." das próprias <span>
+// geradas em etapas anteriores, criando HTML inválido que aparecia
+// como texto cru no highlight layer.
+//
+// SOLUÇÃO: Colorir apenas os NOMES das tags (não os atributos).
+// A regex `&lt;\/?` + nome do tag é sempre segura pois não processa
+// o conteúdo dentro da tag (atributos), evitando qualquer conflito
+// com spans já gerados. String regex removida do HTML.
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function applyTokenColors(e, ext) {
+
+  if (ext === 'html') {
+    let s = e;
+    // 1. Comentários (SOLUS) — processados primeiro, sem conflito
+    s = s.replace(/(&lt;!--[\s\S]*?--&gt;)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic;opacity:.8">$1</span>`);
+    // 2. Colorir APENAS o nome da tag — NUNCA os atributos.
+    //    Isso evita o bug onde strings nos atributos eram re-processadas.
+    //    Padrão seguro: &lt;[/]TAGNAME — não inclui conteúdo após o nome.
+    const tagColor = (names, color, bold) => {
+      const b = bold ? ';font-weight:700' : '';
+      s = s.replace(
+        new RegExp(`(&lt;\\/?)(${names})(\\b)`, 'gi'),
+        `$1<span style="color:${color}${b}">$2</span>$3`
+      );
+    };
+    tagColor('!DOCTYPE|html|head|body',                        HL.ATLAS,   true);  // B · Base
+    tagColor('script',                                         HL.VITALIS, true);  // E · Energia
+    tagColor('style',                                          HL.PULSE,   true);  // V · Vibração
+    tagColor('meta|link|title|base',                          HL.NOVA,    false); // NOVA · semente
+    tagColor('div|section|article|main|aside|nav|header|footer', HL.GENUS, false); // E · Estrutura
+    tagColor('p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li',   HL.SERENA,  false); // SERENA
+    tagColor('img|canvas|video|audio|svg|figure|picture',     HL.LUMINE,  false); // LUMINE
+    tagColor('a|iframe|embed|portal',                         HL.RHEA,    false); // RHEA
+    tagColor('input|button|form|select|textarea|label',       HL.ARTEMIS, false); // ARTEMIS
+    tagColor('time|data|template|slot|dialog|details',        HL.AION,    false); // AION
+    // 3. &lt; e &gt; em azul suave (delimitadores)
+    s = s.replace(/&lt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&lt;</span>`);
+    s = s.replace(/&gt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&gt;</span>`);
+    return s;
+  }
+
+  if (ext === 'css') {
+    let s = e;
+    // Comentários primeiro
+    s = s.replace(/(\/\*[\s\S]*?\*\/)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    // #hex colors (cada cor em si mesma — visualmente impactante)
+    s = s.replace(/(#[0-9a-fA-F]{3,8})\b/g,
+      m => `<span style="color:${m};text-shadow:0 0 8px ${m}66;font-weight:700">${m}</span>`);
+    // CSS custom properties --var (NUNCA conflita com spans)
+    s = s.replace(/(--[a-zA-Z_][a-zA-Z0-9_-]+)/g,
+      `<span style="color:${HL.NUMBER}">$1</span>`);
+    // Strings CSS (font-family:"Name" etc) — aplicado ANTES de propriedades
+    s = s.replace(/'([^']*)'/g, `<span style="color:${HL.STRING}">'$1'</span>`);
+    // NÃO aplicar regex de propriedade pois conflita com #hex e --vars já inseridos
+    return s;
+  }
+
+  if (ext === 'js') {
+    let s = e;
+    // Comentários inline primeiro (prioridade máxima)
+    s = s.replace(/(\/\/[^\n]*)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    // Keywords — aplicados antes de strings para não colorir keywords dentro de strings
+    // Mas keywords como 'for','if' raramente aparecem em style="..." então seguro
+    const kw = 'const|let|var|function|return|if|else|for|while|class|new|typeof|async|await|import|export|from|default|true|false|null|undefined|this|of|in|try|catch|throw';
+    s = s.replace(new RegExp(`(^|\\s)(${kw})(?=\\s|\\(|\\{|;|,|$)`, 'gm'),
+      (m,sp,kword) => `${sp}<span style="color:${HL.KEYWORD}">${kword}</span>`);
+    // Números (não conflita com spans já inseridos)
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    return s;
+  }
+
+  if (ext === 'py') {
+    let s = e;
+    s = s.replace(/(#[^\n]*)/g,
+      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+    const kw = 'def|class|return|import|from|if|elif|else|for|while|try|except|with|as|in|is|not|and|or|True|False|None|self|print|lambda|yield|raise|pass|break|continue';
+    s = s.replace(new RegExp(`\\b(${kw})\\b`, 'g'),
+      `<span style="color:${HL.KEYWORD}">$1</span>`);
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    return s;
+  }
+
+  if (ext === 'json') {
+    let s = e;
+    // Keys — sem processar strings internas (evita conflitos)
+    s = s.replace(/("(?:[^"\\]|\\.)*")\s*:/g,
+      `<span style="color:${HL.PROP}">$1</span>:`);
+    s = s.replace(/\b(true|false|null)\b/g,
+      `<span style="color:${HL.KEYWORD}">$1</span>`);
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    return s;
+  }
+
+  return e;
+}
+
+function updateHighlight() {
+  const layer = document.getElementById('codeHighlight');
+  if (!layer) return;
+  const ext = (state.editorPath.split('.').pop() || 'html').toLowerCase();
+  const lines = UI.input.value.split('\n');
+  layer.innerHTML = lines.map(line => {
+    const bg = (ext === 'html') ? getLineBg(line) : 'transparent';
+    const safe = line
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
+    const colored = applyTokenColors(safe, ext);
+    return `<span class="hl-line" style="background:${bg}">${colored || '&#8203;'}</span>`;
+  }).join('\n');
+  // Sync scroll after content update
+  layer.scrollTop  = UI.input.scrollTop;
+  layer.scrollLeft = UI.input.scrollLeft;
+}
+
+// VEEB ORB — atualiza o indicador de arquétipo com base na linha do cursor
+function updateVeebOrb() {
+  const input = UI.input;
+  const pos   = input.selectionStart;
+  const lines = input.value.substring(0, pos).split('\n');
+  const curLine = input.value.split('\n')[lines.length - 1] || '';
+  const ext = (state.editorPath.split('.').pop() || 'html').toLowerCase();
+
+  let archId = 'ATLAS', archColor = HL.ATLAS, veebLetter = 'B';
+
+  if (ext === 'html') {
+    const bg = getLineBg(curLine);
+    if      (bg.startsWith(HL.VITALIS)) { archId='VITALIS'; archColor=HL.VITALIS; veebLetter='E'; }
+    else if (bg.startsWith(HL.PULSE))   { archId='PULSE';   archColor=HL.PULSE;   veebLetter='V'; }
+    else if (bg.startsWith(HL.NOVA))    { archId='NOVA';    archColor=HL.NOVA;    veebLetter='B'; }
+    else if (bg.startsWith(HL.GENUS))   { archId='GENUS';   archColor=HL.GENUS;   veebLetter='E'; }
+    else if (bg.startsWith(HL.LUMINE))  { archId='LUMINE';  archColor=HL.LUMINE;  veebLetter='V'; }
+    else if (bg.startsWith(HL.ARTEMIS)) { archId='ARTEMIS'; archColor=HL.ARTEMIS; veebLetter='E'; }
+    else if (bg.startsWith(HL.RHEA))    { archId='RHEA';    archColor=HL.RHEA;    veebLetter='E'; }
+    else if (bg.startsWith(HL.AION))    { archId='AION';    archColor=HL.AION;    veebLetter='B'; }
+    else if (bg.startsWith(HL.SOLUS))   { archId='SOLUS';   archColor=HL.SOLUS;   veebLetter='V'; }
+    else                                { archId='ATLAS';   archColor=HL.ATLAS;   veebLetter='B'; }
+  } else if (ext === 'css') {
+    archId='PULSE'; archColor=HL.PULSE; veebLetter='V';
+  } else if (ext === 'js') {
+    archId='VITALIS'; archColor=HL.VITALIS; veebLetter='E';
+  } else if (ext === 'py') {
+    archId='ARTEMIS'; archColor=HL.ARTEMIS; veebLetter='E';
+  } else if (ext === 'json') {
+    archId='RHEA'; archColor=HL.RHEA; veebLetter='E';
+  }
+
+  const dot = document.getElementById('veebDot');
+  const txt = document.getElementById('veebTxt');
+  const orb = document.getElementById('veebOrb');
+  if (dot) { dot.style.background = archColor; dot.style.boxShadow = `0 0 6px ${archColor}`; }
+  if (txt) { txt.textContent = veebLetter + '·' + archId; txt.style.color = archColor; }
+  if (orb) { orb.style.borderColor = archColor + '66'; }
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    FUSION MODES
@@ -1071,7 +1967,7 @@ async function executeFusion() {
     }
 
     UI.input.value = editorCode;
-    updateGutter();
+    updateGutter(); updateHighlight(); updateVeebOrb();
     saveHistory(editorCode);
     toast('⬢ FUSÃO CONCLUÍDA', 'ok');
     logToUI(`FUSION: ${activeMode} aplicado · ${fetched.length} arquivo(s) · arquétipo: ${activeArch}`, 'fusion');
@@ -1099,7 +1995,7 @@ async function executeFusion() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 document.getElementById('btn-run').onclick  = runCode;
 document.getElementById('btn-clear').onclick = () => {
-  if (confirm('Apagar código atual?')) { UI.input.value=''; updateGutter(); saveHistory(''); }
+  if (confirm('Apagar código atual?')) { UI.input.value=''; updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(''); }
 };
 document.getElementById('btn-save').onclick = () => {
   state.html = UI.input.value;
@@ -1121,7 +2017,7 @@ document.getElementById('file-upload').onchange = async e => {
     UI.input.value = await f.text();
     state.editorPath = f.name;
     document.getElementById('editorPath').textContent = f.name;
-    updateGutter(); saveHistory(UI.input.value);
+    updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value);
     toast('ARQUIVO CARREGADO', 'ok');
     e.target.value = '';
   }
@@ -1148,8 +2044,15 @@ document.getElementById('btn-push').onclick = async () => {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    EDITOR EVENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-UI.input.oninput    = () => { updateGutter(); saveHistory(UI.input.value); };
-UI.input.onscroll   = () => { UI.gutter.scrollTop = UI.input.scrollTop; };
+UI.input.oninput    = () => { updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value); };
+UI.input.onclick    = () => updateVeebOrb();
+UI.input.onkeyup    = () => updateVeebOrb();
+UI.input.onscroll   = () => {
+  UI.gutter.scrollTop = UI.input.scrollTop;
+  const hl = document.getElementById('codeHighlight');
+  // FIX SCROLL: highlight layer agora tem overflow:scroll — pode receber scrollTop
+  if (hl) { hl.scrollTop = UI.input.scrollTop; hl.scrollLeft = UI.input.scrollLeft; }
+};
 UI.input.onkeydown  = e => {
   if (e.key === 'Tab') {
     e.preventDefault();
@@ -1181,6 +2084,8 @@ window.onload = () => {
 
   history.present = UI.input.value;
   updateGutter();
+  updateHighlight();
+  updateVeebOrb();
   renderCDNs();
   buildArchSelector();
 
@@ -1193,11 +2098,200 @@ window.onload = () => {
   setTimeout(() => {
     document.getElementById('loader').style.display = 'none';
     logToUI('SÜMBÜS FUSION ONLINE · KOBLLUX_VIVO_∆³', 'info');
+    initMetaluxPanel();
     logToUI('Vá para REPO → selecione arquivos → FUSÃO → execute', 'fusion');
     // Auto-load repo
     if (G) loadRepo();
   }, 700);
 };
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   METALUX BRIDGE + HORUS EYE — funções do painel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+let _lastHorusAnalysis = null;
+let _lastSeed = '';
+
+function runHorusEye() {
+  const M = window.KOBLLUX_METALUX;
+  if (!M) { fusionLog('[METALUX] Bridge não carregado', 'warn'); return; }
+
+  const code = UI.input.value || '';
+  const r = M.HORUS.analyze(code);
+  _lastHorusAnalysis = r;
+
+  // Update eye color
+  const eye = document.getElementById('mxEye');
+  if (eye) { eye.style.color = r.color; eye.classList.add('active'); }
+
+  // Update badges
+  const badges = document.getElementById('mxBadges');
+  if (badges) {
+    badges.innerHTML = [
+      `<span class="mx-badge" style="color:${r.color};border-color:${r.color}44;background:${r.color}18">${r.lang.toUpperCase()} Δ${r.delta}</span>`,
+      `<span class="mx-badge" style="color:#fbbf24;border-color:#fbbf2444">${r.hz}Hz · PIB=${r.pib.toFixed(4)}</span>`,
+      `<span class="mx-badge" style="color:#e2e8f0;border-color:#33415588">VEEB·${r.veeb} · ${r.arch}</span>`,
+    ].join('');
+  }
+
+  // Signatures
+  const sigs = document.getElementById('mxSigs');
+  if (sigs) sigs.textContent = r.sigs.length
+    ? '🔍 ' + r.sigs.map(s => s.name).join(' · ')
+    : '· padrão base ·';
+
+  // Auto-select from lang
+  const fromSel = document.getElementById('mxFromLang');
+  if (fromSel) { fromSel.value = r.lang; if (!fromSel.value) fromSel.value = 'auto'; }
+
+  // Compatibility table
+  renderCompatTable(r);
+
+  // PIB table
+  renderPibTable(r.lang);
+
+  // Log
+  logToUI(`[HORUS 👁] ${r.lang.toUpperCase()} Δ${r.delta} ${r.hz}Hz · VEEB:${r.veeb} · ${r.arch}`, 'fusion');
+}
+
+function renderCompatTable(r) {
+  const el = document.getElementById('mxCompatTable');
+  if (!el || !window.KOBLLUX_METALUX) return;
+  const M = window.KOBLLUX_METALUX;
+  const rows = M.PIB_TABLE
+    .filter(l => l.lang !== r.lang)
+    .map(l => {
+      const c = M.fractalCompat(r.lang, l.lang);
+      const pct = Math.round(c.resonance * 100);
+      const levelColor = c.level === 'ISOMORPHIC' ? '#10b981' :
+                         c.level === 'STRUCTURAL'  ? '#3b82f6' :
+                         c.level === 'BRIDGE'      ? '#f59e0b' : '#ef4444';
+      return `
+        <div class="mx-compat-row" onclick="quickBridge('${r.lang}','${l.lang}')">
+          <span style="color:${l.color};width:14px;text-align:center">${l.sym}</span>
+          <span style="width:72px;font-weight:700;color:${l.color}">${l.lang}</span>
+          <span style="width:28px;color:${levelColor};font-size:8px">Δ${c.delta_bridge}</span>
+          <div class="mx-compat-bar">
+            <div class="mx-compat-fill" style="width:${pct}%;background:${levelColor}"></div>
+          </div>
+          <span style="width:35px;text-align:right;color:${levelColor};font-size:8.5px">${pct}%</span>
+          <span style="width:60px;color:var(--text-muted);font-size:8px">${c.level.slice(0,8)}</span>
+        </div>`;
+    }).join('');
+  el.innerHTML = rows || '<div style="font-size:9px;color:var(--text-muted)">sem dados</div>';
+}
+
+function renderPibTable(activeLang) {
+  const el = document.getElementById('mxPibTable');
+  if (!el || !window.KOBLLUX_METALUX) return;
+  const M = window.KOBLLUX_METALUX;
+  el.innerHTML = M.PIB_TABLE.map(l => {
+    const isActive = l.lang === activeLang;
+    const pibBar = Math.round(l.pib / 1.3 * 100);
+    return `
+      <div class="mx-pib-row" style="${isActive?'background:rgba(255,255,255,0.06);border-radius:6px;padding:4px 6px;':''}" onclick="quickBridge('${activeLang||'python'}','${l.lang}')">
+        <span style="color:${l.color};width:16px;text-align:center">${l.sym}</span>
+        <span style="width:80px;color:${l.color};font-weight:${isActive?'900':'400'}">${l.lang}</span>
+        <span style="width:20px;color:var(--text-muted)">Δ${l.delta}</span>
+        <span style="width:35px;color:var(--text-muted)">${l.hz}Hz</span>
+        <div class="mx-compat-bar" style="flex:1">
+          <div class="mx-compat-fill" style="width:${pibBar}%;background:${l.color}99"></div>
+        </div>
+        <span style="width:42px;text-align:right;color:${l.color};font-weight:700">${l.pib.toFixed(4)}</span>
+      </div>`;
+  }).join('');
+}
+
+function quickBridge(from, to) {
+  const fromSel = document.getElementById('mxFromLang');
+  const toSel   = document.getElementById('mxToLang');
+  if (fromSel && from) fromSel.value = from;
+  if (toSel   && to)   toSel.value   = to;
+  generateBridgeSeed();
+}
+
+function generateBridgeSeed() {
+  const M = window.KOBLLUX_METALUX;
+  if (!M) { document.getElementById('mxSeedBox').textContent = '// METALUX não carregado'; return; }
+
+  let from = document.getElementById('mxFromLang')?.value || 'python';
+  const to = document.getElementById('mxToLang')?.value || 'typescript';
+
+  if (from === 'auto') {
+    from = _lastHorusAnalysis?.lang || 'python';
+  }
+
+  const seed = M.METALUX.seed(from, to, UI.input.value || '');
+  _lastSeed = seed;
+  document.getElementById('mxSeedBox').textContent = seed;
+  logToUI(`[METALUX ⬡] Bridge seed: ${from}→${to}`, 'fusion');
+}
+
+function generateUniversalSeed() {
+  const M = window.KOBLLUX_METALUX;
+  if (!M) return;
+  let lang = document.getElementById('mxFromLang')?.value || 'python';
+  if (lang === 'auto') lang = _lastHorusAnalysis?.lang || 'python';
+  const seed = M.INJECTOR.universalSeed(lang, UI.input.value || '');
+  _lastSeed = seed;
+  document.getElementById('mxSeedBox').textContent = seed;
+}
+
+function injectSeedToEditor() {
+  if (!_lastSeed) { generateBridgeSeed(); return; }
+  const current = UI.input.value || '';
+  UI.input.value = current + (current ? '\n\n' : '') + _lastSeed;
+  updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value);
+  switchTab('editor');
+  toast('⬡ Bridge seed injetado no editor', 'ok');
+  logToUI('[METALUX ⬡] Seed injetado no editor', 'fusion');
+}
+
+function initMetaluxPanel() {
+  renderPibTable(null);
+  // Integrar com KOBLLUX_BUS se disponível
+  if (window.KOBLLUX_BUS) {
+    window.KOBLLUX_BUS.on(e => {
+      if (e.event === 'archetype_fire') {
+        const M = window.KOBLLUX_METALUX;
+        if (!M) return;
+        const lang = M.PIB_TABLE.find(l => l.arch === e.data?.id)?.lang;
+        if (lang) logToUI(`[HORUS 👁] ${e.data.id} → ${lang} detectado (PIB=${M.PIB[lang]?.pib})`, 'fusion');
+      }
+    });
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   EXPOR AO WINDOW — onclick="fn()" no HTML precisa de escopo global.
+   Funções dentro do IIFE são privadas; precisam ser expostas explicitamente.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+Object.assign(window, {
+  // Editor
+  changeEditorPath,
+  // Repo
+  saveRepoToken,
+  loadRepo,
+  setRepoFilter,
+  goToFusion,
+  clearSelection,
+  // Info sheet
+  showFileInfo,
+  closeInfoSheet,
+  preSelectFile,
+  // Preview modal
+  showFilePreview,
+  closeFilePreview,
+  // METALUX + HORUS
+  runHorusEye,
+  generateBridgeSeed,
+  generateUniversalSeed,
+  injectSeedToEditor,
+  quickBridge,
+  // Fusion
+  setMode,
+  executeFusion,
+  setArch,
+});
 
 })();
 </script>

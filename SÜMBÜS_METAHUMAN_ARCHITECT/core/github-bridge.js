@@ -88,7 +88,8 @@ const GITHUB_BRIDGE = {
     },
 
     async fetchFile(path) {
-        return this.get(`/contents/${path}`);
+        const encoded = path.split('/').map(s => encodeURIComponent(s)).join('/');
+        return this.get(`/contents/${encoded}`);
     },
 
     async fetchRuns(perPage = 10) {
@@ -101,14 +102,15 @@ const GITHUB_BRIDGE = {
 
     // ── Write ────────────────────────────────────────────────────────
     async createOrUpdateFile(path, content, message, existingSha = null) {
-        const encoded = btoa(unescape(encodeURIComponent(content)));
+        const encodedPath = path.split('/').map(s => encodeURIComponent(s)).join('/');
+        const encodedContent = btoa(unescape(encodeURIComponent(content)));
         const body = {
             message,
-            content: encoded,
+            content: encodedContent,
             branch: this.branch,
         };
         if (existingSha) body.sha = existingSha;
-        return this.put(`/contents/${path}`, body);
+        return this.put(`/contents/${encodedPath}`, body);
     },
 
     async dispatchWorkflow(workflowFile, inputs = {}) {

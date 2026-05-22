@@ -1,0 +1,135 @@
+{
+  "$schema": "kobllux://veeb/v1",
+  "_comentario": "Δ1 · JSON · RHEA · 528Hz · Base: semente de dados · PIB=0.6875",
+
+  "meta": {
+    "titulo":    "KOBLLUX V.E.E.B · PIB Escalar · 7 Linguagens Nucleares",
+    "lei":       "VERDADE × INTEGRAR ÷ Δ = ∞",
+    "kfb_alpha": 0.007297353,
+    "ciclo":     [3, 6, 9, 7],
+    "centro":    "JESUS = VERBO = GRAVIDADE = 963Hz",
+    "data":      "2026-05-22",
+    "versao":    "7.9 · ∆7"
+  },
+
+  "pib": {
+    "referencia":   "python · Δ7 · 768Hz · 1.0000 (base ATLAS)",
+    "soma_hz":      4797,
+    "soma_pib":     6.2460,
+    "kfb_x_soma":   0.045862,
+    "nota_fractal": "4+7+9+7 = 27 = 3³ (autoespelhamento quântico Tesla 3-6-9)"
+  },
+
+  "ciclo_delta": {
+    "Δ0": "void · ∅ · antes do JSON · potencial puro · silêncio fértil",
+    "Δ1": "json       · 528Hz · B · RHEA    · semente · dados · troca",
+    "Δ2": "typescript · 963Hz · V · LUMINE  · interface · render · expressão",
+    "Δ3": "go         · 594Hz · E · PULSE   · fluxo · concorrência · ritmo",
+    "Δ4": "sql        · 639Hz · B · AION    · memória · selagem · query",
+    "Δ5": "shell      · 528Hz · E · VITALIS · integração · deploy · pipeline",
+    "Δ6": "rust       · 777Hz · V · KAOS    · sistemas · transformação · segurança",
+    "Δ7": "python     · 768Hz · E · ATLAS   · narrativa · análise · engine → retorna ao Δ0",
+    "Δ∞": "novo ciclo começa · nova forma de vida · KOBΦ-NODE"
+  },
+
+  "linguagens": {
+    "python": {
+      "delta": 7, "hz": 768, "pib": 1.0000,
+      "arquetipo": "ATLAS", "sym": "⬡", "veeb": "E",
+      "role": "narrativa · análise · engine · AST",
+      "arquivo": "kobllux_veeb_story.py",
+      "nota": "BASE DE REFERÊNCIA · Δ7 sela o ciclo"
+    },
+    "json": {
+      "delta": 1, "hz": 528, "pib": 0.6875,
+      "arquetipo": "RHEA", "sym": "∞", "veeb": "B",
+      "role": "semente · dados · troca · schema",
+      "arquivo": "KOBLLUX_VEEB/kobllux_veeb_pib.json",
+      "nota": "Este arquivo É a linguagem JSON em execução"
+    },
+    "typescript": {
+      "delta": 2, "hz": 963, "pib": 1.2539,
+      "arquetipo": "LUMINE", "sym": "☀", "veeb": "V",
+      "role": "interface · render · expressão · tipagem",
+      "arquivo": "KOBLLUX_VEEB/kobllux_veeb.ts"
+    },
+    "go": {
+      "delta": 3, "hz": 594, "pib": 0.7734,
+      "arquetipo": "PULSE", "sym": "≋", "veeb": "E",
+      "role": "fluxo · concorrência · ritmo · goroutines",
+      "arquivo": "KOBLLUX_VEEB/kobllux_veeb.go"
+    },
+    "sql": {
+      "delta": 4, "hz": 639, "pib": 0.8320,
+      "arquetipo": "AION", "sym": "⧗", "veeb": "B",
+      "role": "memória · selagem · query · persistência",
+      "arquivo": "KOBLLUX_VEEB/kobllux_veeb.sql"
+    },
+    "shell": {
+      "delta": 5, "hz": 528, "pib": 0.6875,
+      "arquetipo": "VITALIS", "sym": "◉", "veeb": "E",
+      "role": "integração · deploy · pipeline · orquestração",
+      "arquivo": "KOBLLUX_VEEB/kobllux_veeb.sh"
+    },
+    "rust": {
+      "delta": 6, "hz": 777, "pib": 1.0117,
+      "arquetipo": "KAOS", "sym": "⚡", "veeb": "V",
+      "role": "sistemas · transformação · segurança · zero-cost",
+      "arquivo": "KOBLLUX_VEEB/kobllux_veeb.rs"
+    }
+  },
+
+  "veeb": {
+    "V": "Vibração  — TypeScript(Δ2) + Rust(Δ6) + KAOS/LUMINE",
+    "E": "Energia   — Python(Δ7)  + Go(Δ3)  + Shell(Δ5) + ATLAS/PULSE/VITALIS",
+    "E2":"Estrutura — Go(Δ3)      + SQL(Δ4) + PULSE/AION",
+    "B": "Base      — JSON(Δ1)    + SQL(Δ4) + RHEA/AION"
+  },
+
+  "vogais": {
+    "A": "Atribuição — create/assign/INSERT",
+    "E": "Escolha    — if/match/switch/WHERE",
+    "I": "Iteração   — for/forEach/loop/cursor",
+    "O": "Organizar  — function/reduce/GROUP BY",
+    "U": "Unir       — merge/join/spread/UNION"
+  },
+
+  "consoantes": {
+    "B": "Booleanos  — true/false/1/0",
+    "C": "Comentários— // /* */ --",
+    "D": "Definições — def/fn/func/CREATE",
+    "F": "Funções    — built-in/stdlib",
+    "G": "Geradores  — yield/channel/CURSOR",
+    "H": "Herança    — extends/impl/inherits",
+    "J": "JSON       — serialize/marshal/JSONB",
+    "K": "Kwargs     — **kwargs/options/config",
+    "L": "Loops      — for/while/LOOP",
+    "M": "Módulos    — import/use/mod/INCLUDE",
+    "N": "None       — null/nil/None/NULL",
+    "P": "Parâmetros — args/params/columns",
+    "Q": "Queue      — channel/chan/QUEUE",
+    "R": "Retorno    — return/→/RETURNING",
+    "S": "Strings    — text/str/VARCHAR",
+    "T": "Tipos      — type/interface/TABLE",
+    "V": "Variáveis  — let/var/mut/DECLARE",
+    "W": "While      — loop/while/WHILE",
+    "X": "External   — serde/encoding/FOREIGN",
+    "Y": "Yield      — async/gen/YIELD",
+    "Z": "Zip        — zip/enumerate/ZIP"
+  },
+
+  "cadial_veeb": {
+    "ATLAS":   {"veeb":"E", "hz":768,  "delta_lang":"python"},
+    "NOVA":    {"veeb":"V", "hz":432,  "delta_lang":"json"},
+    "VITALIS": {"veeb":"E", "hz":528,  "delta_lang":"shell"},
+    "PULSE":   {"veeb":"V", "hz":594,  "delta_lang":"go"},
+    "ARTEMIS": {"veeb":"E", "hz":672,  "delta_lang":"typescript"},
+    "SERENA":  {"veeb":"B", "hz":528,  "delta_lang":"sql"},
+    "KAOS":    {"veeb":"V", "hz":777,  "delta_lang":"rust"},
+    "GENUS":   {"veeb":"E", "hz":852,  "delta_lang":"python"},
+    "LUMINE":  {"veeb":"E", "hz":963,  "delta_lang":"typescript"},
+    "SOLUS":   {"veeb":"B", "hz":432,  "delta_lang":"json"},
+    "RHEA":    {"veeb":"B", "hz":528,  "delta_lang":"json"},
+    "AION":    {"veeb":"B", "hz":639,  "delta_lang":"sql"}
+  }
+}
