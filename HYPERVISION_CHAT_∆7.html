@@ -468,7 +468,7 @@
     const HV = {
       config: {
         provider: 'openrouter',
-        model: 'anthropic/claude-sonnet-4-6',
+        model: 'baidu/cobuddy:free',
         apiKey: localStorage.getItem('hv_api_key') || '',
       },
       messages: [],
@@ -492,7 +492,7 @@
     function hvProviderChange() {
       const provider = document.getElementById('hvProvider').value;
       const models = {
-        openrouter: ['anthropic/claude-sonnet-4-6', 'google/gemini-flash-1.5:free', 'meta-llama/llama-3.3-70b-instruct:free'],
+        openrouter: ['baidu/cobuddy:free', 'google/gemini-flash-1.5:free', 'meta-llama/llama-3.3-70b-instruct:free'],
         anthropic: ['claude-opus-4-7', 'claude-sonnet-4-6', 'claude-haiku-4-5-20251001'],
         openai: ['gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
         groq: ['mixtral-8x7b-32768', 'llama2-70b-4096', 'gemma-7b-it'],
@@ -645,3 +645,4 @@ Pergunta: `;
   </script>
 </body>
 </html>
+ 
