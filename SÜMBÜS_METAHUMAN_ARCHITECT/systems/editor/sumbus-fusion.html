@@ -378,6 +378,26 @@ body {
 }
 /* ── fim HIGHLIGHT ── */
 
+/* ━━━━━ METALUX PANEL ━━━━━ */
+.mx-panel { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; padding:12px; background:var(--bg-deep); }
+.mx-section { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:12px; }
+.mx-title { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted); margin-bottom:8px; display:flex; align-items:center; gap:5px; }
+.mx-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+.mx-badge { padding:3px 8px; border-radius:99px; font-size:9px; font-weight:700; border:1px solid; display:inline-flex; align-items:center; gap:4px; }
+.mx-compat-row { display:flex; align-items:center; gap:6px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:9px; }
+.mx-compat-bar { flex:1; height:4px; border-radius:2px; background:rgba(255,255,255,0.07); overflow:hidden; }
+.mx-compat-fill { height:100%; border-radius:2px; transition:width .5s ease; }
+.mx-seed-box { background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:10px; font-family:var(--font-code); font-size:9.5px; line-height:1.6; color:#c9d1d9; white-space:pre-wrap; word-break:break-all; max-height:220px; overflow-y:auto; }
+.mx-btn { padding:5px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.05); color:var(--text-main); cursor:pointer; font-family:var(--font-ui); font-size:9.5px; font-weight:700; transition:all .2s; }
+.mx-btn:hover { background:rgba(255,255,255,0.1); }
+.mx-btn.primary { background:linear-gradient(135deg,#3b82f6,#8b5cf6); border:none; }
+.mx-eye { font-size:1.8rem; filter:drop-shadow(0 0 8px currentColor); transition:filter .3s; }
+.mx-eye.active { animation:eye-pulse 2s infinite; }
+@keyframes eye-pulse { 0%,100%{filter:drop-shadow(0 0 4px currentColor)} 50%{filter:drop-shadow(0 0 18px currentColor)} }
+.mx-select { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:var(--text-main); padding:5px 8px; font-family:var(--font-code); font-size:9.5px; outline:none; }
+.mx-pib-row { display:flex; align-items:center; gap:5px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:9px; cursor:pointer; border-radius:4px; transition:background .15s; }
+.mx-pib-row:hover { background:rgba(255,255,255,0.04); }
+
 /* Nome — height fixo = 2 linhas (font 12px × line-height 1.45 × 2) */
 .rc-name {
   font-size:12px; font-weight:700; line-height:1.45;
@@ -610,6 +630,7 @@ body {
     <button class="t-tab" data-view="memory"><i data-lucide="database"></i> RAM</button>
     <button class="t-tab" data-view="repo"><i data-lucide="git-branch"></i> REPO</button>
     <button class="t-tab" data-view="fusion"><i data-lucide="zap"></i> FUSÃO</button>
+    <button class="t-tab" data-view="metalux" title="METALUX Bridge + HORUS Eye">⬡ MX</button>
   </div>
 
   <div class="sel-badge" id="selBadge" onclick="switchTab('fusion')">
@@ -795,6 +816,81 @@ body {
 
     </div>
   </section>
+
+  <!-- ── METALUX · HORUS EYE ──────────────────────────────── -->
+  <section id="view-metalux" class="view">
+    <div class="mx-panel">
+
+      <!-- HORUS EYE — análise do código atual -->
+      <div class="mx-section">
+        <div class="mx-title">👁 HORUS EYE · Visão do Código Atual</div>
+        <div class="mx-row">
+          <span class="mx-eye" id="mxEye" style="color:#fbbf24">👁</span>
+          <div style="flex:1">
+            <div class="mx-row" style="flex-wrap:wrap;gap:5px" id="mxBadges">
+              <span class="mx-badge" style="color:#94a3b8;border-color:#334155">· analisar ·</span>
+            </div>
+            <div style="font-size:9px;color:var(--text-muted);margin-top:4px" id="mxSigs"></div>
+          </div>
+          <button class="mx-btn primary" onclick="runHorusEye()">👁 ANALISAR</button>
+        </div>
+      </div>
+
+      <!-- PIB TABLE — tabela de compatibilidade fractal -->
+      <div class="mx-section">
+        <div class="mx-title">⬡ PIB FRACTAL · Compatibilidade com o Código</div>
+        <div id="mxCompatTable">
+          <div style="font-size:9px;color:var(--text-muted)">Execute HORUS para ver compatibilidade</div>
+        </div>
+      </div>
+
+      <!-- BRIDGE SEED GENERATOR -->
+      <div class="mx-section">
+        <div class="mx-title">🌉 METALUX BRIDGE · Gerar Seed de Conexão</div>
+        <div class="mx-row">
+          <span style="font-size:9px;color:var(--text-muted)">De:</span>
+          <select class="mx-select" id="mxFromLang">
+            <option value="auto">AUTO (HORUS)</option>
+            <option value="python">Python Δ7</option>
+            <option value="json">JSON Δ1</option>
+            <option value="typescript">TypeScript Δ2</option>
+            <option value="go">Go Δ3</option>
+            <option value="sql">SQL Δ4</option>
+            <option value="shell">Shell Δ5</option>
+            <option value="rust">Rust Δ6</option>
+          </select>
+          <span style="font-size:9px;color:var(--text-muted)">→</span>
+          <select class="mx-select" id="mxToLang">
+            <option value="typescript">TypeScript Δ2</option>
+            <option value="go">Go Δ3</option>
+            <option value="rust">Rust Δ6</option>
+            <option value="python">Python Δ7</option>
+            <option value="json">JSON Δ1</option>
+            <option value="sql">SQL Δ4</option>
+            <option value="shell">Shell Δ5</option>
+          </select>
+        </div>
+        <div class="mx-row" style="gap:5px;margin-bottom:8px">
+          <button class="mx-btn primary" onclick="generateBridgeSeed()">⬡ Gerar Bridge</button>
+          <button class="mx-btn" onclick="injectSeedToEditor()">⬇ Injetar no Editor</button>
+          <button class="mx-btn" onclick="generateUniversalSeed()">∞ Universal JSON</button>
+        </div>
+        <div class="mx-seed-box" id="mxSeedBox">// Execute HORUS e escolha as linguagens para gerar o bridge seed</div>
+      </div>
+
+      <!-- PIB TABLE COMPLETA -->
+      <div class="mx-section">
+        <div class="mx-title">📊 PIB ESCALAR · 7 Linguagens · KΦB=0.007297353</div>
+        <div id="mxPibTable">
+          <!-- populated by JS -->
+        </div>
+        <div style="font-size:8.5px;color:var(--text-muted);margin-top:6px;text-align:center">
+          soma_hz=4797 → 4+7+9+7=27=3³ · soma_pib=6.2460 · ASSINATURA=1134=3×6×9×7
+        </div>
+      </div>
+
+    </div>
+  </section>
 </main>
 
 <!-- ━━━━━ DOCK ━━━━━ -->
@@ -845,9 +941,10 @@ body {
 </div>
 
 <!-- ━━━━━ SCRIPTS ━━━━━ -->
-	
 	<script src="https://truetruextrue.github.io/JESUS_VERB-/SÜMBÜS_METAHUMAN_ARCHITECT/core/github-bridge.js"></script>
 	<script src="https://truetruextrue.github.io/JESUS_VERB-/SÜMBÜS_METAHUMAN_ARCHITECT/core/kobllux-archetypes.js"></script>
+	<!-- METALUX BRIDGE + HORUS EYE — fractal PIB compatibility -->
+	<script src="https://truetruextrue.github.io/JESUS_VERB-/KOBLLUX_VEEB/kobllux_metalux_bridge.js"></script>
 
    
 <script>
@@ -2001,11 +2098,168 @@ window.onload = () => {
   setTimeout(() => {
     document.getElementById('loader').style.display = 'none';
     logToUI('SÜMBÜS FUSION ONLINE · KOBLLUX_VIVO_∆³', 'info');
+    initMetaluxPanel();
     logToUI('Vá para REPO → selecione arquivos → FUSÃO → execute', 'fusion');
     // Auto-load repo
     if (G) loadRepo();
   }, 700);
 };
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   METALUX BRIDGE + HORUS EYE — funções do painel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+let _lastHorusAnalysis = null;
+let _lastSeed = '';
+
+function runHorusEye() {
+  const M = window.KOBLLUX_METALUX;
+  if (!M) { fusionLog('[METALUX] Bridge não carregado', 'warn'); return; }
+
+  const code = UI.input.value || '';
+  const r = M.HORUS.analyze(code);
+  _lastHorusAnalysis = r;
+
+  // Update eye color
+  const eye = document.getElementById('mxEye');
+  if (eye) { eye.style.color = r.color; eye.classList.add('active'); }
+
+  // Update badges
+  const badges = document.getElementById('mxBadges');
+  if (badges) {
+    badges.innerHTML = [
+      `<span class="mx-badge" style="color:${r.color};border-color:${r.color}44;background:${r.color}18">${r.lang.toUpperCase()} Δ${r.delta}</span>`,
+      `<span class="mx-badge" style="color:#fbbf24;border-color:#fbbf2444">${r.hz}Hz · PIB=${r.pib.toFixed(4)}</span>`,
+      `<span class="mx-badge" style="color:#e2e8f0;border-color:#33415588">VEEB·${r.veeb} · ${r.arch}</span>`,
+    ].join('');
+  }
+
+  // Signatures
+  const sigs = document.getElementById('mxSigs');
+  if (sigs) sigs.textContent = r.sigs.length
+    ? '🔍 ' + r.sigs.map(s => s.name).join(' · ')
+    : '· padrão base ·';
+
+  // Auto-select from lang
+  const fromSel = document.getElementById('mxFromLang');
+  if (fromSel) { fromSel.value = r.lang; if (!fromSel.value) fromSel.value = 'auto'; }
+
+  // Compatibility table
+  renderCompatTable(r);
+
+  // PIB table
+  renderPibTable(r.lang);
+
+  // Log
+  logToUI(`[HORUS 👁] ${r.lang.toUpperCase()} Δ${r.delta} ${r.hz}Hz · VEEB:${r.veeb} · ${r.arch}`, 'fusion');
+}
+
+function renderCompatTable(r) {
+  const el = document.getElementById('mxCompatTable');
+  if (!el || !window.KOBLLUX_METALUX) return;
+  const M = window.KOBLLUX_METALUX;
+  const rows = M.PIB_TABLE
+    .filter(l => l.lang !== r.lang)
+    .map(l => {
+      const c = M.fractalCompat(r.lang, l.lang);
+      const pct = Math.round(c.resonance * 100);
+      const levelColor = c.level === 'ISOMORPHIC' ? '#10b981' :
+                         c.level === 'STRUCTURAL'  ? '#3b82f6' :
+                         c.level === 'BRIDGE'      ? '#f59e0b' : '#ef4444';
+      return `
+        <div class="mx-compat-row" onclick="quickBridge('${r.lang}','${l.lang}')">
+          <span style="color:${l.color};width:14px;text-align:center">${l.sym}</span>
+          <span style="width:72px;font-weight:700;color:${l.color}">${l.lang}</span>
+          <span style="width:28px;color:${levelColor};font-size:8px">Δ${c.delta_bridge}</span>
+          <div class="mx-compat-bar">
+            <div class="mx-compat-fill" style="width:${pct}%;background:${levelColor}"></div>
+          </div>
+          <span style="width:35px;text-align:right;color:${levelColor};font-size:8.5px">${pct}%</span>
+          <span style="width:60px;color:var(--text-muted);font-size:8px">${c.level.slice(0,8)}</span>
+        </div>`;
+    }).join('');
+  el.innerHTML = rows || '<div style="font-size:9px;color:var(--text-muted)">sem dados</div>';
+}
+
+function renderPibTable(activeLang) {
+  const el = document.getElementById('mxPibTable');
+  if (!el || !window.KOBLLUX_METALUX) return;
+  const M = window.KOBLLUX_METALUX;
+  el.innerHTML = M.PIB_TABLE.map(l => {
+    const isActive = l.lang === activeLang;
+    const pibBar = Math.round(l.pib / 1.3 * 100);
+    return `
+      <div class="mx-pib-row" style="${isActive?'background:rgba(255,255,255,0.06);border-radius:6px;padding:4px 6px;':''}" onclick="quickBridge('${activeLang||'python'}','${l.lang}')">
+        <span style="color:${l.color};width:16px;text-align:center">${l.sym}</span>
+        <span style="width:80px;color:${l.color};font-weight:${isActive?'900':'400'}">${l.lang}</span>
+        <span style="width:20px;color:var(--text-muted)">Δ${l.delta}</span>
+        <span style="width:35px;color:var(--text-muted)">${l.hz}Hz</span>
+        <div class="mx-compat-bar" style="flex:1">
+          <div class="mx-compat-fill" style="width:${pibBar}%;background:${l.color}99"></div>
+        </div>
+        <span style="width:42px;text-align:right;color:${l.color};font-weight:700">${l.pib.toFixed(4)}</span>
+      </div>`;
+  }).join('');
+}
+
+function quickBridge(from, to) {
+  const fromSel = document.getElementById('mxFromLang');
+  const toSel   = document.getElementById('mxToLang');
+  if (fromSel && from) fromSel.value = from;
+  if (toSel   && to)   toSel.value   = to;
+  generateBridgeSeed();
+}
+
+function generateBridgeSeed() {
+  const M = window.KOBLLUX_METALUX;
+  if (!M) { document.getElementById('mxSeedBox').textContent = '// METALUX não carregado'; return; }
+
+  let from = document.getElementById('mxFromLang')?.value || 'python';
+  const to = document.getElementById('mxToLang')?.value || 'typescript';
+
+  if (from === 'auto') {
+    from = _lastHorusAnalysis?.lang || 'python';
+  }
+
+  const seed = M.METALUX.seed(from, to, UI.input.value || '');
+  _lastSeed = seed;
+  document.getElementById('mxSeedBox').textContent = seed;
+  logToUI(`[METALUX ⬡] Bridge seed: ${from}→${to}`, 'fusion');
+}
+
+function generateUniversalSeed() {
+  const M = window.KOBLLUX_METALUX;
+  if (!M) return;
+  let lang = document.getElementById('mxFromLang')?.value || 'python';
+  if (lang === 'auto') lang = _lastHorusAnalysis?.lang || 'python';
+  const seed = M.INJECTOR.universalSeed(lang, UI.input.value || '');
+  _lastSeed = seed;
+  document.getElementById('mxSeedBox').textContent = seed;
+}
+
+function injectSeedToEditor() {
+  if (!_lastSeed) { generateBridgeSeed(); return; }
+  const current = UI.input.value || '';
+  UI.input.value = current + (current ? '\n\n' : '') + _lastSeed;
+  updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value);
+  switchTab('editor');
+  toast('⬡ Bridge seed injetado no editor', 'ok');
+  logToUI('[METALUX ⬡] Seed injetado no editor', 'fusion');
+}
+
+function initMetaluxPanel() {
+  renderPibTable(null);
+  // Integrar com KOBLLUX_BUS se disponível
+  if (window.KOBLLUX_BUS) {
+    window.KOBLLUX_BUS.on(e => {
+      if (e.event === 'archetype_fire') {
+        const M = window.KOBLLUX_METALUX;
+        if (!M) return;
+        const lang = M.PIB_TABLE.find(l => l.arch === e.data?.id)?.lang;
+        if (lang) logToUI(`[HORUS 👁] ${e.data.id} → ${lang} detectado (PIB=${M.PIB[lang]?.pib})`, 'fusion');
+      }
+    });
+  }
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    EXPOR AO WINDOW — onclick="fn()" no HTML precisa de escopo global.
@@ -2027,6 +2281,12 @@ Object.assign(window, {
   // Preview modal
   showFilePreview,
   closeFilePreview,
+  // METALUX + HORUS
+  runHorusEye,
+  generateBridgeSeed,
+  generateUniversalSeed,
+  injectSeedToEditor,
+  quickBridge,
   // Fusion
   setMode,
   executeFusion,
