@@ -1,0 +1,180 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  ZPR ENGINE · 3×4 = 12 viewports (uma por view HUB UNO) ║
+   ║  Adaptado de GUARD_0X09_feeling-decor-ZPR_VEEB-U_D6     ║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+:root {
+  --zpr-brand-gold: var(--pn-gold, #c9a84c);
+  --zpr-brand-dark: var(--pn-void, #02020a);
+  --zpr-glass: rgba(255,255,255,0.07);
+  --zpr-glass-border: rgba(255,255,255,0.15);
+  --zpr-rows: 3;
+  --zpr-cols: 4;
+}
+
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0; padding: 0;
+  background: var(--zpr-brand-dark);
+  color: var(--pn-pearl, #e8e0f0);
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  position: fixed;
+  top: 0; left: 0;
+  font-family: var(--pn-body, 'DM Sans', system-ui, sans-serif);
+  touch-action: pan-y;
+}
+
+/* ── UNIVERSO 3 ROWS × 4 COLS ───────────────────────────── */
+#universe-grid {
+  position: fixed;
+  top: 0; left: 0;
+  width: calc(100% * var(--zpr-cols));
+  height: calc(100% * var(--zpr-rows));
+  display: grid;
+  grid-template-columns: repeat(var(--zpr-cols), calc(100% / var(--zpr-cols)));
+  grid-template-rows: repeat(var(--zpr-rows), calc(100% / var(--zpr-rows)));
+  transition: transform 0.55s cubic-bezier(0.25, 0.85, 0.35, 1);
+  will-change: transform;
+  z-index: 1;
+}
+
+/* ── CADA CÉLULA = 1 VIEWPORT ──────────────────────────── */
+.screen {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  background: transparent;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+.screen::-webkit-scrollbar { width: 3px; }
+.screen::-webkit-scrollbar-track { background: transparent; }
+.screen::-webkit-scrollbar-thumb {
+  background: var(--zpr-brand-gold);
+  border-radius: 4px;
+}
+.screen > .inner {
+  min-height: 100%;
+  padding: 24px 18px 140px;
+}
+
+/* ── DOTS NAVIGATION (12 dots, 3 lin × 4 col) ──────────── */
+.nav-matrix {
+  position: fixed;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(var(--zpr-cols), 1fr);
+  gap: 8px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 8px 14px;
+  border-radius: 60px;
+  z-index: 7000;
+  border: 1px solid rgba(201,168,76,0.18);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+}
+.matrix-dot {
+  width: 8px; height: 8px;
+  background: rgba(255,255,255,0.30);
+  border-radius: 50%;
+  transition: all 0.25s;
+  cursor: pointer;
+  position: relative;
+}
+.matrix-dot:hover { background: rgba(255,255,255,0.7); }
+.matrix-dot.active {
+  background: var(--zpr-brand-gold);
+  transform: scale(1.6);
+  box-shadow: 0 0 10px var(--zpr-brand-gold);
+}
+.matrix-dot::after {
+  content: attr(data-opcode);
+  position: absolute;
+  top: 14px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--pn-mono);
+  font-size: 8px;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,0.0);
+  white-space: nowrap;
+  transition: color .25s;
+  pointer-events: none;
+}
+.matrix-dot:hover::after,
+.matrix-dot.active::after { color: rgba(201,168,76,0.7); }
+
+/* ── KBD hint ──────────────────────────────────────────── */
+.kbd-hint {
+  position: fixed;
+  top: 16px; right: 18px;
+  font-family: var(--pn-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: rgba(201,168,76,0.45);
+  z-index: 7100;
+  pointer-events: none;
+  display: none;
+}
+@media (pointer: fine) { .kbd-hint { display: block; } }
+
+/* ── Cursor (desktop) ──────────────────────────────────── */
+@media (pointer: fine) {
+  body { cursor: none; }
+  #custom-cursor {
+    width: 10px; height: 10px;
+    background: var(--zpr-brand-gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+    transition: width .2s, height .2s, opacity .2s;
+  }
+  #cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(201,168,76,0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.25s ease;
+  }
+  a, button, [onclick], .matrix-dot, [data-nav] { cursor: none; }
+}
+
+/* ── Hub-Uno views renderizados dentro de .screen ───────── */
+.screen .view {
+  display: block !important;
+  position: relative !important;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  padding: 0;
+  margin: 0;
+}
+.screen .view > * { max-width: 100%; }
+
+/* Cellulas com fundo "dark" vs "light" — escolhível via data-bg */
+.screen[data-bg="dark"]  { background: var(--pn-abyss,#060615); }
+.screen[data-bg="ink"]   { background: var(--pn-ink,#0f0f2e); }
+.screen[data-bg="deep"]  { background: var(--pn-deep,#0a0a20); }
+.screen[data-bg="black"] { background: #000; }

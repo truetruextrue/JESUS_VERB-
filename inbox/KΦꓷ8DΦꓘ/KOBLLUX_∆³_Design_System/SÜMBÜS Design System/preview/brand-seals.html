@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><style>
+.seals { display:flex; gap:14px; align-items:stretch; }
+.seal {
+  width:108px; height:108px; flex-shrink:0;
+  border-radius: 14px;
+  background-size: cover; background-position: center;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 0 24px rgba(0,245,255,0.18), inset 0 0 0 1px rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+}
+.seal::after {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(circle at 70% 30%, rgba(255,75,255,0.0), rgba(0,0,0,0.55) 75%);
+}
+.seal .tag {
+  position:absolute; inset:auto 6px 6px 6px; z-index:1;
+  font-family:var(--font-code); font-size:8px; color:#fff; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+.copy { flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; gap:8px; }
+.copy .h { font-family:var(--font-ui); font-weight:800; font-size:13px; color:#e4ecff; letter-spacing:-0.01em; }
+.copy .p { font-family:var(--font-ui); font-size:11px; line-height:1.55; color:#9aa4c8; }
+.copy code { font-family:var(--font-code); font-size:10px; color:#00f5ff; }
+</style></head>
+<body><div class="card" style="gap:14px">
+  <div class="eyebrow">V.E.E.B Seals · imagery vocabulary</div>
+  <div class="seals">
+    <div class="seal" style="background-image:url('../assets/seals/origem-veeb-026.png')">
+      <div class="tag">ΘƦΙΓΣΜ · 026</div>
+    </div>
+    <div class="seal" style="background-image:url('../assets/seals/tutorial-veeb-021.png')">
+      <div class="tag">TUTORIAL · 021</div>
+    </div>
+    <div class="copy">
+      <div class="h">Decorative archetype seals</div>
+      <div class="p">Drop-in hero / cover imagery. Soft pastel swirl renders, no fixed orientation. Pair with a dark cosmos backdrop and a glow ring; use as <code>background-image</code> with a radial vignette overlay.</div>
+    </div>
+  </div>
+</div></body></html>

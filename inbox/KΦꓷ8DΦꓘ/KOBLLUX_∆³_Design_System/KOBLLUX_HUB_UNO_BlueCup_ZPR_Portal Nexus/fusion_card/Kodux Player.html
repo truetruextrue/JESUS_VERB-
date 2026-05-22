@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Kodux Player · K°d1 [KOBLLUX ∆³]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" rel="stylesheet">
+  <link href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       KODUX PLAYER · K°d1
+       Estados: ball → preview → footer → full
+       Classes / IDs idênticos ao monolito original
+       Logger 3×6×9 interno · cores derivam do arquétipo ativo
+       ═══════════════════════════════════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(20,28,55,.9) 0%, rgba(6,8,14,.95) 55%, #000 100%);
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 80px),
+        repeating-linear-gradient(0deg,  rgba(255,255,255,.012) 0 1px, transparent 1px 80px),
+        radial-gradient(circle at 85% 90%, rgba(255,82,229,.06) 0%, transparent 35%);
+      z-index: 0;
+    }
+
+    :root {
+      --primary:        #38BDF8;
+      --primary-soft:   #7cffb2;
+      --muted:          rgba(255,255,255,.55);
+      --glass:          rgba(8, 10, 18, 0.82);
+      --glass-strong:   rgba(8, 10, 18, 0.92);
+      --border:         rgba(255,255,255,.08);
+    }
+
+    /* ── archetype label */
+    .stage-label {
+      position: fixed;
+      top: 18px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,.4);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .stage-label b { color: var(--primary); font-weight: 700; }
+
+    /* helpers */
+    .glow-text { text-shadow: 0 0 12px var(--primary); }
+    .soft-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
+    .soft-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
+    .glass-input, .glass-select {
+      background: rgba(0,0,0,.5);
+      border: 1px solid var(--border);
+      color: #fff;
+      transition: border-color .25s ease, box-shadow .25s ease;
+      font-family: 'Montserrat', sans-serif;
+      outline: none;
+    }
+    .glass-input::placeholder { color: rgba(255,255,255,.35); }
+    .glass-input:focus, .glass-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 14px rgba(120,227,255,.25);
+    }
+
+    /* ╔══════════════════════════════════════════╗
+       ║  KODUX WIDGET                            ║
+       ╚══════════════════════════════════════════╝ */
+    #kodux-widget {
+      position: fixed;
+      z-index: 100;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      color: #fff;
+      box-shadow:
+        0 24px 50px rgba(0,0,0,.65),
+        0 0 0 1px rgba(255,255,255,.03) inset;
+      transition:
+        width  .55s cubic-bezier(.34,1.56,.64,1),
+        height .55s cubic-bezier(.34,1.56,.64,1),
+        border-radius .45s cubic-bezier(.4,0,.2,1),
+        background .35s ease, border-color .35s ease;
+      overflow: hidden;
+      will-change: transform, width, height, border-radius;
+      cursor: grab;
+    }
+    #kodux-widget.dragging {
+      cursor: grabbing;
+      transition: none !important;
+      box-shadow:
+        0 30px 60px rgba(0,0,0,.7),
+        0 0 24px var(--primary),
+        0 0 0 1px var(--primary) inset;
+    }
+
+    /* idle behaviour (auto fade) */
+    #kodux-widget {
+      transition: transform .35s ease, opacity .65s ease,
+                  width .55s cubic-bezier(.34,1.56,.64,1),
+                  height .55s cubic-bezier(.34,1.56,.64,1),
+                  border-radius .45s cubic-bezier(.4,0,.2,1),
+                  background .35s ease, border-color .35s ease;
+    }
+    #kodux-widget.idle { opacity: .25; transform: scale(.88); }
+    #kodux-widget:hover { opacity: 1; transform: scale(1); }
+
+    /* ── STATE: BALL ── */
+    #kodux-widget.state-ball {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border-color: var(--primary);
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.5),
+        0 0 18px var(--primary);
+    }
+    #kodux-widget.state-ball #content-ball { display: flex; }
+    #kodux-widget.state-ball #content-preview,
+    #kodux-widget.state-ball #content-footer,
+    #kodux-widget.state-ball #content-full { display: none; }
+
+    /* ── STATE: PREVIEW ── */
+    #kodux-widget.state-preview {
+      width: 280px; height: 64px;
+      border-radius: 99px;
+    }
+    #kodux-widget.state-preview #content-preview { display: flex; }
+    #kodux-widget.state-preview #content-ball,
+    #kodux-widget.state-preview #content-footer,
+    #kodux-widget.state-preview #content-full { display: none; }
+
+    /* ── STATE: FOOTER ── */
+    #kodux-widget.state-footer {
+      width: min(420px, calc(100vw - 32px));
+      height: 100px;
+      border-radius: 22px;
+    }
+    #kodux-widget.state-footer #content-footer { display: flex; }
+    #kodux-widget.state-footer #content-ball,
+    #kodux-widget.state-footer #content-preview,
+    #kodux-widget.state-footer #content-full { display: none; }
+
+    /* ── STATE: FULL ── */
+    #kodux-widget.state-full {
+      width: min(480px, calc(100vw - 28px));
+      height: min(640px, calc(100vh - 60px));
+      border-radius: 26px;
+    }
+    #kodux-widget.state-full #content-full { display: flex; }
+    #kodux-widget.state-full #content-ball,
+    #kodux-widget.state-full #content-preview,
+    #kodux-widget.state-full #content-footer { display: none; }
+
+    /* ── content-ball ── */
+    #content-ball {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center; justify-content: center;
+      color: var(--primary);
+      cursor: pointer;
+      position: relative;
+    }
+    #content-ball::before {
+      content: "";
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--primary);
+      opacity: .25;
+      animation: ballPulse 3s ease-in-out infinite;
+    }
+    @keyframes ballPulse {
+      0%,100% { transform: scale(1);   opacity: .25; }
+      50%     { transform: scale(1.18); opacity: 0;   }
+    }
+    #content-ball i {
+      font-size: 30px;
+      filter: drop-shadow(0 0 8px var(--primary));
+    }
+    .animate-spin {
+      animation: kxSpin 4s linear infinite;
+    }
+    @keyframes kxSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── content-preview ── */
+    #content-preview {
+      width: 100%; height: 100%;
+      align-items: center;
+      padding: 0 14px;
+      gap: 12px;
+    }
+    #prev-cover {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--primary);
+      box-shadow: 0 0 12px var(--primary);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform .25s ease;
+    }
+    #prev-cover:hover { transform: scale(1.06); }
+    #content-preview .flex-1 { flex: 1; overflow: hidden; min-width: 0; cursor: pointer; }
+    #prev-title {
+      font-size: .82rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      text-shadow: 0 0 8px var(--primary);
+    }
+    #prev-artist {
+      font-size: .68rem;
+      color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+    #content-preview button {
+      background: transparent; border: none; cursor: pointer; color: #fff;
+      transition: color .2s ease, transform .2s ease;
+    }
+    #content-preview button:hover { color: var(--primary); transform: scale(1.1); }
+    #prev-play-icon { font-size: 32px; filter: drop-shadow(0 0 6px var(--primary)); }
+
+    /* ── content-footer ── */
+    #content-footer {
+      width: 100%; height: 100%;
+      flex-direction: column;
+      position: relative;
+    }
+    #footer-progress-click {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: rgba(255,255,255,.06);
+      cursor: pointer;
+    }
+    #footer-progress-bar {
+      height: 100%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      width: 0;
+      transition: width .15s linear;
+    }
+    .drag-header {
+      flex: 1;
+      display: flex; align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+    }
+    #foot-cover {
+      width: 56px; height: 56px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 8px 20px rgba(0,0,0,.5);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .drag-header .info {
+      flex: 1; overflow: hidden; min-width: 0; cursor: pointer;
+    }
+    #foot-title {
+      font-size: .9rem; font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #foot-artist {
+      font-size: .72rem; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .drag-header .controls {
+      display: flex; align-items: center; gap: 18px;
+    }
+    .drag-header .controls button {
+      background: transparent; border: none; cursor: pointer;
+      color: var(--muted);
+      transition: color .2s ease, transform .2s ease;
+    }
+    .drag-header .controls button:hover { color: #fff; transform: scale(1.08); }
+    .drag-header .controls .play-btn:hover { color: var(--primary); transform: scale(1.15); }
+    #foot-play-icon { font-size: 42px; color: #fff; filter: drop-shadow(0 0 8px var(--primary)); }
+
+    /* ── content-full ── */
+    #content-full {
+      width: 100%; height: 100%;
+      flex-direction: column;
+      position: relative;
+    }
+    .full-header {
+      padding: 18px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,.04);
+      border-bottom: 1px solid var(--border);
+    }
+    .full-header .brand {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .full-header .brand i {
+      color: var(--primary);
+      font-size: 20px;
+      filter: drop-shadow(0 0 8px var(--primary));
+    }
+    .full-header .brand span {
+      font-size: .85rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-shadow: 0 0 8px var(--primary);
+    }
+    .full-header .collapse-btn {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s ease;
+      display: grid; place-items: center;
+    }
+    .full-header .collapse-btn:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .full-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 18px 120px;
+    }
+
+    /* playlist tabs */
+    #playlist-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .playlist-tab {
+      flex-shrink: 0;
+      padding: 7px 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+    }
+    .playlist-tab:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .playlist-tab.active {
+      background: var(--primary);
+      color: #000;
+      border-color: var(--primary);
+      box-shadow: 0 0 12px var(--primary);
+    }
+    .playlist-tab .count {
+      margin-left: 6px;
+      opacity: .6;
+      font-size: .62rem;
+    }
+
+    /* link input */
+    .input-row {
+      display: flex; gap: 8px;
+      margin-bottom: 12px;
+    }
+    .input-row .field {
+      flex: 1; position: relative;
+    }
+    .input-row .field i {
+      position: absolute;
+      left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .input-row input {
+      width: 100%;
+      border-radius: 12px;
+      padding: 12px 14px 12px 36px;
+      font-size: .82rem;
+    }
+    .input-row select {
+      border-radius: 12px;
+      padding: 0 12px;
+      font-size: .72rem;
+      min-width: 130px;
+      cursor: pointer;
+      appearance: none;
+      padding-right: 32px;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+    .add-btn {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #000;
+      border: none; cursor: pointer;
+      display: grid; place-items: center;
+      transition: all .25s ease;
+      box-shadow: 0 0 14px var(--primary);
+    }
+    .add-btn:hover { transform: scale(1.05); box-shadow: 0 0 22px var(--primary); }
+    .add-btn i { font-size: 22px; }
+
+    /* playlist container */
+    #playlist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .track-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .track-card:hover {
+      background: rgba(255,255,255,.06);
+      border-color: var(--primary);
+    }
+    .track-card.active {
+      background: rgba(120,227,255,.08);
+      border-color: var(--primary);
+      box-shadow: 0 0 14px rgba(120,227,255,.2);
+    }
+    .track-card .cover {
+      width: 42px; height: 42px;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 30% 30%, var(--primary-soft), transparent 60%),
+        radial-gradient(circle at 70% 70%, var(--primary), #0a0a18);
+      flex-shrink: 0;
+      display: grid; place-items: center;
+      color: #000;
+      font-size: 14px;
+    }
+    .track-card .meta {
+      flex: 1; min-width: 0;
+    }
+    .track-card .title {
+      font-size: .82rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .track-card .src {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .62rem;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .track-card .del {
+      background: transparent; border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: all .2s ease;
+    }
+    .track-card .del:hover {
+      color: #ff5d8f;
+      background: rgba(255,93,143,.08);
+    }
+
+    /* progress + main controls (rodapé do full) */
+    .full-foot {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 14px 18px 16px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.85) 35%);
+      backdrop-filter: blur(8px);
+    }
+    #main-progress {
+      width: 100%;
+      appearance: none;
+      height: 4px;
+      background: rgba(255,255,255,.08);
+      border-radius: 99px;
+      outline: none;
+      margin-bottom: 12px;
+    }
+    #main-progress::-webkit-slider-thumb {
+      appearance: none;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      cursor: pointer;
+    }
+    .main-row {
+      display: flex; align-items: center; gap: 12px;
+    }
+    #main-cover {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .main-info { flex: 1; min-width: 0; }
+    #main-title {
+      font-size: .9rem;
+      font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #main-artist {
+      font-size: .68rem;
+      color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .main-play {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #000;
+      border: none; cursor: pointer;
+      display: grid; place-items: center;
+      box-shadow: 0 0 20px var(--primary);
+      transition: transform .2s ease;
+    }
+    .main-play:hover { transform: scale(1.07); }
+    .main-play i { font-size: 28px; }
+
+    /* state-toolbar (canto inferior esquerdo) */
+    .state-toolbar {
+      position: fixed;
+      bottom: 18px; left: 18px;
+      z-index: 5;
+      display: flex; gap: 6px;
+      padding: 6px;
+      background: rgba(0,0,0,.5);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      border-radius: 14px;
+    }
+    .state-toolbar button {
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all .2s ease;
+    }
+    .state-toolbar button:hover { color: var(--primary); background: rgba(255,255,255,.04); }
+    .state-toolbar button.active {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* archetype stamp */
+    .arch-stamp {
+      position: fixed;
+      top: 16px; right: 18px;
+      z-index: 5;
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      background: rgba(0,0,0,.55);
+      border: 1px solid var(--primary);
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .arch-stamp:hover { box-shadow: 0 0 18px var(--primary); }
+    .arch-stamp .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+    .arch-stamp .name { color: #fff; font-weight: 700; }
+
+    /* archetype tag (canto do widget) */
+    .arch-tag {
+      position: absolute;
+      top: 8px; left: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 1px;
+      color: var(--primary);
+      background: rgba(0,0,0,.55);
+      border: 1px solid var(--primary);
+      padding: 2px 6px;
+      border-radius: 99px;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    #kodux-widget.state-footer .arch-tag,
+    #kodux-widget.state-full   .arch-tag {
+      opacity: .85;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage-label">KODUX PLAYER · K°d1 · <b id="archLabel">ATLAS</b></div>
+
+  <div class="arch-stamp" id="archStamp" title="Trocar arquétipo">
+    <span class="dot"></span>
+    <span class="name" id="archName">ATLAS</span>
+    <span style="opacity:.55" id="archOpcode">0x02</span>
+  </div>
+
+  <!-- ╔══ KODUX WIDGET (4 estados) ══╗ -->
+  <div id="kodux-widget" class="state-ball" data-idle-target style="right:20px;bottom:100px;">
+
+    <span class="arch-tag" id="koduxArchTag">K°d1 · 0x02</span>
+
+    <!-- STATE: BALL -->
+    <div id="content-ball">
+      <i class="ph-fill ph-vinyl-record animate-spin"></i>
+    </div>
+
+    <!-- STATE: PREVIEW -->
+    <div id="content-preview">
+      <img id="prev-cover" src="https://picsum.photos/seed/dual/100">
+      <div class="flex-1">
+        <div id="prev-title" class="glow-text">Kodux System</div>
+        <div id="prev-artist">Aguardando...</div>
+      </div>
+      <button id="prev-play-btn" title="Play/Pause">
+        <i id="prev-play-icon" class="ph-fill ph-play-circle"></i>
+      </button>
+    </div>
+
+    <!-- STATE: FOOTER -->
+    <div id="content-footer">
+      <div id="footer-progress-click">
+        <div id="footer-progress-bar"></div>
+      </div>
+      <div class="drag-header">
+        <img id="foot-cover" src="https://picsum.photos/seed/dual/100">
+        <div class="info">
+          <div id="foot-title">Kodux System</div>
+          <div id="foot-artist">Aguardando...</div>
+        </div>
+        <div class="controls">
+          <button id="foot-prev"  title="Anterior"><i class="ph-fill ph-skip-back"  style="font-size:22px"></i></button>
+          <button id="foot-play" class="play-btn" title="Play/Pause"><i id="foot-play-icon" class="ph-fill ph-play-circle"></i></button>
+          <button id="foot-next"  title="Próximo"><i class="ph-fill ph-skip-forward" style="font-size:22px"></i></button>
+          <button id="foot-collapse" title="Recolher" style="margin-left:6px"><i class="ph ph-minus-circle" style="font-size:22px"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE: FULL -->
+    <div id="content-full">
+      <div class="full-header drag-header">
+        <div class="brand">
+          <i class="ph-fill ph-lightning"></i>
+          <span class="glow-text">ORÁCULO DUAL</span>
+        </div>
+        <button id="full-collapse" class="collapse-btn" title="Recolher">
+          <i class="ph ph-caret-down-bold" style="font-size:18px"></i>
+        </button>
+      </div>
+
+      <div class="full-body soft-scroll">
+        <div id="playlist-tabs" class="soft-scroll"></div>
+
+        <div class="input-row">
+          <div class="field">
+            <i class="ph ph-link"></i>
+            <input type="text" id="link-input" class="glass-input" placeholder="YouTube ou SoundCloud link">
+          </div>
+          <select id="destination-select" class="glass-select">
+            <option value="" disabled selected>Playlist</option>
+          </select>
+          <button class="add-btn" id="add-track-btn" title="Adicionar"><i class="ph ph-plus"></i></button>
+        </div>
+
+        <div class="input-row">
+          <div class="field">
+            <i class="ph ph-folder-plus"></i>
+            <input type="text" id="new-playlist-input" class="glass-input" placeholder="Criar nova playlist">
+          </div>
+          <button class="add-btn" id="new-playlist-btn" title="Criar"><i class="ph ph-folder-plus"></i></button>
+        </div>
+
+        <div id="playlist-container"></div>
+      </div>
+
+      <div class="full-foot">
+        <input type="range" id="main-progress" min="0" max="100" value="0">
+        <div class="main-row">
+          <img id="main-cover" src="https://picsum.photos/seed/dual/100">
+          <div class="main-info">
+            <div id="main-title">Oráculo</div>
+            <div id="main-artist">Sistema KODUX v2.5</div>
+          </div>
+          <button class="main-play" id="main-play">
+            <i id="main-play-icon" class="ph-fill ph-play" style="margin-left:3px"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- audio sinks (escondidos) -->
+  <audio id="local-audio" crossorigin="anonymous"></audio>
+  <div id="yt-container"  style="position:fixed;left:-9999px;width:1px;height:1px"></div>
+  <div id="sc-container"  style="position:fixed;left:-9999px;width:1px;height:1px"></div>
+
+  <!-- state toolbar (apenas para debug visual) -->
+  <div class="state-toolbar" id="stateToolbar">
+    <button data-state="ball"    class="active">◉ BALL</button>
+    <button data-state="preview">▤ PREVIEW</button>
+    <button data-state="footer">▭ FOOTER</button>
+    <button data-state="full">▣ FULL</button>
+  </div>
+
+  <script>
+  // ═══════════════════════════════════════════════════════════
+  // [KOBLLUX ∆³ · matriz canônica]
+  // ═══════════════════════════════════════════════════════════
+  const KOBLLUX_OPCODES = {
+    '0x00': { nome:'INICIAR',     freq:396, geom:'○', cor:'#b978ff', dim:'D0·Ponto' },
+    '0x01': { nome:'PULSAR',      freq:432, geom:'●', cor:'#67e6ff', dim:'D1·Linha' },
+    '0x02': { nome:'INTEGRAR',    freq:528, geom:'―', cor:'#7cffb2', dim:'D2·Plano' },
+    '0x03': { nome:'EXPANDIR',    freq:639, geom:'▢', cor:'#4de0ff', dim:'D3·Volume' },
+    '0x04': { nome:'DISSOLVER',   freq:594, geom:'◇', cor:'#ff9ad1', dim:'D2·Trans' },
+    '0x05': { nome:'CONVERGIR',   freq:672, geom:'⧉', cor:'#ff7a00', dim:'D∩·Foco' },
+    '0x06': { nome:'CRISTALIZAR', freq:741, geom:'☯', cor:'#a8ff78', dim:'D3·Rede' },
+    '0x07': { nome:'SELAR',       freq:777, geom:'✧', cor:'#ffd700', dim:'D3·Tetrae' },
+    '0x08': { nome:'TESTEMUNHAR', freq:852, geom:'◉', cor:'#00b894', dim:'D∞·Círculo' },
+    '0x09': { nome:'MANIFESTAR',  freq:963, geom:'♾', cor:'#6c5ce7', dim:'S²·Esfera' },
+    '0x0A': { nome:'EQUILIBRAR',  freq:528, geom:'⚖', cor:'#74b9ff', dim:'SO(2)' },
+    '0x0B': { nome:'RESSONAR',    freq:432, geom:'◎', cor:'#ff52e5', dim:'Ondas·1D' },
+    '0x0C': { nome:'CONCLUIR',    freq:999, geom:'♾', cor:'#f2c94c', dim:'T²·Toro' }
+  };
+  const ARCHETYPES_DB = [
+    { id:'ATLAS',   name:'ATLAS',   opcode:'0x02', primary:'#38BDF8' },
+    { id:'NOVA',    name:'NOVA',    opcode:'0x01', primary:'#F97316' },
+    { id:'VITALIS', name:'VITALIS', opcode:'0x03', primary:'#22C55E' },
+    { id:'PULSE',   name:'PULSE',   opcode:'0x0B', primary:'#EC4899' },
+    { id:'ARTEMIS', name:'ARTEMIS', opcode:'0x05', primary:'#A855F7' },
+    { id:'SERENA',  name:'SERENA',  opcode:'0x0A', primary:'#7DD3FC' },
+    { id:'KAOS',    name:'KAOS',    opcode:'0x04', primary:'#FACC15' },
+    { id:'GENUS',   name:'GENUS',   opcode:'0x09', primary:'#E5E7EB' },
+    { id:'LUMINE',  name:'LUMINE',  opcode:'0x07', primary:'#FDE047' },
+    { id:'SOLUS',   name:'SOLUS',   opcode:'0x08', primary:'#0EA5E9' },
+    { id:'RHEA',    name:'RHEA',    opcode:'0x06', primary:'#16A34A' },
+    { id:'HORUS',   name:'HORUS',   opcode:'0x0C', primary:'#5500FF' }
+  ];
+
+  let currentArchIdx = 0;
+  const STATE = {
+    get archetype() { return ARCHETYPES_DB[currentArchIdx]; },
+    widgetState: 'ball',         // ball · preview · footer · full
+    playlists: [],
+    activePlaylistId: null,
+    currentTrack: null,
+    isPlaying: false,
+    progress: 0
+  };
+  const $  = sel => document.querySelector(sel);
+  const $$ = sel => document.querySelectorAll(sel);
+
+  // ═══════════════════════════════════════════════════════════
+  // [KOBLLUX·3×6×9 LOGGER · APENAS CONSOLE]
+  // ═══════════════════════════════════════════════════════════
+  const KOBLLUX_LOG = {
+    count: 0, sequence: [3,6,9],
+    frequencies: { 3:432, 6:528, 9:639 },
+    phases:      { 3:'Ponto (Gênese)', 6:'Linha (Fluxo)', 9:'Triângulo (Síntese)' },
+    modes:       { 3:'DETECTAR', 6:'INTEGRAR', 9:'EXPANDIR' },
+    emit(source, payload = {}) {
+      this.count++;
+      const idx   = (this.count - 1) % 3;
+      const val   = this.sequence[idx];
+      const freq  = this.frequencies[val];
+      const phase = this.phases[val];
+      const mode  = this.modes[val];
+      const cycle = Math.ceil(this.count / 3);
+      const sum   = this.count * val;
+      const delta = val * 3;
+      const arch  = STATE.archetype;
+      const op    = KOBLLUX_OPCODES[arch.opcode];
+      const coord = (payload.x != null && payload.y != null)
+        ? `(${payload.x.toFixed(1)}, ${payload.y.toFixed(1)})` : '—';
+      console.log(
+        `%c[KOBLLUX·3×6×9·K°d1] %c#${this.count} %c${source}`,
+        `color:${arch.primary};font-weight:bold`,
+        'color:#f0f',
+        `color:${op.cor}`,
+        `\n  ▸ VALOR: ${val}  | FREQ: ${freq}Hz | FASE: ${phase}` +
+        `\n  ▸ COORD: ${coord} | TIPO: ${payload.type || source}` +
+        `\n  ▸ CICLO: ${cycle}/∞ | Σ=${sum} | Δ=${delta} | MODE: ${mode}` +
+        `\n  ▸ ARQ:   ${arch.name} (${arch.opcode}·${op.nome}·${op.geom}·${op.freq}Hz)` +
+        (payload.detail ? `\n  ▸ DETAIL: ${payload.detail}` : '')
+      );
+      return { val, freq, phase, mode, cycle };
+    }
+  };
+  window.KOBLLUX_LOG = KOBLLUX_LOG;
+
+  // ═══════════════════════════════════════════════════════════
+  // [ARCHETYPE]
+  // ═══════════════════════════════════════════════════════════
+  function applyArchetype(idx) {
+    currentArchIdx = (idx + ARCHETYPES_DB.length) % ARCHETYPES_DB.length;
+    const a  = ARCHETYPES_DB[currentArchIdx];
+    const op = KOBLLUX_OPCODES[a.opcode];
+    document.documentElement.style.setProperty('--primary', a.primary);
+    document.documentElement.style.setProperty('--primary-soft', op.cor);
+    $('#archLabel').textContent  = `${a.name} · ${a.opcode} ${op.nome}`;
+    $('#archName').textContent   = a.name;
+    $('#archOpcode').textContent = a.opcode;
+    $('#koduxArchTag').textContent = `K°d1 · ${a.opcode}`;
+    localStorage.setItem('di_activeArchetype', a.id);
+  }
+  function nextArchetype() { applyArchetype(currentArchIdx + 1); KOBLLUX_LOG.emit('ARQ·NEXT', { detail: STATE.archetype.name }); }
+
+  // ═══════════════════════════════════════════════════════════
+  // [WIDGET STATE MACHINE]
+  //   ball → preview → footer → full
+  // ═══════════════════════════════════════════════════════════
+  const STATES = ['ball','preview','footer','full'];
+  function updateWidgetState(newState) {
+    if (!STATES.includes(newState)) return;
+    const w = $('#kodux-widget');
+    STATES.forEach(s => w.classList.remove('state-' + s));
+    w.classList.add('state-' + newState);
+    STATE.widgetState = newState;
+    $$('#stateToolbar button').forEach(b => {
+      b.classList.toggle('active', b.dataset.state === newState);
+    });
+    // garantir que o widget continue dentro da viewport
+    clampWidget();
+    KOBLLUX_LOG.emit('K°d1·STATE', { detail: newState });
+  }
+  function collapseToBall() { updateWidgetState('ball'); }
+  function openFullFromPreview() { updateWidgetState('full'); }
+  function expandFromBall() {
+    // ball → footer se tem track ativa, senão preview
+    updateWidgetState(STATE.currentTrack ? 'footer' : 'preview');
+  }
+
+  function clampWidget() {
+    const w = $('#kodux-widget');
+    const r = w.getBoundingClientRect();
+    const W = window.innerWidth, H = window.innerHeight;
+    const left = Math.max(8, Math.min(W - r.width  - 8, r.left));
+    const top  = Math.max(8, Math.min(H - r.height - 8, r.top));
+    w.style.left = left + 'px';
+    w.style.top  = top  + 'px';
+    w.style.right  = 'auto';
+    w.style.bottom = 'auto';
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [DRAG livre · arrasta pelo chrome (não pelos botões internos)]
+  // ═══════════════════════════════════════════════════════════
+  const DRAG = {
+    el: null,
+    startX: 0, startY: 0,
+    offsetX: 0, offsetY: 0,
+    isDragging: false, moved: false,
+    init(el) {
+      this.el = el;
+      el.addEventListener('pointerdown', e => this.onDown(e));
+      window.addEventListener('pointermove', e => this.onMove(e));
+      window.addEventListener('pointerup',   e => this.onUp(e));
+      window.addEventListener('pointercancel', e => this.onUp(e));
+      window.addEventListener('resize', clampWidget);
+    },
+    onDown(e) {
+      // ignora clique em botão/input/range/track-card/cover
+      if (e.target.closest('button, input, select, .track-card, #prev-cover, #foot-cover, #main-cover, .ph, .glass-input, .glass-select')) return;
+      this.isDragging = true; this.moved = false;
+      this.startX = e.clientX; this.startY = e.clientY;
+      const r = this.el.getBoundingClientRect();
+      this.offsetX = e.clientX - r.left;
+      this.offsetY = e.clientY - r.top;
+      this.el.classList.add('dragging');
+      this.el.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+    },
+    onMove(e) {
+      if (!this.isDragging) return;
+      const dx = e.clientX - this.startX;
+      const dy = e.clientY - this.startY;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) this.moved = true;
+      this.el.style.left = (e.clientX - this.offsetX) + 'px';
+      this.el.style.top  = (e.clientY - this.offsetY) + 'px';
+      this.el.style.right  = 'auto';
+      this.el.style.bottom = 'auto';
+    },
+    onUp(e) {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      this.el.classList.remove('dragging');
+      if (this.moved) {
+        clampWidget();
+        KOBLLUX_LOG.emit('K°d1·DRAG', { x: e.clientX, y: e.clientY });
+      }
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // [IDLE behaviour]
+  // ═══════════════════════════════════════════════════════════
+  let idleTimer = null;
+  function resetIdle() {
+    const w = $('#kodux-widget');
+    w?.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (STATE.widgetState === 'ball' || STATE.widgetState === 'preview') {
+        w?.classList.add('idle');
+      }
+    }, 4500);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [PLAYLIST · CRUD + persistência]
+  // ═══════════════════════════════════════════════════════════
+  const KEY_PL = 'kodux_playlists_v1';
+  function savePlaylists() {
+    localStorage.setItem(KEY_PL, JSON.stringify({ playlists: STATE.playlists, activeId: STATE.activePlaylistId }));
+  }
+  function loadPlaylists() {
+    try {
+      const raw = localStorage.getItem(KEY_PL);
+      if (raw) {
+        const data = JSON.parse(raw);
+        STATE.playlists = data.playlists || [];
+        STATE.activePlaylistId = data.activeId || STATE.playlists[0]?.id || null;
+      }
+    } catch(e) {}
+    if (STATE.playlists.length === 0) {
+      STATE.playlists = [
+        { id: 'p1', name: 'Oráculo',   tracks: [
+          { id:'t1', title:'Pulso Inicial',   src:'KODUX', url:'#', cover:'https://picsum.photos/seed/k1/100' },
+          { id:'t2', title:'Ciclo INTEGRAR',  src:'528Hz', url:'#', cover:'https://picsum.photos/seed/k2/100' }
+        ]},
+        { id: 'p2', name: 'Frequência', tracks: [] },
+        { id: 'p3', name: 'Estudos',    tracks: [] }
+      ];
+      STATE.activePlaylistId = 'p1';
+      savePlaylists();
+    }
+  }
+  function getActivePlaylist() {
+    return STATE.playlists.find(p => p.id === STATE.activePlaylistId);
+  }
+  function renderPlaylistTabs() {
+    const wrap = $('#playlist-tabs');
+    wrap.innerHTML = '';
+    STATE.playlists.forEach(p => {
+      const tab = document.createElement('div');
+      tab.className = 'playlist-tab' + (p.id === STATE.activePlaylistId ? ' active' : '');
+      tab.innerHTML = `${p.name}<span class="count">${p.tracks.length}</span>`;
+      tab.addEventListener('click', () => {
+        STATE.activePlaylistId = p.id;
+        savePlaylists();
+        renderPlaylistTabs();
+        renderTracks();
+        renderDestSelect();
+        KOBLLUX_LOG.emit('K°d1·PLAYLIST', { detail: p.name });
+      });
+      wrap.appendChild(tab);
+    });
+  }
+  function renderDestSelect() {
+    const sel = $('#destination-select');
+    sel.innerHTML = '<option value="" disabled' + (STATE.activePlaylistId ? '' : ' selected') + '>Playlist</option>';
+    STATE.playlists.forEach(p => {
+      const o = document.createElement('option');
+      o.value = p.id; o.textContent = p.name;
+      if (p.id === STATE.activePlaylistId) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+  function renderTracks() {
+    const wrap = $('#playlist-container');
+    wrap.innerHTML = '';
+    const pl = getActivePlaylist();
+    if (!pl || pl.tracks.length === 0) {
+      wrap.innerHTML = '<div style="padding:24px;text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;letter-spacing:1.5px;font-family:JetBrains Mono,monospace">PLAYLIST VAZIA · cole um link acima</div>';
+      return;
+    }
+    pl.tracks.forEach(tr => {
+      const c = document.createElement('div');
+      c.className = 'track-card' + (STATE.currentTrack?.id === tr.id ? ' active' : '');
+      c.innerHTML = `
+        <div class="cover"><i class="ph-fill ph-music-notes"></i></div>
+        <div class="meta">
+          <div class="title">${escapeHtml(tr.title)}</div>
+          <div class="src">${tr.src}</div>
+        </div>
+        <button class="del" title="Remover"><i class="ph ph-x" style="font-size:14px"></i></button>
+      `;
+      c.addEventListener('click', e => {
+        if (e.target.closest('.del')) {
+          pl.tracks = pl.tracks.filter(t => t.id !== tr.id);
+          savePlaylists();
+          renderTracks();
+          renderPlaylistTabs();
+          KOBLLUX_LOG.emit('K°d1·TRACK·DEL', { detail: tr.title });
+        } else {
+          loadTrack(tr);
+          play();
+        }
+      });
+      wrap.appendChild(c);
+    });
+  }
+  function detectSrc(url) {
+    if (/youtu\.?be/i.test(url)) return 'YOUTUBE';
+    if (/soundcloud/i.test(url)) return 'SOUNDCLOUD';
+    if (/spotify/i.test(url))    return 'SPOTIFY';
+    if (/\.(mp3|wav|ogg|m4a)$/i.test(url)) return 'AUDIO';
+    return 'LINK';
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [PLAYBACK]  · simulação local (intervalo de progresso)
+  //   loadTrack/play/pause/next/prev escrevem nas três views
+  // ═══════════════════════════════════════════════════════════
+  let progressTimer = null;
+  function loadTrack(tr) {
+    STATE.currentTrack = tr;
+    STATE.progress = 0;
+    const cover = tr.cover || 'https://picsum.photos/seed/' + tr.id + '/100';
+    $('#prev-cover').src = cover;
+    $('#foot-cover').src = cover;
+    $('#main-cover').src = cover;
+    $('#prev-title').textContent = tr.title;
+    $('#foot-title').textContent = tr.title;
+    $('#main-title').textContent = tr.title;
+    $('#prev-artist').textContent = tr.src;
+    $('#foot-artist').textContent = tr.src;
+    $('#main-artist').textContent = tr.src;
+    $('#footer-progress-bar').style.width = '0%';
+    $('#main-progress').value = 0;
+    renderTracks();
+    if (STATE.widgetState === 'ball') updateWidgetState('footer');
+    KOBLLUX_LOG.emit('K°d1·LOAD', { detail: `${tr.title} · ${tr.src}` });
+  }
+  function play() {
+    if (!STATE.currentTrack) {
+      const pl = getActivePlaylist();
+      if (pl && pl.tracks.length) loadTrack(pl.tracks[0]);
+      else return;
+    }
+    STATE.isPlaying = true;
+    setPlayIcons(true);
+    clearInterval(progressTimer);
+    progressTimer = setInterval(() => {
+      STATE.progress = (STATE.progress + 0.6) % 100;
+      $('#footer-progress-bar').style.width = STATE.progress + '%';
+      $('#main-progress').value = STATE.progress;
+    }, 200);
+    KOBLLUX_LOG.emit('K°d1·PLAY', { detail: STATE.currentTrack?.title });
+  }
+  function pause() {
+    STATE.isPlaying = false;
+    setPlayIcons(false);
+    clearInterval(progressTimer);
+    KOBLLUX_LOG.emit('K°d1·PAUSE', { detail: STATE.currentTrack?.title });
+  }
+  function togglePlay() { STATE.isPlaying ? pause() : play(); }
+  function setPlayIcons(playing) {
+    const iPrev = $('#prev-play-icon');
+    const iFoot = $('#foot-play-icon');
+    const iMain = $('#main-play-icon');
+    if (playing) {
+      iPrev.className = 'ph-fill ph-pause-circle';
+      iFoot.className = 'ph-fill ph-pause-circle';
+      iMain.className = 'ph-fill ph-pause';
+      iMain.style.marginLeft = '0';
+    } else {
+      iPrev.className = 'ph-fill ph-play-circle';
+      iFoot.className = 'ph-fill ph-play-circle';
+      iMain.className = 'ph-fill ph-play';
+      iMain.style.marginLeft = '3px';
+    }
+  }
+  function playNext() {
+    const pl = getActivePlaylist();
+    if (!pl || !pl.tracks.length) return;
+    const i = pl.tracks.findIndex(t => t.id === STATE.currentTrack?.id);
+    const next = pl.tracks[(i + 1) % pl.tracks.length];
+    loadTrack(next); play();
+  }
+  function playPrev() {
+    const pl = getActivePlaylist();
+    if (!pl || !pl.tracks.length) return;
+    const i = pl.tracks.findIndex(t => t.id === STATE.currentTrack?.id);
+    const prev = pl.tracks[(i - 1 + pl.tracks.length) % pl.tracks.length];
+    loadTrack(prev); play();
+  }
+
+  function addTrackFromLink() {
+    const url = $('#link-input').value.trim();
+    if (!url) return;
+    const destId = $('#destination-select').value || STATE.activePlaylistId;
+    const pl = STATE.playlists.find(p => p.id === destId);
+    if (!pl) return;
+    const src = detectSrc(url);
+    const title = url.split('/').pop().split('?')[0].slice(0, 40) || 'Nova faixa';
+    const tr = {
+      id: 't' + Date.now(),
+      title: title,
+      src: src,
+      url: url,
+      cover: 'https://picsum.photos/seed/' + encodeURIComponent(title) + '/100'
+    };
+    pl.tracks.push(tr);
+    savePlaylists();
+    renderPlaylistTabs();
+    renderTracks();
+    $('#link-input').value = '';
+    KOBLLUX_LOG.emit('K°d1·TRACK·ADD', { detail: `${title} → ${pl.name}` });
+  }
+  function createPlaylist() {
+    const name = $('#new-playlist-input').value.trim();
+    if (!name) return;
+    const id = 'p' + Date.now();
+    STATE.playlists.push({ id, name, tracks: [] });
+    STATE.activePlaylistId = id;
+    savePlaylists();
+    renderPlaylistTabs();
+    renderTracks();
+    renderDestSelect();
+    $('#new-playlist-input').value = '';
+    KOBLLUX_LOG.emit('K°d1·PLAYLIST·NEW', { detail: name });
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // [BOOT]
+  // ═══════════════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedArch = localStorage.getItem('di_activeArchetype');
+    const idx = ARCHETYPES_DB.findIndex(a => a.id === savedArch);
+    applyArchetype(idx >= 0 ? idx : 0);
+
+    loadPlaylists();
+    renderPlaylistTabs();
+    renderTracks();
+    renderDestSelect();
+
+    const w = $('#kodux-widget');
+    DRAG.init(w);
+
+    // posição inicial
+    const r = w.getBoundingClientRect();
+    w.style.left = (window.innerWidth - r.width - 20) + 'px';
+    w.style.top  = (window.innerHeight - r.height - 100) + 'px';
+    w.style.right  = 'auto';
+    w.style.bottom = 'auto';
+
+    // tap no widget collapsed → expande
+    $('#content-ball').addEventListener('click', e => {
+      if (!DRAG.moved) expandFromBall();
+    });
+    $('#prev-cover').addEventListener('click', openFullFromPreview);
+    $('#content-preview .flex-1').addEventListener('click', openFullFromPreview);
+    $('#content-footer .info').addEventListener('click', () => updateWidgetState('full'));
+
+    // play buttons (todos os estados)
+    $('#prev-play-btn').addEventListener('click', e => { e.stopPropagation(); togglePlay(); });
+    $('#foot-play').addEventListener('click',     e => { e.stopPropagation(); togglePlay(); });
+    $('#main-play').addEventListener('click',     e => { e.stopPropagation(); togglePlay(); });
+    $('#foot-prev').addEventListener('click',     e => { e.stopPropagation(); playPrev(); });
+    $('#foot-next').addEventListener('click',     e => { e.stopPropagation(); playNext(); });
+
+    // collapse buttons
+    $('#foot-collapse').addEventListener('click', e => { e.stopPropagation(); collapseToBall(); });
+    $('#full-collapse').addEventListener('click', e => { e.stopPropagation(); updateWidgetState('footer'); });
+
+    // CRUD playlist
+    $('#add-track-btn').addEventListener('click', addTrackFromLink);
+    $('#link-input').addEventListener('keypress', e => { if (e.key === 'Enter') addTrackFromLink(); });
+    $('#new-playlist-btn').addEventListener('click', createPlaylist);
+    $('#new-playlist-input').addEventListener('keypress', e => { if (e.key === 'Enter') createPlaylist(); });
+
+    // progress click
+    $('#footer-progress-click').addEventListener('click', e => {
+      const r = e.currentTarget.getBoundingClientRect();
+      const pct = ((e.clientX - r.left) / r.width) * 100;
+      STATE.progress = Math.max(0, Math.min(100, pct));
+      $('#footer-progress-bar').style.width = STATE.progress + '%';
+      $('#main-progress').value = STATE.progress;
+      KOBLLUX_LOG.emit('K°d1·SEEK', { detail: STATE.progress.toFixed(1) + '%' });
+    });
+    $('#main-progress').addEventListener('input', e => {
+      STATE.progress = parseFloat(e.target.value);
+      $('#footer-progress-bar').style.width = STATE.progress + '%';
+    });
+
+    // archetype stamp
+    $('#archStamp').addEventListener('click', () => nextArchetype());
+
+    // state toolbar
+    $$('#stateToolbar button').forEach(b => {
+      b.addEventListener('click', () => updateWidgetState(b.dataset.state));
+    });
+
+    // idle
+    ['pointerdown','pointermove','touchstart','mousemove','keydown','scroll']
+      .forEach(ev => document.addEventListener(ev, resetIdle, { passive: true }));
+    resetIdle();
+
+    // teclado
+    document.addEventListener('keydown', e => {
+      if (e.target.matches('input, textarea, select')) return;
+      if (e.key === ' ')         { togglePlay(); e.preventDefault(); }
+      if (e.key === 'ArrowRight'){
+        if (e.shiftKey) playNext();
+        else nextArchetype();
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowLeft') {
+        if (e.shiftKey) playPrev();
+        else applyArchetype(currentArchIdx - 1);
+        e.preventDefault();
+      }
+    });
+
+    KOBLLUX_LOG.emit('K°d1·BOOT', { detail: 'Kodux Player online · ' + STATE.archetype.name });
+  });
+
+  // expor API
+  window.KODUX = {
+    updateWidgetState, collapseToBall, openFullFromPreview,
+    togglePlay, play, pause, playNext, playPrev, loadTrack,
+    applyArchetype, nextArchetype,
+    STATE, ARCHETYPES_DB, KOBLLUX_OPCODES
+  };
+  </script>
+</body>
+</html>

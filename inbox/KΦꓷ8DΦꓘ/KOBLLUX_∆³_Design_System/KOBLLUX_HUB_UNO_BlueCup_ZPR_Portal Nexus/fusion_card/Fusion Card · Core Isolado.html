@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Fusion Card · Core Isolado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       FUSION CARD · ISOLADO
+       Extraído de "Fusion Card // Core Controller" (monolito)
+       Classes e IDs preservados na íntegra
+       ═══════════════════════════════════════════════════════════ */
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at 50% 30%, #14182a 0%, #05060a 60%, #000 100%);
+      color: white;
+      overflow: hidden;
+    }
+
+    /* ── VARIÁVEIS DO CARD (FUSION NEON) ─────────────────────── */
+    :root {
+      --neon-cyan:   #00f0ff;
+      --neon-purple: #b829dd;
+      --neon-pink:   #ff00aa;
+      --card-bg:     rgba(10, 15, 30, 0.92);
+      --card-border: rgba(0, 240, 255, 0.4);
+      --card-glow:   rgba(0, 240, 255, 0.2);
+      --input-bg:    rgba(0, 0, 0, 0.4);
+      --input-border: rgba(255, 255, 255, 0.1);
+      --text-muted:  rgba(255, 255, 255, 0.6);
+    }
+
+    /* ── CONTAINER ───────────────────────────────────────────── */
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+    }
+
+    /* ── FUSION CARD shell ───────────────────────────────────── */
+    .fusion-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px var(--card-glow), inset 0 0 20px rgba(0,240,255,0.05);
+      overflow: hidden;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+    .fusion-card.closed .card-body { max-height: 0; opacity: 0; pointer-events: none; padding-top: 0; padding-bottom: 0; }
+    .fusion-card.closed .small-preview { display: flex; }
+
+    /* ── HEADER ──────────────────────────────────────────────── */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .avatar-slot {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .avatar-slot:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--neon-cyan); }
+    .text-block { flex: 1; min-width: 0; }
+    .greeting-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+    .txt-thin  { font-weight: 200; font-size: 1rem; opacity: 0.8; }
+    .txt-heavy {
+      font-weight: 900; font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .brand-dual {
+      font-weight: 900; font-size: 1.5rem; letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .clock-widget {
+      text-align: right;
+      padding: 10px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      min-width: 80px;
+    }
+    .time-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--neon-cyan);
+    }
+    .status-led {
+      display: inline-block; margin-top: 4px;
+      font-size: 0.7rem; color: var(--neon-pink);
+      background: rgba(255,0,170,0.2);
+      padding: 2px 8px; border-radius: 4px;
+      font-weight: 700;
+    }
+    .hud-menu-btn {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .3s ease;
+    }
+    .hud-menu-btn:hover { background: rgba(0,240,255,0.2); border-color: var(--neon-cyan); }
+
+    /* ── SMALL PREVIEW (estado .closed) ──────────────────────── */
+    .small-preview {
+      display: none;
+      padding: 15px 20px;
+      align-items: center; gap: 12px;
+      cursor: pointer;
+      background: rgba(0,0,0,0.2);
+      transition: background .3s ease;
+    }
+    .small-preview:hover { background: rgba(0,240,255,0.1); }
+    .mini-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .small-text {
+      flex: 1;
+      font-size: 0.9rem; color: var(--text-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ident-badge {
+      font-size: 0.75rem; color: var(--neon-cyan);
+      background: rgba(0,240,255,0.15);
+      padding: 4px 8px; border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* ── BODY ────────────────────────────────────────────────── */
+    .card-body {
+      padding: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+      transition: max-height .4s ease, opacity .4s ease, padding .4s ease;
+    }
+    .card-body::-webkit-scrollbar { width: 4px; }
+    .card-body::-webkit-scrollbar-track { background: transparent; }
+    .card-body::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 2px; }
+
+    /* ── INPUT ───────────────────────────────────────────────── */
+    .input-wrapper { margin-bottom: 20px; }
+    .cyber-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      transition: all .3s ease;
+    }
+    .cyber-input:focus {
+      outline: none;
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0,240,255,0.2);
+    }
+
+    /* ── ACTIVATION SECTIONS ─────────────────────────────────── */
+    .activation-wrap { margin-bottom: 15px; }
+    .activation-toggle {
+      display: flex; align-items: center;
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+    .activation-toggle:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(0,240,255,0.3);
+    }
+    .activation-card {
+      margin-top: 10px;
+      padding: 15px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      border-left: 3px solid var(--neon-cyan);
+      animation: slideDown .3s ease;
+    }
+    .activation-hidden { display: none; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .activation-pre {
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 10px 0;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .trigger-btn {
+      padding: 8px 16px;
+      background: rgba(0,240,255,0.15);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 6px;
+      color: var(--neon-cyan);
+      font-weight: 600; cursor: pointer;
+      transition: all .3s ease;
+      font-size: 0.85rem;
+    }
+    .trigger-btn:hover { background: var(--neon-cyan); color: black; }
+    .activation-badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(0,240,255,0.15);
+      border: 1px solid var(--neon-cyan);
+    }
+
+    /* ── SYSTEM CARD ─────────────────────────────────────────── */
+    .section-title {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .model-toggle select {
+      width: 100%;
+      padding: 10px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      color: white;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .panel-divider {
+      margin: 10px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ── MODE BUTTONS ────────────────────────────────────────── */
+    .stat-lbl {
+      margin-bottom: 6px;
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .mode-btn {
+      flex: 1;
+      padding: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all .3s ease;
+      font-size: 0.8rem;
+    }
+    .mode-btn.active-mode {
+      background: var(--neon-cyan);
+      color: black;
+      border-color: var(--neon-cyan);
+    }
+    .mode-btn:hover:not(.active-mode) {
+      background: rgba(0,240,255,0.2);
+      border-color: var(--neon-cyan);
+    }
+
+    /* ── MODAIS ──────────────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .keys-card {
+      width: 90%; max-width: 400px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 30px var(--card-glow);
+    }
+    .keys-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 15px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .key-list {
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .form-grid input {
+      padding: 8px 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      color: white;
+      font-size: 0.85rem;
+    }
+    .small-btn {
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      color: white; cursor: pointer;
+      font-size: 0.8rem;
+      transition: all .2s ease;
+    }
+    .small-btn:hover { background: rgba(255,255,255,0.2); }
+    .small-btn.danger {
+      background: rgba(255,0,170,0.2);
+      border-color: var(--neon-pink);
+      color: var(--neon-pink);
+    }
+    .small-btn.active-btn {
+      background: var(--neon-cyan);
+      color: black;
+      border-color: var(--neon-cyan);
+    }
+    .vault-icon {
+      width: 48px; height: 48px;
+      margin: 0 auto 15px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,240,255,0.15);
+      border-radius: 50%;
+      color: var(--neon-cyan);
+    }
+
+    /* ── UTILS ──────────────────────────────────────────────── */
+    .stagger-item { animation: fadeInUp .4s ease forwards; opacity: 0; }
+    .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+    .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+    .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+    .stagger-item:nth-child(4) { animation-delay: 0.4s; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .drag-handle {
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      margin: 0 20px 15px;
+      cursor: grab;
+    }
+    .orb-menu-trigger {
+      position: absolute;
+      top: 15px; right: 15px;
+      font-size: 1.2rem;
+      color: var(--neon-cyan);
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity .3s ease;
+      z-index: 2;
+    }
+    .orb-menu-trigger:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║  [CARD::SHELL]  container + fusion-card      ║
+       ╚══════════════════════════════════════════════╝ -->
+  <div class="container">
+    <div class="fusion-card" id="mainCard">
+
+      <!-- [CARD::HEADER] -->
+      <div class="card-header" id="cardHeader">
+        <div class="avatar-slot" id="avatarTarget" title="Gerenciar Chaves (Cofre)">
+          <!-- orb SVG injetado via makeOrbAvatar() -->
+        </div>
+        <div class="text-block">
+          <div class="greeting-row">
+            <span class="txt-thin" id="lblHello">Oi,</span>
+            <span class="txt-heavy" id="lblName">Convidado</span>
+          </div>
+          <div class="brand-dual">DUAL</div>
+        </div>
+        <div class="clock-widget">
+          <div class="time-display" id="clockTime">00:00</div>
+          <span class="status-led">ONLINE</span>
+        </div>
+        <button class="hud-menu-btn" id="hudMenuBtn" title="Menu Rápido">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+
+      <!-- [CARD::PREVIEW]  (visível somente em .closed) -->
+      <div class="small-preview" id="smallPreview" title="Gerenciar Chaves">
+        <div class="mini-avatar" id="smallMiniAvatar"></div>
+        <div class="small-text" id="smallText">Aguardando ativação...</div>
+        <div class="ident-badge" id="smallIdent">--</div>
+      </div>
+
+      <div class="drag-handle"></div>
+      <div class="orb-menu-trigger" id="orbMenuTrigger" title="Menu Rápido">●●●</div>
+
+      <!-- [CARD::BODY] -->
+      <div class="card-body" id="cardBody">
+
+        <!-- [BODY::INPUT-USER] -->
+        <div class="input-wrapper stagger-item">
+          <input type="text" class="cyber-input" id="inputUser" placeholder="Identifique-se..." autocomplete="off">
+        </div>
+
+        <!-- [BODY::ATIVAÇÃO-ASCII] -->
+        <div class="activation-wrap stagger-item">
+          <div class="activation-toggle" onclick="toggleSection('activationCard')">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--neon-cyan)"></div>
+              <strong style="letter-spacing:1px;font-size:0.9rem">Ativação ASCII</strong>
+            </div>
+            <div style="margin-left:auto;font-size:0.82rem;color:rgba(255,255,255,0.6)">BASE v1</div>
+          </div>
+          <div id="activationCard" class="activation-card activation-hidden">
+            <div style="display:flex;align-items:flex-start;gap:10px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="mini-avatar" id="actMiniAvatar"></div>
+                <div>
+                  <div style="font-weight:700">CÉREBRO</div>
+                  <div style="font-size:0.78rem;opacity:0.6"><span id="actName">User</span></div>
+                </div>
+              </div>
+              <div class="activation-badge" id="actBadge" style="margin-left:auto;color:var(--neon-cyan);font-size:0.8em">v:--</div>
+            </div>
+            <pre id="actPre" class="activation-pre">Carregando...</pre>
+            <div class="activation-controls" style="display:flex;gap:8px;margin-top:8px">
+              <button class="trigger-btn" id="copyActBtn">COPIAR</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- [BODY::SYSTEM-NEURAL] -->
+        <div class="activation-wrap stagger-item">
+          <div class="activation-toggle" onclick="toggleSection('systemCard')">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--neon-purple)"></div>
+              <strong style="letter-spacing:1px;font-size:0.9rem">SYSTEM &amp; NEURAL</strong>
+            </div>
+            <div style="margin-left:auto;font-size:0.82rem;color:rgba(255,255,255,0.6)">CONFIG</div>
+          </div>
+          <div id="systemCard" class="activation-card activation-hidden">
+            <div class="col">
+              <div class="section-title">IDENTIDADE DA INFODOSE</div>
+              <input type="text" id="infodoseNameInput" placeholder="Nome: World System..."
+                     style="width:100%;margin-bottom:8px;padding:8px;border-radius:6px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);color:#fff">
+
+              <div class="section-title" style="margin-top:8px">CONEXÃO NEURAL (SK)</div>
+              <input type="password" id="apiKeyInput" placeholder="sk-or-..." autocomplete="off"
+                     style="width:100%;margin-bottom:6px;padding:8px;border-radius:6px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);color:#fff">
+
+              <div class="model-toggle">
+                <select id="modelSelect" class="trigger-btn" style="width:100%;text-align:left">
+                  <option value="" disabled>Selecione Modelo</option>
+                  <option value="nvidia/nemotron-3-nano-30b-a3b:free">NemoTron (Free)</option>
+                  <option value="allenai/molmo-2-8b:free">MolMo (Free)</option>
+                  <option value="mistralai/devstral-2512:free">DevStral</option>
+                  <option value="openai/gpt-oss-120b:free">OSS120b</option>
+                </select>
+              </div>
+
+              <div class="panel-divider"></div>
+              <button id="saveSystemBtn" class="trigger-btn" style="margin-top:12px;background:var(--neon-cyan);color:#000;border:none;font-weight:700">
+                SALVAR CONFIGURAÇÃO
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- [BODY::MODE-SELECTOR] -->
+        <div class="stagger-item" style="margin-top:4px">
+          <div class="stat-lbl">INTERFACE MODE</div>
+          <div style="display:flex;gap:8px">
+            <button class="mode-btn active-mode" id="btnModeCard" onclick="setMode('card')" style="flex:1" title="Modo Padrão">CARD</button>
+            <button class="mode-btn" id="btnModeOrb"  onclick="setMode('orb')"  style="flex:1" title="Flutuante">ORB</button>
+            <button class="mode-btn" id="btnModeHud"  onclick="setMode('hud')"  style="flex:1" title="Barra de Topo">HUD</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║  [MODAL::KEYS-MANAGER]                       ║
+       ╚══════════════════════════════════════════════╝ -->
+  <div id="keysModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card" role="dialog">
+      <div class="keys-header">
+        <div>
+          <div id="keysTitle" style="font-weight:800;font-size:1.1rem;color:var(--neon-cyan)">USER KEYS MANAGER</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:0.85rem">Gerencie suas chaves API com segurança local (Cofre).</div>
+        </div>
+        <button id="closeKeysBtn" class="small-btn">X</button>
+      </div>
+      <div class="key-list" id="keyList"></div>
+      <div class="form-section" style="margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.05)">
+        <div class="form-grid">
+          <input id="keyNameInput" placeholder="Nome da chave (ex: Principal)">
+          <input id="keyTokenInput" type="password" placeholder="Token / ESK (Opcional)">
+        </div>
+        <button id="addKeyBtn" class="small-btn" style="width:100%;margin-top:8px;background:rgba(255,255,255,0.1)">ADICIONAR CHAVE</button>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:space-between;margin-top:15px;border-top:1px solid rgba(255,255,255,0.05);padding-top:12px">
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:5px">
+          <i data-lucide="shield-check" style="width:14px"></i> <span id="vaultStatusText">Cofre Aberto</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button id="lockVaultBtn" class="small-btn danger">BLOQUEAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║  [MODAL::VAULT-UNLOCK]                       ║
+       ╚══════════════════════════════════════════════╝ -->
+  <div id="vaultModal" class="modal-overlay" aria-hidden="true">
+    <div class="keys-card">
+      <div class="vault-icon"><i data-lucide="lock" style="width:24px;height:24px"></i></div>
+      <h3 style="margin:0 0 10px 0;font-weight:800">ACESSO AO COFRE</h3>
+      <p style="margin:0 0 15px 0;font-size:0.9rem;color:rgba(255,255,255,0.6)">Seus dados estão criptografados. Digite a senha para desbloquear.</p>
+      <input type="password" id="vaultPassInput" class="cyber-input" style="text-align:center;margin-bottom:12px" placeholder="Senha...">
+      <div style="display:flex;gap:8px;justify-content:center">
+         <button id="vaultCancelBtn" class="small-btn">Cancelar</button>
+         <button id="vaultUnlockBtn" class="small-btn active-btn">DESBLOQUEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════
+    // [JS::UTILS]
+    // ═══════════════════════════════════════════════════════════
+    const $  = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::ORB-GENERATOR]  makeOrbAvatar(name, size)
+    //   gera SVG determinístico a partir do nome (seed por charCode)
+    // ═══════════════════════════════════════════════════════════
+    function makeOrbAvatar(name, size = 36) {
+      const safe = name || 'DUAL';
+      const seed = safe.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+      const h1 = seed % 360;
+      const h2 = (seed * 37) % 360;
+      const uid = Math.random().toString(36).slice(2, 6);
+      const id = 'g' + seed.toString(36) + uid;
+      return `
+        <svg width="${size}" height="${size}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="hsl(${h1},100%,55%)"/>
+              <stop offset="100%" stop-color="hsl(${h2},90%,45%)"/>
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="7" fill="#071018"/>
+          <circle cx="16" cy="16" r="9"  fill="url(#${id})" opacity="0.25"/>
+          <circle cx="16" cy="16" r="7"  fill="url(#${id})"/>
+          <circle cx="16" cy="16" r="13" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+        </svg>`;
+    }
+    window.makeOrbAvatar = makeOrbAvatar;
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::SYNC-NAME]  di_syncNameUI(name)
+    //   propaga nome em todos os slots do card + persiste localStorage
+    // ═══════════════════════════════════════════════════════════
+    function di_syncNameUI(name) {
+      const safe = (name || '').trim() || 'Convidado';
+      localStorage.setItem('di_userName', safe);
+      localStorage.setItem('userName', safe);
+
+      $('#lblName').textContent  = safe;
+      $('#actName').textContent  = safe;
+      $('#smallText').textContent = safe;
+
+      $('#avatarTarget').innerHTML    = makeOrbAvatar(safe, 64);
+      $('#smallMiniAvatar').innerHTML = makeOrbAvatar(safe, 24);
+      $('#actMiniAvatar').innerHTML   = makeOrbAvatar(safe, 36);
+
+      const activeKey = { name: 'Principal' };
+      $('#smallIdent').textContent = activeKey ? activeKey.name : '--';
+      $('#actBadge').textContent   = activeKey ? `key:${activeKey.name}` : 'v:--';
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::TOGGLE-SECTION]  abre/fecha activation-cards (accordion)
+    // ═══════════════════════════════════════════════════════════
+    function toggleSection(id) {
+      const el = $('#' + id);
+      if (!el) return;
+      const hidden = el.classList.contains('activation-hidden');
+      $$('.activation-card').forEach(c => c.classList.add('activation-hidden'));
+      if (hidden) el.classList.remove('activation-hidden');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::MODE-SWITCHER]  setMode('card'|'orb'|'hud')
+    // ═══════════════════════════════════════════════════════════
+    function setMode(mode) {
+      $$('.mode-btn').forEach(b => b.classList.remove('active-mode'));
+      $(`#btnMode${mode.charAt(0).toUpperCase() + mode.slice(1)}`)?.classList.add('active-mode');
+      console.log(`[KOBLLUX] Modo: ${mode}`);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::TOGGLE-CARD]  expande/colapsa o fusion-card
+    // ═══════════════════════════════════════════════════════════
+    function toggleCard() {
+      const card = $('#mainCard');
+      const isClosed = card.classList.contains('closed');
+      card.classList.toggle('closed', !isClosed);
+      if (isClosed) setTimeout(() => $('#inputUser')?.focus(), 300);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::CLOCK]
+    // ═══════════════════════════════════════════════════════════
+    function updateClock() {
+      const now = new Date();
+      $('#clockTime').textContent = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::MODAIS]
+    // ═══════════════════════════════════════════════════════════
+    function openModal(id)  { $(id)?.classList.add('active'); }
+    function closeModal(id) { $(id)?.classList.remove('active'); }
+
+    // ═══════════════════════════════════════════════════════════
+    // [JS::BOOT]  bindings
+    // ═══════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+
+      const savedName = localStorage.getItem('di_userName') || localStorage.getItem('userName');
+      di_syncNameUI(savedName || 'Convidado');
+
+      $('#inputUser')?.addEventListener('input', e => di_syncNameUI(e.target.value));
+      $('#infodoseNameInput')?.addEventListener('input', e => di_syncNameUI(e.target.value));
+
+      $('#smallPreview')?.addEventListener('click', toggleCard);
+      $('#avatarTarget')?.addEventListener('click', () => openModal('#keysModal'));
+
+      $('#closeKeysBtn')?.addEventListener('click', () => closeModal('#keysModal'));
+      $('#lockVaultBtn')?.addEventListener('click', () => {
+        closeModal('#keysModal');
+        openModal('#vaultModal');
+      });
+      $('#vaultCancelBtn')?.addEventListener('click', () => closeModal('#vaultModal'));
+      $('#vaultUnlockBtn')?.addEventListener('click', () => {
+        closeModal('#vaultModal');
+        console.log('[KOBLLUX] Cofre desbloqueado');
+      });
+
+      $('#copyActBtn')?.addEventListener('click', async () => {
+        const text = $('#actPre')?.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          const btn = $('#copyActBtn');
+          const original = btn.textContent;
+          btn.textContent = 'COPIADO!';
+          setTimeout(() => btn.textContent = original, 1500);
+        } catch (e) { console.error('Erro ao copiar:', e); }
+      });
+
+      $('#saveSystemBtn')?.addEventListener('click', () => {
+        const name  = $('#infodoseNameInput')?.value;
+        const key   = $('#apiKeyInput')?.value;
+        const model = $('#modelSelect')?.value;
+        console.log('[KOBLLUX] Config salva:', { name, key: key ? '***' : '', model });
+        alert('Configuração salva! ✓');
+      });
+
+      $('.drag-handle')?.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        const card = $('#mainCard');
+        const startX = e.clientX, startY = e.clientY;
+        const startLeft = card.offsetLeft, startTop = card.offsetTop;
+        function onMove(e) {
+          card.style.position = 'absolute';
+          card.style.left = `${startLeft + (e.clientX - startX)}px`;
+          card.style.top  = `${startTop  + (e.clientY - startY)}px`;
+        }
+        function onUp() {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+
+      $('#orbMenuTrigger')?.addEventListener('click', () => {
+        console.log('[KOBLLUX] Menu orbital ativado');
+      });
+
+      setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 100);
+    });
+
+    // expor API global
+    window.KOBLLUX_CARD = {
+      toggleCard, toggleSection, setMode, di_syncNameUI,
+      makeOrbAvatar, openModal, closeModal
+    };
+  </script>
+</body>
+</html>

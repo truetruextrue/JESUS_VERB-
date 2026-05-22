@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background:var(--bg); color:var(--fg); padding:18px 22px; font-family:var(--font-sans); }
+.row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start; }
+.col { display:flex; flex-direction:column; gap:8px; }
+.swatch { width:100%; height:42px; border-radius:var(--r-panel); border:1px solid var(--border-strong); position:relative; overflow:hidden; }
+.swatch .ring { position:absolute; inset:0; border-radius:inherit; box-shadow:var(--shadow-inset); pointer-events:none; }
+.cell { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.cell .name { font-family:var(--font-mono); font-size:var(--fs-d2); letter-spacing:.12em; color:var(--fg); text-transform:uppercase; white-space:nowrap; }
+.cell .hex  { font-family:var(--font-mono); font-size:var(--fs-d1); color:var(--muted); letter-spacing:.1em; }
+.cell .meta { font-family:var(--font-mono); font-size:var(--fs-d1); color:var(--muted); }
+</style></head><body>
+<div class="row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+
+<div class="cell">
+  <div class="swatch" style="background:#39ffb6"><div class="ring"></div></div>
+  <div class="name">--ok</div>
+  <div class="hex">#39ffb6</div>
+  <div class="meta">success / online</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#ffb86b"><div class="ring"></div></div>
+  <div class="name">--warn</div>
+  <div class="hex">#ffb86b</div>
+  <div class="meta">warning</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#ff6b6b"><div class="ring"></div></div>
+  <div class="name">--err</div>
+  <div class="hex">#ff6b6b</div>
+  <div class="meta">error</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#50b4ff"><div class="ring"></div></div>
+  <div class="name">--polo-k</div>
+  <div class="hex">#50b4ff</div>
+  <div class="meta">K · Kodux · Tempo</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#3ab6ff"><div class="ring"></div></div>
+  <div class="name">--polo-b</div>
+  <div class="hex">#3ab6ff</div>
+  <div class="meta">B · Bllue · Espaço</div>
+</div>
+</div></body></html>

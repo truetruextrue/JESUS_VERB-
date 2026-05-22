@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background:var(--bg); color:var(--fg); padding:18px 22px; font-family:var(--font-sans); }
+.row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start; }
+.col { display:flex; flex-direction:column; gap:8px; }
+.swatch { width:100%; height:42px; border-radius:var(--r-panel); border:1px solid var(--border-strong); position:relative; overflow:hidden; }
+.swatch .ring { position:absolute; inset:0; border-radius:inherit; box-shadow:var(--shadow-inset); pointer-events:none; }
+.cell { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.cell .name { font-family:var(--font-mono); font-size:var(--fs-d2); letter-spacing:.12em; color:var(--fg); text-transform:uppercase; white-space:nowrap; }
+.cell .hex  { font-family:var(--font-mono); font-size:var(--fs-d1); color:var(--muted); letter-spacing:.1em; }
+.cell .meta { font-family:var(--font-mono); font-size:var(--fs-d1); color:var(--muted); }
+</style></head><body>
+<div class="row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+
+<div class="cell">
+  <div class="swatch" style="background:#0b0b0f"><div class="ring"></div></div>
+  <div class="name">--bg</div>
+  <div class="hex">#0b0b0f</div>
+  <div class="meta">void · primary</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#08080c"><div class="ring"></div></div>
+  <div class="name">--bg-deep</div>
+  <div class="hex">#08080c</div>
+  <div class="meta">deep · log</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#0f0f18"><div class="ring"></div></div>
+  <div class="name">--panel</div>
+  <div class="hex">#0f0f18</div>
+  <div class="meta">section panel</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#12121a"><div class="ring"></div></div>
+  <div class="name">--panel-2</div>
+  <div class="hex">#12121a</div>
+  <div class="meta">header strip</div>
+</div>
+<div class="cell">
+  <div class="swatch" style="background:#222"><div class="ring"></div></div>
+  <div class="name">--border</div>
+  <div class="hex">#222</div>
+  <div class="meta">1px border</div>
+</div>
+</div></body></html>

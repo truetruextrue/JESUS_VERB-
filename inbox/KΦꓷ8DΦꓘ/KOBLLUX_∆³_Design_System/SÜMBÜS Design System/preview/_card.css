@@ -1,0 +1,62 @@
+/* Shared base for all preview cards */
+@import url('../colors_and_type.css');
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  width: 700px;
+  min-height: 150px;
+  background: var(--bg-deep);
+  color: var(--fg-1);
+  font-family: var(--font-ui);
+  position: relative;
+  overflow: hidden;
+}
+body::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--grad-cosmos);
+  pointer-events: none;
+  z-index: 0;
+}
+.card {
+  position: relative; z-index: 1;
+  padding: 20px 24px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+}
+.swatch-row { display: flex; gap: 10px; align-items: stretch; }
+.swatch {
+  flex: 1;
+  min-width: 0;
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 78px;
+  border: 1px solid var(--border-glass);
+  position: relative;
+}
+.swatch .name {
+  font-family: var(--font-code);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+.swatch .hex {
+  font-family: var(--font-code);
+  font-size: 9px;
+  opacity: 0.8;
+}
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-2);
+}

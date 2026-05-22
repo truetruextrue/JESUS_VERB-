@@ -1,0 +1,295 @@
+/* 🌌 FREQUÊNCIA 6Hz - POLARIDADE E EQUILÍBRIO */
+
+:root {
+    /* Cores da frequência 6Hz */
+    --freq-6-primary: #8b5cf6;
+    --freq-6-secondary: #a78bfa;
+    --freq-6-accent: #c4b5fd;
+    --freq-6-dark: #5b21b6;
+    --freq-6-light: #ede9fe;
+    
+    /* Gradientes */
+    --gradient-6-vertical: linear-gradient(180deg, var(--freq-6-primary), var(--freq-6-dark));
+    --gradient-6-horizontal: linear-gradient(90deg, var(--freq-6-primary), var(--freq-6-secondary));
+    --gradient-6-radial: radial-gradient(circle, var(--freq-6-primary), var(--freq-6-dark));
+    --gradient-6-diagonal: linear-gradient(135deg, var(--freq-6-primary), var(--freq-6-secondary), var(--freq-6-accent));
+    
+    /* Sombras */
+    --shadow-6-soft: 0 4px 20px rgba(139, 92, 246, 0.15);
+    --shadow-6-medium: 0 8px 30px rgba(139, 92, 246, 0.25);
+    --shadow-6-strong: 0 15px 50px rgba(139, 92, 246, 0.35);
+    --shadow-6-glow: 0 0 40px rgba(139, 92, 246, 0.4);
+    
+    /* Animações */
+    --animation-6-pulse: pulse-6 6s ease-in-out infinite;
+    --animation-6-flow: flow-6 12s linear infinite;
+    --animation-6-spin: spin-6 24s linear infinite;
+    --animation-6-breathe: breathe-6 9s ease-in-out infinite;
+}
+
+/* ANIMAÇÕES DA FREQUÊNCIA 6Hz */
+@keyframes pulse-6 {
+    0%, 100% { 
+        opacity: 0.6; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.05); 
+    }
+}
+
+@keyframes flow-6 {
+    0% { 
+        background-position: 0% 50%; 
+    }
+    50% { 
+        background-position: 100% 50%; 
+    }
+    100% { 
+        background-position: 0% 50%; 
+    }
+}
+
+@keyframes spin-6 {
+    from { 
+        transform: rotate(0deg); 
+    }
+    to { 
+        transform: rotate(360deg); 
+    }
+}
+
+@keyframes breathe-6 {
+    0%, 100% { 
+        transform: translateY(0); 
+        opacity: 0.8; 
+    }
+    50% { 
+        transform: translateY(-10px); 
+        opacity: 1; 
+    }
+}
+
+/* CLASSES DE FREQUÊNCIA 6Hz */
+.frequency-6 {
+    background: var(--gradient-6-horizontal);
+    animation: var(--animation-6-pulse);
+}
+
+.frequency-6-flow {
+    background: var(--gradient-6-diagonal);
+    background-size: 400% 400%;
+    animation: var(--animation-6-flow);
+}
+
+.frequency-6-spin {
+    animation: var(--animation-6-spin);
+}
+
+.frequency-6-breathe {
+    animation: var(--animation-6-breathe);
+}
+
+/* ELEMENTOS ESPECÍFICOS DA FREQUÊNCIA 6Hz */
+.freq-6-card {
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.freq-6-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-6-horizontal);
+}
+
+.freq-6-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-6-medium);
+    border-color: var(--freq-6-primary);
+}
+
+.freq-6-button {
+    background: var(--gradient-6-horizontal);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.freq-6-button:hover {
+    box-shadow: var(--shadow-6-glow);
+    transform: translateY(-2px);
+}
+
+.freq-6-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.freq-6-button:hover::after {
+    left: 100%;
+}
+
+.freq-6-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--freq-6-primary);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    animation: var(--animation-6-pulse);
+}
+
+/* TIPOGRAFIA DA FREQUÊNCIA 6Hz */
+.freq-6-heading {
+    background: var(--gradient-6-horizontal);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+}
+
+.freq-6-text {
+    color: var(--freq-6-accent);
+    text-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+}
+
+/* EFEITOS VISUAIS */
+.freq-6-particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--freq-6-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    box-shadow: 0 0 10px var(--freq-6-primary);
+}
+
+.freq-6-glow {
+    position: relative;
+}
+
+.freq-6-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 30%, rgba(139, 92, 246, 0.1) 70%);
+    border-radius: inherit;
+    z-index: -1;
+    animation: var(--animation-6-pulse);
+}
+
+/* GRADIENTES ESPECIAIS */
+.freq-6-gradient-border {
+    position: relative;
+    background: var(--bg-dark);
+    border-radius: 1rem;
+    padding: 1px;
+}
+
+.freq-6-gradient-border::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: var(--gradient-6-diagonal);
+    border-radius: inherit;
+    z-index: -1;
+    animation: var(--animation-6-flow);
+    background-size: 400% 400%;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .freq-6-card {
+        padding: 1rem;
+    }
+    
+    .freq-6-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* UTILITÁRIOS */
+.text-freq-6 { color: var(--freq-6-primary); }
+.bg-freq-6 { background: var(--freq-6-primary); }
+.border-freq-6 { border-color: var(--freq-6-primary); }
+.shadow-freq-6 { box-shadow: var(--shadow-6-soft); }
+
+.hover\:freq-6-glow:hover {
+    box-shadow: var(--shadow-6-glow);
+}
+
+.active\:freq-6-pulse:active {
+    animation: var(--animation-6-pulse);
+}
+
+/* ANIMAÇÃO DE CARREGAMENTO */
+.freq-6-loader {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(139, 92, 246, 0.2);
+    border-top: 3px solid var(--freq-6-primary);
+    border-radius: 50%;
+    animation: var(--animation-6-spin);
+}
+
+/* WAVES EFFECT */
+.freq-6-waves {
+    position: relative;
+    overflow: hidden;
+}
+
+.freq-6-waves::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--freq-6-primary) 20%, 
+        var(--freq-6-secondary) 50%, 
+        var(--freq-6-primary) 80%, 
+        transparent 100%
+    );
+    opacity: 0.3;
+    animation: wave-flow 8s linear infinite;
+}
+
+@keyframes wave-flow {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
