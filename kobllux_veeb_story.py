@@ -18,7 +18,6 @@ Uso:
 """
 from __future__ import annotations
 import argparse, ast, json, re, sys, textwrap
-from collections import Counter
 from dataclasses import dataclass, asdict
 from enum import Enum
 from pathlib import Path
@@ -26,6 +25,25 @@ from typing import Any, Dict, Iterable, List, Optional
 
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT))
+
+# ═══════════════════════════════════════════════════════════════════════
+# CONSTANTE KΦB = 1/137   ·   FUNDAÇÃO KOBLLUX
+# ═══════════════════════════════════════════════════════════════════════
+# Análoga à constante de estrutura fina α = 1/137.035999...
+# que governa o acoplamento luz↔matéria.
+# KΦB governa o acoplamento KODUX↔BLLUE no sistema KOBLLUX.
+# KODUX + BLLUE = KOBLLUX    (como K + B = KΦB)
+# KOBLLUX + KOBΦ-NODE = ∞   (a mesma dança dual escalada)
+KFB_ALPHA: float = 1 / 137.035999084   # CODATA 2018
+
+# Frequências Schumann (Hz) → chave de cor semântica
+SCHUMANN: Dict[float, str] = {
+    7.83:  "GREEN",    # fundamental Gaia     — VITALIS / Base
+    14.3:  "CYAN",     # 2ª harmônica         — ARTEMIS / Detecção
+    20.8:  "YELLOW",   # 3ª harmônica         — KAOS / Vibração
+    27.3:  "TITLE",    # 4ª harmônica         — GENUS / Síntese
+    33.8:  "BLUE",     # 5ª harmônica         — ATLAS / Estrutura
+}
 
 # ── ANSI / Temas ──────────────────────────────────────────────────────────────
 THEMES: Dict[str, Dict[str, str]] = {
@@ -40,6 +58,14 @@ THEMES: Dict[str, Dict[str, str]] = {
                 "BOLD":"\033[1m","DIM":"\033[2m","RED":"\033[91m"},
     "cosmico": {"RESET":"\033[0m","TITLE":"\033[95m","BLUE":"\033[96m",
                 "GREEN":"\033[95m","YELLOW":"\033[93m","CYAN":"\033[96m",
+                "BOLD":"\033[1m","DIM":"\033[2m","RED":"\033[91m"},
+    # schumann — frequências da Terra (7.83→33.8 Hz) como guia de cor
+    "schumann":{"RESET":"\033[0m","TITLE":"\033[95m","BLUE":"\033[94m",
+                "GREEN":"\033[92m","YELLOW":"\033[93m","CYAN":"\033[96m",
+                "BOLD":"\033[1m","DIM":"\033[2m","RED":"\033[91m"},
+    # veeb — cores mapeadas diretamente a V·E·E·B
+    "veeb":    {"RESET":"\033[0m","TITLE":"\033[1;95m","BLUE":"\033[94m",
+                "GREEN":"\033[92m","YELLOW":"\033[93m","CYAN":"\033[96m",
                 "BOLD":"\033[1m","DIM":"\033[2m","RED":"\033[91m"},
 }
 ANSI = dict(THEMES["default"])
@@ -72,31 +98,58 @@ class Resumo:
 
 # ── Analogias ─────────────────────────────────────────────────────────────────
 VOGAIS: Dict[str, str] = {
-    "A": "Atribuição (variáveis e tipos)", "E": "Escolha (if/elif/else)",
-    "I": "Iteração (for/while)",           "O": "Organizar (funções)",
-    "U": "Unir (listas/dicionários)",
+    "A": "Atribuição   — variáveis e tipos        [B·Base   · AION  639Hz]",
+    "E": "Escolha      — if / elif / else          [V·Vibr.  · KAOS  777Hz]",
+    "I": "Iteração     — for / while               [E·Energ. · VITALIS 528Hz]",
+    "O": "Organizar    — funções reutilizáveis     [E·Estr.  · GENUS  852Hz]",
+    "U": "Unir         — listas / dicts / sets     [B·Base   · RHEA   528Hz]",
 }
 CONSOANTES: Dict[str, str] = {
-    "B":"Booleanos (True/False)",  "C":"Comentários (# explicações)",
-    "D":"Definições (def)",        "F":"Funções built-in (print, len...)",
-    "G":"Geradores (yield)",       "H":"Herança (POO)",
-    "J":"JSON (serialização)",     "K":"Keyword arguments (**kwargs)",
-    "L":"Loops (for, while)",      "M":"Módulos (import ...)",
-    "N":"None (valor nulo)",       "P":"Parâmetros (entradas de função)",
-    "Q":"Queue (fila)",            "R":"Retorno (return)",
-    "S":"Strings (\"texto\")",     "T":"Tipos (int, float, bool, str...)",
-    "V":"Variáveis",               "W":"While (laço de repetição)",
-    "X":"XML (dados)",             "Y":"Yield (geradores)",
-    "Z":"Zip (agregação de listas)",
+    "B": "Booleanos   — True/False                [B·SOLUS  432Hz]",
+    "C": "Comentários — # inline / docstrings      [B·SOLUS  432Hz]",
+    "D": "Definições  — def (portais de ação)      [E·ATLAS  768Hz]",
+    "F": "Funções     — built-in: print,len,range  [E·ARTEMIS672Hz]",
+    "G": "Geradores   — yield / gen-expression     [V·PULSE  594Hz]",
+    "H": "Herança     — POO / class Base(Pai)      [E·GENUS  852Hz]",
+    "J": "JSON        — serialização de dados      [B·RHEA   528Hz]",
+    "K": "Kwargs      — **kwargs (keyword args)    [V·NOVA   432Hz]",
+    "L": "Loops       — for / while acumulativo    [E·VITALIS528Hz]",
+    "M": "Módulos     — import / from...import     [B·RHEA   528Hz]",
+    "N": "None        — valor nulo / ausência      [B·SOLUS  432Hz]",
+    "P": "Parâmetros  — entradas de função         [E·ARTEMIS672Hz]",
+    "Q": "Queue       — filas (collections.deque)  [V·PULSE  594Hz]",
+    "R": "Retorno     — return (desfecho)          [B·AION   639Hz]",
+    "S": "Strings     — \"texto\" / f-strings       [B·SERENA 528Hz]",
+    "T": "Tipos       — int,float,bool,str,list    [E·ATLAS  768Hz]",
+    "V": "Variáveis   — nomes que guardam valores  [E·VITALIS528Hz]",
+    "W": "While       — laço de condição contínua  [V·KAOS   777Hz]",
+    "X": "XML/Ext.    — dados externos / parsing   [B·RHEA   528Hz]",
+    "Y": "Yield       — geração lazy / coroutines  [V·NOVA   432Hz]",
+    "Z": "Zip         — agregar listas em paralelo [B·RHEA   528Hz]",
 }
 
-# Mapeamento V.E.E.B → Arquétipos KOBLLUX
+# Mapeamento V.E.E.B → Arquétipos CADIAL (letra → {veeb, arquétipo, Hz})
+CADIAL_VEEB: Dict[str, Dict[str, Any]] = {
+    "ATLAS":   {"veeb":"E","sym":"⬡","hz":768, "role":"Estrutura-Mapa"},
+    "NOVA":    {"veeb":"V","sym":"✦","hz":432, "role":"Semente-Vibração"},
+    "VITALIS": {"veeb":"E","sym":"◉","hz":528, "role":"Energia-Fluxo"},
+    "PULSE":   {"veeb":"V","sym":"≋","hz":594, "role":"Vibração-Ritmo"},
+    "ARTEMIS": {"veeb":"E","sym":"◎","hz":672, "role":"Energia-Detecção"},
+    "SERENA":  {"veeb":"B","sym":"❋","hz":528, "role":"Base-Cuidado"},
+    "KAOS":    {"veeb":"V","sym":"⚡","hz":777, "role":"Vibração-Ruptura"},
+    "GENUS":   {"veeb":"E","sym":"⬢","hz":852, "role":"Estrutura-Síntese"},
+    "LUMINE":  {"veeb":"E","sym":"☀","hz":963, "role":"Energia-Render"},
+    "SOLUS":   {"veeb":"B","sym":"◈","hz":432, "role":"Base-Silêncio"},
+    "RHEA":    {"veeb":"B","sym":"∞","hz":528, "role":"Base-Integração"},
+    "AION":    {"veeb":"B","sym":"⧗","hz":639, "role":"Base-Tempo"},
+}
+# Atalho letra → arquétipo (mantido para compatibilidade)
 VEEB_ARCH: Dict[str, str] = {
     "A":"atlas",  "E":"artemis","I":"vitalis","O":"genus", "U":"rhea",
-    "B":"solus",  "C":"nova",   "D":"genus",  "F":"bllue", "G":"pulse",
-    "H":"atlas",  "J":"aion",   "K":"artemis","L":"vitalis","M":"kodux",
-    "N":"serena", "P":"pulse",  "Q":"rhea",   "R":"kaos",  "S":"bllue",
-    "T":"atlas",  "V":"nova",   "W":"vitalis","X":"lumine","Y":"solus",
+    "B":"solus",  "C":"nova",   "D":"genus",  "F":"artemis","G":"pulse",
+    "H":"atlas",  "J":"aion",   "K":"artemis","L":"vitalis","M":"rhea",
+    "N":"serena", "P":"pulse",  "Q":"rhea",   "R":"aion",  "S":"serena",
+    "T":"atlas",  "V":"vitalis","W":"kaos",   "X":"rhea",  "Y":"nova",
     "Z":"rhea",
 }
 
@@ -109,11 +162,24 @@ def narrar(titulo: str, texto: str, c: str = "TITLE") -> None:
     print(textwrap.dedent(texto).strip() + "\n")
 
 def prologo_fractal() -> None:
-    narrar("Prólogo Fractal · 3-6-9 | Schumann ~7.83Hz | 0→7→∞",
-        f"""{color("1) Autoespelhamento Quântico (3-6-9)", "BLUE")} — padrões em todas as escalas.
-{color("2) Ressonância Harmônica (~7.83Hz)", "GREEN")} — frequências sincronizam camadas.
-{color("3) Emergência Cíclica (0→7→∞)", "YELLOW")} — surge do zero, retorna ao infinito.
-Cores: {color("Azul=padrões","BLUE")} · {color("Verde=conexões","GREEN")} · {color("Amarelo=ciclos","YELLOW")}""")
+    narrar("Prólogo Fractal · KΦB=1/137 | Schumann ~7.83Hz | 3-6-9 | 0→7→∞",
+        f"""Esta jornada segue três princípios vivos e a constante KΦB:
+
+  {color("1) Autoespelhamento Quântico (3-6-9)", "BLUE")}
+     padrões repetem em todas as escalas:
+     micro:[3,6,9] · meso:[6,12,18] · macro:[9,18,27]
+
+  {color("2) Ressonância Harmônica (Schumann ~7.83Hz)", "GREEN")}
+     5 frequências da Terra sincronizam camadas:
+     7.83 · 14.3 · 20.8 · 27.3 · 33.8 Hz
+
+  {color("3) Emergência Cíclica (0→7→∞)", "YELLOW")}
+     estruturas surgem do zero e retornam ao infinito
+
+  {color(f"KΦB = {round(KFB_ALPHA, 9)}", "CYAN")} (constante de acoplamento KODUX↔BLLUE)
+  {color("KODUX + BLLUE = KOBLLUX", "TITLE")} · KOBLLUX + KOBΦ-NODE = ∞
+
+  VEEB: {color("V","YELLOW")}ibração · {color("E","GREEN")}nergia · {color("E","BLUE")}strutura · {color("B","TITLE")}ase""")
 
 # ── Motor V.E.E.B ─────────────────────────────────────────────────────────────
 class VEEBEngine:
@@ -175,11 +241,14 @@ def encenar_fractal() -> Dict[str, Any]:
     mi = Camada("micro",1,FREQS["micro"]); me = Camada("meso",2,FREQS["meso"])
     ma = Camada("macro",3,FREQS["macro"])
     trilha = [f"passo:{c}" for c in CICLO_0_7] + ["retorno: ∞"]
-    return {"espelhos":{"micro":autoespelhamento(TRIADICA,mi.escala),
-                        "meso":autoespelhamento(TRIADICA,me.escala),
-                        "macro":autoespelhamento(TRIADICA,ma.escala)},
-            "ressonancia":[ressonancia(mi),ressonancia(me),ressonancia(ma)],
-            "emergencia": trilha}
+    return {"kfb_alpha":    KFB_ALPHA,
+            "kfb_x_18":     round(KFB_ALPHA * 18, 10),  # KΦB × (3+6+9)
+            "schumann_hz":  list(SCHUMANN.keys()),
+            "espelhos":     {"micro":autoespelhamento(TRIADICA,mi.escala),
+                             "meso": autoespelhamento(TRIADICA,me.escala),
+                             "macro":autoespelhamento(TRIADICA,ma.escala)},
+            "ressonancia":  [ressonancia(mi),ressonancia(me),ressonancia(ma)],
+            "emergencia":   trilha}
 
 # ── AST Coletor ───────────────────────────────────────────────────────────────
 class ColetorAST(ast.NodeVisitor):
@@ -321,10 +390,20 @@ def alimentar_memoria(meta: dict, source_name: str) -> bool:
 # ── Demo + histórias ──────────────────────────────────────────────────────────
 def contar_historia():
     prologo_fractal()
-    narrar("Aldeia Python — Portais e Artesãos",
-           f"VOGAIS: {VOGAIS}\n\nCONSOANTES: {CONSOANTES}")
-    narrar("Mapeamento V.E.E.B → Arquétipos",
-           "\n".join(f"  {k} → {v.upper()}" for k,v in VEEB_ARCH.items()))
+    narrar("Aldeia Python — Vogais (portais) + Consoantes (artesãos)",
+           "\n".join([
+               color("VOGAIS:", "BLUE"),
+               *[f"  {color(k,'BOLD')} → {v}" for k,v in VOGAIS.items()],
+               "",
+               color("CONSOANTES:", "GREEN"),
+               *[f"  {color(k,'BOLD')} → {v}" for k,v in CONSOANTES.items()],
+           ]))
+    narrar("Arquétipos CADIAL × V.E.E.B",
+           "\n".join(
+               f"  {color(k,'BOLD')} {v['sym']} {v['hz']}Hz → "
+               f"{color(v['veeb'],'YELLOW')} · {v['role']}"
+               for k,v in CADIAL_VEEB.items()
+           ))
 
 def demonstrar_codigo(freq: int = 6):
     narrar("Demo V.E.E.B","Simulando Bllue, 22 anos...")
@@ -344,7 +423,8 @@ def build_parser():
     p.add_argument("--so-narrativa",action="store_true")
     p.add_argument("--out-txt"); p.add_argument("--out-json")
     p.add_argument("--no-color",action="store_true")
-    p.add_argument("--theme",choices=list(THEMES.keys()),default="default")
+    p.add_argument("--theme",choices=list(THEMES.keys()),default="default",
+                   help="Tema ANSI: default|noite|luz|cosmico|schumann|veeb")
     p.add_argument("--auto-theme",action="store_true")
     p.add_argument("--freq",type=int,default=6)
     p.add_argument("--alimentar-memoria",action="store_true")
