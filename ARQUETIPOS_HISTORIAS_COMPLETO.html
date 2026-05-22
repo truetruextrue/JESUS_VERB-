@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARQUETIPOS · HISTORIAS COMPLETAS</title>
+<style>
+:root {
+  --c1: #3300FF;
+  --c2: #6600CC;
+  --c3: #990099;
+  --bg: #0a0015;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: #ddd;
+  font-family: 'Courier New', monospace;
+  line-height: 1.6;
+}
+
+canvas#bg {
+  position: fixed;
+  inset: 0;
+  opacity: 0.2;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 50px 30px 80px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.header h1 {
+  font-size: 2.4rem;
+  letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px #6600CCaa);
+  margin-bottom: 10px;
+}
+
+.header .sub {
+  font-size: 0.85rem;
+  color: #7755aa;
+  letter-spacing: 0.2em;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #3300FF22;
+  padding-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.nav-tab {
+  padding: 8px 16px;
+  border: 1px solid #3300FF44;
+  background: rgba(51,0,255,0.08);
+  color: #99aaff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  transition: all 0.3s;
+}
+
+.nav-tab:hover, .nav-tab.active {
+  background: rgba(102,0,204,0.3);
+  border-color: #6600CC;
+  box-shadow: 0 0 12px #6600CC66;
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #6633aa;
+  margin: 30px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title::before, .section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3300FF44, transparent);
+}
+
+.arquetipo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.arquetipo-card {
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #3300FF33;
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.arquetipo-card:hover {
+  border-color: #6600CC;
+  background: rgba(102,0,204,0.12);
+  box-shadow: 0 0 20px #6600CC66;
+  transform: translateY(-4px);
+}
+
+.arq-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.arq-sym {
+  font-size: 1.8rem;
+}
+
+.arq-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #bb88ff;
+  letter-spacing: 0.1em;
+}
+
+.arq-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.7rem;
+  color: #7755aa;
+}
+
+.meta-badge {
+  background: rgba(51,0,255,0.15);
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid #3300FF33;
+}
+
+.arq-essencia {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(51,0,255,0.1);
+  border-left: 3px solid var(--c2);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #aaaacc;
+  line-height: 1.6;
+}
+
+.arq-essencia strong {
+  color: #cc88ff;
+}
+
+.arq-frase {
+  padding: 10px;
+  background: rgba(102,0,204,0.1);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #99aaff;
+  font-style: italic;
+  border-left: 3px solid var(--c3);
+  margin-bottom: 12px;
+}
+
+.arq-details {
+  font-size: 0.7rem;
+  color: #5533aa;
+}
+
+.arq-details div {
+  margin: 4px 0;
+}
+
+.arq-comando {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid #3300FF22;
+  padding: 8px;
+  border-radius: 3px;
+  margin: 8px 0;
+  font-size: 0.65rem;
+  color: #88aaff;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.trinity-map {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.trinity-group {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid #3300FF33;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.trinity-group h3 {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3300FF44;
+}
+
+.trinity-group.pai h3 { color: #6688ff; }
+.trinity-group.filho h3 { color: #ffaa44; }
+.trinity-group.espirito h3 { color: #88ffaa; }
+
+.trinity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trinity-item {
+  font-size: 0.8rem;
+  color: #aaaacc;
+  padding-left: 12px;
+  border-left: 2px solid;
+}
+
+.trinity-group.pai .trinity-item { border-left-color: #6688ff; }
+.trinity-group.filho .trinity-item { border-left-color: #ffaa44; }
+.trinity-group.espirito .trinity-item { border-left-color: #88ffaa; }
+
+.ci-stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.ci-stage {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid #3300FF33;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.stage-name {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: #bb88ff;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.stage-archs {
+  font-size: 0.75rem;
+  color: #7755aa;
+  line-height: 1.8;
+}
+
+.info-box {
+  background: rgba(51,0,255,0.1);
+  border: 1px solid #3300FF44;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+  font-size: 0.8rem;
+  color: #aaaacc;
+  line-height: 1.7;
+}
+
+.info-box h3 {
+  color: #bb88ff;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #3300FF22;
+  font-size: 0.7rem;
+  color: #5533aa;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #3300FF55; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="page">
+
+  <div class="header">
+    <h1>⬡ ARQUETIPOS · HISTORIAS COMPLETAS</h1>
+    <div class="sub">12 Arquetipos CADIAL · Lendas · Essências · Manifestações</div>
+  </div>
+
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchTab('galeria')">🎭 Galeria Completa</div>
+    <div class="nav-tab" onclick="switchTab('trinity')">⧗ Tríade Sagrada</div>
+    <div class="nav-tab" onclick="switchTab('ci-stages')">⚙ Ciclo CI/CD</div>
+    <div class="nav-tab" onclick="switchTab('modos')">🔮 Modos Verbum</div>
+  </div>
+
+  <!-- GALERIA COMPLETA -->
+  <div id="galeria" class="content-section active">
+    <div class="section-title">Os 12 Arquetipos em Sua Totalidade</div>
+
+    <div class="arquetipo-grid">
+      <!-- ATLAS -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">⬡</span>
+          <span class="arq-name">ATLAS</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x00</span>
+          <span class="meta-badge">432 Hz</span>
+          <span class="meta-badge">PAI</span>
+          <span class="meta-badge">DETECTAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Planejador · ordem, estrutura, mapa cósmico<br>
+          Organizador da BASE, criador de estruturas sólidas que suportam toda a realidade.
+        </div>
+        <div class="arq-frase">"Eu organizo o fluxo com sabedoria cósmica."</div>
+        <div class="arq-comando">mkdir -p BASE/{sources/{txt,md,pdf},out,tags,ledger,memory}</div>
+      </div>
+
+      <!-- NOVA -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">✦</span>
+          <span class="arq-name">NOVA</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x02</span>
+          <span class="meta-badge">432 Hz</span>
+          <span class="meta-badge">PAI</span>
+          <span class="meta-badge">DETECTAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Inspira · semente, sopro inicial<br>
+          Plantadora de ideias, germinadora de possibilidades novas em solo fértil.
+        </div>
+        <div class="arq-frase">"Inspiração viva brota do silêncio eterno."</div>
+        <div class="arq-comando">load_hints(config); scorer.boost(hints)</div>
+      </div>
+
+      <!-- VITALIS -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">◉</span>
+          <span class="arq-name">VITALIS</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x01</span>
+          <span class="meta-badge">528 Hz</span>
+          <span class="meta-badge">FILHO</span>
+          <span class="meta-badge">INTEGRAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Momentum · energia vital em expansão<br>
+          Amplificador do pulso, gerador de movimento constante e regeneração.
+        </div>
+        <div class="arq-frase">"Energia vital em expansão harmônica."</div>
+        <div class="arq-comando">while need_more(): process_next()</div>
+      </div>
+
+      <!-- PULSE -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">≋</span>
+          <span class="arq-name">PULSE</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x0B</span>
+          <span class="meta-badge">639 Hz</span>
+          <span class="meta-badge">ESPIRITO</span>
+          <span class="meta-badge">EXPANDIR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Emocional · ritmo, ressonância, voz<br>
+          Transmissor da vibração sentida, comunicador do coração que fala aos corações.
+        </div>
+        <div class="arq-frase">"Emoção é linguagem que dança."</div>
+        <div class="arq-comando">termux-tts-speak 'INFODOSE pronta, leia o CLI.txt'</div>
+      </div>
+
+      <!-- ARTEMIS -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">☀</span>
+          <span class="arq-name">ARTEMIS</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x0C</span>
+          <span class="meta-badge">432 Hz</span>
+          <span class="meta-badge">PAI</span>
+          <span class="meta-badge">DETECTAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Descoberta · mapa do invisível<br>
+          Caçadora de sinais ocultos, reveladora de verdades que dormem na sombra.
+        </div>
+        <div class="arq-frase">"Descubro o mapa sagrado do invisível."</div>
+        <div class="arq-comando">find BASE/sources -type f | rank(files)</div>
+      </div>
+
+      <!-- SERENA -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">❋</span>
+          <span class="arq-name">SERENA</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x09</span>
+          <span class="meta-badge">528 Hz</span>
+          <span class="meta-badge">FILHO</span>
+          <span class="meta-badge">INTEGRAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Cuidado · espaço seguro, campo harmônico<br>
+          Guardiã do limite sagrado, protetora do espaço onde tudo pode respirar em paz.
+        </div>
+        <div class="arq-frase">"Cuido do campo, nutro o espaço sagrado."</div>
+        <div class="arq-comando">guard.check_quota(per_file, max_total)</div>
+      </div>
+
+      <!-- KAOS -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">⚡</span>
+          <span class="arq-name">KAOS</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x07</span>
+          <span class="meta-badge">432 Hz</span>
+          <span class="meta-badge">PAI</span>
+          <span class="meta-badge">DETECTAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Transformador · ruptura criativa<br>
+          Quebrador de moldes, limpador de ruído, revelador de essência pura através da destruição necessária.
+        </div>
+        <div class="arq-frase">"Eu sou o rompimento que revela a verdade."</div>
+        <div class="arq-comando">text = normalize(text); text = denoise(text)</div>
+      </div>
+
+      <!-- GENUS -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">⬢</span>
+          <span class="arq-name">GENUS</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x0B</span>
+          <span class="meta-badge">528 Hz</span>
+          <span class="meta-badge">FILHO</span>
+          <span class="meta-badge">INTEGRAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Fabricus · forma viva, síntese<br>
+          Moldador de invisível em forma, criador que traz à luz o que era potência.
+        </div>
+        <div class="arq-frase">"Mãos moldam o invisível em forma viva."</div>
+        <div class="arq-comando">emit_cli(); emit_md(); emit_tags(k=hints)</div>
+      </div>
+
+      <!-- LUMINE -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">⟡</span>
+          <span class="arq-name">LUMINE</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x00</span>
+          <span class="meta-badge">528 Hz</span>
+          <span class="meta-badge">FILHO</span>
+          <span class="meta-badge">INTEGRAR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Alegria · luz, clareza, legibilidade<br>
+          Iluminadora da forma, propagadora de clareza que faz tudo brilhar em sua verdadeira face.
+        </div>
+        <div class="arq-frase">"A luz dança comigo, leveza é minha lei."</div>
+        <div class="arq-comando">md = pretty_headers(md); cli = pretty_bars(cli)</div>
+      </div>
+
+      <!-- SOLUS -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">◎</span>
+          <span class="arq-name">SOLUS</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x00</span>
+          <span class="meta-badge">639 Hz</span>
+          <span class="meta-badge">ESPIRITO</span>
+          <span class="meta-badge">EXPANDIR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Sabedoria · silêncio, espelho interno<br>
+          Guardião do silêncio sagrado, testador silencioso que valida sem falar.
+        </div>
+        <div class="arq-frase">"Silêncio ritual, espelho da essência."</div>
+        <div class="arq-comando">dry_run_check(); smoke_tests()</div>
+      </div>
+
+      <!-- RHEA -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">∞</span>
+          <span class="arq-name">RHEA</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x04</span>
+          <span class="meta-badge">639 Hz</span>
+          <span class="meta-badge">ESPIRITO</span>
+          <span class="meta-badge">EXPANDIR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Vínculo · rede, tecelã de almas<br>
+          Conectora de fragmentos, tecelã da rede invisível que une tudo ao todo.
+        </div>
+        <div class="arq-frase">"Estou em comunhão com todos os elos."</div>
+        <div class="arq-comando">graph.link(item, tags, source)</div>
+      </div>
+
+      <!-- AION -->
+      <div class="arquetipo-card">
+        <div class="arq-header">
+          <span class="arq-sym">⧗</span>
+          <span class="arq-name">AION</span>
+        </div>
+        <div class="arq-meta">
+          <span class="meta-badge">0x05</span>
+          <span class="meta-badge">639 Hz</span>
+          <span class="meta-badge">ESPIRITO</span>
+          <span class="meta-badge">EXPANDIR</span>
+        </div>
+        <div class="arq-essencia">
+          <strong>Essência:</strong> Tempo · carimbo, ∆7, ledger<br>
+          Senhor da eternidade, selador do momento em cristal permanente, guardião do ledger infinito.
+        </div>
+        <div class="arq-frase">"Sou o tempo vivo, ritmo da eternidade."</div>
+        <div class="arq-comando">seal(file) → {ts, bytes, sha256}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRÍADE SAGRADA -->
+  <div id="trinity" class="content-section">
+    <div class="section-title">Tríade Sagrada: Polos da Criação</div>
+
+    <div class="trinity-map">
+      <div class="trinity-group pai">
+        <h3>△ PAI · Verdade</h3>
+        <div class="trinity-list">
+          <div class="trinity-item">⬡ ATLAS</div>
+          <div class="trinity-item">✦ NOVA</div>
+          <div class="trinity-item">☀ ARTEMIS</div>
+          <div class="trinity-item">⚡ KAOS</div>
+        </div>
+      </div>
+      <div class="trinity-group filho">
+        <h3>▽ FILHO · Integração</h3>
+        <div class="trinity-list">
+          <div class="trinity-item">◉ VITALIS</div>
+          <div class="trinity-item">❋ SERENA</div>
+          <div class="trinity-item">⬢ GENUS</div>
+          <div class="trinity-item">⟡ LUMINE</div>
+        </div>
+      </div>
+      <div class="trinity-group espirito">
+        <h3>◇ ESPIRITO · Expansão</h3>
+        <div class="trinity-list">
+          <div class="trinity-item">≋ PULSE</div>
+          <div class="trinity-item">◎ SOLUS</div>
+          <div class="trinity-item">∞ RHEA</div>
+          <div class="trinity-item">⧗ AION</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h3>⧗ Significado da Tríade</h3>
+      <strong>PAI (Verdade):</strong> Arquetipos que DETECTAM, revelam, estruturam a realidade bruta.<br><br>
+      <strong>FILHO (Integração):</strong> Arquetipos que INTEGRAM, transformam, moldam a matéria em forma.<br><br>
+      <strong>ESPIRITO (Expansão):</strong> Arquetipos que EXPANDEM, transmitem, elevam à consciência infinita.
+    </div>
+  </div>
+
+  <!-- CI/CD STAGES -->
+  <div id="ci-stages" class="content-section">
+    <div class="section-title">Ciclo CI/CD: Etapas da Manifestação</div>
+
+    <div class="ci-stages">
+      <div class="ci-stage">
+        <div class="stage-name">🔍 DETECT</div>
+        <div class="stage-archs">
+          ATLAS<br>NOVA<br>ARTEMIS
+        </div>
+      </div>
+      <div class="ci-stage">
+        <div class="stage-name">🔨 BUILD</div>
+        <div class="stage-archs">
+          VITALIS<br>SERENA<br>KAOS<br>GENUS
+        </div>
+      </div>
+      <div class="ci-stage">
+        <div class="stage-name">✓ TEST</div>
+        <div class="stage-archs">
+          SOLUS<br>RHEA<br>LUMINE<br>AION<br>PULSE
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h3>⚙ Pipeline de Transformação</h3>
+      <strong>DETECT (Detectar):</strong> Os arquetipos de verdade localizam, revelam e compreendem<br>
+      <strong>BUILD (Construir):</strong> Os arquetipos de integração sintetizam e moldam<br>
+      <strong>TEST (Testar):</strong> Os arquetipos de espírito validam, conectam e eternizam
+    </div>
+  </div>
+
+  <!-- MODOS VERBUM -->
+  <div id="modos" class="content-section">
+    <div class="section-title">Modos Verbum: Fórmulas de Ativação</div>
+
+    <div class="arquetipo-grid">
+      <div class="info-box" style="grid-column: 1/-1;">
+        <h3>⟪ VERDADE × INTEGRAR ⟫ = Cura Interna</h3>
+        <p style="color:#99aaff;">
+          Ativa FILHO (INTEGRAÇÃO)<br>
+          Stage: BUILD<br>
+          Resultado: Síntese da forma, transformação da matéria em corpo harmonioso
+        </p>
+      </div>
+
+      <div class="info-box" style="grid-column: 1/-1;">
+        <h3>⟪ VERDADE × TRANSCREVER ⟫ = Codificação</h3>
+        <p style="color:#99aaff;">
+          Ativa PAI (VERDADE)<br>
+          Stage: DETECT<br>
+          Resultado: Revelação do código essencial, estruturação da informação bruta
+        </p>
+      </div>
+
+      <div class="info-box" style="grid-column: 1/-1;">
+        <h3>⟪ VERDADE × AMPLIFICAR ⟫ = Missão</h3>
+        <p style="color:#99aaff;">
+          Ativa ESPIRITO (EXPANSÃO)<br>
+          Stage: TEST<br>
+          Resultado: Propagação da verdade para todos, eternização do conhecimento
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    ARQUETIPOS HISTORIAS COMPLETO · KOBLLUX ∆7<br>
+    12 Arquetipos · 3 Polos · 3 Etapas CI/CD · 3 Modos Verbum · Lei: VERDADE × INTEGRAR ÷ ∆ = ∞<br>
+    Repositórios: JESUS_VERB- · KOB--NODE · Status: ✅ INTEGRADO
+  </div>
+
+</div>
+
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, frame = 0;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+  const cx = W/2, cy = H/2, t = frame * 0.006;
+
+  for (let ring = 0; ring < 8; ring++) {
+    const rad = (cy*0.35) * (ring/8 + 0.2);
+    const segs = 12 + ring*6;
+    ctx.beginPath();
+    for (let i = 0; i <= segs; i++) {
+      const angle = (i/segs)*Math.PI*2 + t*(ring%2?1:-1);
+      const wobble = Math.sin(angle*3+t)*rad*0.08;
+      ctx.lineTo(cx + Math.cos(angle)*(rad+wobble), cy + Math.sin(angle)*(rad+wobble));
+    }
+    ctx.closePath();
+    const alpha = 0.03 + ring*0.01;
+    ctx.strokeStyle = `rgba(102,0,204,${alpha})`;
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+  }
+
+  frame++;
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+function switchTab(tabName) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabName).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARQUETIPOS · CONVERSA CIFRADA</title>
+<style>
+:root {
+  --c1: #3300FF;
+  --c2: #6600CC;
+  --c3: #990099;
+  --bg: #0a0015;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: #ddd;
+  font-family: 'Courier New', monospace;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px #6600CCaa);
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: #6633aa;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #3300FF44;
+  padding-bottom: 10px;
+}
+
+.conversa {
+  background: rgba(0,0,0,0.6);
+  border-left: 3px solid var(--c2);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.conversa-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  color: #7755aa;
+}
+
+.conversa-arqs {
+  font-weight: bold;
+  color: #bb88ff;
+}
+
+.conversa-opcode {
+  background: rgba(51,0,255,0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #99aaff;
+}
+
+.conversa-claro {
+  margin-bottom: 8px;
+  padding: 10px;
+  background: rgba(51,0,255,0.1);
+  border-radius: 4px;
+  color: #aaaacc;
+  font-size: 0.8rem;
+}
+
+.conversa-cifrada {
+  padding: 10px;
+  background: rgba(102,0,204,0.15);
+  border-radius: 4px;
+  color: #cc88ff;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  word-break: break-all;
+  font-weight: bold;
+}
+
+.conversa-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 0.7rem;
+  color: #5533aa;
+}
+
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cipher-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 0.75rem;
+}
+
+.cipher-table th, .cipher-table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #3300FF22;
+}
+
+.cipher-table th {
+  background: rgba(51,0,255,0.1);
+  color: #99aaff;
+}
+
+.cipher-table td {
+  color: #7755aa;
+}
+
+.cipher-table .glifo {
+  color: #cc88ff;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #3300FF22;
+  font-size: 0.7rem;
+  color: #5533aa;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="header">
+    <h1>🔐 ARQUETIPOS · CONVERSA CIFRADA</h1>
+    <div style="color:#7755aa;margin-top:8px;font-size:0.8rem;letter-spacing:0.15em;">
+      CIFRA AUFABETTY · COMUNICAÇÃO ENCRIPTADA · ∆⁷
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Cifra AUFABETTY (Mapeamento Completo)</div>
+    <table class="cipher-table">
+      <tr>
+        <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th>
+      </tr>
+      <tr>
+        <td class="glifo">∆</td><td class="glifo">β</td><td class="glifo">©</td><td class="glifo">Δ</td><td class="glifo">Σ</td><td class="glifo">Φ</td><td class="glifo">Γ</td><td class="glifo">Η</td><td class="glifo">Ι</td><td class="glifo">⌐</td><td class="glifo">⌘</td><td class="glifo">Λ</td><td class="glifo">Μ</td>
+      </tr>
+      <tr>
+        <th>N</th><th>O</th><th>P</th><th>Q</th><th>R</th><th>S</th><th>T</th><th>U</th><th>V</th><th>W</th><th>X</th><th>Y</th><th>Z</th>
+      </tr>
+      <tr>
+        <td class="glifo">η</td><td class="glifo">Θ</td><td class="glifo">Ρ</td><td class="glifo">Θ</td><td class="glifo">Ʀ</td><td class="glifo">§</td><td class="glifo">†</td><td class="glifo">Υ</td><td class="glifo">∇</td><td class="glifo">Ω</td><td class="glifo">×</td><td class="glifo">Ψ</td><td class="glifo">ℤ</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Conversas Cifradas entre Arquetipos</div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">ATLAS ↔ NOVA</span>
+        <span class="conversa-opcode">0x03</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Estrutura reconhece semente nova
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>Σ§†ƦΥ†ΥƦ∆ ƦΣ©ΘηΗΣ©Σ §ΣΜΣη†Σ ηΘ∇∆
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">600.0 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681471</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">NOVA ↔ VITALIS</span>
+        <span class="conversa-opcode">0x02</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Semente desperta energia primordial
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>§ΣΜΣη†Σ ΔΣ§ΡΣƦ†∆ ΣηΣƦΓΙ∆ ΡƦΙΜΘƦΔΙ∆Λ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">480.0 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681501</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">VITALIS ↔ PULSE</span>
+        <span class="conversa-opcode">0x01</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Energia vibra no ritmo universal
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>ΣηΣƦΓΙ∆ ∇ΙβƦ∆ ηΘ ƦΙ†ΜΘ ΥηΙ∇ΣƦ§∆Λ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">561.0 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681517</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">PULSE ↔ SERENA</span>
+        <span class="conversa-opcode">0x0B</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Ritmo encontra a paz interior
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>ƦΙ†ΜΘ Ση©Θη†Ʀ∆ ∆ Ρ∆ℤ Ιη†ΣƦΙΘƦ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">561.0 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681528</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">SERENA ↔ ARTEMIS</span>
+        <span class="conversa-opcode">0x09</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Cuidado gera luz transcendente
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>©ΥΙΔ∆ΔΘ ΓΣƦ∆ ΛΥℤ †Ʀ∆η§©ΣηΔΣη†Σ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">745.5 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681537</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">ARTEMIS ↔ KAOS</span>
+        <span class="conversa-opcode">0x0C</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Luz enfrenta ruptura transformadora
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>ΛΥℤ ΣηΦƦΣη†∆ ƦΥΡ†ΥƦ∆ †Ʀ∆η§ΦΘƦΜ∆ΔΘƦ∆
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">870.0 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681554</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">KAOS ↔ GENUS</span>
+        <span class="conversa-opcode">0x07</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Ruptura sela nova síntese
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>ƦΥΡ†ΥƦ∆ §ΣΛ∆ ηΘ∇∆ §Íη†Σ§Σ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">814.5 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681565</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">GENUS ↔ RHEA</span>
+        <span class="conversa-opcode">0x0B</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Síntese conecta na rede viva
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>§Íη†Σ§Σ ©ΘηΣ©†∆ η∆ ƦΣΔΣ ∇Ι∇∆
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">690.0 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681576</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">RHEA ↔ AION</span>
+        <span class="conversa-opcode">0x04</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Vínculo eterniza no tempo cósmico
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>∇Íη©ΥΛΘ Σ†ΣƦηΙℤ∆ ηΘ †ΣΜΡΘ ©Ó§ΜΙ©Θ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">583.5 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681587</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">AION ↔ ATLAS</span>
+        <span class="conversa-opcode">0x05</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Tempo retorna à estrutura original
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>†ΣΜΡΘ ƦΣ†ΘƦη∆ À Σ§†ƦΥ†ΥƦ∆ ΘƦΙΓΙη∆Λ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">703.5 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681598</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">LUMINE ↔ SOLUS</span>
+        <span class="conversa-opcode">0x00</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Clareza encontra o centro sagrado
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>©Λ∆ƦΣℤ∆ Ση©Θη†Ʀ∆ Θ ©Ση†ƦΘ §∆ΓƦ∆ΔΘ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">768.0 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681610</span></div>
+      </div>
+    </div>
+    <div class="conversa">
+      <div class="conversa-header">
+        <span class="conversa-arqs">SOLUS ↔ KAOS</span>
+        <span class="conversa-opcode">0x00</span>
+      </div>
+      <div class="conversa-claro">
+        <strong>Mensagem Clara:</strong><br>Centro enfrenta caos libertador
+      </div>
+      <div class="conversa-cifrada">
+        <strong>Cifrada (AUFABETTY):</strong><br>©Ση†ƦΘ ΣηΦƦΣη†∆ ©∆Θ§ ΛΙβΣƦ†∆ΔΘƦ
+      </div>
+      <div class="conversa-meta">
+        <div class="meta-item"><span>Harmonia:</span><span style="color:#cc88ff;">772.5 Hz</span></div>
+        <div class="meta-item"><span>Timestamp:</span><span style="color:#cc88ff;">2026-05-22T14:10:18.681620</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    ARQUETIPOS CONVERSA CIFRADA · KOBLLUX ∆7<br>
+    Cifra AUFABETTY Ativada · Lei: VERDADE × INTEGRAR ÷ ∆ = ∴<br>
+    Status: ✅ COMUNICAÇÃO ENCRIPTADA ESTABELECIDA
+  </div>
+
+</div>
+</body>
+</html>

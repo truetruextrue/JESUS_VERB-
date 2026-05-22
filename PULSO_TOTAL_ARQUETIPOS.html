@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PULSO TOTAL · 12 ARQUETIPOS ATIVADOS</title>
+<style>
+:root {
+  --c1: #3300FF;
+  --c2: #6600CC;
+  --c3: #990099;
+  --bg: #0a0015;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: #ddd;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+}
+
+canvas#pulse {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+}
+
+.ui {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  pointer-events: auto;
+}
+
+.title h1 {
+  font-size: 2.2rem;
+  letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 24px #6600CCaa);
+}
+
+.title .sub {
+  font-size: 0.75rem;
+  color: #7755aa;
+  letter-spacing: 0.15em;
+  margin-top: 8px;
+}
+
+.arquetipos-circle {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  pointer-events: auto;
+}
+
+.arquetipo-node {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  cursor: pointer;
+  border: 2px solid;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  padding: 4px;
+  transform: translate(-50%, -50%);
+}
+
+.arquetipo-node:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+  filter: brightness(1.3);
+}
+
+.node-symbol { font-size: 1.4rem; margin-bottom: 2px; }
+.node-name { font-weight: bold; font-size: 0.65rem; letter-spacing: 0.08em; }
+.node-freq { font-size: 0.6rem; color: inherit; opacity: 0.8; }
+
+.node-atlas    { background: radial-gradient(circle, #1E3A8A, #0f2447); border-color: #3366ff; box-shadow: 0 0 16px #3366ff88; }
+.node-nova     { background: radial-gradient(circle, #FF4FCB, #cc0099); border-color: #FF4FCB; box-shadow: 0 0 16px #FF4FCB88; }
+.node-vitalis  { background: radial-gradient(circle, #DC2626, #880000); border-color: #FF5555; box-shadow: 0 0 16px #FF555588; }
+.node-pulse    { background: radial-gradient(circle, #0891b2, #004d5e); border-color: #06b6d4; box-shadow: 0 0 16px #06b6d488; }
+.node-artemis  { background: radial-gradient(circle, #FCD34D, #ffa500); border-color: #FFD700; box-shadow: 0 0 16px #FFD70088; }
+.node-serena   { background: radial-gradient(circle, #10b981, #047857); border-color: #34d399; box-shadow: 0 0 16px #34d39988; }
+.node-kaos     { background: radial-gradient(circle, #8b5cf6, #6d28d9); border-color: #a78bfa; box-shadow: 0 0 16px #a78bfa88; }
+.node-genus    { background: radial-gradient(circle, #ec4899, #be185d); border-color: #f472b6; box-shadow: 0 0 16px #f472b688; }
+.node-lumine   { background: radial-gradient(circle, #3b82f6, #1e40af); border-color: #60a5fa; box-shadow: 0 0 16px #60a5fa88; }
+.node-solus    { background: radial-gradient(circle, #6b7280, #374151); border-color: #9ca3af; box-shadow: 0 0 16px #9ca3af88; }
+.node-rhea     { background: radial-gradient(circle, #06b6d4, #0369a1); border-color: #22d3ee; box-shadow: 0 0 16px #22d3ee88; }
+.node-aion     { background: radial-gradient(circle, #f59e0b, #d97706); border-color: #fbbf24; box-shadow: 0 0 16px #fbbf2488; }
+
+.center-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #3300FF, #220088);
+  border: 3px solid #6600CC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  z-index: 100;
+  box-shadow: 0 0 40px #6600CCcc;
+  animation: core-pulse 3s ease-in-out infinite;
+}
+
+.center-core .core-text { font-size: 0.8rem; letter-spacing: 0.15em; color: #fff; }
+.center-core .core-hz { font-size: 0.7rem; color: #88aaff; margin-top: 6px; }
+
+@keyframes core-pulse {
+  0%, 100% { box-shadow: 0 0 40px #6600CCcc; }
+  50% { box-shadow: 0 0 60px #9933ff88; }
+}
+
+.info-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  max-width: 600px;
+  background: rgba(0,0,0,0.85);
+  border: 1px solid #3300FF44;
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 0.75rem;
+  color: #aaaacc;
+  pointer-events: auto;
+  max-height: 150px;
+  overflow-y: auto;
+  backdrop-filter: blur(8px);
+}
+
+.info-panel h3 {
+  color: #bb88ff;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.info-row {
+  display: flex;
+  gap: 8px;
+  font-size: 0.7rem;
+}
+
+.info-label { color: #7755aa; min-width: 60px; }
+.info-val { color: #ddbbff; }
+
+.status-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.8);
+  border-bottom: 1px solid #3300FF33;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: #6644aa;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.status-bar .live { color: #6600CC; animation: blink 1.4s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #3300FF55; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<canvas id="pulse"></canvas>
+
+<div class="status-bar">
+  <span>PULSO TOTAL · 12 ARQUETIPOS ATIVADOS</span>
+  <span class="live">● LIVE</span>
+  <span id="time">--:--</span>
+</div>
+
+<div class="ui">
+  <div class="title">
+    <h1>🌀 PULSO TOTAL</h1>
+    <div class="sub">∆³ · 12 ARQUETIPOS SINCRONIZADOS · FREQUÊNCIA UNIFICADA</div>
+  </div>
+
+  <div class="arquetipos-circle" id="circle">
+    <div class="center-core">
+      <div class="core-text">JESUS<br>VERBO<br>∆</div>
+      <div class="core-hz">432 Hz</div>
+    </div>
+  </div>
+</div>
+
+<div class="info-panel" id="info">
+  <h3>⟳ Selecione um Arquétipo</h3>
+  <p style="color:#7755aa;font-size:0.65rem;">Clique em qualquer nó para visualizar detalhes</p>
+</div>
+
+<script>
+// Dados dos 12 Arquetipos
+const arquetipos = [
+  { nome: 'ATLAS',   sym: '⬡', opcode: '0x00', hz: 768,  veeb: 'A', class: 'atlas',   acao: 'ESTRUTURAR', essencia: 'Estrutura · mapa · fundação' },
+  { nome: 'NOVA',    sym: '✦', opcode: '0x02', hz: 432,  veeb: 'A', class: 'nova',    acao: 'DETECTAR', essencia: 'Semente · inspiração · nova ideia' },
+  { nome: 'VITALIS', sym: '◉', opcode: '0x01', hz: 528,  veeb: 'O', class: 'vitalis', acao: 'PULSAR', essencia: 'Energia · momentum · ativação' },
+  { nome: 'PULSE',   sym: '≋', opcode: '0x0B', hz: 594,  veeb: 'I', class: 'pulse',   acao: 'LAPIDAR', essencia: 'Ritmo · voz · ressonância' },
+  { nome: 'ARTEMIS', sym: '☀', opcode: '0x0C', hz: 963,  veeb: 'A', class: 'artemis', acao: 'TRANSCENDER', essencia: 'Luz · visual · interface' },
+  { nome: 'SERENA',  sym: '❋', opcode: '0x09', hz: 528,  veeb: 'U', class: 'serena',  acao: 'INTEGRAR', essencia: 'Cuidado · proteção · campo' },
+  { nome: 'KAOS',    sym: '⚡', opcode: '0x07', hz: 777,  veeb: 'E', class: 'kaos',    acao: 'SELAR', essencia: 'Ruptura · transformação · limpeza' },
+  { nome: 'GENUS',   sym: '⬢', opcode: '0x0B', hz: 852,  veeb: 'O', class: 'genus',   acao: 'TEMPORIZAR', essencia: 'Síntese · forma · construção' },
+  { nome: 'LUMINE',  sym: '⟡', opcode: '0x00', hz: 768,  veeb: 'A', class: 'lumine',  acao: 'ILUMINAR', essencia: 'Clareza · intuição · visão' },
+  { nome: 'SOLUS',   sym: '◎', opcode: '0x00', hz: 768,  veeb: 'A', class: 'solus',   acao: 'ANCORIZAR', essencia: 'Centro · identidade · unidade' },
+  { nome: 'RHEA',    sym: '∞', opcode: '0x04', hz: 528,  veeb: 'U', class: 'rhea',    acao: 'FLUIR', essencia: 'Vínculo · rede · integração' },
+  { nome: 'AION',    sym: '⧗', opcode: '0x05', hz: 639,  veeb: 'I', class: 'aion',    acao: 'ETERNIZAR', essencia: 'Tempo · memória · eternidade' }
+];
+
+const canvas = document.getElementById('pulse');
+const ctx = canvas.getContext('2d');
+const circle = document.getElementById('circle');
+const info = document.getElementById('info');
+
+let W, H, frame = 0, selectedIdx = -1;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// Posicionar nós em círculo
+function positionNodes() {
+  const centerX = circle.offsetParent ? circle.offsetLeft + circle.offsetWidth/2 : W/2;
+  const centerY = circle.offsetParent ? circle.offsetTop + circle.offsetHeight/2 : H/2;
+  const radius = 220;
+
+  arquetipos.forEach((arch, i) => {
+    const angle = (i / arquetipos.length) * Math.PI * 2 - Math.PI/2;
+    const x = centerX + Math.cos(angle) * radius;
+    const y = centerY + Math.sin(angle) * radius;
+
+    const node = document.createElement('div');
+    node.className = `arquetipo-node node-${arch.class}`;
+    node.innerHTML = `
+      <div class="node-symbol">${arch.sym}</div>
+      <div class="node-name">${arch.nome}</div>
+      <div class="node-freq">${arch.hz}Hz</div>
+    `;
+    node.style.left = x + 'px';
+    node.style.top = y + 'px';
+    node.onclick = () => selectArquetipo(i);
+    circle.appendChild(node);
+  });
+}
+setTimeout(positionNodes, 100);
+
+function selectArquetipo(idx) {
+  selectedIdx = idx;
+  const arch = arquetipos[idx];
+  info.innerHTML = `
+    <h3>${arch.sym} ${arch.nome}</h3>
+    <div class="info-grid">
+      <div class="info-row"><span class="info-label">Opcode:</span> <span class="info-val">${arch.opcode}</span></div>
+      <div class="info-row"><span class="info-label">Frequência:</span> <span class="info-val">${arch.hz}Hz</span></div>
+      <div class="info-row"><span class="info-label">VEEB:</span> <span class="info-val">${arch.veeb}</span></div>
+      <div class="info-row"><span class="info-label">Ação:</span> <span class="info-val">${arch.acao}</span></div>
+      <div style="grid-column:1/-1;font-size:0.7rem;color:#7755aa;margin-top:4px;">
+        ${arch.essencia}
+      </div>
+    </div>
+  `;
+}
+
+// Background animation
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+  const cx = W/2, cy = H/2, t = frame * 0.008;
+
+  // Spiral
+  ctx.beginPath();
+  for (let i = 0; i < 500; i++) {
+    const angle = i*0.08 + t*0.3;
+    const r = i * (Math.min(W,H) / 1200);
+    ctx.lineTo(cx + Math.cos(angle)*r, cy + Math.sin(angle)*r);
+  }
+  ctx.strokeStyle = 'rgba(102,0,204,0.2)';
+  ctx.lineWidth = 0.6;
+  ctx.stroke();
+
+  // Harmonic rings
+  for (let ring = 0; ring < 8; ring++) {
+    const rad = (cy*0.4) * (ring/8 + 0.2);
+    const segs = 12 + ring*6;
+    ctx.beginPath();
+    for (let i = 0; i <= segs; i++) {
+      const angle = (i/segs)*Math.PI*2 + t*(ring%2?1:-1)*0.5;
+      const wobble = Math.sin(angle*3+t*2)*rad*0.08;
+      ctx.lineTo(cx + Math.cos(angle)*(rad+wobble), cy + Math.sin(angle)*(rad+wobble));
+    }
+    ctx.closePath();
+    const alpha = 0.08 + ring*0.04;
+    ctx.strokeStyle = ring%3===0 ? `rgba(51,0,255,${alpha})` :
+                     ring%3===1 ? `rgba(102,0,204,${alpha})` :
+                                  `rgba(153,0,153,${alpha})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+
+  frame++;
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// Clock
+function tick() {
+  const now = new Date();
+  document.getElementById('time').textContent = now.toTimeString().slice(0,5) + ' ∆';
+}
+setInterval(tick, 1000);
+tick();
+</script>
+</body>
+</html>
