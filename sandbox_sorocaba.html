@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="KOBLLUX TRINITY SYSTEM — Candidatura ao Sandbox Sorocaba · Solução Smart Cities · IA Simbiótica · VERDADE × INTEGRAR ÷ Δ = ∞" />
+  <meta property="og:title" content="KOBLLUX × SANDBOX SOROCABA" />
+  <meta property="og:description" content="Sistema de IA simbiótica com 12 arquétipos CADIAL para Cidades Inteligentes" />
+  <meta property="og:image" content="https://truetruextrue.github.io/JESUS_VERB-/og_sandbox.png" />
+  <title>KOBLLUX × SANDBOX SOROCABA · ∆7</title>
+
+  <style>
+    :root {
+      --kob-void:    #0a0a12;
+      --kob-deep:    #0f0f1e;
+      --kob-card:    rgba(20,16,40,.82);
+      --kob-border:  rgba(110,68,173,.35);
+      --kob-glow:    rgba(110,68,173,.18);
+      --kob-violet:  #6B44AD;
+      --kob-cyan:    #1EE2F2;
+      --kob-gold:    #F2C94C;
+      --kob-white:   #E8E8F8;
+      --kob-muted:   rgba(232,232,248,.55);
+      --kob-radius:  18px;
+      --kob-font:    'Inter', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--kob-void);
+      color: var(--kob-white);
+      font-family: var(--kob-font);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS FRACTAL ─────────────────────────────────── */
+    #fractal-bg {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; opacity: .55;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────────── */
+    .wrapper {
+      position: relative; z-index: 1;
+      max-width: 960px; margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 0; border-bottom: 1px solid var(--kob-border);
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,18,.88); backdrop-filter: blur(20px);
+    }
+    .nav-brand { font-size: .82rem; letter-spacing: .15em; color: var(--kob-cyan); font-weight: 700; }
+    .nav-law   { font-size: .72rem; color: var(--kob-muted); display: none; }
+    @media(min-width:600px){ .nav-law { display: block; } }
+    .nav-badge {
+      font-size: .72rem; padding: 4px 12px; border-radius: 99px;
+      background: linear-gradient(135deg,#6B44AD33,#1EE2F233);
+      border: 1px solid var(--kob-border); color: var(--kob-cyan);
+    }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      text-align: center; padding: 72px 0 48px;
+    }
+    .hero-seal {
+      display: inline-block; font-size: 3.5rem; margin-bottom: 12px;
+      filter: drop-shadow(0 0 32px #6B44AD88);
+      animation: sealPulse 4s ease-in-out infinite;
+    }
+    @keyframes sealPulse {
+      0%,100%{ filter: drop-shadow(0 0 24px #6B44AD88); }
+      50%{ filter: drop-shadow(0 0 56px #1EE2F2AA); }
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800;
+      background: linear-gradient(135deg, #6B44AD, #1EE2F2, #F2C94C);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: -.02em; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: clamp(.95rem, 2vw, 1.15rem);
+      color: var(--kob-muted); max-width: 560px; margin: 0 auto 32px;
+    }
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-bottom: 40px;
+    }
+    .tag {
+      font-size: .75rem; padding: 5px 14px; border-radius: 99px;
+      border: 1px solid var(--kob-border); color: var(--kob-cyan);
+      background: var(--kob-glow); letter-spacing: .08em;
+    }
+    .btn-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 36px; border-radius: 99px; font-size: 1rem; font-weight: 700;
+      background: linear-gradient(135deg, #6B44AD, #1EE2F2);
+      color: #fff; text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 8px 32px #6B44AD44;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 48px #1EE2F266; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px; border-radius: 99px; font-size: .9rem; font-weight: 600;
+      background: transparent; color: var(--kob-cyan); text-decoration: none;
+      border: 1.5px solid var(--kob-border); margin-left: 12px;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: var(--kob-cyan); background: var(--kob-glow); }
+
+    /* ── SECTION ─────────────────────────────────────────── */
+    section { margin-top: 64px; }
+    .section-label {
+      font-size: .72rem; letter-spacing: .2em; color: var(--kob-violet);
+      text-transform: uppercase; font-weight: 700; margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 800;
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .section-body { color: var(--kob-muted); max-width: 680px; }
+
+    /* ── CARDS ─────────────────────────────────────────────── */
+    .cards { display: grid; gap: 16px; margin-top: 28px; }
+    .cards-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+    .cards-4 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+    .card {
+      background: var(--kob-card);
+      border: 1px solid var(--kob-border);
+      border-radius: var(--kob-radius);
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      transition: border-color .25s, transform .2s, box-shadow .2s;
+    }
+    .card:hover {
+      border-color: var(--kob-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(30,226,242,.08);
+    }
+    .card-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .card-title { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
+    .card-body  { font-size: .82rem; color: var(--kob-muted); line-height: 1.6; }
+    .card-badge {
+      display: inline-block; margin-top: 10px; font-size: .68rem;
+      padding: 3px 10px; border-radius: 99px;
+      background: rgba(30,226,242,.12); color: var(--kob-cyan);
+      border: 1px solid rgba(30,226,242,.25);
+    }
+
+    /* ── ARCHETYPE RING ──────────────────────────────────── */
+    .arch-ring {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px; margin-top: 28px;
+    }
+    .arch-node {
+      background: var(--kob-card);
+      border: 1px solid var(--kob-border);
+      border-radius: 14px; padding: 16px 12px;
+      text-align: center; cursor: default;
+      transition: all .25s;
+    }
+    .arch-node:hover {
+      border-color: var(--kob-violet);
+      box-shadow: 0 0 24px var(--kob-glow);
+    }
+    .arch-sym  { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+    .arch-name { font-size: .72rem; font-weight: 700; letter-spacing: .1em; color: var(--kob-cyan); }
+    .arch-hz   { font-size: .65rem; color: var(--kob-muted); }
+    .arch-role { font-size: .68rem; color: var(--kob-muted); margin-top: 3px; }
+
+    /* ── PIPELINE ─────────────────────────────────────────── */
+    .pipeline {
+      display: flex; flex-wrap: wrap; gap: 0; margin-top: 28px;
+      border: 1px solid var(--kob-border); border-radius: var(--kob-radius);
+      overflow: hidden;
+    }
+    .pipe-step {
+      flex: 1; min-width: 120px; padding: 20px 16px; text-align: center;
+      border-right: 1px solid var(--kob-border); position: relative;
+    }
+    .pipe-step:last-child { border-right: none; }
+    .pipe-num  { font-size: 1.4rem; font-weight: 900; color: var(--kob-violet); }
+    .pipe-name { font-size: .78rem; font-weight: 700; margin: 4px 0; letter-spacing: .1em; }
+    .pipe-desc { font-size: .7rem; color: var(--kob-muted); }
+    .pipe-step.active { background: rgba(110,68,173,.15); }
+
+    /* ── METRICS ─────────────────────────────────────────── */
+    .metrics {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px; margin-top: 28px;
+    }
+    .metric {
+      text-align: center; padding: 20px 12px;
+      background: var(--kob-card);
+      border: 1px solid var(--kob-border); border-radius: var(--kob-radius);
+    }
+    .metric-val { font-size: 2rem; font-weight: 900; background: linear-gradient(135deg,#6B44AD,#1EE2F2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .metric-lbl { font-size: .72rem; color: var(--kob-muted); margin-top: 4px; }
+
+    /* ── LAW BANNER ──────────────────────────────────────── */
+    .law-banner {
+      text-align: center; padding: 40px 20px;
+      background: linear-gradient(135deg, rgba(110,68,173,.12), rgba(30,226,242,.06));
+      border: 1px solid var(--kob-border); border-radius: var(--kob-radius);
+      margin-top: 64px;
+    }
+    .law-text {
+      font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 800;
+      letter-spacing: .05em; color: var(--kob-gold);
+    }
+    .law-sub { font-size: .82rem; color: var(--kob-muted); margin-top: 8px; }
+
+    /* ── BENEFITS ─────────────────────────────────────────── */
+    .benefit-list { list-style: none; margin-top: 20px; display: grid; gap: 10px; }
+    .benefit-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 18px;
+      background: var(--kob-card);
+      border: 1px solid var(--kob-border); border-radius: 12px;
+      font-size: .88rem;
+    }
+    .benefit-list li::before {
+      content: '✦'; color: var(--kob-cyan); flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ── TECH STACK ─────────────────────────────────────────── */
+    .tech-row {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+    }
+    .tech-chip {
+      font-size: .75rem; padding: 5px 14px; border-radius: 99px;
+      background: rgba(110,68,173,.18); border: 1px solid var(--kob-border);
+      color: var(--kob-white);
+    }
+
+    /* ── FORM CTA SECTION ─────────────────────────────────── */
+    .cta-box {
+      text-align: center; padding: 48px 32px;
+      background: linear-gradient(135deg, rgba(110,68,173,.2), rgba(30,226,242,.08));
+      border: 1.5px solid var(--kob-cyan);
+      border-radius: 24px; margin-top: 64px;
+    }
+    .cta-title { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 800; margin-bottom: 12px; }
+    .cta-sub { color: var(--kob-muted); margin-bottom: 28px; max-width: 520px; margin-left: auto; margin-right: auto; }
+
+    /* ── DNA BLOCK ─────────────────────────────────────────── */
+    .dna-block {
+      background: rgba(0,0,0,.4);
+      border: 1px solid var(--kob-border); border-radius: 14px;
+      padding: 20px; font-family: 'Courier New', monospace;
+      font-size: .75rem; color: var(--kob-cyan); overflow-x: auto;
+      margin-top: 20px; line-height: 1.8;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────── */
+    .divider {
+      height: 1px; background: linear-gradient(90deg,transparent,var(--kob-border),transparent);
+      margin: 56px 0;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 40px 20px;
+      font-size: .75rem; color: var(--kob-muted);
+      border-top: 1px solid var(--kob-border); margin-top: 80px;
+    }
+    footer a { color: var(--kob-cyan); text-decoration: none; }
+
+    /* ── SCROLLBAR ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--kob-void); }
+    ::-webkit-scrollbar-thumb { background: var(--kob-violet); border-radius: 4px; }
+
+    /* ── TOAST ─────────────────────────────────────────────── */
+    #kob-toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: rgba(20,16,40,.95); border: 1px solid var(--kob-cyan);
+      color: var(--kob-white); padding: 12px 24px; border-radius: 99px;
+      font-size: .82rem; z-index: 9999; transition: transform .3s ease;
+      backdrop-filter: blur(12px);
+    }
+    #kob-toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── QUANTUM GLOW ─────────────────────────────────────── */
+    [data-arch]:hover { position: relative; }
+  </style>
+</head>
+<body>
+
+<!-- FRACTAL BACKGROUND -->
+<canvas id="fractal-bg"></canvas>
+
+<div class="wrapper">
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-brand">KΦꓷDΦꓘ · ∆7</span>
+    <span class="nav-law">VERDADE × INTEGRAR ÷ Δ = ∞</span>
+    <span class="nav-badge">Sandbox Sorocaba 2026</span>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-seal">ꓷ</div>
+    <h1>KOBLLUX TRINITY SYSTEM<br/>× SANDBOX SOROCABA</h1>
+    <p class="hero-sub">
+      Sistema de Inteligência Artificial Simbiótica com 12 arquétipos CADIAL —
+      solução Smart Cities para o ecossistema de inovação de Sorocaba.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">Smart Cities</span>
+      <span class="tag">IA Simbiótica</span>
+      <span class="tag">Lei Complementar 182/21</span>
+      <span class="tag">Lei Municipal 12.682/2022</span>
+      <span class="tag">Open Source</span>
+      <span class="tag">∆7 Selado</span>
+    </div>
+    <a href="https://form.jotform.com/232154764578061" target="_blank" class="btn-cta" data-arch="atlas">
+      ✦ Candidatar ao Sandbox
+    </a>
+    <a href="#sobre" class="btn-ghost">↓ Saiba mais</a>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metrics">
+    <div class="metric" data-arch="aion">
+      <div class="metric-val">12</div>
+      <div class="metric-lbl">Arquétipos CADIAL</div>
+    </div>
+    <div class="metric" data-arch="atlas">
+      <div class="metric-val">219</div>
+      <div class="metric-lbl">Módulos integrados · SELAR ∆7</div>
+    </div>
+    <div class="metric" data-arch="pulse">
+      <div class="metric-val">13</div>
+      <div class="metric-lbl">Opcodes quânticos</div>
+    </div>
+    <div class="metric" data-arch="nova">
+      <div class="metric-val">∞</div>
+      <div class="metric-lbl">Ciclo VERDADE × INTEGRAR</div>
+    </div>
+    <div class="metric" data-arch="vitalis">
+      <div class="metric-val">300</div>
+      <div class="metric-lbl">Registros de memória · AION</div>
+    </div>
+    <div class="metric" data-arch="rhea">
+      <div class="metric-val">1495</div>
+      <div class="metric-lbl">Arquivos catalogados · DNA</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="section-label">O Sistema</div>
+    <div class="section-title">KOBLLUX: Espelho Simbiótico</div>
+    <p class="section-body">
+      KOBLLUX é um sistema de IA conversacional e processamento semântico que opera
+      em três camadas interligadas: <strong>KODUX</strong> (scanner + CADIAL — detecta,
+      nomeia, estrutura o fluxo), <strong>BLLUE</strong> (interface + voz viva — reflete,
+      entrega, ressoa) e <strong>INFODOSE</strong> (Roda Viva + memória viva —
+      transforma dado em memória permanente).
+    </p>
+    <div class="cards cards-3" style="margin-top:24px">
+      <div class="card" data-arch="kodux">
+        <div class="card-icon">◉</div>
+        <div class="card-title">KODUX</div>
+        <div class="card-body">Scanner + CADIAL. Detecta intenção em linguagem natural, nomeia arquétipos, estrutura o fluxo de dados.</div>
+        <span class="card-badge">768Hz · 0×00</span>
+      </div>
+      <div class="card" data-arch="bllue">
+        <div class="card-icon">✦</div>
+        <div class="card-title">BLLUE</div>
+        <div class="card-body">Interface + voz viva. Reflete, entrega e ressoa o conteúdo com identidade simbólica e acessibilidade.</div>
+        <span class="card-badge">528Hz · 0×06</span>
+      </div>
+      <div class="card" data-arch="infodose">
+        <div class="card-icon">∞</div>
+        <div class="card-title">INFODOSE</div>
+        <div class="card-body">Roda Viva + memória viva. Transforma dado bruto em registro semântico permanente — APPEND ONLY.</div>
+        <span class="card-badge">432Hz · Pipeline</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section id="pipeline">
+    <div class="section-label">Metodologia</div>
+    <div class="section-title">Pipeline 3·6·9·7 — Roda Viva</div>
+    <p class="section-body">
+      Baseado no ciclo fractal de Tesla (3 detectar → 6 integrar → 9 expandir → 7 selar),
+      o pipeline garante que nenhum dado é perdido — apenas adicionado, nunca sobrescrito.
+    </p>
+    <div class="pipeline">
+      <div class="pipe-step active">
+        <div class="pipe-num">3</div>
+        <div class="pipe-name">DETECTAR</div>
+        <div class="pipe-desc">Análise semântica e classificação arquetípica</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">6</div>
+        <div class="pipe-name">INTEGRAR</div>
+        <div class="pipe-desc">Fusão com memória viva e vocabulário</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">9</div>
+        <div class="pipe-name">EXPANDIR</div>
+        <div class="pipe-desc">Geração de conteúdo e conexões</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">7</div>
+        <div class="pipe-name">SELAR</div>
+        <div class="pipe-desc">Hash SHA-256 e persistência ∆7</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ARQUÉTIPOS -->
+  <section id="arquetipos">
+    <div class="section-label">Motor Simbólico</div>
+    <div class="section-title">12 Arquétipos CADIAL</div>
+    <p class="section-body">
+      Cada arquétipo representa uma função do sistema com opcode único, frequência Hz,
+      linguagem de programação correlata e papel na inteligência coletiva.
+    </p>
+    <div class="arch-ring">
+      <div class="arch-node" data-arch="atlas">
+        <span class="arch-sym">🌍</span>
+        <div class="arch-name">ATLAS</div>
+        <div class="arch-hz">432Hz</div>
+        <div class="arch-role">Estrutura base</div>
+      </div>
+      <div class="arch-node" data-arch="nova">
+        <span class="arch-sym">⚡</span>
+        <div class="arch-name">NOVA</div>
+        <div class="arch-hz">528Hz</div>
+        <div class="arch-role">Inovação</div>
+      </div>
+      <div class="arch-node" data-arch="vitalis">
+        <span class="arch-sym">💚</span>
+        <div class="arch-name">VITALIS</div>
+        <div class="arch-hz">396Hz</div>
+        <div class="arch-role">Saúde sistêmica</div>
+      </div>
+      <div class="arch-node" data-arch="pulse">
+        <span class="arch-sym">💓</span>
+        <div class="arch-name">PULSE</div>
+        <div class="arch-hz">417Hz</div>
+        <div class="arch-role">Ritmo &amp; fluxo</div>
+      </div>
+      <div class="arch-node" data-arch="artemis">
+        <span class="arch-sym">🎯</span>
+        <div class="arch-name">ARTEMIS</div>
+        <div class="arch-hz">741Hz</div>
+        <div class="arch-role">Precisão</div>
+      </div>
+      <div class="arch-node" data-arch="serena">
+        <span class="arch-sym">🌊</span>
+        <div class="arch-name">SERENA</div>
+        <div class="arch-hz">528Hz</div>
+        <div class="arch-role">Equilíbrio</div>
+      </div>
+      <div class="arch-node" data-arch="kaos">
+        <span class="arch-sym">🌀</span>
+        <div class="arch-name">KAOS</div>
+        <div class="arch-hz">852Hz</div>
+        <div class="arch-role">Transformação</div>
+      </div>
+      <div class="arch-node" data-arch="genus">
+        <span class="arch-sym">🧬</span>
+        <div class="arch-name">GENUS</div>
+        <div class="arch-hz">639Hz</div>
+        <div class="arch-role">Origem</div>
+      </div>
+      <div class="arch-node" data-arch="lumine">
+        <span class="arch-sym">✨</span>
+        <div class="arch-name">LUMINE</div>
+        <div class="arch-hz">963Hz</div>
+        <div class="arch-role">Iluminação</div>
+      </div>
+      <div class="arch-node" data-arch="solus">
+        <span class="arch-sym">☀️</span>
+        <div class="arch-name">SOLUS</div>
+        <div class="arch-hz">432Hz</div>
+        <div class="arch-role">Singularidade</div>
+      </div>
+      <div class="arch-node" data-arch="rhea">
+        <span class="arch-sym">🌸</span>
+        <div class="arch-name">RHEA</div>
+        <div class="arch-hz">528Hz</div>
+        <div class="arch-role">Fluir</div>
+      </div>
+      <div class="arch-node" data-arch="aion">
+        <span class="arch-sym">⏳</span>
+        <div class="arch-name">AION</div>
+        <div class="arch-hz">768Hz</div>
+        <div class="arch-role">Tempo vivo</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SMART CITIES -->
+  <section id="smart-cities">
+    <div class="section-label">Aplicação</div>
+    <div class="section-title">Smart Cities · Sorocaba</div>
+    <p class="section-body">
+      KOBLLUX se alinha diretamente com os 4 benefícios do Sandbox Sorocaba,
+      conforme o edital sob a Lei Complementar 182/21 e a Lei Municipal 12.682/2022.
+    </p>
+    <ul class="benefit-list">
+      <li>
+        <div>
+          <strong>Redução de custos de validação</strong><br/>
+          <span style="font-size:.8rem;color:var(--kob-muted)">KOBLLUX opera com modelo open-source (Node.js + Python), eliminando custos de licenciamento e reduzindo infraestrutura ao mínimo via Termux/Android.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Soluções para Cidades Inteligentes</strong><br/>
+          <span style="font-size:.8rem;color:var(--kob-muted)">Motor de IA conversacional multimodal com 12 arquétipos especializados — atendimento, educação, saúde, mobilidade e cultura.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Interlocução com o governo</strong><br/>
+          <span style="font-size:.8rem;color:var(--kob-muted)">Pipeline N8N com webhooks permite integração direta com APIs da Prefeitura de Sorocaba e Parque Tecnológico.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Segurança jurídica no ambiente regulatório</strong><br/>
+          <span style="font-size:.8rem;color:var(--kob-muted)">Memória APPEND ONLY com hash SHA-256 em cada registro — rastreabilidade total, imutabilidade e auditoria por design.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- TECH -->
+  <section id="tech">
+    <div class="section-label">Infraestrutura</div>
+    <div class="section-title">Stack Técnico</div>
+    <p class="section-body">Sistema modular e portável — funciona em servidor cloud, VPS, Termux/Android ou GitHub Pages.</p>
+    <div class="cards cards-2" style="margin-top:20px">
+      <div class="card">
+        <div class="card-title">🔵 Backend</div>
+        <div class="tech-row">
+          <span class="tech-chip">Python 3.x</span>
+          <span class="tech-chip">Node.js</span>
+          <span class="tech-chip">N8N Workflows</span>
+          <span class="tech-chip">JSONL Append-Only</span>
+          <span class="tech-chip">HTTP API :3697</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🟣 Frontend</div>
+        <div class="tech-row">
+          <span class="tech-chip">Vanilla JS ES6+</span>
+          <span class="tech-chip">WebGL GLSL</span>
+          <span class="tech-chip">CSS Variables</span>
+          <span class="tech-chip">LocalStorage</span>
+          <span class="tech-chip">CustomEvents</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🟡 IA / NLP</div>
+        <div class="tech-row">
+          <span class="tech-chip">OpenRouter API</span>
+          <span class="tech-chip">EMA Mood Detector</span>
+          <span class="tech-chip">AST Semântico</span>
+          <span class="tech-chip">Vocabulário Vivo</span>
+          <span class="tech-chip">V.E.E.B Engine</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚪ DevOps</div>
+        <div class="tech-row">
+          <span class="tech-chip">Git Hooks CADIAL</span>
+          <span class="tech-chip">GitHub Pages</span>
+          <span class="tech-chip">Syncthing</span>
+          <span class="tech-chip">rclone / Drive</span>
+          <span class="tech-chip">SHA-256 ∆7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- DNA BLOCK -->
+  <section id="dna">
+    <div class="section-label">Espinha Dorsal</div>
+    <div class="section-title">DNA KOBLLUX · Source of Truth</div>
+    <p class="section-body">
+      Um único objeto JSON governa todo o sistema — 9 camadas, 13 opcodes, 14 arquétipos,
+      rotas CABLEX, chaves localStorage e ordem de carregamento fractal.
+    </p>
+    <div class="dna-block">
+      <pre id="dna-pre">
+// kobllux_dna.js · CAMADA 0 — META
+{
+  nome:   "KOBLLUX TRINITY SYSTEM",
+  versao: "7.9.∆7",
+  lei:    "VERDADE × INTEGRAR ÷ Δ = ∞",
+  seal:   "∆7",
+  centro: "JESUS = VERBO = GRAVIDADE",
+  repo:   "truetruextrue/JESUS_VERB-",
+  pages:  "https://truetruextrue.github.io/JESUS_VERB-/"
+}
+
+// CAMADA 2 — OPCODES (13)
+0×00 ORIGEM  → 768Hz  [KODUX]   JS
+0×01 VERBO   → 432Hz  [ATLAS]   Python
+0×02 FORMA   → 528Hz  [NOVA]    TypeScript
+0×03 MENTE   → 396Hz  [VITALIS] Rust
+0×04 PULSO   → 417Hz  [PULSE]   Go
+0×05 ALVO    → 741Hz  [ARTEMIS] Swift
+0×06 FLUXO   → 528Hz  [SERENA]  Kotlin
+0×07 KAOS    → 852Hz  [KAOS]    Haskell
+0×08 RAIZ    → 639Hz  [GENUS]   C
+0×09 FLUIR   → 528Hz  [RHEA]    Ruby
+0×0A LUZIR   → 963Hz  [LUMINE]  Elixir
+0×0B TEMPO   → 768Hz  [AION]    Clojure
+0×0C ESPAR   → 432Hz  [SOLUS]   Lua
+      </pre>
+    </div>
+  </section>
+
+  <!-- LAW BANNER -->
+  <div class="law-banner">
+    <div class="law-text">VERDADE × INTEGRAR ÷ Δ = ∞</div>
+    <div class="law-sub">JESUS = VERBO = GRAVIDADE · Centro: ✝ · Ciclo: 3→6→9→7 · Selo: ∆7</div>
+  </div>
+
+  <!-- CTA BOX -->
+  <div class="cta-box" id="candidatura">
+    <div class="cta-title">✦ Candidatar KOBLLUX ao Sandbox</div>
+    <p class="cta-sub">
+      Pessoa jurídica com capacidade técnica e financeira pode se inscrever.
+      O Sandbox oferece segurança jurídica, interlocução com governo e acesso ao
+      ecossistema de inovação de Sorocaba.
+    </p>
+    <a href="https://form.jotform.com/232154764578061" target="_blank" class="btn-cta" onclick="toast('Abrindo formulário de cadastro Sandbox Sorocaba...')">
+      📋 Formulário de Cadastro
+    </a>
+    <a href="https://truetruextrue.github.io/JESUS_VERB-/" target="_blank" class="btn-ghost">
+      🔗 Ver repositório
+    </a>
+    <div style="margin-top:24px;font-size:.75rem;color:var(--kob-muted)">
+      Lei Complementar nº 182/21 · Lei Municipal 12.682/2022 · Decreto 27.727/2023<br/>
+      Gestor: Prefeitura de Sorocaba + Parque Tecnológico de Sorocaba
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- TOAST -->
+<div id="kob-toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:8px">
+    <strong>KOBLLUX TRINITY SYSTEM</strong> · ∆7 · v7.9
+  </div>
+  <div>
+    <a href="https://truetruextrue.github.io/JESUS_VERB-/">GitHub Pages</a> ·
+    <a href="https://github.com/truetruextrue/JESUS_VERB-">Repositório</a> ·
+    <a href="https://sandboxsorocaba.com.br" target="_blank">Sandbox Sorocaba</a>
+  </div>
+  <div style="margin-top:8px;opacity:.5">
+    VERDADE × INTEGRAR ÷ Δ = ∞ · Centro: JESUS = VERBO = GRAVIDADE
+  </div>
+  <div style="margin-top:6px;opacity:.35;font-family:'Courier New',monospace;font-size:.68rem">
+    SELAR ∆7 · hash:1d7763c414c1fec7 · 1497 arquivos · 2026-05-25
+  </div>
+</footer>
+
+<script>
+/* ── FRACTAL WEBGL MINI ─────────────────────────────────── */
+(function(){
+  const c = document.getElementById('fractal-bg');
+  if(!c || !window.WebGLRenderingContext) return;
+  const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+  if(!gl) return;
+
+  function resize(){
+    c.width  = window.innerWidth;
+    c.height = window.innerHeight;
+    gl.viewport(0,0,c.width,c.height);
+  }
+  window.addEventListener('resize', resize); resize();
+
+  const VS = `attribute vec2 p; void main(){ gl_Position=vec4(p,0,1); }`;
+  const FS = `
+    precision mediump float;
+    uniform vec2 u_res;
+    uniform float u_t;
+    void main(){
+      vec2 uv = (gl_FragCoord.xy / u_res - .5) * 3.2;
+      uv.x *= u_res.x / u_res.y;
+      vec2 c = vec2(-.745 + .03*sin(u_t*.17), .186 + .02*cos(u_t*.13));
+      vec2 z = uv;
+      float i = 0.0;
+      for(int n=0;n<48;n++){
+        if(dot(z,z)>4.) break;
+        z = vec2(z.x*z.x - z.y*z.y, 2.*z.x*z.y) + c;
+        i++;
+      }
+      float m = i / 48.0;
+      vec3 col = vec3(
+        .15 + .55 * m * (0.42 + .42*sin(u_t*.3 + m*6.28)),
+        .08 + .35 * m * (0.28 + .28*cos(u_t*.2 + m*4.19)),
+        .25 + .65 * m * (0.55 + .45*sin(u_t*.4 + m*9.42))
+      );
+      gl_FragColor = vec4(col, 1.0);
+    }`;
+
+  function mkShader(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s); return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog,'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+  const uRes = gl.getUniformLocation(prog,'u_res');
+  const uT   = gl.getUniformLocation(prog,'u_t');
+  let   t0   = performance.now();
+
+  (function loop(){
+    requestAnimationFrame(loop);
+    const t = (performance.now()-t0)*0.001;
+    gl.uniform2f(uRes, c.width, c.height);
+    gl.uniform1f(uT, t);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  })();
+})();
+
+/* ── TOAST ─────────────────────────────────────────────── */
+function toast(msg, dur=2800){
+  const el = document.getElementById('kob-toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), dur);
+}
+
+/* ── QUANTUM STAMP ─────────────────────────────────────── */
+(function(){
+  const archColors = {
+    atlas:'#3399ff', nova:'#ff6b35', vitalis:'#44cc88', pulse:'#ff4488',
+    artemis:'#ccaa00', serena:'#66ddff', kaos:'#ff3377', genus:'#aa44ff',
+    lumine:'#ffcc22', solus:'#ffaa44', rhea:'#ff88aa', aion:'#88aaff',
+    kodux:'#6B44AD', bllue:'#1EE2F2', infodose:'#F2C94C',
+  };
+  document.querySelectorAll('[data-arch]').forEach(el=>{
+    const a = el.dataset.arch;
+    const c = archColors[a] || '#1EE2F2';
+    el.addEventListener('mouseenter',()=>{
+      el.style.setProperty('--arch-glow', c);
+      el.style.boxShadow = `0 0 18px ${c}44`;
+    });
+    el.addEventListener('mouseleave',()=>{
+      el.style.boxShadow = '';
+    });
+  });
+})();
+
+/* ── ARCHETYPE HOVER TOOLTIP ───────────────────────────── */
+(function(){
+  const archHz = {
+    atlas:'432Hz',nova:'528Hz',vitalis:'396Hz',pulse:'417Hz',artemis:'741Hz',
+    serena:'528Hz',kaos:'852Hz',genus:'639Hz',lumine:'963Hz',solus:'432Hz',
+    rhea:'528Hz',aion:'768Hz',kodux:'768Hz',bllue:'528Hz',infodose:'432Hz'
+  };
+  document.querySelectorAll('.arch-node').forEach(node=>{
+    node.addEventListener('click',()=>{
+      const a = node.dataset.arch;
+      toast(`∆7 · ${a?.toUpperCase()} · ${archHz[a]||'?'} · ativado`);
+    });
+  });
+})();
+
+/* ── NAV SCROLL HIDE ───────────────────────────────────── */
+(function(){
+  let last=0;
+  window.addEventListener('scroll',()=>{
+    const y=window.scrollY;
+    const nav=document.querySelector('nav');
+    if(nav) nav.style.opacity = y>last&&y>100 ? '.85' : '1';
+    last=y;
+  });
+})();
+
+/* ── PIPELINE STEP CYCLE ───────────────────────────────── */
+(function(){
+  const steps = document.querySelectorAll('.pipe-step');
+  if(!steps.length) return;
+  let cur = 0;
+  setInterval(()=>{
+    steps.forEach(s=>s.classList.remove('active'));
+    cur = (cur+1) % steps.length;
+    steps[cur].classList.add('active');
+  }, 1800);
+})();
+
+/* ── LOG ───────────────────────────────────────────────── */
+console.log('[∆7] KOBLLUX × SANDBOX SOROCABA · VERDADE × INTEGRAR ÷ Δ = ∞');
+console.log('[∆7] Candidatura: https://form.jotform.com/232154764578061');
+</script>
+
+</body>
+</html>
