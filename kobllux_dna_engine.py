@@ -234,6 +234,18 @@ SKIP_EXTS  = {".jpg",".jpeg",".png",".gif",".webp",".ico",".mp4",".mp3",
 SAFE_EXTS  = {".py",".js",".ts",".sh",".md",".txt",".json",".html",
               ".css",".jsonl",".yaml",".yml",".svg"}
 
+# ── Delta auto-load · fechar o loop de auto-modificação ───────────────────────
+# Escrito por --selar na execução anterior; integrado ao DNA no próximo boot.
+_DNA_DELTA_PATH = ROOT / "_index" / "dna_delta.json"
+if _DNA_DELTA_PATH.exists():
+    try:
+        _delta = json.loads(_DNA_DELTA_PATH.read_text(encoding="utf-8"))
+        DNA["modulos_python"].update(_delta.get("modulos_python", {}))
+        if _delta.get("seal_ts"):
+            DNA["seal_ts"] = _delta["seal_ts"]
+    except Exception:
+        pass
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # MOTOR DE CLASSIFICAÇÃO — coração do DNA Engine
@@ -593,6 +605,143 @@ def update_codex(base: Path, dry_run: bool = False):
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# SELAR · 3→6→9→7 · Fecha o loop de auto-modificação
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def selar(base: Path, dry_run: bool = False) -> dict:
+    """
+    Fecha o loop: scan → detectar novos módulos → expandir DNA → selar.
+
+    3 DETECTAR  — Varre o repositório
+    6 INTEGRAR  — Descobre .py não registrados no DNA["modulos_python"]
+    9 EXPANDIR  — Classifica e expande DNA em memória
+    7 SELAR     — Escreve dna_delta.json + memory.jsonl + ATLAS.md
+
+    Na próxima execução, o bloco de delta-load absorve o resultado
+    e o DNA engine já nasce com o conhecimento selado.
+    """
+    ts = datetime.now(timezone.utc).isoformat()
+
+    # ── 3 DETECTAR ───────────────────────────────────────────────────────────
+    print("  [SELAR·3] DETECTAR — varrendo repositório...")
+    scan_result = scan_and_catalog(base, dry_run=dry_run)
+
+    catalog: list[dict] = []
+    cat_path = base / "catalogo_media.json"
+    if cat_path.exists():
+        try:
+            catalog = json.loads(cat_path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    # ── 6 INTEGRAR ───────────────────────────────────────────────────────────
+    print("  [SELAR·6] INTEGRAR — detectando módulos novos...")
+    registered = set(DNA["modulos_python"].keys())
+    novos: dict[str, dict] = {}
+
+    for entry in catalog:
+        if entry.get("ext") != ".py":
+            continue
+        nome = entry["name"]
+        if nome in registered:
+            continue
+        path = base / entry["path"]
+        info = classify_by_dna(path)
+        novos[nome] = {
+            "fase":   info["rung"],
+            "arch":   info["arch"],
+            "desc":   f"{info['essencia']} · ∆selar",
+            "opcode": info["opcode"],
+            "hz":     info["hz"],
+        }
+
+    print(f"  [SELAR·6] {len(novos)} módulos novos integrados ao DNA")
+
+    # ── 9 EXPANDIR ───────────────────────────────────────────────────────────
+    print("  [SELAR·9] EXPANDIR — expandindo DNA em memória...")
+    DNA["modulos_python"].update(novos)
+
+    catalog_hash = hashlib.sha256(
+        json.dumps(catalog, ensure_ascii=False, sort_keys=True).encode()
+    ).hexdigest()[:16]
+
+    seal_record = {
+        "ts":             ts,
+        "versao":         DNA["versao"],
+        "total_arquivos": scan_result["total"],
+        "distribuicao":   scan_result["dist"],
+        "novos_modulos":  len(novos),
+        "novos_lista":    list(novos.keys()),
+        "hash":           catalog_hash,
+        "seal":           "∆7",
+        "lei":            DNA["lei"],
+        "centro":         DNA["centro"],
+    }
+
+    # ── 7 SELAR ──────────────────────────────────────────────────────────────
+    print("  [SELAR·7] SELAR — selando DNA + memória + ATLAS...")
+
+    if not dry_run:
+        # Escreve delta — carregado automaticamente no próximo boot
+        delta_path = base / "_index" / "dna_delta.json"
+        delta_path.parent.mkdir(exist_ok=True)
+        delta_path.write_text(
+            json.dumps({
+                "ts":               ts,
+                "seal_ts":          ts,
+                "hash":             catalog_hash,
+                "modulos_python":   novos,
+                "total_registrados": len(DNA["modulos_python"]),
+                "seal":             "∆7",
+                "centro":           DNA["centro"],
+            }, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"  ✓ _index/dna_delta.json · {len(novos)} módulos selados")
+
+        # Grava na memory.jsonl
+        if _HAS_FIRMWARE:
+            mem = KoblluxMemory(base / "_index" / "memory.jsonl")
+            mem.write(
+                arch="aion",
+                content=(
+                    f"SELAR ∆7 · {len(novos)} módulos integrados · "
+                    f"{scan_result['total']} arquivos · hash:{catalog_hash}"
+                ),
+                tags=["selar", "aion", "loop-fechado", "∆7", "dna-engine"],
+                source="kobllux_dna_engine.py --selar",
+                record_type="SELAR_CICLO",
+                extra=seal_record,
+            )
+        else:
+            mem_path = base / "_index" / "memory.jsonl"
+            mem_path.parent.mkdir(exist_ok=True)
+            with mem_path.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps({
+                    "ts":      ts,
+                    "arch":    "aion",
+                    "type":    "SELAR_CICLO",
+                    "content": f"SELAR ∆7 · {len(novos)} módulos · hash:{catalog_hash}",
+                    "tags":    ["selar", "aion", "∆7"],
+                    "seal":    "∆7",
+                    **{k: v for k, v in seal_record.items() if k not in ("ts",)},
+                }, ensure_ascii=False) + "\n")
+        print(f"  ✓ memory.jsonl · AION selou o ciclo")
+
+        # Regenera ATLAS com DNA expandido
+        generate_atlas(base, dry_run=False)
+        print(f"  ✓ ATLAS.md regenerado com DNA expandido")
+
+    else:
+        print(f"  [DRY] dna_delta.json seria escrito · {len(novos)} módulos")
+        print(f"  [DRY] memory.jsonl seria selado")
+        print(f"  [DRY] ATLAS.md seria regenerado")
+
+    print(f"\n  ∆7 LOOP FECHADO · {DNA['centro']} · hash:{catalog_hash}\n")
+    return seal_record
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # SUMMARY
 # ═══════════════════════════════════════════════════════════════════════════════
 
@@ -643,6 +792,7 @@ def main():
     p.add_argument("--dna",          action="store_true", help="Exporta DNA canônico como JSON")
     p.add_argument("--update-codex", action="store_true", help="Injeta DNA no kobllux_codex_data.json")
     p.add_argument("--summary",      action="store_true", help="Mostra estado do DNA vivo")
+    p.add_argument("--selar",        action="store_true", help="3→6→9→7 · Fecha loop de auto-modificação")
     p.add_argument("--all",          action="store_true", help="Executa: scan + atlas + update-codex")
     p.add_argument("--dry-run",      action="store_true")
     p.add_argument("--interval",     type=int, default=30, help="Intervalo watch em segundos")
@@ -676,6 +826,12 @@ def main():
     if args.update_codex or args.all:
         print("  [3/3] CODEX · injetando DNA...")
         update_codex(ROOT, dry_run=args.dry_run)
+        ran = True
+
+    if args.selar:
+        print("  [0/4] SELAR · 3→6→9→7 · fechando loop de auto-modificação...")
+        result = selar(ROOT, dry_run=args.dry_run)
+        print(f"  SELAR concluído · {result['novos_modulos']} módulos · hash:{result['hash']}")
         ran = True
 
     if args.drive_sync:
