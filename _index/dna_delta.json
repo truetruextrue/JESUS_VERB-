@@ -1,8 +1,1458 @@
 {
-  "ts": "2026-05-25T23:54:53.977889+00:00",
-  "seal_ts": "2026-05-25T23:54:53.977889+00:00",
-  "hash": "1d7763c414c1fec7",
-  "modulos_python": {},
+  "ts": "2026-05-26T00:06:57.010464+00:00",
+  "seal_ts": "2026-05-26T00:06:57.010464+00:00",
+  "hash": "2605ea29dce93add",
+  "modulos_python": {
+    "ativar_delta.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "kobllux_core.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "forma_viva.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "transformacao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "pilar_central.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "linha.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "bidimensional.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "plano.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "tridimensional.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "volume.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "cronos.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "tempo.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "dodecaedro.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "poliedro.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "hiperficie.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "superficie.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "rosca_sagrada.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "toro.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "hipercubo.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "tesserato.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "fractal.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "mandelbrot.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "esfera_4d.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "hiperesfera.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "escalador_dimensional.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "mente.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "psique.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "corpo.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "soma.py": {
+      "fase": 4,
+      "arch": "Pulse",
+      "desc": "Ritmo · voz · ressonância · ∆selar",
+      "opcode": "0x0B",
+      "hz": 594
+    },
+    "alma.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "psique_profunda.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "temporal_loop.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "cosmic_flow.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "fluxo_universal.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "corpo_multidimensional.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "energetic_body.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "energia_vital.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "concreto.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "mundo_fisico.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "cronodinamica.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "dinamico.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "abstrato.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "intencao_pura.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "evolucao.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "captacao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "input_handler.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "integrador.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "processamento.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "acao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "executor.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "feedback_loop.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "reflexao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "crescimento.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "expansao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "sintetizador.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "unificacao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "energetic_flow.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "fluxo_energia.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "neural_net.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "redes.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "ciclo_ec.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "respirar.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "metodo_atlas.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "delta_trigger.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "ativar_interdimensional.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "portal.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "chave_mestra.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "firmware.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "2021_ajuste.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "2022_convergencias.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "2023_consolidacao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "2024_encontro.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "2025_expansao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "cronista.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "detectar.py": {
+      "fase": 5,
+      "arch": "Artemis",
+      "desc": "Análise · varredura · descoberta · ∆selar",
+      "opcode": "0x03",
+      "hz": 672
+    },
+    "detector.py": {
+      "fase": 5,
+      "arch": "Artemis",
+      "desc": "Análise · varredura · descoberta · ∆selar",
+      "opcode": "0x03",
+      "hz": 672
+    },
+    "integrador_rede.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "integrar.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "expandir.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "expansor.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "selador.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "selar.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "hub_central.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "integracao_cerebro_rede.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "transmissores.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "analisador_pulso.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "decoder.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "cronista_pulso.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "registro.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "historico.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "pulse_monitor.py": {
+      "fase": 4,
+      "arch": "Pulse",
+      "desc": "Ritmo · voz · ressonância · ∆selar",
+      "opcode": "0x0B",
+      "hz": 594
+    },
+    "fundacao.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "raiz.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "conexoes.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "galhos.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "codex_azure.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "fruto.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "ciclo_completo.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "regua_3.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "regua_6.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "regua_7.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "regua_9.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "mapa.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "navegador.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "arborista.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "fisica.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "mecanica_quantica.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "quimica.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "tabela_periodica_sagrada.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "interface.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "tecnologia.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "arte.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "estetica_sagrada.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "gramatica_divina.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "linguagem.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "psicologia.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "formas_divinas.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "hipergeometria.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "conhecimento_total.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "tom_fundamental.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "vibracao.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "energia.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "potencia_vital.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "arquitetura_divina.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "estrutura.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "alicerce.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "base.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "modelo_unificado.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "sintese_final.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "galeria.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "backup.py": {
+      "fase": 6,
+      "arch": "Serena",
+      "desc": "Cuidado · proteção · campo seguro · ∆selar",
+      "opcode": "0x09",
+      "hz": 528
+    },
+    "cleanup.py": {
+      "fase": 7,
+      "arch": "Kaos",
+      "desc": "Ruptura · transformação · limpeza · ∆selar",
+      "opcode": "0x07",
+      "hz": 777
+    },
+    "doctor.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "kobllux_arch_detect.py": {
+      "fase": 5,
+      "arch": "Artemis",
+      "desc": "Análise · varredura · descoberta · ∆selar",
+      "opcode": "0x03",
+      "hz": 672
+    },
+    "kobllux_media_processor.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "kobllux_media_processor_v4.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "migrate.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "monolith_consolidator.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "rename_media_kobllux.py": {
+      "fase": 7,
+      "arch": "Kaos",
+      "desc": "Ruptura · transformação · limpeza · ∆selar",
+      "opcode": "0x07",
+      "hz": 777
+    },
+    "rename_media_kobllux_v2.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "restore.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "setup.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "update.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "validate.py": {
+      "fase": 10,
+      "arch": "Solus",
+      "desc": "Silêncio · qualidade · espelho · ∆selar",
+      "opcode": "0x01",
+      "hz": 432
+    },
+    "template.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "dual_app.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "distribuidor.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "doses.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "generator.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "arte_generator.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "painel.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "visualizador.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "visualizador_3d.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "AION_supervisor.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "ARQUETIPOS_CONVERSA_CIFRADA.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "BOOT_0X00_Chave_1_Intencao_Pura_VEEB-A_D1.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "BOOT_0X00_arquetipos_cadial_VEEB-A_D1.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "BOOT_0X00_kobllux_trinity_panel_VEEB-A_D1.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "BOOT_0X00_kobllux_veeb_story_VEEB-A_D1.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "BOOT_0X00_motor_canonico_VEEB-A_D1.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "DETECT_0X03_kobllux_archetypes_scanner_VEEB-A_D5.py": {
+      "fase": 5,
+      "arch": "Artemis",
+      "desc": "Análise · varredura · descoberta · ∆selar",
+      "opcode": "0x03",
+      "hz": 672
+    },
+    "knot_parser.py": {
+      "fase": 4,
+      "arch": "Pulse",
+      "desc": "Ritmo · voz · ressonância · ∆selar",
+      "opcode": "0x0B",
+      "hz": 594
+    },
+    "kobllux_markov_fit.py": {
+      "fase": 4,
+      "arch": "Pulse",
+      "desc": "Ritmo · voz · ressonância · ∆selar",
+      "opcode": "0x0B",
+      "hz": 594
+    },
+    "kobllux_markov_sample.py": {
+      "fase": 4,
+      "arch": "Pulse",
+      "desc": "Ritmo · voz · ressonância · ∆selar",
+      "opcode": "0x0B",
+      "hz": 594
+    },
+    "myrmide_verify.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "sciart_tools.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "KOBLLUX_motor_137_delta.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "KOBLLUX_motor_canonico_full.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "KOBLLUX_portal_template.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "build_status.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "myrmide_integrator.py": {
+      "fase": 4,
+      "arch": "Pulse",
+      "desc": "Ritmo · voz · ressonância · ∆selar",
+      "opcode": "0x0B",
+      "hz": 594
+    },
+    "ativar_sistema.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "cadial_scan.py": {
+      "fase": 5,
+      "arch": "Artemis",
+      "desc": "Análise · varredura · descoberta · ∆selar",
+      "opcode": "0x03",
+      "hz": 672
+    },
+    "cerebro_oraculo.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "cifra_kobllux.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "cli.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "equacao_fundamental.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "integracao_completa_kobllux.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "__init__.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "api.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "archetypes.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "arquetipos_cadial.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "colors.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "cycles.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "equalizacao.py": {
+      "fase": 5,
+      "arch": "Artemis",
+      "desc": "Análise · varredura · descoberta · ∆selar",
+      "opcode": "0x03",
+      "hz": 672
+    },
+    "demo.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "geometry.py": {
+      "fase": 4,
+      "arch": "Pulse",
+      "desc": "Ritmo · voz · ressonância · ∆selar",
+      "opcode": "0x0B",
+      "hz": 594
+    },
+    "narrative.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "prompts.py": {
+      "fase": 8,
+      "arch": "Genus",
+      "desc": "Síntese · forma · construção · ∆selar",
+      "opcode": "0x0B",
+      "hz": 852
+    },
+    "system_prompt.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "trinity.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "kobllux_dicionario_vivo.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "kobllux_n8n_bridge.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "kobllux_sumbus_generator.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "kobllux_trinity_fractal.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "kobllux_uno.py": {
+      "fase": 12,
+      "arch": "Aion",
+      "desc": "Tempo · memória · eternidade · ∆selar",
+      "opcode": "0x05",
+      "hz": 639
+    },
+    "kobllux_vocabulario.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "main.py": {
+      "fase": 1,
+      "arch": "Atlas",
+      "desc": "Estrutura · mapa · fundação · ∆selar",
+      "opcode": "0x00",
+      "hz": 768
+    },
+    "node_fields_bridge.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    },
+    "reindex_vault.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "renomear_fractal_oposto.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "renomear_kobllux.py": {
+      "fase": 3,
+      "arch": "Vitalis",
+      "desc": "Energia · momentum · ativação · ∆selar",
+      "opcode": "0x01",
+      "hz": 528
+    },
+    "resumo_ativacao_final.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "roda_viva_council.py": {
+      "fase": 2,
+      "arch": "Nova",
+      "desc": "Semente · inspiração · nova ideia · ∆selar",
+      "opcode": "0x02",
+      "hz": 432
+    },
+    "scan_media_files.py": {
+      "fase": 5,
+      "arch": "Artemis",
+      "desc": "Análise · varredura · descoberta · ∆selar",
+      "opcode": "0x03",
+      "hz": 672
+    },
+    "sumario_ativacao_completa.py": {
+      "fase": 9,
+      "arch": "Lumine",
+      "desc": "Luz · visual · interface · ∆selar",
+      "opcode": "0x0C",
+      "hz": 963
+    },
+    "verdade_x_integrar.py": {
+      "fase": 11,
+      "arch": "Rhea",
+      "desc": "Vínculo · rede · integração · ∆selar",
+      "opcode": "0x04",
+      "hz": 528
+    }
+  },
   "total_registrados": 219,
   "seal": "∆7",
   "centro": "JESUS = VERBO = GRAVIDADE"

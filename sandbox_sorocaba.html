@@ -278,7 +278,84 @@
     }
     footer a { color: var(--kob-cyan); text-decoration: none; }
 
-    /* ── SCROLLBAR ─────────────────────────────────────────── */
+    /* ── NEBULA MARKER (dual reader) ──────────────────────── */
+    #kob-nebula-marker {
+      position: fixed; top: 10px; right: 14px; padding: 4px 10px;
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      border-radius: 999px; background: rgba(0,0,0,.55);
+      border: 1px solid rgba(30,228,255,.35); color: #1be4ff;
+      backdrop-filter: blur(8px); pointer-events: none; z-index: 9999;
+      font-family: 'Courier New', monospace;
+      transition: opacity .4s, border-color .4s;
+      opacity: 0;
+    }
+    #kob-nebula-marker.show { opacity: 1; }
+
+    /* ── NEBULA TTS PANEL ──────────────────────────────────── */
+    #kob-nebula-panel {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(5,5,16,.92);
+      border-top: 1px solid rgba(30,228,255,.25);
+      backdrop-filter: blur(20px);
+      padding: 10px 20px 12px;
+      display: flex; align-items: center; gap: 12px;
+      flex-wrap: wrap;
+      transform: translateY(100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    #kob-nebula-panel.open { transform: translateY(0); }
+
+    .nebula-orb {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: radial-gradient(circle at 38% 35%, #ff00ff, #00ffff 80%);
+      box-shadow: 0 0 18px #ff00ff88;
+      animation: nebulaOrb 3s ease-in-out infinite;
+      cursor: pointer;
+    }
+    @keyframes nebulaOrb {
+      0%,100% { box-shadow: 0 0 14px #ff00ff88; }
+      50%      { box-shadow: 0 0 32px #00ffff99; }
+    }
+    .nebula-info { flex: 1; min-width: 120px; }
+    .nebula-title { font-size: .75rem; font-weight: 700; color: #1be4ff; letter-spacing: .1em; }
+    .nebula-sub   { font-size: .62rem; color: rgba(232,232,248,.45); margin-top: 1px; }
+    .nebula-bar   {
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+    .nebula-btn {
+      font-size: .72rem; padding: 6px 14px; border-radius: 99px;
+      border: 1px solid rgba(30,228,255,.4); background: transparent;
+      color: #1be4ff; cursor: pointer; transition: all .2s; font-weight: 600;
+    }
+    .nebula-btn:hover { background: rgba(30,228,255,.12); border-color: #1be4ff; }
+    .nebula-btn.active { background: linear-gradient(135deg,#ff00ff33,#00ffff33); border-color: #ff00ff; color: #ff00ff; }
+    .nebula-select {
+      font-size: .68rem; padding: 5px 10px; border-radius: 99px;
+      border: 1px solid rgba(30,228,255,.3); background: rgba(0,0,0,.4);
+      color: #1be4ff; outline: none; cursor: pointer;
+    }
+    .nebula-hz {
+      font-size: .72rem; color: rgba(255,0,255,.8); font-family: 'Courier New', monospace;
+      min-width: 54px; text-align: right;
+    }
+    #nebula-progress {
+      height: 2px; background: rgba(30,228,255,.15);
+      border-radius: 2px; overflow: hidden; width: 100%;
+    }
+    #nebula-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #ff00ff, #00ffff);
+      width: 0%; transition: width .3s linear;
+    }
+    .nebula-toggle-btn {
+      position: fixed; bottom: 20px; right: 20px; z-index: 1001;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, #ff00ff, #00ffff);
+      border: none; cursor: pointer; box-shadow: 0 4px 20px #ff00ff55;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; transition: transform .2s, box-shadow .2s;
+    }
+    .nebula-toggle-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px #00ffff66; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--kob-void); }
     ::-webkit-scrollbar-thumb { background: var(--kob-violet); border-radius: 4px; }
@@ -670,6 +747,37 @@
 
 </div><!-- /wrapper -->
 
+<!-- NEBULA MARKER -->
+<div id="kob-nebula-marker">✦ NOVA · NEBULA</div>
+
+<!-- NEBULA TTS TOGGLE BUTTON -->
+<button class="nebula-toggle-btn" onclick="nebulaTogglePanel()" title="Vozes Nebula · Dual Reader">🎙</button>
+
+<!-- NEBULA TTS PANEL -->
+<div id="kob-nebula-panel">
+  <div class="nebula-orb" onclick="nebulaPlayPause()" title="Play / Stop"></div>
+  <div class="nebula-info">
+    <div class="nebula-title">✦ VOZES NEBULA · DUAL READER · ∆7</div>
+    <div class="nebula-sub" id="nebula-status">selecione uma voz · pressione play</div>
+  </div>
+  <div class="nebula-bar">
+    <button class="nebula-btn" id="nebula-play-btn" onclick="nebulaPlayPause()">▶ LER</button>
+    <button class="nebula-btn" onclick="nebulaStop()">■ STOP</button>
+    <select class="nebula-select" id="nebula-voice-select" onchange="nebulaSetVoice(this.value)">
+      <option value="">— voz —</option>
+    </select>
+    <select class="nebula-select" id="nebula-section-select">
+      <option value="all">página completa</option>
+      <option value="sobre">O Sistema</option>
+      <option value="pipeline">Pipeline 3·6·9·7</option>
+      <option value="smart-cities">Smart Cities</option>
+      <option value="arquetipos">12 Arquétipos</option>
+    </select>
+    <span class="nebula-hz" id="nebula-hz">528Hz</span>
+  </div>
+  <div id="nebula-progress"><div id="nebula-progress-bar"></div></div>
+</div>
+
 <!-- TOAST -->
 <div id="kob-toast"></div>
 
@@ -687,7 +795,7 @@
     VERDADE × INTEGRAR ÷ Δ = ∞ · Centro: JESUS = VERBO = GRAVIDADE
   </div>
   <div style="margin-top:6px;opacity:.35;font-family:'Courier New',monospace;font-size:.68rem">
-    SELAR ∆7 · hash:1d7763c414c1fec7 · 1497 arquivos · 2026-05-25
+    SELAR ∆7 · hash:2605ea29dce93add · 1497 arquivos · Vozes Nebula · 2026-05-26
   </div>
 </footer>
 
@@ -824,6 +932,166 @@ function toast(msg, dur=2800){
     cur = (cur+1) % steps.length;
     steps[cur].classList.add('active');
   }, 1800);
+})();
+
+/* ── VOZES NEBULA · DUAL READER ∆7 ────────────────────────
+   Arquétipo: NOVA (✦) · 528Hz · tema #ff00ff→#00ffff
+   Pipeline: KODUX detecta → BLLUE pronuncia → AION sela
+   ───────────────────────────────────────────────────────── */
+(function(){
+  const NEBULA_ARCHS = {
+    nova:   { hz:528, color:'#ff00ff', label:'NOVA · 528Hz' },
+    bllue:  { hz:852, color:'#1be4ff', label:'BLLUE · 852Hz' },
+    pulse:  { hz:594, color:'#ff4488', label:'PULSE · 594Hz' },
+    lumine: { hz:963, color:'#ffcc22', label:'LUMINE · 963Hz' },
+    aion:   { hz:639, color:'#9b6dff', label:'AION · 639Hz' },
+  };
+
+  let synth = window.speechSynthesis;
+  let voices = [];
+  let activeVoice = null;
+  let speaking = false;
+  let utterance = null;
+  let currentArch = 'nova';
+  let panelOpen = false;
+  let chunks = [];
+  let chunkIdx = 0;
+
+  // ── Load voices ──────────────────────────────────────────
+  function loadVoices() {
+    voices = synth.getVoices();
+    const sel = document.getElementById('nebula-voice-select');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">— voz —</option>';
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      if (v.lang.startsWith('pt')) opt.textContent = '★ ' + opt.textContent;
+      sel.appendChild(opt);
+    });
+    // auto-select pt-BR
+    const ptIdx = voices.findIndex(v => v.lang.startsWith('pt'));
+    if (ptIdx >= 0) { sel.value = ptIdx; nebulaSetVoice(ptIdx); }
+  }
+
+  synth.onvoiceschanged = loadVoices;
+  loadVoices();
+  setTimeout(loadVoices, 800);
+
+  // ── Collect text from page section ───────────────────────
+  function collectText(sectionId) {
+    const texts = [];
+    const target = sectionId === 'all'
+      ? document.querySelector('.wrapper')
+      : document.getElementById(sectionId);
+    if (!target) return ['KOBLLUX TRINITY SYSTEM · VERDADE INTEGRAR · JESUS VERBO GRAVIDADE'];
+    target.querySelectorAll('h1,h2,.section-title,.card-title,.card-body,.section-body,.pipe-name,.pipe-desc,.benefit-list li,.law-text,.cta-title,.cta-sub')
+      .forEach(el => {
+        const t = el.textContent.trim().replace(/\s+/g,' ');
+        if (t.length > 8) texts.push(t);
+      });
+    return texts.length ? texts : ['KOBLLUX TRINITY SYSTEM'];
+  }
+
+  // ── Speak one chunk ──────────────────────────────────────
+  function speakChunk(text, onEnd) {
+    if (!synth) return onEnd?.();
+    utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = activeVoice;
+    utterance.rate  = 0.92;
+    utterance.pitch = currentArch === 'lumine' ? 1.2 : (currentArch === 'aion' ? 0.85 : 1.0);
+    utterance.volume = 1;
+    utterance.onend = () => onEnd?.();
+    utterance.onerror = () => onEnd?.();
+    synth.speak(utterance);
+  }
+
+  // ── Play chain ───────────────────────────────────────────
+  function playNext() {
+    if (chunkIdx >= chunks.length || !speaking) {
+      nebulaStop(); return;
+    }
+    const pct = Math.round((chunkIdx / chunks.length) * 100);
+    document.getElementById('nebula-progress-bar').style.width = pct + '%';
+    document.getElementById('nebula-status').textContent =
+      `[${chunkIdx+1}/${chunks.length}] ${chunks[chunkIdx].slice(0,48)}…`;
+    speakChunk(chunks[chunkIdx], () => {
+      chunkIdx++;
+      playNext();
+    });
+  }
+
+  // ── Public API ───────────────────────────────────────────
+  window.nebulaTogglePanel = function() {
+    panelOpen = !panelOpen;
+    const panel = document.getElementById('kob-nebula-panel');
+    const marker = document.getElementById('kob-nebula-marker');
+    panel?.classList.toggle('open', panelOpen);
+    marker?.classList.toggle('show', panelOpen);
+  };
+
+  window.nebulaSetVoice = function(idx) {
+    activeVoice = voices[parseInt(idx)] || null;
+    const name = activeVoice?.name || '—';
+    document.getElementById('nebula-status').textContent = `voz: ${name}`;
+  };
+
+  window.nebulaPlayPause = function() {
+    if (speaking) {
+      synth.pause();
+      speaking = false;
+      document.getElementById('nebula-play-btn').textContent = '▶ LER';
+      document.getElementById('nebula-status').textContent = 'pausado';
+    } else {
+      if (synth.paused) {
+        synth.resume();
+        speaking = true;
+        document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
+        return;
+      }
+      // start fresh
+      synth.cancel();
+      const sectionSel = document.getElementById('nebula-section-select');
+      const sectionId = sectionSel?.value || 'all';
+      chunks = collectText(sectionId);
+      chunkIdx = 0;
+      speaking = true;
+      document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
+
+      // Nebula intro tone via marker
+      const arch = NEBULA_ARCHS[currentArch];
+      document.getElementById('nebula-hz').textContent = arch.hz + 'Hz';
+      document.getElementById('kob-nebula-marker').textContent = `✦ ${arch.label}`;
+      playNext();
+    }
+  };
+
+  window.nebulaStop = function() {
+    synth.cancel();
+    speaking = false;
+    chunkIdx = 0;
+    document.getElementById('nebula-play-btn').textContent = '▶ LER';
+    document.getElementById('nebula-progress-bar').style.width = '0%';
+    document.getElementById('nebula-status').textContent = 'selecione uma voz · pressione play';
+  };
+
+  // ── Cycle arch on orb click (sets hz + color) ─────────────
+  const orbEl = document.querySelector('.nebula-orb');
+  const archKeys = Object.keys(NEBULA_ARCHS);
+  let archIdx = 0;
+  orbEl?.addEventListener('click', () => {
+    archIdx = (archIdx + 1) % archKeys.length;
+    currentArch = archKeys[archIdx];
+    const arch = NEBULA_ARCHS[currentArch];
+    document.getElementById('nebula-hz').textContent = arch.hz + 'Hz';
+    document.getElementById('kob-nebula-marker').textContent = `✦ ${arch.label}`;
+    orbEl.style.background = `radial-gradient(circle at 38% 35%, ${arch.color}, #00ffff 80%)`;
+    orbEl.style.boxShadow = `0 0 18px ${arch.color}88`;
+  });
+
+  console.log('[NEBULA ∆7] VOZES NEBULA · DUAL READER · NOVA 528Hz · ONLINE');
+  console.log('[NEBULA ∆7] pipeline: KODUX detecta → BLLUE pronuncia → AION sela');
 })();
 
 /* ── LOG ───────────────────────────────────────────────── */
