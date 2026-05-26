@@ -325,10 +325,10 @@ body {
   white-space:pre; border:none; outline:none; overflow:auto;
   tab-size:2; width:100%; height:100%;
   background:transparent;
-  color:rgba(232,224,240,0.06);
+  color:transparent;
   caret-color:var(--primary);
   resize:none; z-index:3;
-  -webkit-text-fill-color:rgba(232,224,240,0.06);
+  -webkit-text-fill-color:transparent;
 }
 .highlight-layer {
   background:var(--bg-deep);
@@ -2185,6 +2185,7 @@ document.getElementById('file-upload').onchange = async e => {
     state.editorPath = f.name;
     document.getElementById('editorPath').textContent = f.name;
     updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value);
+    switchTab('editor');
     toast('ARQUIVO CARREGADO', 'ok');
     e.target.value = '';
   }
