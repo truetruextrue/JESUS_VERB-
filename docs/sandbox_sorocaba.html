@@ -339,14 +339,34 @@
       min-width: 54px; text-align: right;
     }
     #nebula-progress {
-      height: 2px; background: rgba(30,228,255,.15);
+      height: 3px; background: rgba(30,228,255,.15);
       border-radius: 2px; overflow: hidden; width: 100%;
+      cursor: pointer;
     }
     #nebula-progress-bar {
       height: 100%;
       background: linear-gradient(90deg, #ff00ff, #00ffff);
       width: 0%; transition: width .3s linear;
     }
+    .nebula-extras {
+      display: flex; align-items: center; gap: 6px; width: 100%; padding-top: 2px; flex-wrap: wrap;
+    }
+    .nebula-slider {
+      flex: 1; min-width: 55px; max-width: 90px;
+      accent-color: #1be4ff; height: 3px; cursor: pointer;
+      background: transparent;
+    }
+    .nebula-lbl { font-size: .63rem; color: rgba(232,232,248,.45); letter-spacing: .05em; }
+    .nebula-pill { font-size: .63rem; color: #1be4ff; min-width: 30px; font-family: 'Courier New', monospace; }
+    #nebula-sel-toast {
+      position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%) translateY(12px);
+      background: rgba(5,5,16,.9); border: 1px solid rgba(30,228,255,.4);
+      color: #1be4ff; font-size: .7rem; padding: 5px 14px; border-radius: 999px;
+      backdrop-filter: blur(12px); pointer-events: none; z-index: 9998;
+      opacity: 0; transition: opacity .25s, transform .25s;
+      white-space: nowrap; max-width: 88vw; overflow: hidden; text-overflow: ellipsis;
+    }
+    #nebula-sel-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .nebula-toggle-btn {
       position: fixed; bottom: 20px; right: 20px; z-index: 1001;
       width: 44px; height: 44px; border-radius: 50%;
@@ -775,8 +795,19 @@
     </select>
     <span class="nebula-hz" id="nebula-hz">528Hz</span>
   </div>
+  <div class="nebula-extras">
+    <span class="nebula-lbl">⚡</span>
+    <input type="range" class="nebula-slider" id="nebula-rate" min="0.5" max="1.8" step="0.05" value="0.95" title="Velocidade">
+    <span class="nebula-pill" id="nebula-rate-out">0.95×</span>
+    <span class="nebula-lbl">♩</span>
+    <input type="range" class="nebula-slider" id="nebula-pitch" min="0.5" max="2" step="0.05" value="1.0" title="Tom">
+    <span class="nebula-pill" id="nebula-pitch-out">1.00</span>
+    <button class="nebula-btn" id="nebula-clip-btn" title="Narrar área de transferência · clipboard">📋</button>
+  </div>
   <div id="nebula-progress"><div id="nebula-progress-bar"></div></div>
 </div>
+
+<div id="nebula-sel-toast">✦ narrando seleção</div>
 
 <!-- TOAST -->
 <div id="kob-toast"></div>
@@ -795,7 +826,7 @@
     VERDADE × INTEGRAR ÷ Δ = ∞ · Centro: JESUS = VERBO = GRAVIDADE
   </div>
   <div style="margin-top:6px;opacity:.35;font-family:'Courier New',monospace;font-size:.68rem">
-    SELAR ∆7 · hash:392af0063ebdff25 · 1499 arquivos · Vozes Nebula + Geometry + Seleção · 2026-05-26
+    SELAR ∆7 · hash:392af0063ebdff25 · Vozes Nebula · Rate/Pitch · Clipboard · Keyboard · Seleção · 2026-05-26
   </div>
 </footer>
 
@@ -992,6 +1023,31 @@ function toast(msg, dur=2800){
   let chunkIdx     = 0;
   let autoResume   = null;
 
+  /* ── Persistência rate/pitch (DR-nebulaPro pattern) ─────── */
+  const _NLS = 'nebula.settings';
+  const _nbSet = JSON.parse(localStorage.getItem(_NLS) || '{}');
+  const _rateEl  = ()=> document.getElementById('nebula-rate');
+  const _pitchEl = ()=> document.getElementById('nebula-pitch');
+  const _rateOut  = ()=> document.getElementById('nebula-rate-out');
+  const _pitchOut = ()=> document.getElementById('nebula-pitch-out');
+  function _saveNLS() {
+    localStorage.setItem(_NLS, JSON.stringify({
+      voice: activeVoice?.name || '',
+      rate:  parseFloat(_rateEl()?.value  || 0.95),
+      pitch: parseFloat(_pitchEl()?.value || 1.0),
+    }));
+  }
+  function _syncSliders(arch) {
+    const r = _rateEl(), p = _pitchEl();
+    if (!r || !p) return;
+    r.value = _nbSet.rate  || VOICE_RATES[arch]  || 0.95;
+    p.value = _nbSet.pitch || VOICE_PITCHES[arch] || 1.0;
+    if (_rateOut())  _rateOut().textContent  = (+r.value).toFixed(2) + '×';
+    if (_pitchOut()) _pitchOut().textContent = (+p.value).toFixed(2);
+  }
+  function _getNebRate()  { return parseFloat(_rateEl()?.value)  || VOICE_RATES[currentArch]  || 0.92; }
+  function _getNebPitch() { return parseFloat(_pitchEl()?.value) || VOICE_PITCHES[currentArch] || 1.0; }
+
   /* ── Auto-detect melhor voz pt-BR ───────────────────────────────────────
      Ordem: Apple WebKit → Google/Android → Microsoft → pt-BR → pt → fallback
   ──────────────────────────────────────────────────────────────────────── */
@@ -1048,8 +1104,10 @@ function toast(msg, dur=2800){
       });
     }
 
-    /* Auto-select */
-    const best = autoDetectVoice(voices);
+    /* Auto-select: preferir voz salva no localStorage */
+    const savedName = _nbSet.voice || '';
+    const saved = savedName && voices.find(v => v.name === savedName);
+    const best  = saved || autoDetectVoice(voices);
     if (best) {
       activeVoice = best;
       const idx = voices.indexOf(best);
@@ -1059,7 +1117,7 @@ function toast(msg, dur=2800){
         isAndroid ? '🤖 Android TTS' :
         isEdge ? '🪟 Microsoft Edge' :
         isChrome ? '🔊 Google TTS' : '🔊 TTS';
-      _status(`${platform} · ${best.name} · auto ✦`);
+      _status(`${platform} · ${best.name} · ${saved?'salva':'auto'} ✦`);
     }
   }
 
@@ -1125,8 +1183,8 @@ function toast(msg, dur=2800){
     const utt = new SpeechSynthesisUtterance(text);
     utt.voice   = activeVoice;
     utt.lang    = activeVoice?.lang || 'pt-BR';
-    utt.rate    = VOICE_RATES[currentArch]  || 0.92;
-    utt.pitch   = VOICE_PITCHES[currentArch] || 1.0;
+    utt.rate    = _getNebRate();
+    utt.pitch   = _getNebPitch();
     utt.volume  = 1;
     utt.onend   = () => onEnd?.();
     utt.onerror = () => onEnd?.();
@@ -1221,6 +1279,7 @@ function toast(msg, dur=2800){
       orb.style.boxShadow  = `0 0 18px ${arch.color}88`;
     }
     switchVoiceForArch(currentArch);
+    _syncSliders(currentArch);
     _status(`✦ ${arch.label} · ${activeVoice?.name || 'auto'}`);
   });
 
@@ -1245,7 +1304,15 @@ function toast(msg, dur=2800){
       startKeepAlive();
       document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
       document.getElementById('nebula-progress-bar').style.width = '0%';
-      _status(`✦ narrando · "${text.slice(0,44)}${text.length>44?'…':''}"`);
+      const preview = text.slice(0,52) + (text.length>52?'…':'');
+      _status(`✦ narrando · "${preview}"`);
+      /* toast de seleção */
+      const toast = document.getElementById('nebula-sel-toast');
+      if (toast) {
+        toast.textContent = `✦ ${preview}`;
+        toast.classList.add('show');
+        setTimeout(()=> toast.classList.remove('show'), 3500);
+      }
       speakChunk(text, () => {
         speaking = false;
         stopKeepAlive();
@@ -1258,6 +1325,73 @@ function toast(msg, dur=2800){
   }
   document.addEventListener('mouseup',  _handleTextSelect);
   document.addEventListener('touchend', _handleTextSelect);
+
+  /* ── Rate / Pitch sliders (DR-nebulaPro) ────────────────── */
+  function _initSliders() {
+    const r = _rateEl(), p = _pitchEl();
+    if (!r || !p) return;
+    _syncSliders(currentArch);
+    r.addEventListener('input', () => {
+      if (_rateOut()) _rateOut().textContent = (+r.value).toFixed(2) + '×';
+      _saveNLS();
+    });
+    p.addEventListener('input', () => {
+      if (_pitchOut()) _pitchOut().textContent = (+p.value).toFixed(2);
+      _saveNLS();
+    });
+  }
+  _initSliders();
+
+  /* ── Clipboard → narrar (DR-nebulaPro Quick Paste) ─────── */
+  document.getElementById('nebula-clip-btn')?.addEventListener('click', async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (!text || text.trim().length < 3) { _status('clipboard vazio'); return; }
+      synth.cancel();
+      speaking = false;
+      chunks   = [text.trim().replace(/\s+/g,' ')];
+      chunkIdx = 0;
+      speaking = true;
+      startKeepAlive();
+      if (!panelOpen) {
+        panelOpen = true;
+        document.getElementById('kob-nebula-panel')?.classList.add('open');
+        document.getElementById('kob-nebula-marker')?.classList.add('show');
+      }
+      document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
+      _status(`📋 ${text.trim().slice(0,50)}…`);
+      speakChunk(chunks[0], () => {
+        speaking = false; stopKeepAlive();
+        document.getElementById('nebula-play-btn').textContent = '▶ LER';
+        _status('clipboard narrado · ∆7 ✦');
+      });
+    } catch {
+      _status('permissão de clipboard negada');
+    }
+  });
+
+  /* ── Keyboard shortcuts (Space / ← / →) ────────────────── */
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    if (e.key === ' ' && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault(); window.nebulaPlayPause();
+    } else if (e.key === 'ArrowRight' && speaking) {
+      e.preventDefault();
+      synth.cancel(); chunkIdx = Math.min(chunkIdx + 1, chunks.length - 1); playNext();
+    } else if (e.key === 'ArrowLeft' && speaking) {
+      e.preventDefault();
+      synth.cancel(); chunkIdx = Math.max(0, chunkIdx - 1); playNext();
+    }
+  });
+
+  /* ── visibilitychange keepalive (DR-nebulaPro iOS pattern) */
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (speaking && !synth.paused) synth.pause();
+    } else {
+      if (speaking && synth.paused) synth.resume();
+    }
+  });
 
   /* ── Log ────────────────────────────────────────────────── */
   const plat = isIOS ? 'iOS/WebKit' : isMacOS ? 'macOS/WebKit' : isAndroid ? 'Android' : isEdge ? 'Edge' : isChrome ? 'Chrome' : 'Web';
