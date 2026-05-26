@@ -2178,17 +2178,22 @@ document.getElementById('btn-download').onclick = () => {
   toast('DOWNLOAD INICIADO', 'ok');
 };
 document.getElementById('btn-upload').onclick = () => document.getElementById('file-upload').click();
-document.getElementById('file-upload').onchange = async e => {
+document.getElementById('file-upload').onchange = e => {
   const f = e.target.files[0];
-  if (f) {
-    UI.input.value = await f.text();
-    state.editorPath = f.name;
-    document.getElementById('editorPath').textContent = f.name;
+  if (!f) return;
+  const name = f.name;
+  e.target.value = '';
+  const reader = new FileReader();
+  reader.onerror = () => toast('Erro ao ler arquivo', 'err');
+  reader.onload = ev => {
+    UI.input.value = ev.target.result;
+    state.editorPath = name;
+    document.getElementById('editorPath').textContent = name;
     updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value);
     switchTab('editor');
     toast('ARQUIVO CARREGADO', 'ok');
-    e.target.value = '';
-  }
+  };
+  reader.readAsText(f, 'UTF-8');
 };
 
 document.getElementById('btn-push').onclick = async () => {
