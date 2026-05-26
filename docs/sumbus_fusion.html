@@ -104,7 +104,10 @@ body {
 .editor-toolbar {
   display:flex; gap:6px; padding:6px 10px; background:rgba(0,0,0,0.5);
   border-bottom:1px solid var(--glass-border); flex-shrink:0; align-items:center;
+  overflow-x:auto; overflow-y:hidden;
+  -webkit-overflow-scrolling:touch; scrollbar-width:none;
 }
+.editor-toolbar::-webkit-scrollbar { display:none; }
 .tool-btn {
   background:rgba(255,255,255,0.05); border:1px solid var(--glass-border);
   color:var(--text-muted); border-radius:6px; width:30px; height:30px;
@@ -1960,35 +1963,44 @@ function applyTokenColors(e, ext) {
 
   if (ext === 'html') {
     let s = e;
+    // All spans use SINGLE-QUOTE style to prevent self-contamination on re-runs
+    const _sp = (color, bold, txt) =>
+      bold ? `<span style='color:${color};font-weight:700'>${txt}</span>`
+           : `<span style='color:${color}'>${txt}</span>`;
+
+    // 1. Comments first (they may contain attr-like text — must be isolated)
     s = s.replace(/(&lt;!--[\s\S]*?--&gt;)/g,
-      `<span style="color:${HL.SOLUS};font-style:italic;opacity:.8">$1</span>`);
+      m => `<span style='color:${HL.SOLUS};font-style:italic;opacity:.8'>${m}</span>`);
+
+    // 2. Attribute VALUES ="..." — run BEFORE tagColor so we don't match style='' spans
+    s = s.replace(/=("([^"<>]*)")/g,
+      (m, full) => `=${_sp(HL.STRING, false, full)}`);
+
+    // 3. Attribute NAMES (word immediately before = lookahead)
+    s = s.replace(/(\s)([a-zA-Z][a-zA-Z0-9_:-]*)(?==)/g,
+      (m, ws, name) => `${ws}${_sp(HL.PROP, false, name)}`);
+
+    // 4. Tag names
     const tagColor = (names, color, bold) => {
-      const b = bold ? ';font-weight:700' : '';
       s = s.replace(
         new RegExp(`(&lt;\\/?)(${names})(\\b)`, 'gi'),
-        `$1<span style="color:${color}${b}">$2</span>$3`
+        (m, lt, name, ws) => lt + _sp(color, bold, name) + ws
       );
     };
-    tagColor('!DOCTYPE|html|head|body',                        HL.ATLAS,   true);
-    tagColor('script',                                         HL.VITALIS, true);
-    tagColor('style',                                          HL.PULSE,   true);
-    tagColor('meta|link|title|base',                          HL.NOVA,    false);
-    tagColor('div|section|article|main|aside|nav|header|footer', HL.GENUS, false);
-    tagColor('p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li',   HL.SERENA,  false);
-    tagColor('img|canvas|video|audio|svg|figure|picture',     HL.LUMINE,  false);
-    tagColor('a|iframe|embed|portal',                         HL.RHEA,    false);
-    tagColor('input|button|form|select|textarea|label',       HL.ARTEMIS, false);
-    tagColor('time|data|template|slot|dialog|details',        HL.AION,    false);
-    // Attribute values (strings in quotes, before bracket replacement)
-    s = s.replace(/"([^"<>]*)"/g, `"<span style="color:${HL.STRING}">$1</span>"`);
-    // Attribute names (word before = sign)
-    s = s.replace(/(\s)([a-zA-Z][a-zA-Z0-9_:-]*)=/g,
-      ` <span style="color:${HL.PROP}">$2</span>=`);
-    s = s.replace(/&lt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&lt;</span>`);
-    s = s.replace(/&gt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&gt;</span>`);
-    // Inline style values after color:
-    s = s.replace(/(color:\s*)(#[0-9a-fA-F]{3,8})/g,
-      (m,p,hex) => `${p}<span style="color:${hex};font-weight:700">${hex}</span>`);
+    tagColor('!DOCTYPE|html|head|body',                          HL.ATLAS,   true);
+    tagColor('script',                                           HL.VITALIS, true);
+    tagColor('style',                                            HL.PULSE,   true);
+    tagColor('meta|link|title|base',                            HL.NOVA,    false);
+    tagColor('div|section|article|main|aside|nav|header|footer', HL.GENUS,  false);
+    tagColor('p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li',     HL.SERENA,  false);
+    tagColor('img|canvas|video|audio|svg|figure|picture',       HL.LUMINE,  false);
+    tagColor('a|iframe|embed|portal',                           HL.RHEA,    false);
+    tagColor('input|button|form|select|textarea|label',         HL.ARTEMIS, false);
+    tagColor('time|data|template|slot|dialog|details',          HL.AION,    false);
+
+    // 5. Angle brackets
+    s = s.replace(/&lt;/g, `<span style='opacity:.5;color:${HL.ATLAS}'>&lt;</span>`);
+    s = s.replace(/&gt;/g, `<span style='opacity:.5;color:${HL.ATLAS}'>&gt;</span>`);
     return s;
   }
 
@@ -2001,26 +2013,26 @@ function applyTokenColors(e, ext) {
       m => `<span style="color:${m};text-shadow:0 0 8px ${m}66;font-weight:700">${m}</span>`);
     // CSS variables
     s = s.replace(/(--[a-zA-Z_][a-zA-Z0-9_-]+)/g,
-      `<span style="color:${HL.NUMBER}">$1</span>`);
+      `<span style='color:${HL.NUMBER}'>$1</span>`);
     // Class selectors
     s = s.replace(/(\.[a-zA-Z_][a-zA-Z0-9_-]*)/g,
-      `<span style="color:${HL.ARTEMIS}">$1</span>`);
-    // ID selectors (not hex colors already wrapped)
+      `<span style='color:${HL.ARTEMIS}'>$1</span>`);
+    // ID selectors
     s = s.replace(/(#[a-zA-Z_][a-zA-Z0-9_-]+)/g,
-      `<span style="color:${HL.NOVA}">$1</span>`);
-    // Property names (word before colon, not inside selector block)
+      `<span style='color:${HL.NOVA}'>$1</span>`);
+    // Property names (word before colon at line start)
     s = s.replace(/^\s*([a-zA-Z][a-zA-Z0-9-]*)(?=\s*:)/,
-      (m, prop) => m.replace(prop, `<span style="color:${HL.PROP}">${prop}</span>`));
+      (m, prop) => m.replace(prop, `<span style='color:${HL.PROP}'>${prop}</span>`));
     // Values: numbers with units
     s = s.replace(/\b(\d+(?:\.\d+)?)(px|em|rem|%|vh|vw|vmin|vmax|pt|deg|s|ms|fr|ch|ex)\b/g,
-      `<span style="color:${HL.NUMBER}">$1$2</span>`);
+      `<span style='color:${HL.NUMBER}'>$1$2</span>`);
     // CSS keywords
     const cssKw = 'flex|grid|block|inline-flex|inline-block|inline|absolute|relative|fixed|sticky|none|auto|center|start|end|space-between|space-around|space-evenly|stretch|nowrap|wrap|hidden|visible|pointer|bold|normal|italic|solid|dashed|dotted|transparent|inherit|initial|unset|revert|row|column|contain|cover';
     s = s.replace(new RegExp(`\\b(${cssKw})\\b`, 'g'),
-      `<span style="color:${HL.KEYWORD}">$1</span>`);
+      `<span style='color:${HL.KEYWORD}'>$1</span>`);
     // Quoted strings
-    s = s.replace(/"([^"]*)"/g, `"<span style="color:${HL.STRING}">$1</span>"`);
-    s = s.replace(/'([^']*)'/g, `'<span style="color:${HL.STRING}">$1</span>'`);
+    s = s.replace(/"([^"]*)"/g, `"<span style='color:${HL.STRING}'>$1</span>"`);
+    s = s.replace(/'([^']*)'/g, `'<span style='color:${HL.STRING}'>$1</span>'`);
     return s;
   }
 
@@ -2028,43 +2040,43 @@ function applyTokenColors(e, ext) {
     let s = e;
     // Comments first
     s = s.replace(/(\/\/[^\n]*)/g,
-      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+      `<span style='color:${HL.SOLUS};font-style:italic'>$1</span>`);
     // Template literals
-    s = s.replace(/(`[^`]*`)/g, `<span style="color:${HL.STRING}">$1</span>`);
+    s = s.replace(/(`[^`]*`)/g, `<span style='color:${HL.STRING}'>$1</span>`);
     // Double-quoted strings
-    s = s.replace(/"((?:[^"\\]|\\.)*)"/g, `"<span style="color:${HL.STRING}">$1</span>"`);
-    // Single-quoted strings (excluding already handled)
-    s = s.replace(/'((?:[^'\\]|\\.)*)'/g, `'<span style="color:${HL.STRING}">$1</span>'`);
+    s = s.replace(/"((?:[^"\\]|\\.)*)"/g, `"<span style='color:${HL.STRING}'>$1</span>"`);
+    // Single-quoted strings
+    s = s.replace(/'((?:[^'\\]|\\.)*)'/g, `'<span style='color:${HL.STRING}'>$1</span>'`);
     // Keywords
     const kw = 'const|let|var|function|return|if|else|for|while|class|new|typeof|async|await|import|export|from|default|true|false|null|undefined|this|of|in|try|catch|finally|throw|switch|case|break|continue|delete|instanceof|void|yield|static|extends|super';
     s = s.replace(new RegExp(`(?<![\\w$])(${kw})(?![\\w$])`, 'g'),
-      kword => `<span style="color:${HL.KEYWORD}">${kword}</span>`);
+      kword => `<span style='color:${HL.KEYWORD}'>${kword}</span>`);
     // Numbers
-    s = s.replace(/(?<![\\w"'`])\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style='color:${HL.NUMBER}'>$1</span>`);
     // Function/method calls
     s = s.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()/g,
-      (m, name) => `<span style="color:${HL.FN}">${name}</span>`);
+      (m, name) => `<span style='color:${HL.FN}'>${name}</span>`);
     return s;
   }
 
   if (ext === 'py') {
     let s = e;
     s = s.replace(/(#[^\n]*)/g,
-      `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
+      `<span style='color:${HL.SOLUS};font-style:italic'>$1</span>`);
     const kw = 'def|class|return|import|from|if|elif|else|for|while|try|except|with|as|in|is|not|and|or|True|False|None|self|print|lambda|yield|raise|pass|break|continue';
     s = s.replace(new RegExp(`\\b(${kw})\\b`, 'g'),
-      `<span style="color:${HL.KEYWORD}">$1</span>`);
-    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+      `<span style='color:${HL.KEYWORD}'>$1</span>`);
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style='color:${HL.NUMBER}'>$1</span>`);
     return s;
   }
 
   if (ext === 'json') {
     let s = e;
     s = s.replace(/("(?:[^"\\]|\\.)*")\s*:/g,
-      `<span style="color:${HL.PROP}">$1</span>:`);
+      `<span style='color:${HL.PROP}'>$1</span>:`);
     s = s.replace(/\b(true|false|null)\b/g,
-      `<span style="color:${HL.KEYWORD}">$1</span>`);
-    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+      `<span style='color:${HL.KEYWORD}'>$1</span>`);
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style='color:${HL.NUMBER}'>$1</span>`);
     return s;
   }
 
