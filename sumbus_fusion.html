@@ -335,6 +335,25 @@ body {
   z-index:2;
 }
 
+#search-bar {
+  display:none; align-items:center; gap:6px;
+  padding:4px 8px; background:rgba(0,0,0,0.5);
+  border-bottom:1px solid var(--glass-border); flex-shrink:0;
+}
+#search-bar.open { display:flex; }
+#search-input {
+  flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
+  border-radius:6px; color:#e8e8f8; font-family:var(--font-code); font-size:11px;
+  padding:4px 8px; outline:none;
+}
+#search-input:focus { border-color:var(--primary); }
+#search-count { font-size:9.5px; color:var(--text-muted); white-space:nowrap; }
+.search-nav-btn {
+  background:transparent; border:none; color:var(--text-muted);
+  font-size:13px; padding:2px 6px; cursor:pointer; border-radius:4px;
+}
+.search-nav-btn:active { background:rgba(255,255,255,0.08); }
+
 .gutter {
   width:44px; background:rgba(0,0,0,0.35); border-right:1px solid var(--glass-border);
   overflow:hidden; font-family:var(--font-code); font-size:11.5px; flex-shrink:0;
@@ -543,15 +562,20 @@ body {
 .dock {
   height:var(--dock-h); background:rgba(5,8,17,0.99);
   border-top:1px solid var(--glass-border);
-  display:flex; align-items:center; padding:0 10px; gap:6px;
+  display:flex; align-items:center; padding:0 6px; gap:6px;
   z-index:100; padding-bottom:env(safe-area-inset-bottom); flex-shrink:0;
+  overflow-x:auto; overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
 }
+.dock::-webkit-scrollbar { display:none; }
 .dock-btn {
-  flex:1; height:40px; border-radius:8px; border:1px solid var(--glass-border);
+  flex:0 0 54px; height:40px; border-radius:8px; border:1px solid var(--glass-border);
   background:rgba(255,255,255,0.03); color:var(--text-main);
   font-size:9.5px; font-weight:600; display:flex; flex-direction:column;
   align-items:center; justify-content:center; transition:0.2s; cursor:pointer;
-  font-family:var(--font-ui);
+  font-family:var(--font-ui); scroll-snap-align:start; white-space:nowrap;
 }
 .dock-btn svg { width:14px; height:14px; margin-bottom:2px; }
 .dock-btn.run  { background:rgba(0,245,255,0.12); color:var(--primary); border-color:var(--primary); }
@@ -828,11 +852,19 @@ body {
       <span class="editor-path" id="editorPath" title="Clique para mudar caminho" onclick="changeEditorPath()">novo_arquivo.html</span>
       <button class="tool-btn" id="btn-format" title="Formatar"><i data-lucide="align-left"></i></button>
       <button class="tool-btn" id="btn-wrap" title="Word Wrap"><i data-lucide="wrap-text"></i></button>
+      <button class="tool-btn" id="btn-search" title="Buscar (Ctrl+F)"><i data-lucide="search"></i></button>
       <div class="veeb-orb" id="veebOrb" title="Arquétipo da linha atual (VEEB)">
         <div class="veeb-orb-dot" id="veebDot"></div>
         <span class="veeb-orb-txt" id="veebTxt">ATLAS</span>
       </div>
       <button class="tool-btn" id="btn-clear" title="Limpar"><i data-lucide="trash-2"></i></button>
+    </div>
+    <div id="search-bar">
+      <input id="search-input" placeholder="Buscar no código..." autocomplete="off" spellcheck="false">
+      <span id="search-count">0/0</span>
+      <button class="search-nav-btn" id="search-prev" title="Anterior">↑</button>
+      <button class="search-nav-btn" id="search-next" title="Próximo">↓</button>
+      <button class="search-nav-btn" id="search-close" title="Fechar">✕</button>
     </div>
     <div class="editor-frame">
       <div class="gutter" id="gutter">1</div>
@@ -1052,6 +1084,7 @@ body {
   <button class="dock-btn" id="btn-upload"><i data-lucide="upload"></i>OPEN</button>
   <button class="dock-btn" id="btn-download"><i data-lucide="download"></i>HTML</button>
   <button class="dock-btn run" id="btn-run"><i data-lucide="play"></i>RUN</button>
+  <button class="dock-btn" onclick="switchTab('preview')"><i data-lucide="eye"></i>VIEW</button>
   <button class="dock-btn" id="btn-save"><i data-lucide="save"></i>SAVE</button>
   <button class="dock-btn push" id="btn-push"><i data-lucide="cloud-upload"></i>PUSH</button>
   <button class="dock-btn fuse" id="btn-fuse-dock" onclick="goToFusion()"><i data-lucide="zap"></i>FUSE</button>
@@ -1308,11 +1341,77 @@ document.getElementById('btn-format').onclick = () => {
       return ind + l;
     });
     UI.input.value = result.join('\n');
+    if (!state.wrap) { state.wrap = true; UI.input.style.whiteSpace = 'pre-wrap'; document.getElementById('codeHighlight').style.whiteSpace = 'pre-wrap'; }
     updateGutter(); updateHighlight(); updateVeebOrb();
     saveHistory(UI.input.value);
-    toast('FORMATADO', 'ok');
+    toast('FORMATADO · wrap ON', 'ok');
   } catch { toast('Erro ao formatar', 'err'); }
 };
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SEARCH / FIND IN EDITOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+(function() {
+  let _matches = [], _idx = 0;
+  const bar    = document.getElementById('search-bar');
+  const inp    = document.getElementById('search-input');
+  const count  = document.getElementById('search-count');
+
+  function openSearch() {
+    bar.classList.add('open');
+    inp.focus(); inp.select();
+    _run();
+  }
+  function closeSearch() {
+    bar.classList.remove('open');
+    _matches = []; count.textContent = '0/0';
+    UI.input.focus();
+  }
+  function _run() {
+    const q = inp.value;
+    _matches = []; _idx = 0;
+    if (!q) { count.textContent = '0/0'; return; }
+    const txt = UI.input.value;
+    const ql  = q.toLowerCase();
+    const tl  = txt.toLowerCase();
+    let pos = 0;
+    while ((pos = tl.indexOf(ql, pos)) !== -1) {
+      _matches.push(pos);
+      pos += ql.length;
+    }
+    count.textContent = _matches.length ? `1/${_matches.length}` : '0/0';
+    if (_matches.length) _goto(0);
+  }
+  function _goto(i) {
+    if (!_matches.length) return;
+    _idx = (i + _matches.length) % _matches.length;
+    const start = _matches[_idx], end = start + inp.value.length;
+    UI.input.focus();
+    UI.input.setSelectionRange(start, end);
+    count.textContent = `${_idx + 1}/${_matches.length}`;
+    // Scroll textarea to show the match
+    const lineH = parseFloat(getComputedStyle(UI.input).lineHeight) || 20;
+    const line  = UI.input.value.substring(0, start).split('\n').length - 1;
+    UI.input.scrollTop = Math.max(0, line * lineH - UI.input.clientHeight / 2);
+  }
+
+  document.getElementById('btn-search').onclick = () => {
+    bar.classList.contains('open') ? closeSearch() : openSearch();
+  };
+  document.getElementById('search-close').onclick = closeSearch;
+  document.getElementById('search-next').onclick  = () => _goto(_idx + 1);
+  document.getElementById('search-prev').onclick  = () => _goto(_idx - 1);
+  inp.addEventListener('input', _run);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); _goto(_idx + (e.shiftKey ? -1 : 1)); }
+    if (e.key === 'Escape') closeSearch();
+  });
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f' && document.getElementById('view-editor').classList.contains('active')) {
+      e.preventDefault(); openSearch();
+    }
+  });
+})();
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CDN MANAGER
@@ -1880,8 +1979,16 @@ function applyTokenColors(e, ext) {
     tagColor('a|iframe|embed|portal',                         HL.RHEA,    false);
     tagColor('input|button|form|select|textarea|label',       HL.ARTEMIS, false);
     tagColor('time|data|template|slot|dialog|details',        HL.AION,    false);
+    // Attribute values (strings in quotes, before bracket replacement)
+    s = s.replace(/"([^"<>]*)"/g, `"<span style="color:${HL.STRING}">$1</span>"`);
+    // Attribute names (word before = sign)
+    s = s.replace(/(\s)([a-zA-Z][a-zA-Z0-9_:-]*)=/g,
+      ` <span style="color:${HL.PROP}">$2</span>=`);
     s = s.replace(/&lt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&lt;</span>`);
     s = s.replace(/&gt;/g, `<span style="opacity:.5;color:${HL.ATLAS}">&gt;</span>`);
+    // Inline style values after color:
+    s = s.replace(/(color:\s*)(#[0-9a-fA-F]{3,8})/g,
+      (m,p,hex) => `${p}<span style="color:${hex};font-weight:700">${hex}</span>`);
     return s;
   }
 
@@ -1889,22 +1996,54 @@ function applyTokenColors(e, ext) {
     let s = e;
     s = s.replace(/(\/\*[\s\S]*?\*\/)/g,
       `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
-    s = s.replace(/(#[0-9a-fA-F]{3,8})\b/g,
+    // Hex colors (with live color swatch)
+    s = s.replace(/(#[0-9a-fA-F]{6,8}|#[0-9a-fA-F]{3,4})\b/g,
       m => `<span style="color:${m};text-shadow:0 0 8px ${m}66;font-weight:700">${m}</span>`);
+    // CSS variables
     s = s.replace(/(--[a-zA-Z_][a-zA-Z0-9_-]+)/g,
       `<span style="color:${HL.NUMBER}">$1</span>`);
-    s = s.replace(/'([^']*)'/g, `<span style="color:${HL.STRING}">'$1'</span>`);
+    // Class selectors
+    s = s.replace(/(\.[a-zA-Z_][a-zA-Z0-9_-]*)/g,
+      `<span style="color:${HL.ARTEMIS}">$1</span>`);
+    // ID selectors (not hex colors already wrapped)
+    s = s.replace(/(#[a-zA-Z_][a-zA-Z0-9_-]+)/g,
+      `<span style="color:${HL.NOVA}">$1</span>`);
+    // Property names (word before colon, not inside selector block)
+    s = s.replace(/^\s*([a-zA-Z][a-zA-Z0-9-]*)(?=\s*:)/,
+      (m, prop) => m.replace(prop, `<span style="color:${HL.PROP}">${prop}</span>`));
+    // Values: numbers with units
+    s = s.replace(/\b(\d+(?:\.\d+)?)(px|em|rem|%|vh|vw|vmin|vmax|pt|deg|s|ms|fr|ch|ex)\b/g,
+      `<span style="color:${HL.NUMBER}">$1$2</span>`);
+    // CSS keywords
+    const cssKw = 'flex|grid|block|inline-flex|inline-block|inline|absolute|relative|fixed|sticky|none|auto|center|start|end|space-between|space-around|space-evenly|stretch|nowrap|wrap|hidden|visible|pointer|bold|normal|italic|solid|dashed|dotted|transparent|inherit|initial|unset|revert|row|column|contain|cover';
+    s = s.replace(new RegExp(`\\b(${cssKw})\\b`, 'g'),
+      `<span style="color:${HL.KEYWORD}">$1</span>`);
+    // Quoted strings
+    s = s.replace(/"([^"]*)"/g, `"<span style="color:${HL.STRING}">$1</span>"`);
+    s = s.replace(/'([^']*)'/g, `'<span style="color:${HL.STRING}">$1</span>'`);
     return s;
   }
 
   if (ext === 'js') {
     let s = e;
+    // Comments first
     s = s.replace(/(\/\/[^\n]*)/g,
       `<span style="color:${HL.SOLUS};font-style:italic">$1</span>`);
-    const kw = 'const|let|var|function|return|if|else|for|while|class|new|typeof|async|await|import|export|from|default|true|false|null|undefined|this|of|in|try|catch|throw';
-    s = s.replace(new RegExp(`(^|\\s)(${kw})(?=\\s|\\(|\\{|;|,|$)`, 'gm'),
-      (m,sp,kword) => `${sp}<span style="color:${HL.KEYWORD}">${kword}</span>`);
-    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    // Template literals
+    s = s.replace(/(`[^`]*`)/g, `<span style="color:${HL.STRING}">$1</span>`);
+    // Double-quoted strings
+    s = s.replace(/"((?:[^"\\]|\\.)*)"/g, `"<span style="color:${HL.STRING}">$1</span>"`);
+    // Single-quoted strings (excluding already handled)
+    s = s.replace(/'((?:[^'\\]|\\.)*)'/g, `'<span style="color:${HL.STRING}">$1</span>'`);
+    // Keywords
+    const kw = 'const|let|var|function|return|if|else|for|while|class|new|typeof|async|await|import|export|from|default|true|false|null|undefined|this|of|in|try|catch|finally|throw|switch|case|break|continue|delete|instanceof|void|yield|static|extends|super';
+    s = s.replace(new RegExp(`(?<![\\w$])(${kw})(?![\\w$])`, 'g'),
+      kword => `<span style="color:${HL.KEYWORD}">${kword}</span>`);
+    // Numbers
+    s = s.replace(/(?<![\\w"'`])\b(\d+(?:\.\d+)?)\b/g, `<span style="color:${HL.NUMBER}">$1</span>`);
+    // Function/method calls
+    s = s.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()/g,
+      (m, name) => `<span style="color:${HL.FN}">${name}</span>`);
     return s;
   }
 
