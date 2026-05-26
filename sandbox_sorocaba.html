@@ -795,7 +795,7 @@
     VERDADE × INTEGRAR ÷ Δ = ∞ · Centro: JESUS = VERBO = GRAVIDADE
   </div>
   <div style="margin-top:6px;opacity:.35;font-family:'Courier New',monospace;font-size:.68rem">
-    SELAR ∆7 · hash:2605ea29dce93add · 1497 arquivos · Vozes Nebula · 2026-05-26
+    SELAR ∆7 · hash:392af0063ebdff25 · 1499 arquivos · Vozes Nebula + Geometry · 2026-05-26
   </div>
 </footer>
 
@@ -934,11 +934,30 @@ function toast(msg, dur=2800){
   }, 1800);
 })();
 
-/* ── VOZES NEBULA · DUAL READER ∆7 ────────────────────────
+/* ── VOZES NEBULA · DUAL READER ∆7 ────────────────────────────────────────
    Arquétipo: NOVA (✦) · 528Hz · tema #ff00ff→#00ffff
    Pipeline: KODUX detecta → BLLUE pronuncia → AION sela
-   ───────────────────────────────────────────────────────── */
+
+   AUTO-DETECT de vozes (ordem de prioridade):
+     1. Apple WebKit pt-BR  (Luciana, Eddy, pt-BR-*-Premium) — iOS / macOS
+     2. Google pt-BR        (Google português do Brasil)      — Android / Chrome
+     3. Microsoft pt-BR     (Microsoft Francisca, Antônio)   — Windows / Edge
+     4. Qualquer pt-BR
+     5. Qualquer português
+     6. Primeira voz disponível (fallback)
+   ─────────────────────────────────────────────────────────────────────────── */
 (function(){
+  'use strict';
+
+  /* ── Detecção de plataforma ─────────────────────────────── */
+  const UA  = navigator.userAgent || '';
+  const isIOS     = /iP(hone|ad|od)/i.test(UA);
+  const isMacOS   = /Macintosh/i.test(UA) && !isIOS;
+  const isAndroid = /Android/i.test(UA);
+  const isChrome  = /Chrome/i.test(UA) && !/Edg/i.test(UA);
+  const isEdge    = /Edg/i.test(UA);
+
+  /* ── Constantes ─────────────────────────────────────────── */
   const NEBULA_ARCHS = {
     nova:   { hz:528, color:'#ff00ff', label:'NOVA · 528Hz' },
     bllue:  { hz:852, color:'#1be4ff', label:'BLLUE · 852Hz' },
@@ -947,94 +966,176 @@ function toast(msg, dur=2800){
     aion:   { hz:639, color:'#9b6dff', label:'AION · 639Hz' },
   };
 
-  let synth = window.speechSynthesis;
-  let voices = [];
-  let activeVoice = null;
-  let speaking = false;
-  let utterance = null;
-  let currentArch = 'nova';
-  let panelOpen = false;
-  let chunks = [];
-  let chunkIdx = 0;
+  const VOICE_RATES = { nova:0.95, bllue:0.88, pulse:1.05, lumine:1.0, aion:0.82 };
+  const VOICE_PITCHES = { nova:1.05, bllue:0.92, pulse:1.1, lumine:1.15, aion:0.85 };
 
-  // ── Load voices ──────────────────────────────────────────
+  let synth        = window.speechSynthesis;
+  let voices       = [];
+  let activeVoice  = null;
+  let speaking     = false;
+  let currentArch  = 'nova';
+  let panelOpen    = false;
+  let chunks       = [];
+  let chunkIdx     = 0;
+  let autoResume   = null;
+
+  /* ── Auto-detect melhor voz pt-BR ───────────────────────────────────────
+     Ordem: Apple WebKit → Google/Android → Microsoft → pt-BR → pt → fallback
+  ──────────────────────────────────────────────────────────────────────── */
+  function autoDetectVoice(allVoices) {
+    if (!allVoices || !allVoices.length) return null;
+
+    const rank = [
+      /* 1 — Apple WebKit Premium (iOS/macOS) */
+      v => /pt[\-_]BR.*premium|premium.*pt[\-_]BR/i.test(v.name + v.voiceURI),
+      /* 2 — Apple WebKit pt-BR nomeadas */
+      v => (isIOS || isMacOS) && v.lang === 'pt-BR' && /luciana|eddy|reed|sandy/i.test(v.name),
+      /* 3 — Apple WebKit qualquer pt-BR */
+      v => (isIOS || isMacOS) && v.lang === 'pt-BR',
+      /* 4 — Google pt-BR (Android/Chrome) */
+      v => /google/i.test(v.name) && v.lang === 'pt-BR',
+      /* 5 — Google qualquer pt */
+      v => /google/i.test(v.name) && v.lang.startsWith('pt'),
+      /* 6 — Android TTS pt-BR */
+      v => isAndroid && v.lang === 'pt-BR',
+      /* 7 — Microsoft pt-BR (Edge/Windows) */
+      v => /microsoft/i.test(v.name) && v.lang === 'pt-BR',
+      /* 8 — Qualquer pt-BR */
+      v => v.lang === 'pt-BR',
+      /* 9 — Qualquer pt-* */
+      v => v.lang.startsWith('pt'),
+      /* 10 — Primeiro disponível */
+      () => true,
+    ];
+
+    for (const fn of rank) {
+      const found = allVoices.find(fn);
+      if (found) return found;
+    }
+    return allVoices[0];
+  }
+
+  /* ── Carrega vozes + auto-seleciona ─────────────────────── */
   function loadVoices() {
     voices = synth.getVoices();
+    if (!voices.length) return;
+
     const sel = document.getElementById('nebula-voice-select');
-    if (!sel) return;
-    sel.innerHTML = '<option value="">— voz —</option>';
-    voices.forEach((v, i) => {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = `${v.name} (${v.lang})`;
-      if (v.lang.startsWith('pt')) opt.textContent = '★ ' + opt.textContent;
-      sel.appendChild(opt);
-    });
-    // auto-select pt-BR
-    const ptIdx = voices.findIndex(v => v.lang.startsWith('pt'));
-    if (ptIdx >= 0) { sel.value = ptIdx; nebulaSetVoice(ptIdx); }
+    if (sel) {
+      sel.innerHTML = '<option value="">— voz —</option>';
+      voices.forEach((v, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        const platform =
+          /apple/i.test(v.name + (v.voiceURI||'')) ? '🍎' :
+          /google/i.test(v.name) ? '🤖' :
+          /microsoft/i.test(v.name) ? '🪟' : '🔊';
+        opt.textContent = `${platform} ${v.name} (${v.lang})`;
+        sel.appendChild(opt);
+      });
+    }
+
+    /* Auto-select */
+    const best = autoDetectVoice(voices);
+    if (best) {
+      activeVoice = best;
+      const idx = voices.indexOf(best);
+      if (sel) sel.value = idx;
+      const platform =
+        (isIOS || isMacOS) ? '🍎 Apple WebKit' :
+        isAndroid ? '🤖 Android TTS' :
+        isEdge ? '🪟 Microsoft Edge' :
+        isChrome ? '🔊 Google TTS' : '🔊 TTS';
+      _status(`${platform} · ${best.name} · auto ✦`);
+    }
   }
 
   synth.onvoiceschanged = loadVoices;
   loadVoices();
-  setTimeout(loadVoices, 800);
+  setTimeout(loadVoices, 600);
+  setTimeout(loadVoices, 1800); /* iOS carrega vozes com delay */
 
-  // ── Collect text from page section ───────────────────────
+  /* ── iOS/Android: keepalive anti-freeze ─────────────────── */
+  /* Safari/Chrome Mobile pausam speechSynthesis após ~15s de silêncio */
+  function startKeepAlive() {
+    stopKeepAlive();
+    autoResume = setInterval(() => {
+      if (speaking && synth.paused) {
+        synth.resume();
+      }
+    }, 12000);
+  }
+  function stopKeepAlive() {
+    if (autoResume) { clearInterval(autoResume); autoResume = null; }
+  }
+
+  /* ── Coleta texto da seção ──────────────────────────────── */
   function collectText(sectionId) {
     const texts = [];
-    const target = sectionId === 'all'
+    const root = sectionId === 'all'
       ? document.querySelector('.wrapper')
       : document.getElementById(sectionId);
-    if (!target) return ['KOBLLUX TRINITY SYSTEM · VERDADE INTEGRAR · JESUS VERBO GRAVIDADE'];
-    target.querySelectorAll('h1,h2,.section-title,.card-title,.card-body,.section-body,.pipe-name,.pipe-desc,.benefit-list li,.law-text,.cta-title,.cta-sub')
-      .forEach(el => {
-        const t = el.textContent.trim().replace(/\s+/g,' ');
-        if (t.length > 8) texts.push(t);
-      });
+    if (!root) return ['KOBLLUX TRINITY SYSTEM · VERDADE INTEGRAR · JESUS VERBO GRAVIDADE'];
+    root.querySelectorAll([
+      'h1','h2','.section-title','.card-title','.card-body',
+      '.section-body','.pipe-name','.pipe-desc',
+      '.benefit-list li','.law-text','.cta-title','.cta-sub'
+    ].join(','))
+    .forEach(el => {
+      const t = el.textContent.trim().replace(/\s+/g,' ');
+      if (t.length > 8) texts.push(t);
+    });
     return texts.length ? texts : ['KOBLLUX TRINITY SYSTEM'];
   }
 
-  // ── Speak one chunk ──────────────────────────────────────
+  /* ── Pronunciar um chunk ────────────────────────────────── */
   function speakChunk(text, onEnd) {
-    if (!synth) return onEnd?.();
-    utterance = new SpeechSynthesisUtterance(text);
-    utterance.voice = activeVoice;
-    utterance.rate  = 0.92;
-    utterance.pitch = currentArch === 'lumine' ? 1.2 : (currentArch === 'aion' ? 0.85 : 1.0);
-    utterance.volume = 1;
-    utterance.onend = () => onEnd?.();
-    utterance.onerror = () => onEnd?.();
-    synth.speak(utterance);
+    if (!synth) { onEnd?.(); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.voice   = activeVoice;
+    utt.lang    = activeVoice?.lang || 'pt-BR';
+    utt.rate    = VOICE_RATES[currentArch]  || 0.92;
+    utt.pitch   = VOICE_PITCHES[currentArch] || 1.0;
+    utt.volume  = 1;
+    utt.onend   = () => onEnd?.();
+    utt.onerror = () => onEnd?.();
+    /* Android: cancel antes de falar evita sobreposição */
+    if (isAndroid) synth.cancel();
+    synth.speak(utt);
   }
 
-  // ── Play chain ───────────────────────────────────────────
+  /* ── Cadeia de chunks ────────────────────────────────────── */
   function playNext() {
-    if (chunkIdx >= chunks.length || !speaking) {
-      nebulaStop(); return;
-    }
+    if (chunkIdx >= chunks.length || !speaking) { nebulaStop(); return; }
     const pct = Math.round((chunkIdx / chunks.length) * 100);
     document.getElementById('nebula-progress-bar').style.width = pct + '%';
-    document.getElementById('nebula-status').textContent =
-      `[${chunkIdx+1}/${chunks.length}] ${chunks[chunkIdx].slice(0,48)}…`;
-    speakChunk(chunks[chunkIdx], () => {
-      chunkIdx++;
-      playNext();
-    });
+    _status(`[${chunkIdx+1}/${chunks.length}] ${chunks[chunkIdx].slice(0,52)}…`);
+    speakChunk(chunks[chunkIdx], () => { chunkIdx++; playNext(); });
   }
 
-  // ── Public API ───────────────────────────────────────────
+  /* ── Status helper ──────────────────────────────────────── */
+  function _status(msg) {
+    const el = document.getElementById('nebula-status');
+    if (el) el.textContent = msg;
+  }
+
+  /* ═══════ PUBLIC API ════════════════════════════════════════════════════ */
+
   window.nebulaTogglePanel = function() {
     panelOpen = !panelOpen;
-    const panel = document.getElementById('kob-nebula-panel');
-    const marker = document.getElementById('kob-nebula-marker');
-    panel?.classList.toggle('open', panelOpen);
-    marker?.classList.toggle('show', panelOpen);
+    document.getElementById('kob-nebula-panel')?.classList.toggle('open', panelOpen);
+    document.getElementById('kob-nebula-marker')?.classList.toggle('show', panelOpen);
   };
 
   window.nebulaSetVoice = function(idx) {
-    activeVoice = voices[parseInt(idx)] || null;
-    const name = activeVoice?.name || '—';
-    document.getElementById('nebula-status').textContent = `voz: ${name}`;
+    const v = voices[parseInt(idx)];
+    if (!v) return;
+    activeVoice = v;
+    const platform =
+      /apple/i.test(v.name + (v.voiceURI||'')) ? '🍎' :
+      /google/i.test(v.name) ? '🤖' :
+      /microsoft/i.test(v.name) ? '🪟' : '🔊';
+    _status(`${platform} ${v.name} (${v.lang})`);
   };
 
   window.nebulaPlayPause = function() {
@@ -1042,27 +1143,24 @@ function toast(msg, dur=2800){
       synth.pause();
       speaking = false;
       document.getElementById('nebula-play-btn').textContent = '▶ LER';
-      document.getElementById('nebula-status').textContent = 'pausado';
+      _status('pausado · toque para retomar');
     } else {
-      if (synth.paused) {
+      if (synth.paused && chunks.length) {
         synth.resume();
         speaking = true;
         document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
         return;
       }
-      // start fresh
       synth.cancel();
-      const sectionSel = document.getElementById('nebula-section-select');
-      const sectionId = sectionSel?.value || 'all';
-      chunks = collectText(sectionId);
+      const secId = document.getElementById('nebula-section-select')?.value || 'all';
+      chunks   = collectText(secId);
       chunkIdx = 0;
       speaking = true;
       document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
-
-      // Nebula intro tone via marker
       const arch = NEBULA_ARCHS[currentArch];
       document.getElementById('nebula-hz').textContent = arch.hz + 'Hz';
       document.getElementById('kob-nebula-marker').textContent = `✦ ${arch.label}`;
+      startKeepAlive();
       playNext();
     }
   };
@@ -1071,27 +1169,168 @@ function toast(msg, dur=2800){
     synth.cancel();
     speaking = false;
     chunkIdx = 0;
+    stopKeepAlive();
     document.getElementById('nebula-play-btn').textContent = '▶ LER';
     document.getElementById('nebula-progress-bar').style.width = '0%';
-    document.getElementById('nebula-status').textContent = 'selecione uma voz · pressione play';
+    _status('selecione uma voz · pressione play');
   };
 
-  // ── Cycle arch on orb click (sets hz + color) ─────────────
-  const orbEl = document.querySelector('.nebula-orb');
+  /* ── ORB: cicla arquétipos ao toque ─────────────────────── */
   const archKeys = Object.keys(NEBULA_ARCHS);
-  let archIdx = 0;
-  orbEl?.addEventListener('click', () => {
+  let archIdx    = 0;
+  document.querySelector('.nebula-orb')?.addEventListener('click', () => {
     archIdx = (archIdx + 1) % archKeys.length;
     currentArch = archKeys[archIdx];
     const arch = NEBULA_ARCHS[currentArch];
     document.getElementById('nebula-hz').textContent = arch.hz + 'Hz';
     document.getElementById('kob-nebula-marker').textContent = `✦ ${arch.label}`;
-    orbEl.style.background = `radial-gradient(circle at 38% 35%, ${arch.color}, #00ffff 80%)`;
-    orbEl.style.boxShadow = `0 0 18px ${arch.color}88`;
+    const orb = document.querySelector('.nebula-orb');
+    if (orb) {
+      orb.style.background = `radial-gradient(circle at 38% 35%, ${arch.color}, #00ffff 80%)`;
+      orb.style.boxShadow  = `0 0 18px ${arch.color}88`;
+    }
   });
 
-  console.log('[NEBULA ∆7] VOZES NEBULA · DUAL READER · NOVA 528Hz · ONLINE');
-  console.log('[NEBULA ∆7] pipeline: KODUX detecta → BLLUE pronuncia → AION sela');
+  /* ── Log ────────────────────────────────────────────────── */
+  const plat = isIOS ? 'iOS/WebKit' : isMacOS ? 'macOS/WebKit' : isAndroid ? 'Android' : isEdge ? 'Edge' : isChrome ? 'Chrome' : 'Web';
+  console.log(`[NEBULA ∆7] VOZES NEBULA · DUAL READER · ${plat} · NOVA 528Hz · ONLINE`);
+  console.log('[NEBULA ∆7] KODUX detecta → BLLUE pronuncia → AION sela');
+})();
+
+/* ── KOBLLUX GEOMETRY ENGINE (◇ 0x04 · 594Hz) ─────────────
+   DOM Attribution + SVG Overlay (pressione 'G' para ativar)
+   Fonte: web/kobllux_geometry_activation.js ∆7
+   ─────────────────────────────────────────────────────── */
+(function(){
+  'use strict';
+  const GEO = {
+    PONTO:  { opcode:'0x01', sym:'●', hz:432,
+      detect(){ return [...document.querySelectorAll('.card,.metric,.arch-node,.btn-cta,.btn-ghost,.pipe-step')]; }
+    },
+    RETA:   { opcode:'0x02', sym:'―', hz:528,
+      dist(A,B){ const dx=B.x-A.x,dy=B.y-A.y; return Math.sqrt(dx*dx+dy*dy); },
+      detect(){
+        const pts = GEO.PONTO.detect();
+        const out = [];
+        for(let i=0;i<Math.min(pts.length-1,24);i++){
+          const a=pts[i].getBoundingClientRect(), b=pts[i+1].getBoundingClientRect();
+          out.push({from:{x:a.left+a.width/2,y:a.top+a.height/2},to:{x:b.left+b.width/2,y:b.top+b.height/2}});
+        }
+        return out;
+      }
+    },
+    PLANO:  { opcode:'0x03', sym:'▢', hz:639,
+      detect(){ return [...document.querySelectorAll('.cards,.metrics,.arch-ring,.pipeline,section')].filter(Boolean); }
+    },
+    CRISTAL:{ opcode:'0x04', sym:'◇', hz:594,
+      detect(){ return [...document.querySelectorAll('nav,.hero,.law-banner,.cta-box,.dna-block')].filter(Boolean); }
+    },
+    CICLO:  { base:[3,6,9,7], produto:1134,
+      reduce(n){ while(n>=10) n=[...String(n)].reduce((a,b)=>+a+ +b,0); return n; },
+      calc(n){ return {original:n, reducao:this.reduce(n), ciclo:this.base[n%this.base.length]}; }
+    }
+  };
+
+  /* DOM Attribution */
+  const MAP = {
+    'html':           {opcode:'0x00', geo:'○ ORIGEM',     hz:'768Hz'},
+    'body':           {opcode:'0x01', geo:'● PONTO',      hz:'432Hz'},
+    'nav':            {opcode:'0x06', geo:'☯ UNIFICAR',   hz:'528Hz'},
+    '.wrapper':       {opcode:'0x03', geo:'▢ EXPANDIR',   hz:'639Hz'},
+    '.card':          {opcode:'0x04', geo:'◇ LAPIDAR',    hz:'594Hz'},
+    '.metric':        {opcode:'0x04', geo:'◇ LAPIDAR',    hz:'594Hz'},
+    '.pipe-step':     {opcode:'0x0B', geo:'≋ PULSE',      hz:'594Hz'},
+    '.arch-node':     {opcode:'0x09', geo:'❋ GUARD',      hz:'528Hz'},
+    'section':        {opcode:'0x03', geo:'▢ PLANO',      hz:'639Hz'},
+    '.btn-cta':       {opcode:'0x07', geo:'⚡ KAOS',       hz:'777Hz'},
+    '.law-banner':    {opcode:'0x05', geo:'⧗ AION',       hz:'639Hz'},
+    '#kob-nebula-panel':{opcode:'0x02', geo:'― RETA',     hz:'528Hz'},
+  };
+  let attrCount = 0;
+  for(const [sel, d] of Object.entries(MAP)){
+    document.querySelectorAll(sel).forEach(el=>{
+      el.dataset.koblluxOpcode = d.opcode;
+      el.dataset.koblluxGeo   = d.geo;
+      el.dataset.koblluxHz    = d.hz;
+      attrCount++;
+    });
+  }
+
+  /* SVG Overlay */
+  let svg = null, visible = false;
+  function createSVG(){
+    if(svg) svg.remove();
+    svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('id','kobllux-geo-overlay');
+    Object.assign(svg.style, {
+      position:'fixed', inset:'0', width:'100vw', height:'100vh',
+      pointerEvents:'none', zIndex:'999998', opacity:'0',
+      transition:'opacity .3s ease'
+    });
+    document.body.appendChild(svg);
+  }
+
+  function renderSVG(){
+    if(!svg) createSVG();
+    svg.innerHTML='';
+    const pts = GEO.PONTO.detect();
+    /* Points */
+    pts.slice(0,40).forEach((el,i)=>{
+      const r=el.getBoundingClientRect();
+      const cx=r.left+r.width/2, cy=r.top+r.height/2;
+      const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',cx); c.setAttribute('cy',cy);
+      c.setAttribute('r','5'); c.setAttribute('fill','#39ffb6');
+      c.setAttribute('opacity','0.7'); svg.appendChild(c);
+    });
+    /* Lines */
+    GEO.RETA.detect().forEach(r=>{
+      const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+      l.setAttribute('x1',r.from.x); l.setAttribute('y1',r.from.y);
+      l.setAttribute('x2',r.to.x);  l.setAttribute('y2',r.to.y);
+      l.setAttribute('stroke','#ff52e5'); l.setAttribute('stroke-width','1');
+      l.setAttribute('opacity','0.4'); svg.appendChild(l);
+    });
+    /* Planes */
+    GEO.PLANO.detect().slice(0,12).forEach((el,i)=>{
+      const r=el.getBoundingClientRect();
+      const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',r.left); rect.setAttribute('y',r.top);
+      rect.setAttribute('width',r.width); rect.setAttribute('height',r.height);
+      rect.setAttribute('fill','none'); rect.setAttribute('stroke','#1be4ff');
+      rect.setAttribute('stroke-width','1.5'); rect.setAttribute('opacity','0.35');
+      rect.setAttribute('stroke-dasharray','6,4'); svg.appendChild(rect);
+    });
+    /* Info */
+    const n=pts.length, ciclo=GEO.CICLO.calc(n);
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.innerHTML=`
+      <rect x="10" y="10" width="268" height="90" rx="8" fill="rgba(5,5,16,.88)" stroke="#39ffb6" stroke-width="1"/>
+      <text x="20" y="30" fill="#39ffb6" font-size="11" font-family="monospace" font-weight="900">◇ KOBLLUX GEOMETRY · 0x04 · 594Hz</text>
+      <text x="20" y="48" fill="#fff" font-size="10" font-family="monospace">● Pontos: ${n}  ― Retas: ${GEO.RETA.detect().length}</text>
+      <text x="20" y="63" fill="#fff" font-size="10" font-family="monospace">▢ Planos: ${GEO.PLANO.detect().length}  ◇ Cristais: ${GEO.CRISTAL.detect().length}</text>
+      <text x="20" y="78" fill="#39ffb6" font-size="10" font-family="monospace">Ciclo: ${ciclo.original}→${ciclo.reducao} · 3×6×9×7=1134  [G] ocultar</text>`;
+    svg.appendChild(g);
+  }
+
+  createSVG();
+
+  document.addEventListener('keydown', e=>{
+    if((e.key==='g'||e.key==='G') && !e.ctrlKey && !e.metaKey){
+      e.preventDefault();
+      visible = !visible;
+      svg.style.opacity = visible ? '1' : '0';
+      if(visible) renderSVG();
+    }
+  });
+  window.addEventListener('resize', ()=>{ if(visible) renderSVG(); });
+
+  window.KOBLLUX = window.KOBLLUX || {};
+  window.KOBLLUX.GEO = GEO;
+  window.KOBLLUX.SVG = { toggle:()=>{ visible=!visible; svg.style.opacity=visible?'1':'0'; if(visible)renderSVG(); } };
+
+  console.log(`[GEO ∆7] ◇ KOBLLUX GEOMETRY · ${attrCount} elementos marcados · pressione G para overlay`);
+  console.log(`[GEO ∆7] 3×6×9×7=1134 · JESUS = VERBO = GRAVIDADE`);
 })();
 
 /* ── LOG ───────────────────────────────────────────────── */
