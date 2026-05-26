@@ -68,8 +68,10 @@ body {
 .trinity-nav {
   display:flex; background:rgba(255,255,255,0.03);
   border-radius:99px; padding:3px; border:1px solid var(--glass-border);
-  overflow-x:auto; flex-shrink:0;
+  overflow-x:auto; overflow-y:hidden; flex-shrink:0;
+  -webkit-overflow-scrolling:touch; scrollbar-width:none;
 }
+.trinity-nav::-webkit-scrollbar { display:none; }
 .t-tab {
   padding:5px 10px; border-radius:99px; border:none;
   background:transparent; color:var(--text-muted);
@@ -326,6 +328,7 @@ body {
   position:absolute; inset:0; padding:12px;
   font-family:var(--font-code); font-size:12.5px; line-height:1.65;
   white-space:pre; border:none; outline:none; overflow:auto;
+  -webkit-overflow-scrolling:touch;
   tab-size:2; width:100%; height:100%;
   background:transparent;
   color:transparent;
@@ -1962,46 +1965,59 @@ function colorLine(raw, ext) {
 function applyTokenColors(e, ext) {
 
   if (ext === 'html') {
-    let s = e;
-    // All spans use SINGLE-QUOTE style to prevent self-contamination on re-runs
-    const _sp = (color, bold, txt) =>
-      bold ? `<span style='color:${color};font-weight:700'>${txt}</span>`
-           : `<span style='color:${color}'>${txt}</span>`;
+    // sp() uses SINGLE QUOTES — safe from double-quote attr regex contamination
+    const _sp = (c, b, t) => b
+      ? `<span style='color:${c};font-weight:700'>${t}</span>`
+      : `<span style='color:${c}'>${t}</span>`;
 
-    // 1. Comments first (they may contain attr-like text — must be isolated)
-    s = s.replace(/(&lt;!--[\s\S]*?--&gt;)/g,
-      m => `<span style='color:${HL.SOLUS};font-style:italic;opacity:.8'>${m}</span>`);
+    // Tag name → color map
+    const _TAG_MAP = [
+      [/^(&lt;\/?)((?:!DOCTYPE|html|head|body)\b)/i, HL.ATLAS,   true ],
+      [/^(&lt;\/?)(script\b)/i,                       HL.VITALIS, true ],
+      [/^(&lt;\/?)(style\b)/i,                        HL.PULSE,   true ],
+      [/^(&lt;\/?)((?:meta|link|title|base)\b)/i,     HL.NOVA,    false],
+      [/^(&lt;\/?)((?:div|section|article|main|aside|nav|header|footer)\b)/i, HL.GENUS,  false],
+      [/^(&lt;\/?)((?:p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li)\b)/i,     HL.SERENA, false],
+      [/^(&lt;\/?)((?:img|canvas|video|audio|svg|figure|picture)\b)/i,       HL.LUMINE, false],
+      [/^(&lt;\/?)((?:a|iframe|embed|portal)\b)/i,                           HL.RHEA,   false],
+      [/^(&lt;\/?)((?:input|button|form|select|textarea|label)\b)/i,         HL.ARTEMIS,false],
+      [/^(&lt;\/?)((?:time|data|template|slot|dialog|details)\b)/i,          HL.AION,   false],
+    ];
 
-    // 2. Attribute VALUES ="..." — run BEFORE tagColor so we don't match style='' spans
-    s = s.replace(/=("([^"<>]*)")/g,
-      (m, full) => `=${_sp(HL.STRING, false, full)}`);
+    // Process ONE tag in complete isolation — no global state shared with other tags
+    const _colorTag = (raw) => {
+      // HTML comment — wrap whole thing, done
+      if (/^&lt;!--/.test(raw))
+        return `<span style='color:${HL.SOLUS};font-style:italic;opacity:.8'>${raw}</span>`;
 
-    // 3. Attribute NAMES (word immediately before = lookahead)
-    s = s.replace(/(\s)([a-zA-Z][a-zA-Z0-9_:-]*)(?==)/g,
-      (m, ws, name) => `${ws}${_sp(HL.PROP, false, name)}`);
+      let t = raw;
 
-    // 4. Tag names
-    const tagColor = (names, color, bold) => {
-      s = s.replace(
-        new RegExp(`(&lt;\\/?)(${names})(\\b)`, 'gi'),
-        (m, lt, name, ws) => lt + _sp(color, bold, name) + ws
-      );
+      // STEP A — combined attr pattern name="value" in ONE pass
+      // Runs on the original escaped string before any span is inserted.
+      // Single-pass means the inserted spans can't be re-matched by this same regex.
+      t = t.replace(/([a-zA-Z][a-zA-Z0-9_:-]*)=("([^"]*)")/g,
+        (m, name, full) =>
+          `${_sp(HL.PROP, false, name)}=${_sp(HL.STRING, false, full)}`);
+
+      // STEP B — tag name (uses _TAG_MAP with ^ anchored to &lt; prefix)
+      // Safe: only matches &lt;[/]tagname, never matches inside span attrs
+      for (const [re, color, bold] of _TAG_MAP) {
+        t = t.replace(re,
+          (m, lt, name) => lt + _sp(color, bold, name));
+      }
+
+      // STEP C — angle brackets
+      t = t.replace(/&lt;/g,
+        `<span style='opacity:.5;color:${HL.ATLAS}'>&lt;</span>`);
+      t = t.replace(/&gt;/g,
+        `<span style='opacity:.5;color:${HL.ATLAS}'>&gt;</span>`);
+      return t;
     };
-    tagColor('!DOCTYPE|html|head|body',                          HL.ATLAS,   true);
-    tagColor('script',                                           HL.VITALIS, true);
-    tagColor('style',                                            HL.PULSE,   true);
-    tagColor('meta|link|title|base',                            HL.NOVA,    false);
-    tagColor('div|section|article|main|aside|nav|header|footer', HL.GENUS,  false);
-    tagColor('p|span|h[1-6]|strong|em|b|i|br|hr|ul|ol|li',     HL.SERENA,  false);
-    tagColor('img|canvas|video|audio|svg|figure|picture',       HL.LUMINE,  false);
-    tagColor('a|iframe|embed|portal',                           HL.RHEA,    false);
-    tagColor('input|button|form|select|textarea|label',         HL.ARTEMIS, false);
-    tagColor('time|data|template|slot|dialog|details',          HL.AION,    false);
 
-    // 5. Angle brackets
-    s = s.replace(/&lt;/g, `<span style='opacity:.5;color:${HL.ATLAS}'>&lt;</span>`);
-    s = s.replace(/&gt;/g, `<span style='opacity:.5;color:${HL.ATLAS}'>&gt;</span>`);
-    return s;
+    // Drive: find every HTML tag on this (single) line, process in isolation
+    // Text content between tags is returned untouched → no contamination possible
+    return e.replace(/&lt;(?:!--.*?(?:--&gt;|$)|.*?(?:&gt;|$))/g,
+      m => _colorTag(m));
   }
 
   if (ext === 'css') {
@@ -2333,18 +2349,25 @@ document.getElementById('file-upload').onchange = e => {
   const f = e.target.files[0];
   if (!f) return;
   const name = f.name;
-  e.target.value = '';
+  const inputEl = e.target;          // capture ref before async
   const reader = new FileReader();
-  reader.onerror = () => toast('Erro ao ler arquivo', 'err');
+  reader.onerror = () => {
+    inputEl.value = '';
+    toast('Erro ao ler arquivo', 'err');
+  };
   reader.onload = ev => {
-    UI.input.value = ev.target.result;
+    UI.input.value = ev.target.result || '';
     state.editorPath = name;
     document.getElementById('editorPath').textContent = name;
-    updateGutter(); updateHighlight(); updateVeebOrb(); saveHistory(UI.input.value);
+    try { updateGutter(); } catch(_) {}
+    try { updateHighlight(); } catch(_) {}
+    try { updateVeebOrb(); } catch(_) {}
+    saveHistory(UI.input.value);
     switchTab('editor');
+    inputEl.value = '';              // clear AFTER successful read
     toast('ARQUIVO CARREGADO', 'ok');
   };
-  reader.readAsText(f, 'UTF-8');
+  reader.readAsText(f, 'UTF-8');     // start read BEFORE clearing input
 };
 
 document.getElementById('btn-push').onclick = async () => {
