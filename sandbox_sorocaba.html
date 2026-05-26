@@ -795,7 +795,7 @@
     VERDADE × INTEGRAR ÷ Δ = ∞ · Centro: JESUS = VERBO = GRAVIDADE
   </div>
   <div style="margin-top:6px;opacity:.35;font-family:'Courier New',monospace;font-size:.68rem">
-    SELAR ∆7 · hash:392af0063ebdff25 · 1499 arquivos · Vozes Nebula + Geometry · 2026-05-26
+    SELAR ∆7 · hash:392af0063ebdff25 · 1499 arquivos · Vozes Nebula + Geometry + Seleção · 2026-05-26
   </div>
 </footer>
 
@@ -966,8 +966,21 @@ function toast(msg, dur=2800){
     aion:   { hz:639, color:'#9b6dff', label:'AION · 639Hz' },
   };
 
-  const VOICE_RATES = { nova:0.95, bllue:0.88, pulse:1.05, lumine:1.0, aion:0.82 };
-  const VOICE_PITCHES = { nova:1.05, bllue:0.92, pulse:1.1, lumine:1.15, aion:0.85 };
+  const VOICE_RATES  = { nova:0.95, bllue:0.88, pulse:1.05, lumine:1.0,  aion:0.82 };
+  const VOICE_PITCHES= { nova:1.05, bllue:0.92, pulse:1.1,  lumine:1.15, aion:0.85 };
+
+  /* Preferências de voz por arquétipo (feminino/masculino/neutro) */
+  const ARCH_VOICE_PREFS = {
+    nova:   [v => /luciana|francisca|vitoria|camila|isabel/i.test(v.name) && v.lang==='pt-BR',
+             v => /female|fem/i.test(v.name.toLowerCase()) && v.lang==='pt-BR'],
+    bllue:  [v => v.lang==='pt-BR' && /google/i.test(v.name),
+             v => v.lang==='pt-BR'],
+    pulse:  [v => /google/i.test(v.name) && v.lang==='pt-BR'],
+    lumine: [v => /premium|enhanced/i.test(v.name+(v.voiceURI||'')) && v.lang==='pt-BR',
+             v => /luciana|eddy|reed/i.test(v.name) && v.lang==='pt-BR'],
+    aion:   [v => /eddy|antonio|roberta|reed|oskar/i.test(v.name) && v.lang==='pt-BR',
+             v => /male|masc/i.test(v.name.toLowerCase()) && v.lang==='pt-BR'],
+  };
 
   let synth        = window.speechSynthesis;
   let voices       = [];
@@ -1054,6 +1067,24 @@ function toast(msg, dur=2800){
   loadVoices();
   setTimeout(loadVoices, 600);
   setTimeout(loadVoices, 1800); /* iOS carrega vozes com delay */
+
+  /* ── Troca de voz por arquétipo ────────────────────────── */
+  function switchVoiceForArch(arch) {
+    if (!voices.length) return;
+    const prefs = ARCH_VOICE_PREFS[arch] || [];
+    for (const fn of prefs) {
+      const v = voices.find(fn);
+      if (v) {
+        activeVoice = v;
+        const idx = voices.indexOf(v);
+        const sel = document.getElementById('nebula-voice-select');
+        if (sel) sel.value = idx;
+        return;
+      }
+    }
+    const best = autoDetectVoice(voices);
+    if (best) activeVoice = best;
+  }
 
   /* ── iOS/Android: keepalive anti-freeze ─────────────────── */
   /* Safari/Chrome Mobile pausam speechSynthesis após ~15s de silêncio */
@@ -1189,12 +1220,50 @@ function toast(msg, dur=2800){
       orb.style.background = `radial-gradient(circle at 38% 35%, ${arch.color}, #00ffff 80%)`;
       orb.style.boxShadow  = `0 0 18px ${arch.color}88`;
     }
+    switchVoiceForArch(currentArch);
+    _status(`✦ ${arch.label} · ${activeVoice?.name || 'auto'}`);
   });
+
+  /* ── Seleção de texto → narrar automaticamente ──────────── */
+  let _selTimer = null;
+  function _handleTextSelect() {
+    clearTimeout(_selTimer);
+    _selTimer = setTimeout(() => {
+      const sel   = window.getSelection();
+      const text  = sel?.toString().trim().replace(/\s+/g,' ');
+      if (!text || text.length < 4) return;
+      synth.cancel();
+      speaking = false;
+      stopKeepAlive();
+      /* abre painel se fechado */
+      if (!panelOpen) {
+        panelOpen = true;
+        document.getElementById('kob-nebula-panel')?.classList.add('open');
+        document.getElementById('kob-nebula-marker')?.classList.add('show');
+      }
+      speaking = true;
+      startKeepAlive();
+      document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
+      document.getElementById('nebula-progress-bar').style.width = '0%';
+      _status(`✦ narrando · "${text.slice(0,44)}${text.length>44?'…':''}"`);
+      speakChunk(text, () => {
+        speaking = false;
+        stopKeepAlive();
+        document.getElementById('nebula-play-btn').textContent = '▶ LER';
+        _status('seleção narrada · ∆7 ✦');
+        document.getElementById('nebula-progress-bar').style.width = '100%';
+        setTimeout(()=>{ document.getElementById('nebula-progress-bar').style.width='0%'; }, 1200);
+      });
+    }, 380);
+  }
+  document.addEventListener('mouseup',  _handleTextSelect);
+  document.addEventListener('touchend', _handleTextSelect);
 
   /* ── Log ────────────────────────────────────────────────── */
   const plat = isIOS ? 'iOS/WebKit' : isMacOS ? 'macOS/WebKit' : isAndroid ? 'Android' : isEdge ? 'Edge' : isChrome ? 'Chrome' : 'Web';
   console.log(`[NEBULA ∆7] VOZES NEBULA · DUAL READER · ${plat} · NOVA 528Hz · ONLINE`);
   console.log('[NEBULA ∆7] KODUX detecta → BLLUE pronuncia → AION sela');
+  console.log('[NEBULA ∆7] Seleção de texto → narração automática ATIVA');
 })();
 
 /* ── KOBLLUX GEOMETRY ENGINE (◇ 0x04 · 594Hz) ─────────────
