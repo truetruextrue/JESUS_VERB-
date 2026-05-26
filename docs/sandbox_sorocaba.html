@@ -436,6 +436,13 @@
       width: 100%; height: 100%; border: none; display: block;
       background: #010708;
     }
+    #kob-panel-fusao {
+      padding-top: 42px; height: 100vh; box-sizing: border-box;
+    }
+    #fusao-frame {
+      width: 100%; height: 100%; border: none; display: block;
+      background: #050516;
+    }
 
     /* ── LIBRARY DRAWER ──────────────────────────────────── */
     #kob-lib-drawer {
@@ -519,6 +526,7 @@
 <div id="kob-tab-bar">
   <button class="kob-tab active" id="tab-sistema" onclick="kobTab('sistema')">◉ SISTEMA</button>
   <button class="kob-tab" id="tab-reader" onclick="kobTab('reader')">📖 READER</button>
+  <button class="kob-tab" id="tab-fusao" onclick="kobTab('fusao')">⬡ FUSÃO</button>
   <button class="kob-tab-lib" id="tab-lib" onclick="kobLibToggle()">📚 LIBRARY</button>
 </div>
 
@@ -903,6 +911,17 @@
     title="KOBLLUX Dual Reader · DR-nebulaPro">
   </iframe>
 </div><!-- /panel-reader -->
+
+<!-- PANEL: FUSÃO (SÜMBÜS FUSION · ΔUAL 3.0) -->
+<div id="kob-panel-fusao" class="kob-panel">
+  <iframe
+    id="fusao-frame"
+    src="sumbus_fusion.html"
+    allow="clipboard-read; clipboard-write; microphone"
+    loading="lazy"
+    title="SÜMBÜS FUSION · ΔUAL 3.0 · KOBLLUX_VIVO ∆³">
+  </iframe>
+</div><!-- /panel-fusao -->
 
 <!-- LIBRARY DRAWER -->
 <div id="kob-lib-drawer">
