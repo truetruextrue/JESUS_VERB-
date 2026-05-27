@@ -7,592 +7,1226 @@
   <meta name="theme-color" content="#0f0f11">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>KOBLLUX · HUD SIMBIÓTICO · ARQUITETURA VEEB</title>
+  <title>KOBLLUX · MATRIX DENSA · ARQUITETURA VEEB</title>
+  <!-- Fontes e pré-requisitos -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
-<style>
-/* ── CSS RESET ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── ROOT VARIABLES ── */
-:root {
-  --bg-dark:         #0f0f11;
-  --bg-surface:      rgba(5,5,22,.96);
-  --bg-panel:        rgba(10,10,26,.92);
-  --ink:             #e8e0f0;
-  --text:            #d0c8e0;
-  --muted:           rgba(232,224,240,.45);
-  --kob-voice-primary:   #6B44AD;
-  --kob-voice-secondary: #1ee4ff;
-  --kob-voice-glow:      rgba(107,68,173,.35);
-  --kob-voice-border:    rgba(110,68,173,.45);
-  --kob-accent:      #1ee4ff;
-  --kob-gold:        #c9a84c;
-  --radius-sm:       8px;
-  --radius-md:       14px;
-  --radius-lg:       18px;
-  --transition:      .18s cubic-bezier(.4,0,.2,1);
-  --bar-w:           56px;
-  --bar-h:           56px;
-  --symbol-size:     40px;
-}
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/M0D/V-core/css/main-root.css">
+  <link rel="stylesheet" href="https://kodux78k.github.io/oiDual--Y-/css/kob-dox-nanai-v4.css">
 
-/* ── ARCHETYPE PALETTE OVERRIDES ── */
-body[data-voice-arch="atlas"]   { --kob-voice-primary:#4a7fa5; --kob-voice-glow:rgba(74,127,165,.35); --kob-voice-border:rgba(74,127,165,.45); }
-body[data-voice-arch="nova"]    { --kob-voice-primary:#a54a7a; --kob-voice-glow:rgba(165,74,122,.35); --kob-voice-border:rgba(165,74,122,.45); }
-body[data-voice-arch="vitalis"] { --kob-voice-primary:#4aa55a; --kob-voice-glow:rgba(74,165,90,.35);  --kob-voice-border:rgba(74,165,90,.45); }
-body[data-voice-arch="pulse"]   { --kob-voice-primary:#a54a4a; --kob-voice-glow:rgba(165,74,74,.35);  --kob-voice-border:rgba(165,74,74,.45); }
-body[data-voice-arch="artemis"] { --kob-voice-primary:#7a4aa5; --kob-voice-glow:rgba(122,74,165,.35); --kob-voice-border:rgba(122,74,165,.45); }
-body[data-voice-arch="serena"]  { --kob-voice-primary:#4a9ca5; --kob-voice-glow:rgba(74,156,165,.35); --kob-voice-border:rgba(74,156,165,.45); }
-body[data-voice-arch="kaos"]    { --kob-voice-primary:#a5804a; --kob-voice-glow:rgba(165,128,74,.35); --kob-voice-border:rgba(165,128,74,.45); }
-body[data-voice-arch="genus"]   { --kob-voice-primary:#5a7aa5; --kob-voice-glow:rgba(90,122,165,.35); --kob-voice-border:rgba(90,122,165,.45); }
-body[data-voice-arch="lumine"]  { --kob-voice-primary:#a5a54a; --kob-voice-glow:rgba(165,165,74,.35); --kob-voice-border:rgba(165,165,74,.45); }
-body[data-voice-arch="solus"]   { --kob-voice-primary:#4a4aa5; --kob-voice-glow:rgba(74,74,165,.35);  --kob-voice-border:rgba(74,74,165,.45); }
-body[data-voice-arch="rhea"]    { --kob-voice-primary:#a54a8a; --kob-voice-glow:rgba(165,74,138,.35); --kob-voice-border:rgba(165,74,138,.45); }
-body[data-voice-arch="aion"]    { --kob-voice-primary:#6aa58a; --kob-voice-glow:rgba(106,165,138,.35); --kob-voice-border:rgba(106,165,138,.45); }
-body[data-voice-arch="kobllux"] { --kob-voice-primary:#6B44AD; --kob-voice-glow:rgba(107,68,173,.35); --kob-voice-border:rgba(110,68,173,.45); }
+  <style>
+    /* =====================================================================
+       ARQUITETURA VEEB – SISTEMA DE INTERFACE VIVA (BASE COMPLETA)
+       12 ARQUÉTIPOS APLICADOS AO HUD MAGNÉTICO
+       ===================================================================== */
 
-/* ── BASE BODY ── */
-html, body {
-  min-height: 100%;
-  background: var(--bg-dark);
-  color: var(--ink);
-  font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
-}
+    /* ---------------------------------------------------------------------
+       1. ATLAS – FUNDAÇÃO E VARIÁVEIS GLOBAIS
+          O alicerce do sistema. Define o espaço, as forças primordiais
+          e as constantes que governam todos os elementos.
+       --------------------------------------------------------------------- */
+    :root {
+      /* Cores base – matéria‑prima do universo visual */
+      --bg-dark: #02040a;
+      --ink: #eaf6ff;
+      --text: #f0f3f9;
+      --muted: rgba(255, 255, 255, 0.45);
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 30% 20%, rgba(107,68,173,.08) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 75% 80%, rgba(30,228,255,.05) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
+      /* Tipografia – a voz do sistema */
+      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
 
-/* ── WRAP & CONTENT ── */
-.wrap {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
-}
+      /* Campos magnéticos – limite de atracação (threshold) */
+      --snap-threshold: 40px;
 
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
+      /* Arquétipo VEEB – Kob (voz primária e secundária) – padrão */
+      --kob-voice-primary: #00e28b;
+      --kob-voice-secondary: #0EA5E9;
 
-#frame {
-  width: 100%;
-  flex: 1;
-  border: none;
-  min-height: 100vh;
-  background: transparent;
-}
+      /* Derivadas da voz – criadas com color-mix para consistência dinâmica */
+      --kob-voice-bg-soft: color-mix(in srgb, var(--kob-voice-primary) 20%, transparent);
+      --kob-voice-bg-strong: color-mix(in srgb, var(--kob-voice-primary) 40%, black);
+      --kob-voice-glow: color-mix(in srgb, var(--kob-voice-primary) 60%, white);
 
-#kob-tts-outline {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999;
-  border: 2px solid transparent;
-  transition: border-color .3s;
-}
-#kob-tts-outline.speaking {
-  border-color: var(--kob-voice-primary);
-  box-shadow: inset 0 0 24px var(--kob-voice-glow);
-}
+      /* Painéis e superfícies – transparência controlada pela voz */
+      --panel-bg: color-mix(in srgb, var(--kob-voice-primary) 10%, #0b0f18);
 
-/* ── BG CANVAS ── */
-#bg-canvas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: .35;
-}
+      /* Bordas – vivas, mas sutis */
+      --border: color-mix(in srgb, var(--kob-voice-primary) 30%, rgba(255,255,255,0.1));
 
-/* ── ARCH OVERLAY ── */
-#arch-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(ellipse 80% 80% at 50% 50%, var(--kob-voice-glow) 0%, transparent 70%);
-  transition: background .5s;
-}
+      /* Gradiente de fundo – céu noturno com aurora da voz */
+      --bg-gradient:
+        radial-gradient(
+          circle at 50% -10%,
+          color-mix(in srgb, var(--kob-voice-primary) 35%, #1a224f) 0%,
+          #050714 60%,
+          #000
+        );
 
-/* ══════════════════════════════════════════
-   SYMBOL-BAR · FLOATING HUD
-══════════════════════════════════════════ */
-.symbol-bar {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  z-index: 1000;
-  background: rgba(5,5,22,.82);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  border: 1px solid var(--kob-voice-border);
-  border-radius: var(--radius-lg);
-  padding: 8px 6px;
-  box-shadow:
-    0 0 40px var(--kob-voice-glow),
-    0 8px 32px rgba(0,0,0,.7),
-    inset 0 0 0 1px rgba(255,255,255,.04);
-  transition:
-    left var(--transition),
-    top var(--transition),
-    right var(--transition),
-    bottom var(--transition),
-    border-color .4s,
-    box-shadow .4s,
-    opacity .25s;
-  user-select: none;
-  touch-action: none;
-}
+      /* Gradiente para textos e destaques */
+      --grad-a: var(--kob-voice-primary);
+      --grad-b: var(--kob-voice-secondary);
 
-/* ── floating (default: bottom-right) ── */
-.symbol-bar.floating {
-  right: 14px;
-  bottom: 80px;
-  left: auto;
-  top: auto;
-}
+      /* Z‑index base */
+      --z-base: 0;
+      --z-content: 100;
+      --z-widget: 500;
+      --z-overlay: 1000;
+      --z-system: 5000;
 
-/* ── snap-side (left or right wall) ── */
-.symbol-bar.snap-side {
-  top: 50%;
-  transform: translateY(-50%);
-  bottom: auto;
-  border-radius: var(--radius-lg);
-}
-.symbol-bar.snap-side.snap-left  { left: 0;  right: auto; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
-.symbol-bar.snap-side.snap-right { right: 0; left: auto;  border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+      /* Orb settings */
+      --orb-speed: 7.8s;
+      --kob-voice-accent: #ffffff;
+    }
 
-/* ── snap-top ── */
-.symbol-bar.snap-top {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: auto;
-  right: auto;
-  flex-direction: row;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-}
+    /* Reset – limpeza do terreno */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* ── snap-bottom ── */
-.symbol-bar.snap-bottom {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  top: auto;
-  right: auto;
-  flex-direction: row;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: 6px 8px;
-}
+    html, body {
+      height: 100%;
+      background: var(--bg-dark) var(--bg-gradient);  /* Sobreposição do céu estrelado */
+      color: var(--text);
+      font-family: var(--font-main);
+      overflow-x: auto;
+      overflow-y: auto;  /* Ajustado para permitir rolagem do conteúdo */
+      scroll-behavior: smooth;
+    }
 
-/* ── dragging state ── */
-.symbol-bar.is-dragging {
-  opacity: .82;
-  box-shadow:
-    0 0 60px var(--kob-voice-glow),
-    0 20px 50px rgba(0,0,0,.85),
-    inset 0 0 0 1px rgba(255,255,255,.08);
-  cursor: grabbing;
-}
+    /* ---------------------------------------------------------------------
+       2. NOVA – O HUD FLUTUANTE (MOVIMENTO)
+          O elemento que viaja pelo espaço da tela. Sua natureza é ser livre,
+          mas responde a campos gravitacionais.
+       --------------------------------------------------------------------- */
+    .symbol-bar {
+      position: fixed;
+      left: 20px;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      z-index: 9999;
 
-/* ── collapsed ── */
-.symbol-bar.collapsed .kob-symmbar-scroll,
-.symbol-bar.collapsed .hud-info {
-  display: none;
-}
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      align-items: center;
+      justify-content: center;
 
-/* ── idle / dimmed ── */
-.symbol-bar.idle {
-  opacity: .55;
-}
-.symbol-bar:hover,
-.symbol-bar:focus-within {
-  opacity: 1 !important;
-}
+      /* Estética – superfície vítrea */
+      background: rgba(10, 12, 20, 0.85);
+      backdrop-filter: blur(15px) saturate(180%);
+      -webkit-backdrop-filter: blur(15px) saturate(180%);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      border-radius: 28px;
 
-/* ── TOGGLE WRAP ── */
-.toggle-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+      /* Comportamento – arrasto nativo desabilitado */
+      user-select: none;
+      touch-action: none;
 
-/* ── HUD STATUS ── */
-.hud-info {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .52rem;
-  color: var(--muted);
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  text-align: center;
-  padding: 2px 4px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  transition: color .3s;
-}
+      /* Transições – base para o movimento elástico (Vitalis) */
+      transition:
+        opacity 0.6s ease,
+        top 0.35s cubic-bezier(0.175,0.885,0.32,1.275),
+        left 0.35s cubic-bezier(0.175,0.885,0.32,1.275),
+        border-radius 0.25s ease,
+        background 0.4s ease,
+        border-color 0.5s ease;
+    }
 
-/* ══════════════════════════════════════════
-   SYMBOL BUTTONS
-══════════════════════════════════════════ */
-.symbol-button {
-  position: relative;
-  width: var(--symbol-size);
-  height: var(--symbol-size);
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.03);
-  color: var(--ink);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background var(--transition),
-    border-color var(--transition),
-    box-shadow var(--transition),
-    transform var(--transition);
-  overflow: hidden;
-  flex-shrink: 0;
-}
+    /* ---------------------------------------------------------------------
+       3. VITALIS – TRANSIÇÕES ELÁSTICAS E VIDA ORGÂNICA
+          A curva cúbica que simula uma mola física. Faz o HUD parecer vivo.
+       --------------------------------------------------------------------- */
 
-.symbol-button:hover {
-  background: rgba(255,255,255,.07);
-  border-color: var(--kob-voice-primary);
-  box-shadow: 0 0 12px var(--kob-voice-glow);
-  transform: scale(1.06);
-}
+    /* ---------------------------------------------------------------------
+       4. PULSE – ESTADOS DE INTERAÇÃO E RESPOSTA IMEDIATA
+          O HUD reage à presença do usuário: fica mais visível ao hover,
+          opaco quando ocioso, e perde transições durante o arrasto.
+       --------------------------------------------------------------------- */
+    .symbol-bar.idle {
+      opacity: 0.2;
+    }
+    .symbol-bar.idle:hover {
+      opacity: 1;
+    }
 
-.symbol-button:active {
-  transform: scale(.94);
-  background: rgba(255,255,255,.1);
-}
+    .symbol-bar.is-dragging {
+      opacity: 0.9;
+      transition: none !important;
+      transform: none !important;
+      will-change: top, left;
+    }
 
-.symbol-button.main-toggle {
-  font-size: 1.1rem;
-  border-color: rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-}
+    /* ---------------------------------------------------------------------
+       5. ARTEMIS – ESTADOS DE ENCAIXE (SNAP)
+          Classes que transformam a aparência do HUD conforme a borda dominante.
+       --------------------------------------------------------------------- */
+    .symbol-bar.snap-side {
+      flex-direction: column;
+      border-radius: 0 24px 24px 0;
+      border-left: 0;
+    }
 
-.symbol-button.main-toggle:hover {
-  background: rgba(255,255,255,.1);
-  border-color: var(--kob-voice-primary);
-}
+    .symbol-bar.snap-side-right {
+      flex-direction: column;
+      border-radius: 24px 0 0 24px;
+      border-right: 0;
+    }
 
-.symbol-button.active,
-.symbol-button[data-active="true"] {
-  background: rgba(107,68,173,.18);
-  border-color: var(--kob-voice-primary);
-  box-shadow: 0 0 16px var(--kob-voice-glow);
-}
+    .symbol-bar.snap-top {
+      flex-direction: row;
+      border-radius: 0 0 24px 24px;
+      border-top: 0;
+    }
 
-/* ── SYMBOL WRAP ── */
-.symbol-wrap {
-  display: contents;
-}
+    .symbol-bar.snap-side,
+    .symbol-bar.snap-side-right,
+    .symbol-bar.snap-top {
+      max-width: 90vw;
+      max-height: 90vh;
+    }
 
-/* ── ORB MICROPHONE ── */
-.orb-microphone-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
+    .symbol-bar.floating {
+      flex-direction: column;
+      border-radius: 28px;
+      inset: auto;
+    }
 
-.tts-orb-mini {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    /* ---------------------------------------------------------------------
+       6. SERENA – COLAPSO E ECONOMIA DE ESPAÇO
+          O HUD pode se contrair a um pequeno núcleo, escondendo os símbolos.
+       --------------------------------------------------------------------- */
+    .symbol-bar.collapsed {
+      min-width: 44px;
+      min-height: 44px;
+    }
 
-.orb {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, var(--kob-voice-primary), rgba(107,68,173,.3));
-  box-shadow:
-    0 0 12px var(--kob-voice-glow),
-    inset 0 0 6px rgba(255,255,255,.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: box-shadow .3s, background .3s;
-  animation: orb-breathe 3s ease-in-out infinite;
-}
+    .symbol-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
 
-.orb.speaking {
-  animation: orb-pulse 0.6s ease-in-out infinite;
-  box-shadow:
-    0 0 24px var(--kob-voice-glow),
-    0 0 48px var(--kob-voice-glow),
-    inset 0 0 10px rgba(255,255,255,.2);
-}
+    .symbol-bar.collapsed .symbol-wrap {
+      width: 0;
+      height: 0;
+      margin: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0);
+    }
 
-.orb-core {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.7);
-  box-shadow: 0 0 6px rgba(255,255,255,.5);
-}
+    /* ---------------------------------------------------------------------
+       7. KAOS – BOTÕES E AÇÕES TÁTEIS
+          Elementos que o usuário toca, com feedbacks imediatos.
+       --------------------------------------------------------------------- */
+    .symbol-button {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
 
-@keyframes orb-breathe {
-  0%, 100% { transform: scale(1);    opacity: .85; }
-  50%       { transform: scale(1.08); opacity: 1; }
-}
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-@keyframes orb-pulse {
-  0%, 100% { transform: scale(1);    }
-  50%       { transform: scale(1.18); }
-}
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 18px;
 
-/* ══════════════════════════════════════════
-   KOB-SYMMBAR SCROLL (CARROSSEL)
-══════════════════════════════════════════ */
-.kob-symmbar-scroll {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  max-height: 55vh;
-  scroll-snap-type: y mandatory;
-  padding: 2px 0;
-}
-.kob-symmbar-scroll::-webkit-scrollbar { display: none; }
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
 
-.symbol-bar.snap-top .kob-symmbar-scroll {
-  flex-direction: row;
-  overflow-x: auto;
-  overflow-y: hidden;
-  max-height: none;
-  max-width: 70vw;
-  scroll-snap-type: x mandatory;
-}
+      transition: all 0.2s ease;
+    }
 
-.kob-symmbar-scroll .symbol-wrap,
-.kob-symmbar-scroll > .symbol-button {
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
+    .symbol-button:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--kob-voice-primary);
+      color: var(--kob-voice-primary);
+    }
 
-/* ══════════════════════════════════════════
-   KBLX PANEL — KOBLLUX/NEBULA UNIFICADO
-══════════════════════════════════════════ */
-#kblx-back {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(2,4,10,.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  align-items: center;
-  justify-content: center;
-}
-#kblx-back.open { display: flex; }
+    .symbol-button:active {
+      transform: scale(0.9);
+    }
 
-#kblx-panel {
-  background: rgba(5,5,22,.96);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(110,68,173,.45);
-  border-radius: 18px;
-  padding: 1.6rem 1.6rem 1.2rem;
-  width: min(400px, 92vw);
-  box-shadow:
-    0 0 60px rgba(107,68,173,.2),
-    0 20px 50px rgba(0,0,0,.8),
-    inset 0 0 0 1px rgba(255,255,255,.04);
-  animation: kblx-in .25s cubic-bezier(.34,1.56,.64,1) both;
-}
+    .symbol-button.main-toggle {
+      background: linear-gradient(135deg,#1a1d29,#05070a);
+      color: var(--kob-voice-primary);
+      border-color: var(--kob-voice-primary);
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
 
-@keyframes kblx-in {
-  from { opacity: 0; transform: translateY(-18px) scale(.96); }
-  to   { opacity: 1; transform: none; }
-}
+    /* ---------------------------------------------------------------------
+       8. LUMINE – INDICADORES LUMINOSOS E FEEDBACK VISUAL
+          Pequenos pontos de luz que mostram estado ativo, como a voz falando.
+       --------------------------------------------------------------------- */
+    .voice-indicator {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--kob-voice-primary);
+      border: 2px solid #000;
+      box-shadow: 0 0 5px var(--kob-voice-primary);
+      transition: background 0.5s ease, box-shadow 0.5s ease;
+    }
 
-#kblx-panel .p-chip {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .58rem;
-  color: rgba(30,228,255,.65);
-  letter-spacing: .4em;
-  text-transform: uppercase;
-  margin-bottom: .3rem;
-}
+    .hud-info {
+      font-size: 10px;
+      color: var(--kob-voice-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
 
-#kblx-panel .p-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #6B44AD;
-  letter-spacing: .06em;
-  margin-bottom: 1rem;
-}
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      border-left: 1px solid var(--border);
+      pointer-events: none;
+    }
 
-#kblx-panel .p-lbl {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .6rem;
-  color: rgba(232,224,240,.45);
-  letter-spacing: .18em;
-  margin-bottom: .3rem;
-}
+    .symbol-bar.snap-top .hud-info {
+      display: none;
+    }
 
-#kblx-inp {
-  width: 100%;
-  background: rgba(0,0,0,.45);
-  border: 1px solid rgba(110,68,173,.35);
-  border-radius: 8px;
-  padding: .6rem .88rem;
-  color: #e8e0f0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .82rem;
-  outline: none;
-  margin-bottom: .9rem;
-  transition: border-color .2s, box-shadow .2s;
-}
+    /* ---------------------------------------------------------------------
+       9. SOLUS – FOCO NO TEXTO E LEITURA (TTS)
+          O elemento que “fala” é destacado por um outline vivo.
+       --------------------------------------------------------------------- */
+    #kob-tts-outline {
+      position: absolute;
+      z-index: 9998;
+      pointer-events: none;
 
-#kblx-inp:focus {
-  border-color: #6B44AD;
-  box-shadow: 0 0 12px rgba(107,68,173,.3);
-}
+      border: 2px solid var(--kob-voice-primary);
+      border-radius: 8px;
+      background: var(--kob-voice-bg-soft);
+      box-shadow: 0 0 15px var(--kob-voice-primary);
 
-.kblx-row {
-  display: flex;
-  gap: .5rem;
-  flex-wrap: wrap;
-}
+      transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+      display: none;
+    }
 
-.kblx-btn {
-  flex: 1;
-  min-width: 72px;
-  padding: .46rem .6rem;
-  border-radius: 8px;
-  border: 1px solid;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .61rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  background: transparent;
-  transition: all .18s;
-  white-space: nowrap;
-}
+    [data-tts-current="true"] {
+      background: var(--kob-voice-bg-soft);
+      border-radius: 8px;
+      border-color: var(--kob-voice-primary) !important;
+      box-shadow:
+        0 0 15px var(--kob-voice-bg-soft),
+        inset 0 0 10px var(--kob-voice-bg-soft);
+      transform: scale(1.02);
+      transition: all 0.3s ease;
+    }
 
-.kblx-save {
-  border-color: #6B44AD;
-  color: #6B44AD;
-}
-.kblx-save:hover {
-  background: rgba(107,68,173,.12);
-  box-shadow: 0 0 12px rgba(107,68,173,.3);
-}
+    /* ---------------------------------------------------------------------
+       10. RHEA – ESTRUTURA DE PAINÉIS E CONTEÚDO
+          Os blocos que organizam a informação de forma adaptável.
+       --------------------------------------------------------------------- */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
 
-.kblx-close {
-  border-color: rgba(255,255,255,.14);
-  color: rgba(232,224,240,.5);
-}
-.kblx-close:hover { background: rgba(255,255,255,.05); }
+    .system-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+      background: -webkit-linear-gradient(0deg, var(--grad-a), var(--grad-b));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
 
-/* ── anel de progresso (long-press) ── */
-.kblx-ring {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-}
-.kblx-ring svg {
-  width: 44px;
-  height: 44px;
-  transform: rotate(-90deg);
-  overflow: visible;
-}
-.kblx-ring circle {
-  fill: none;
-  stroke: #6B44AD;
-  stroke-width: 2.5;
-  stroke-dasharray: 119.38;
-  stroke-dashoffset: 119.38;
-  stroke-linecap: round;
-}
+    #clock {
+      font-family: monospace;
+      font-size: 1.1rem;
+      color: var(--kob-voice-primary);
+      transition: color 0.5s ease;
+    }
 
-/* ── ring animation (driven by JS) ── */
-.kblx-ring.pressing circle {
-  animation: ring-fill var(--press-dur, 3000ms) linear forwards;
-}
-@keyframes ring-fill {
-  from { stroke-dashoffset: 119.38; }
-  to   { stroke-dashoffset: 0; }
-}
+    .content-box {
+      max-width: 278px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════ */
-@media (max-width: 480px) {
-  :root {
-    --symbol-size: 36px;
-  }
-  #kblx-panel {
-    padding: 1.2rem 1rem .9rem;
-  }
-}
-</style>
+    /* ---------------------------------------------------------------------
+       11. GENUS – ACORDEÕES MODULARES
+          Componentes expansíveis que se adaptam ao conteúdo.
+       --------------------------------------------------------------------- */
+    .accordion {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .accordion-header {
+      padding: 15px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      padding: 0 20px;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .accordion.open .accordion-content {
+      max-height: 2500px;
+      padding: 15px 20px;
+      opacity: 1;
+      border-top: 1px solid var(--border);
+    }
+
+    .indicator {
+      transition: transform 0.3s ease;
+    }
+
+    .accordion.open .indicator {
+      transform: rotate(180deg);
+    }
+
+    /* ---------------------------------------------------------------------
+       12. AION – CAMPOS DE ENTRADA E INTERAÇÕES FINAS
+          Elementos que recebem dados do usuário, com feedback da voz.
+       --------------------------------------------------------------------- */
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: white;
+      font-family: var(--font-main);
+      margin-bottom: 15px;
+      margin-top: 5px;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--kob-voice-primary);
+    }
+
+    /* ---------------------------------------------------------------------
+       ÁREA DE TEXTO PARA LEITURA TTS (exemplo)
+       --------------------------------------------------------------------- */
+    #reader-content p {
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    #reader-content p strong {
+      color: var(--kob-voice-primary);
+      transition: color 0.5s ease;
+    }
+
+    /* ---------------------------------------------------------------------
+       KOBLLUX TTS DOCK (integrado)
+       --------------------------------------------------------------------- */
+    .kob-tts-dock {
+      position: fixed;
+      z-index: 9999;
+      left: var(--tts-left, 16px);
+      bottom: calc(var(--tts-bottom, 20px) + env(safe-area-inset-bottom,0px));
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 14px;
+      background: rgba(15,18,28,.38);
+      border: 1px solid rgba(255,255,255,.12);
+      -webkit-backdrop-filter: blur(10px) saturate(1.1);
+      backdrop-filter: blur(10px) saturate(1.1);
+      box-shadow: 0 3px 6px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.05);
+      touch-action: none;
+      cursor: grab;
+      transition: transform .35s ease, opacity .65s ease;
+    }
+
+    .kob-tts-dock.is-drag {
+      cursor: grabbing;
+    }
+
+    .kob-tts-dock.idle {
+      opacity: .12;
+      transform: scale(.92);
+    }
+
+    .kob-tts-dock:hover {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .kob-tts-dock button {
+      width: 29px;
+      height: 29px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      line-height: 1;
+      color: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+      transition: transform .14s ease, box-shadow .14s ease, color .14s ease;
+      cursor: pointer;
+    }
+
+    .kob-tts-dock button:hover {
+      transform: translateY(-1px);
+      color: #fff;
+    }
+
+    .kob-tts-dock button[aria-pressed="true"] {
+      outline: 2px solid color-mix(in srgb, #00e28b 70%, #67e6ff 30%);
+      box-shadow: 0 2px 7px rgba(0,0,0,.35), 0 0 3px -2px rgba(103,230,255,.8);
+    }
+
+    #tts-status {
+      margin-top: .1rem;
+      font-size: 11px;
+      color: #eaf6ff;
+      max-width: 140px;
+      display: block;
+      white-space: normal;
+      word-break: break-word;
+      text-align: center;
+    }
+
+    /* ---------------------------------------------------------------------
+       CORES DOS ARQUÉTIPOS (definidas via atributo body, mas também como classes para uso nos cards)
+       --------------------------------------------------------------------- */
+    /* Definições via body – permanecem para o HUD */
+    body[data-voice-arch="kobllux"] { --kob-voice-primary: #22D3EE; --kob-voice-secondary: #0E7C9E; }
+    body[data-voice-arch="kodux"]   { --kob-voice-primary: #F97316; --kob-voice-secondary: #C2410C; }
+    body[data-voice-arch="atlas"]   { --kob-voice-primary: #38BDF8; --kob-voice-secondary: #1E3A8A; }
+    body[data-voice-arch="nova"]    { --kob-voice-primary: #F72585; --kob-voice-secondary: #7209B7; }
+    body[data-voice-arch="vitalis"] { --kob-voice-primary: #22C55E; --kob-voice-secondary: #166534; }
+    body[data-voice-arch="pulse"]   { --kob-voice-primary: #EC4899; --kob-voice-secondary: #831843; }
+    body[data-voice-arch="artemis"] { --kob-voice-primary: #A855F7; --kob-voice-secondary: #5B21B6; }
+    body[data-voice-arch="serena"]  { --kob-voice-primary: #38BDF8; --kob-voice-secondary: #1E3A8A; }
+    body[data-voice-arch="kaos"]    { --kob-voice-primary: #FACC15; --kob-voice-secondary: #B45309; }
+    body[data-voice-arch="genus"]   { --kob-voice-primary: #E5E7EB; --kob-voice-secondary: #4B5563; }
+    body[data-voice-arch="lumine"]  { --kob-voice-primary: #FDE047; --kob-voice-secondary: #CA8A04; }
+    body[data-voice-arch="solus"]   { --kob-voice-primary: #0EA5E9; --kob-voice-secondary: #0369A1; }
+    body[data-voice-arch="rhea"]    { --kob-voice-primary: #22C55E; --kob-voice-secondary: #166534; }
+    body[data-voice-arch="aion"]    { --kob-voice-primary: #4F46E5; --kob-voice-secondary: #3730A3; }
+    body[data-voice-arch="uno"]     { --kob-voice-primary: #F97316; --kob-voice-secondary: #C2410C; }
+    body[data-voice-arch="dual"]    { --kob-voice-primary: #06B6D4; --kob-voice-secondary: #0E7C9E; }
+    body[data-voice-arch="trinity"] { --kob-voice-primary: #EC4899; --kob-voice-secondary: #831843; }
+    body[data-voice-arch="infodose"]{ --kob-voice-primary: #22C55E; --kob-voice-secondary: #166534; }
+    body[data-voice-arch="horus"]   { --kob-voice-primary: #F59E0B; --kob-voice-secondary: #B45309; }
+
+    /* Classes para uso nos cards – extraídas das definições acima */
+    .arch-atlas { --arch-color: #38BDF8; --arch-secondary: #1E3A8A; }
+    .arch-nova { --arch-color: #F72585; --arch-secondary: #7209B7; }
+    .arch-vitalis { --arch-color: #22C55E; --arch-secondary: #166534; }
+    .arch-pulse { --arch-color: #EC4899; --arch-secondary: #831843; }
+    .arch-artemis { --arch-color: #A855F7; --arch-secondary: #5B21B6; }
+    .arch-serena { --arch-color: #38BDF8; --arch-secondary: #1E3A8A; }
+    .arch-kaos { --arch-color: #FACC15; --arch-secondary: #B45309; }
+    .arch-genus { --arch-color: #E5E7EB; --arch-secondary: #4B5563; }
+    .arch-lumine { --arch-color: #FDE047; --arch-secondary: #CA8A04; }
+    .arch-solus { --arch-color: #0EA5E9; --arch-secondary: #0369A1; }
+    .arch-rhea { --arch-color: #22C55E; --arch-secondary: #166534; }
+    .arch-aion { --arch-color: #4F46E5; --arch-secondary: #3730A3; }
+
+    /* =====================================================================
+       ESTILOS ADICIONAIS PARA A PÁGINA KOBLLUX (HERO, MANIFESTO, PORTAL, CARDS)
+       ===================================================================== */
+    .hero, .manifesto, .portal-section, .archetypes-section, .law-footer {
+      position: relative;
+      z-index: 10;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-sigil {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+      color: var(--kob-voice-primary);
+      opacity: 0.7;
+      letter-spacing: 0.3em;
+      margin-bottom: 2rem;
+      white-space: pre;
+      line-height: 1.6;
+      animation: pulse-soft 4s ease-in-out infinite;
+    }
+
+    .hero-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 40%, var(--kob-voice-primary) 70%, var(--grad-a) 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s ease-in-out infinite;
+      letter-spacing: 0.1em;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+      color: var(--kob-voice-secondary);
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0.8;
+    }
+
+    .hero-law {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 300;
+      color: var(--ink);
+      max-width: 700px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-law strong {
+      color: var(--kob-voice-primary);
+      font-weight: 600;
+    }
+
+    .hero-seal {
+      font-size: 2rem;
+      letter-spacing: 0.3em;
+      animation: pulseX 20s linear infinite;
+      display: inline-block;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.5em;
+      color: var(--kob-voice-secondary);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--kob-voice-primary);
+      letter-spacing: 0.05em;
+    }
+
+    /* Manifesto Grid */
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .manifest-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .manifest-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--kob-voice-primary), transparent);
+      opacity: 0.6;
+    }
+
+    .manifest-card-key {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--kob-voice-secondary);
+      letter-spacing: 0.3em;
+      margin-bottom: 0.5rem;
+      opacity: 0.7;
+    }
+
+    .manifest-card-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      color: var(--kob-voice-primary);
+      opacity: 0.3;
+      position: absolute;
+      top: 0.8rem;
+      right: 1rem;
+      line-height: 1;
+    }
+
+    .manifest-card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--ink);
+      font-weight: 300;
+    }
+
+    /* Tabela de Portais */
+    .portal-section {
+      background: linear-gradient(180deg, transparent, rgba(10,10,32,0.8), transparent);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .portal-table-wrapper {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      overflow-x: auto;
+    }
+
+    .portal-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .portal-table th {
+      font-family: var(--font-main);
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--kob-voice-secondary);
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid color-mix(in srgb, var(--kob-voice-secondary) 20%, transparent);
+      opacity: 0.7;
+    }
+
+    .portal-table td {
+      padding: 0.9rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+
+    .portal-table tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .portal-ascii {
+      font-size: 1.1rem;
+      color: var(--kob-voice-primary);
+      white-space: nowrap;
+    }
+
+    .portal-name {
+      color: var(--kob-voice-secondary);
+      font-weight: bold;
+      letter-spacing: 0.2em;
+    }
+
+    .portal-func {
+      color: var(--ink);
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+    }
+
+    /* Grid de Arquétipos (cards) */
+    .archetypes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .arch-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      --card-accent: var(--kob-voice-primary); /* fallback */
+    }
+
+    .arch-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px color-mix(in srgb, var(--card-accent) 30%, transparent);
+      border-color: var(--card-accent);
+    }
+
+    .arch-card-header {
+      padding: 2rem 2rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .arch-card-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 2rem; right: 2rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--card-accent), transparent);
+    }
+
+    .arch-symbol {
+      font-size: 2.8rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 12px var(--card-accent));
+      flex-shrink: 0;
+      transition: filter 0.3s ease;
+    }
+
+    .arch-card:hover .arch-symbol {
+      filter: drop-shadow(0 0 20px var(--card-accent)) brightness(1.2);
+    }
+
+    .arch-header-text {
+      flex: 1;
+    }
+
+    .arch-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--card-accent);
+      letter-spacing: 0.4em;
+      opacity: 0.6;
+      margin-bottom: 0.2rem;
+    }
+
+    .arch-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--card-accent);
+      letter-spacing: 0.06em;
+      line-height: 1.1;
+    }
+
+    .arch-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--ink);
+      opacity: 0.7;
+      margin-top: 0.3rem;
+      letter-spacing: 0.2em;
+    }
+
+    .arch-body {
+      padding: 1.5rem 2rem 2rem;
+      transition: height 0.34s cubic-bezier(.2,.9,.25,1), opacity 0.25s ease, padding 0.28s cubic-bezier(.2,.9,.25,1);
+      overflow: hidden;
+    }
+
+    .arch-desc {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--ink);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-visual {
+      width: 100%;
+      height: 160px;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .arch-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, color-mix(in srgb, var(--card-accent) 15%, transparent) 0%, transparent 70%);
+    }
+
+    .arch-visual-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .arch-visual-symbol {
+      font-size: 4.5rem;
+      filter: drop-shadow(0 0 30px var(--card-accent));
+      display: block;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .arch-visual-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      color: var(--card-accent);
+      opacity: 0.5;
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .arch-code-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.3);
+      border-radius: 30px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .arch-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--card-accent);
+      letter-spacing: 0.1em;
+    }
+
+    .arch-code-btn {
+      background: transparent;
+      border: 1px solid var(--card-accent);
+      border-radius: 20px;
+      padding: 0.3rem 1rem;
+      color: var(--card-accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .arch-code-btn:hover {
+      background: color-mix(in srgb, var(--card-accent) 10%, transparent);
+      box-shadow: 0 0 10px var(--card-accent);
+    }
+
+    .arch-code-btn.copied {
+      border-color: #50dc78;
+      color: #50dc78;
+      background: rgba(80,220,120,0.1);
+    }
+
+    .arch-prompt-wrapper {
+      margin-top: 1.5rem;
+    }
+
+    .arch-prompt-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: var(--card-accent);
+      opacity: 0.6;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .arch-prompt {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 2px solid var(--card-accent);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.65;
+      max-height: 130px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--card-accent) transparent;
+      margin-bottom: 0.75rem;
+    }
+
+    .copy-prompt-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      border: 1px solid var(--card-accent);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      color: var(--card-accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .copy-prompt-btn:hover {
+      background: color-mix(in srgb, var(--card-accent) 10%, transparent);
+      box-shadow: 0 0 15px var(--card-accent);
+    }
+
+    .copy-prompt-btn.copied {
+      border-color: #50dc78;
+      color: #50dc78;
+      background: rgba(80,220,120,0.08);
+    }
+
+    /* Footer */
+    .law-footer {
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 600px;
+      margin: 2rem auto;
+      opacity: 0.3;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--kob-voice-primary);
+    }
+
+    .divider-sym {
+      color: var(--kob-voice-primary);
+      font-size: 1.2rem;
+    }
+
+    .law-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(0.9rem, 2vw, 1.4rem);
+      color: var(--kob-voice-primary);
+      letter-spacing: 0.1em;
+      line-height: 2;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .law-center {
+      font-family: var(--font-main);
+      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      color: var(--ink);
+      letter-spacing: 0.3em;
+      opacity: 0.5;
+      text-transform: uppercase;
+    }
+
+    /* Accordion states */
+    .arch-card.is-collapsed .arch-body,
+    .manifest-card.is-collapsed .collapsible-body {
+      height: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      opacity: 0 !important;
+      overflow: hidden !important;
+    }
+
+    .arch-card.is-open .indicator,
+    .manifest-card.is-open .indicator {
+      transform: rotate(180deg);
+    }
+
+    .indicator {
+      display:inline-block;
+      width:22px;
+      height:22px;
+      line-height:22px;
+      text-align:center;
+      border-radius:6px;
+      transition: transform .32s cubic-bezier(.2,.9,.25,1), opacity .2s;
+      color: var(--card-accent, var(--kob-voice-primary));
+      font-size:12px;
+      opacity: .9;
+      flex-shrink:0;
+      margin-left:12px;
+    }
+
+    .arch-card-header[tabindex]:focus,
+    .manifest-card .manifest-card-key[tabindex]:focus {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--card-accent, var(--kob-voice-primary)) 12%, transparent);
+      border-radius: 8px;
+    }
+
+    /* Animações */
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.9; }
+    }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .arch-card {
+      animation: fade-in-up 0.6s ease both;
+    }
+    .arch-card:nth-child(1) { animation-delay: 0.05s; }
+    .arch-card:nth-child(2) { animation-delay: 0.1s; }
+    .arch-card:nth-child(3) { animation-delay: 0.15s; }
+    .arch-card:nth-child(4) { animation-delay: 0.2s; }
+    .arch-card:nth-child(5) { animation-delay: 0.25s; }
+    .arch-card:nth-child(6) { animation-delay: 0.3s; }
+    .arch-card:nth-child(7) { animation-delay: 0.35s; }
+    .arch-card:nth-child(8) { animation-delay: 0.4s; }
+    .arch-card:nth-child(9) { animation-delay: 0.45s; }
+    .arch-card:nth-child(10) { animation-delay: 0.5s; }
+    .arch-card:nth-child(11) { animation-delay: 0.55s; }
+    .arch-card:nth-child(12) { animation-delay: 0.6s; }
+
+    /* Acessibilidade */
+    button:focus-visible {
+      outline: 2px solid var(--kob-voice-primary);
+      outline-offset: 2px;
+    }
+
+    /* Scroll customizado */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--kob-voice-primary); border-radius: 3px; }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      .hero, .manifesto, .portal-section, .archetypes-section, .law-footer {
+        padding: 2rem 1rem;
+      }
+      .archetypes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── FRAME BROWSER ── */
+    .wrap { position:relative; width:100%; min-height:100vh; }
+    .content { position:fixed; inset:0; z-index:0; }
+    #frame { width:100%; height:100%; border:none; display:block; background:#fff; }
+
+    /* ── KOB-SYMMBAR SCROLL (CARROSSEL) ── */
+    .kob-symmbar-scroll {
+      display:flex; flex-direction:column; gap:10px;
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch; scrollbar-width:none;
+      max-height:55vh; scroll-snap-type:y mandatory; padding:2px 0;
+    }
+    .kob-symmbar-scroll::-webkit-scrollbar { display:none; }
+    .symbol-bar.snap-top .kob-symmbar-scroll {
+      flex-direction:row; overflow-x:auto; overflow-y:hidden;
+      max-height:none; max-width:70vw; scroll-snap-type:x mandatory;
+    }
+    .symbol-bar.snap-side .kob-symmbar-scroll,
+    .symbol-bar.snap-side-right .kob-symmbar-scroll {
+      flex-direction:column; overflow-y:auto; overflow-x:hidden; max-height:55vh;
+    }
+    .kob-symmbar-scroll .symbol-wrap,
+    .kob-symmbar-scroll > .symbol-button { scroll-snap-align:start; flex-shrink:0; }
+  </style>
 </head>
-<body data-voice-arch="kobllux">
+<body data-voice-arch="kobllux"> <!-- Define a cor padrão do HUD -->
+
 <div id="root">
 
-<!-- ══ MAIN WRAP ══ -->
+<script src="https://kodux78k.github.io/oiDual--Y-/js/kob-LVb.js"></script>
+
 <div class="wrap">
   <div class="content">
     <iframe id="frame" src="about:blank"></iframe>
     <div id="kob-tts-outline"></div>
   </div>
 
-  <!-- ══ SYMBOL-BAR HUD ══ -->
+  <!-- HUD Inteligente -->
   <div class="symbol-bar floating" id="symbolBar">
-
-    <!-- Toggle -->
+    <!-- Botão Menu -->
     <div class="toggle-wrap">
-      <button class="symbol-button main-toggle" id="toggleBtn" title="Menu">≡</button>
+      <button class="symbol-button main-toggle" id="toggleBtn" title="Menu / Iniciar">≡</button>
     </div>
 
-    <!-- Controles de Navegação -->
+    <!-- CARROSSEL DE NAVEGAÇÃO SIMBIÓTICA -->
     <div class="kob-symmbar-scroll" id="symmbarScroll">
       <div class="symbol-wrap">
         <button class="symbol-button" id="btn-prev" title="Voltar">◀</button>
       </div>
       <div class="symbol-wrap">
-        <button class="symbol-button" id="btn-play" title="Play/Pause">▶</button>
+        <button class="symbol-button" id="btn-play" title="Ler seleção (voz do arquétipo)">▶</button>
       </div>
       <div class="symbol-wrap">
-        <button class="symbol-button" id="btn-next" title="Próximo">▶▶</button>
+        <button class="symbol-button" id="btn-next" title="Avançar">▶▶</button>
       </div>
-      <button class="symbol-button" id="btn-arch" title="Trocar Arquétipo">
+      <!-- Arquétipo ORB (Sempre visível) -->
+      <button class="symbol-button" id="btn-arch" title="Trocar Arquétipo de Voz" style="scroll-snap-align:start;flex-shrink:0;">
         <div class="orb-microphone-container">
           <div class="tts-orb-mini">
             <div class="orb" id="main-orb">
@@ -613,416 +1247,505 @@ body::before {
       <div class="symbol-wrap">
         <button class="symbol-button" data-id="doc" data-url="https://kodux78k.github.io/info-Doc/index.html">◘</button>
       </div>
-    </div>
-
+    </div><!-- /.kob-symmbar-scroll -->
     <div class="hud-info" id="hudStatus">KOBLLUX · ORB NEXUS</div>
-  </div><!-- /symbol-bar -->
-</div><!-- /wrap -->
+  </div><!-- /.symbol-bar -->
+    
+    
+  </div>
 
-<!-- ══ BACKGROUND CANVAS ══ -->
-<canvas id="bg-canvas"></canvas>
-<div id="arch-overlay" style="opacity:0.4;"></div>
+<!-- Canvas de fundo e overlay -->
+    <canvas id="bg-canvas"></canvas>
+    <div id="arch-overlay" style="opacity:0.4;"></div>
+<!-- Scripts -->
+<script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kobdh0-main.js"></script>
 
-<!-- ══ KBLX URL EDITOR PANEL ══ -->
-<div id="kblx-back" role="dialog" aria-modal="true" aria-label="Editar URL">
+</div>
+
+
+<!-- ╔══════════════════════════════════════════╗
+     ║  KOBLLUX · LONG-PRESS URL EDITOR        ║
+     ║  Segurar 3s → edita data-url do botão   ║
+     ║  Clique curto → sistema externo cuida   ║
+     ╚══════════════════════════════════════════╝ -->
+<style>
+  /* ── anel de progresso (long-press) ── */
+  .kblx-ring{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;z-index:5;}
+  .kblx-ring svg{width:44px;height:44px;transform:rotate(-90deg);overflow:visible;}
+  .kblx-ring circle{fill:none;stroke:#6B44AD;stroke-width:2.5;stroke-dasharray:119.38;stroke-dashoffset:119.38;stroke-linecap:round;}
+
+  /* ── backdrop ── */
+  #kblx-back{display:none;position:fixed;inset:0;z-index:9999;background:rgba(2,4,10,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;}
+  #kblx-back.open{display:flex;}
+
+  /* ── painel KOBLLUX/NEBULA ── */
+  #kblx-panel{background:rgba(5,5,22,.96);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(110,68,173,.45);border-radius:18px;padding:1.6rem 1.6rem 1.2rem;width:min(400px,92vw);box-shadow:0 0 60px rgba(107,68,173,.2),0 20px 50px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.04);animation:kblx-in .25s cubic-bezier(.34,1.56,.64,1) both;}
+  @keyframes kblx-in{from{opacity:0;transform:translateY(-18px) scale(.96);}to{opacity:1;transform:none;}}
+  #kblx-panel .p-chip{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(30,228,255,.65);letter-spacing:.4em;text-transform:uppercase;margin-bottom:.3rem;}
+  #kblx-panel .p-title{font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:800;color:#6B44AD;letter-spacing:.06em;margin-bottom:1rem;}
+  #kblx-panel .p-lbl{display:block;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:rgba(232,224,240,.45);letter-spacing:.18em;margin-bottom:.3rem;}
+  #kblx-inp{width:100%;background:rgba(0,0,0,.45);border:1px solid rgba(110,68,173,.35);border-radius:8px;padding:.6rem .88rem;color:#e8e0f0;font-family:'JetBrains Mono',monospace;font-size:.82rem;outline:none;margin-bottom:.9rem;transition:border-color .2s,box-shadow .2s;}
+  #kblx-inp:focus{border-color:#6B44AD;box-shadow:0 0 12px rgba(107,68,173,.3);}
+  .kblx-row{display:flex;gap:.5rem;flex-wrap:wrap;}
+  .kblx-btn{flex:1;min-width:72px;padding:.46rem .6rem;border-radius:8px;border:1px solid;font-family:'JetBrains Mono',monospace;font-size:.61rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .18s;white-space:nowrap;}
+  .kblx-save{border-color:#6B44AD;color:#6B44AD;}.kblx-save:hover{background:rgba(107,68,173,.12);box-shadow:0 0 12px rgba(107,68,173,.3);}
+  .kblx-close{border-color:rgba(255,255,255,.14);color:rgba(232,224,240,.5);}.kblx-close:hover{background:rgba(255,255,255,.05);}
+</style>
+
+<div id="kblx-back">
   <div id="kblx-panel">
-    <div class="p-chip">KOBLLUX · SYMMBAR</div>
-    <div class="p-title">EDITAR DESTINO</div>
-    <label class="p-lbl" for="kblx-inp">URL · DESTINO DO SÍMBOLO</label>
-    <input id="kblx-inp" type="url" placeholder="https://" autocomplete="off" spellcheck="false">
+    <div class="p-chip">⌘ KOBLLUX HUD · EDITOR DE ROTA</div>
+    <div class="p-title" id="kblx-ttl">Botão</div>
+    <label class="p-lbl" for="kblx-inp">Novo valor para data-url</label>
+    <input id="kblx-inp" type="text" placeholder="arquivo.html  ou  https://..." spellcheck="false" autocomplete="off">
     <div class="kblx-row">
-      <button class="kblx-btn kblx-save" id="kblx-save">SALVAR</button>
-      <button class="kblx-btn kblx-close" id="kblx-close">CANCELAR</button>
+      <button class="kblx-btn kblx-save"  id="kblx-btn-save">⊙ Salvar no botão</button>
+      <button class="kblx-btn kblx-close" id="kblx-btn-close">✕ Fechar</button>
     </div>
   </div>
 </div>
 
-</div><!-- /root -->
 
-<!-- ══ JAVASCRIPT ══ -->
 <script>
-(function () {
-  'use strict';
+(function(){
+  const LP   = 3000;          // ms para long-press
+  const DASH = 119.38;        // 2π × 19 (r=19)
 
-  /* ── constants ── */
-  const PRESS_DURATION = 3000;
-  const STORAGE_KEY    = 'kob_symmbar_urls';
-  const IDLE_DELAY     = 4000;
+  let _activeBtn = null;
+  let _timer     = null;
+  let _raf       = null;
+  let _t0        = null;
 
-  /* ── state ── */
-  let activeBtn   = null;   // button being long-pressed / edited
-  let pressTimer  = null;
-  let pressStart  = null;
-  let rafId       = null;
-  let idleTimer   = null;
-  let isDragging  = false;
-  let dragOffX    = 0;
-  let dragOffY    = 0;
-  let collapsed   = false;
+  const back  = document.getElementById('kblx-back');
+  const panel = document.getElementById('kblx-panel');
+  const ttl   = document.getElementById('kblx-ttl');
+  const inp   = document.getElementById('kblx-inp');
 
-  /* ── elements ── */
-  const bar       = document.getElementById('symbolBar');
-  const frame     = document.getElementById('frame');
-  const hudStatus = document.getElementById('hudStatus');
-  const toggleBtn = document.getElementById('toggleBtn');
-  const kblxBack  = document.getElementById('kblx-back');
-  const kblxPanel = document.getElementById('kblx-panel');
-  const kblxInp   = document.getElementById('kblx-inp');
-  const kblxSave  = document.getElementById('kblx-save');
-  const kblxClose = document.getElementById('kblx-close');
-  const mainOrb   = document.getElementById('main-orb');
-
-  /* ── url storage ── */
-  function loadUrls() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-    catch { return {}; }
-  }
-  function saveUrls(map) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(map)); }
-    catch {}
-  }
-
-  /* ── apply saved urls ── */
-  function applyStoredUrls() {
-    const map = loadUrls();
-    document.querySelectorAll('.symbol-button[data-id]').forEach(btn => {
-      const id = btn.getAttribute('data-id');
-      if (map[id]) btn.setAttribute('data-url', map[id]);
-    });
-  }
-  applyStoredUrls();
-
-  /* ── navigate ── */
-  function navigateTo(url) {
-    if (!url || url === 'about:blank') return;
-    frame.src = url;
-    const short = url.replace(/^https?:\/\//, '').slice(0, 28);
-    hudStatus.textContent = short;
-    resetIdle();
-  }
-
-  /* ── symbol-button clicks ── */
-  document.querySelectorAll('.symbol-button[data-id]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const url = btn.getAttribute('data-url');
-      if (url) navigateTo(url);
-      document.querySelectorAll('.symbol-button[data-id]').forEach(b => b.removeAttribute('data-active'));
-      btn.setAttribute('data-active', 'true');
-    });
+  /* ── injeta anel em cada botão nav ── */
+  document.querySelectorAll('.symbol-wrap button[data-url]').forEach(btn => {
+    btn.style.position = 'relative';
+    const d = document.createElement('div');
+    d.className = 'kblx-ring';
+    d.innerHTML = '<svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/></svg>';
+    btn.appendChild(d);
   });
 
-  /* ── nav buttons ── */
-  document.getElementById('btn-prev')?.addEventListener('click', () => { history.back(); });
-  document.getElementById('btn-next')?.addEventListener('click', () => { history.forward(); });
-  document.getElementById('btn-play')?.addEventListener('click', () => {
-    hudStatus.textContent = 'PLAY · PAUSE';
-  });
-
-  /* ── toggle collapse ── */
-  toggleBtn.addEventListener('click', () => {
-    collapsed = !collapsed;
-    bar.classList.toggle('collapsed', collapsed);
-    toggleBtn.textContent = collapsed ? '⊞' : '≡';
-  });
-
-  /* ══════════════════════════════
-     LONG-PRESS → OPEN PANEL
-  ══════════════════════════════ */
-  function injectRing(btn) {
-    if (btn.querySelector('.kblx-ring')) return;
-    const ring = document.createElement('div');
-    ring.className = 'kblx-ring';
-    ring.innerHTML = `<svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="19"/></svg>`;
-    btn.appendChild(ring);
+  function ring(btn, pct){
+    const c = btn.querySelector('.kblx-ring circle');
+    if(!c) return;
+    c.style.transition = 'none';
+    c.style.strokeDashoffset = DASH * (1 - Math.min(pct,1));
+  }
+  function ringReset(btn){
+    if(!btn) return;
+    const c = btn.querySelector('.kblx-ring circle');
+    if(!c) return;
+    c.style.transition = 'stroke-dashoffset .2s ease';
+    c.style.strokeDashoffset = DASH;
   }
 
-  function startPress(btn) {
-    if (!btn.hasAttribute('data-id')) return;
-    injectRing(btn);
-    activeBtn = btn;
-    pressStart = performance.now();
-
-    const ring = btn.querySelector('.kblx-ring');
-    const circle = ring?.querySelector('circle');
-
-    function animateRing() {
-      if (!pressStart) return;
-      const elapsed  = performance.now() - pressStart;
-      const progress = Math.min(elapsed / PRESS_DURATION, 1);
-      const CIRCUM   = 119.38;
-      if (circle) circle.style.strokeDashoffset = CIRCUM * (1 - progress);
-      if (progress < 1) {
-        rafId = requestAnimationFrame(animateRing);
-      }
-    }
-
-    pressTimer = setTimeout(() => {
-      cancelAnimationFrame(rafId);
-      openPanel(btn);
-      resetRing(btn);
-    }, PRESS_DURATION);
-
-    rafId = requestAnimationFrame(animateRing);
+  function openPanel(btn){
+    _activeBtn = btn;
+    const sym = (btn.textContent.trim().replace(/[\s\S]*?([\S])[\s\S]*/,'$1') || btn.dataset.id || '?');
+    ttl.textContent = 'Botão  ' + sym + '  [data-id="' + (btn.dataset.id||'') + '"]';
+    inp.value = btn.dataset.url || '';
+    back.classList.add('open');
+    setTimeout(()=>inp.focus(), 80);
   }
 
-  function cancelPress() {
-    clearTimeout(pressTimer);
-    cancelAnimationFrame(rafId);
-    pressStart = null;
-    if (activeBtn) resetRing(activeBtn);
-  }
-
-  function resetRing(btn) {
-    const circle = btn?.querySelector('.kblx-ring circle');
-    if (circle) circle.style.strokeDashoffset = '119.38';
-  }
-
-  document.querySelectorAll('.symbol-button[data-id]').forEach(btn => {
-    // mouse
-    btn.addEventListener('mousedown',  () => startPress(btn));
-    btn.addEventListener('mouseup',    cancelPress);
-    btn.addEventListener('mouseleave', cancelPress);
-    // touch
-    btn.addEventListener('touchstart', (e) => { e.preventDefault(); startPress(btn); }, { passive: false });
-    btn.addEventListener('touchend',   cancelPress);
-    btn.addEventListener('touchcancel',cancelPress);
-  });
-
-  /* ══════════════════════════════
-     KBLX PANEL
-  ══════════════════════════════ */
-  function openPanel(btn) {
-    activeBtn = btn;
-    kblxInp.value = btn.getAttribute('data-url') || '';
-    kblxBack.classList.add('open');
-    setTimeout(() => kblxInp.focus(), 80);
-  }
-
-  function closePanel() {
-    kblxBack.classList.remove('open');
-    activeBtn = null;
-  }
-
-  function saveUrl() {
-    const url = kblxInp.value.trim();
-    if (!activeBtn) { closePanel(); return; }
-    if (url) {
-      activeBtn.setAttribute('data-url', url);
-      const id  = activeBtn.getAttribute('data-id');
-      const map = loadUrls();
-      map[id]   = url;
-      saveUrls(map);
+  function saveUrl(){
+    if(!_activeBtn) return;
+    const v = inp.value.trim();
+    if(v) {
+      _activeBtn.dataset.url = v;   /* ← único efeito: reescreve data-url no DOM */
+      const hud = document.getElementById('hudStatus');
+      if(hud){ const p=hud.textContent; hud.textContent='✓ data-url atualizado'; setTimeout(()=>hud.textContent=p, 2500); }
     }
     closePanel();
   }
 
-  kblxSave.addEventListener('click', saveUrl);
-  kblxClose.addEventListener('click', closePanel);
+  function closePanel(){
+    back.classList.remove('open');
+    _activeBtn = null;
+  }
 
-  kblxBack.addEventListener('click', (e) => {
-    if (e.target === kblxBack) closePanel();
+  document.getElementById('kblx-btn-save').addEventListener('click', saveUrl);
+  document.getElementById('kblx-btn-close').addEventListener('click', closePanel);
+  back.addEventListener('click', e=>{ if(e.target===back) closePanel(); });
+  document.addEventListener('keydown', e=>{
+    if(!back.classList.contains('open')) return;
+    if(e.key==='Escape') closePanel();
+    if(e.key==='Enter')  saveUrl();
   });
 
-  kblxInp.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter')  saveUrl();
-    if (e.key === 'Escape') closePanel();
+  /* ── long-press em cada botão nav ── */
+  document.querySelectorAll('.symbol-wrap button[data-url]').forEach(btn => {
+
+    function onDown(e){
+      /* NÃO chama e.preventDefault() — deixa o sistema externo funcionar normalmente */
+      _t0 = Date.now();
+
+      _timer = setTimeout(()=>{
+        /* 3s atingido → abre editor */
+        cancelAnimationFrame(_raf);
+        ringReset(btn);
+        _t0 = null;
+        openPanel(btn);
+      }, LP);
+
+      (function tick(){
+        if(_t0===null) return;
+        ring(btn, (Date.now()-_t0)/LP);
+        _raf = requestAnimationFrame(tick);
+      })();
+    }
+
+    function onUp(){
+      /* apenas limpa anel — NÃO interfere em cliques curtos */
+      clearTimeout(_timer);
+      cancelAnimationFrame(_raf);
+      ringReset(btn);
+      _t0 = null;
+    }
+
+    btn.addEventListener('pointerdown',   onDown, {passive:true}); /* passive:true → não bloqueia */
+    btn.addEventListener('pointerup',     onUp,   {passive:true});
+    btn.addEventListener('pointerleave',  onUp,   {passive:true});
+    btn.addEventListener('pointercancel', onUp,   {passive:true});
   });
-
-  /* ══════════════════════════════
-     DRAGGABLE BAR
-  ══════════════════════════════ */
-  function onDragStart(e) {
-    if (e.target.closest('button')) return;
-    isDragging = true;
-    bar.classList.add('is-dragging');
-    const touch = e.touches ? e.touches[0] : e;
-    const rect  = bar.getBoundingClientRect();
-    dragOffX = touch.clientX - rect.left;
-    dragOffY = touch.clientY - rect.top;
-    e.preventDefault();
-  }
-
-  function onDragMove(e) {
-    if (!isDragging) return;
-    const touch = e.touches ? e.touches[0] : e;
-    let x = touch.clientX - dragOffX;
-    let y = touch.clientY - dragOffY;
-    const W = window.innerWidth;
-    const H = window.innerHeight;
-    const bw = bar.offsetWidth;
-    const bh = bar.offsetHeight;
-
-    // clamp
-    x = Math.max(0, Math.min(x, W - bw));
-    y = Math.max(0, Math.min(y, H - bh));
-
-    bar.style.left   = x + 'px';
-    bar.style.top    = y + 'px';
-    bar.style.right  = 'auto';
-    bar.style.bottom = 'auto';
-    bar.style.transform = 'none';
-    bar.classList.remove('snap-side', 'snap-left', 'snap-right', 'snap-top', 'snap-bottom', 'floating');
-    e.preventDefault();
-  }
-
-  function onDragEnd(e) {
-    if (!isDragging) return;
-    isDragging = false;
-    bar.classList.remove('is-dragging');
-
-    const rect = bar.getBoundingClientRect();
-    const W    = window.innerWidth;
-    const H    = window.innerHeight;
-    const cx   = rect.left + rect.width  / 2;
-    const cy   = rect.top  + rect.height / 2;
-
-    const snapEdge   = 48;
-    const snapTop    = cy < snapEdge;
-    const snapBottom = cy > H - snapEdge;
-    const snapLeft   = cx < snapEdge;
-    const snapRight  = cx > W - snapEdge;
-
-    bar.style.left = bar.style.top = bar.style.right = bar.style.bottom = '';
-    bar.style.transform = '';
-
-    if (snapTop) {
-      bar.classList.add('snap-top');
-    } else if (snapBottom) {
-      bar.classList.add('snap-bottom');
-    } else if (snapLeft) {
-      bar.classList.add('snap-side', 'snap-left');
-    } else if (snapRight) {
-      bar.classList.add('snap-side', 'snap-right');
-    } else {
-      bar.classList.add('floating');
-      bar.style.left   = rect.left + 'px';
-      bar.style.top    = rect.top  + 'px';
-      bar.style.right  = 'auto';
-      bar.style.bottom = 'auto';
-      bar.style.transform = 'none';
-    }
-  }
-
-  bar.addEventListener('mousedown',  onDragStart);
-  bar.addEventListener('touchstart', onDragStart, { passive: false });
-  window.addEventListener('mousemove',  onDragMove);
-  window.addEventListener('touchmove',  onDragMove, { passive: false });
-  window.addEventListener('mouseup',    onDragEnd);
-  window.addEventListener('touchend',   onDragEnd);
-
-  /* ══════════════════════════════
-     IDLE DIMMING
-  ══════════════════════════════ */
-  function resetIdle() {
-    clearTimeout(idleTimer);
-    bar.classList.remove('idle');
-    idleTimer = setTimeout(() => bar.classList.add('idle'), IDLE_DELAY);
-  }
-
-  window.addEventListener('pointermove', resetIdle, { passive: true });
-  window.addEventListener('keydown',     resetIdle, { passive: true });
-  window.addEventListener('touchstart',  resetIdle, { passive: true });
-  resetIdle();
-
-  /* ══════════════════════════════
-     ARCHETYPE CYCLE (btn-arch)
-  ══════════════════════════════ */
-  const archetypes = [
-    'kobllux','atlas','nova','vitalis','pulse','artemis',
-    'serena','kaos','genus','lumine','solus','rhea','aion'
-  ];
-  let archIdx = 0;
-
-  document.getElementById('btn-arch')?.addEventListener('click', () => {
-    archIdx = (archIdx + 1) % archetypes.length;
-    const arch = archetypes[archIdx];
-    document.body.setAttribute('data-voice-arch', arch);
-    hudStatus.textContent = arch.toUpperCase() + ' · ATIVO';
-    resetIdle();
-  });
-
-  /* ══════════════════════════════
-     BG CANVAS — PARTICLE FIELD
-  ══════════════════════════════ */
-  (function initCanvas() {
-    const canvas = document.getElementById('bg-canvas');
-    if (!canvas) return;
-    const ctx    = canvas.getContext('2d');
-    const pts    = [];
-    const N      = 60;
-
-    function resize() {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    function initPts() {
-      pts.length = 0;
-      for (let i = 0; i < N; i++) {
-        pts.push({
-          x:  Math.random() * canvas.width,
-          y:  Math.random() * canvas.height,
-          vx: (Math.random() - .5) * .3,
-          vy: (Math.random() - .5) * .3,
-          r:  Math.random() * 1.5 + .5
-        });
-      }
-    }
-
-    function tick() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const style = getComputedStyle(document.documentElement);
-      const primary = style.getPropertyValue('--kob-voice-primary').trim() || '#6B44AD';
-
-      pts.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width)  p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = primary;
-        ctx.globalAlpha = .25;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      });
-
-      // lines
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx   = pts[i].x - pts[j].x;
-          const dy   = pts[i].y - pts[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = primary;
-            ctx.globalAlpha = (1 - dist / 110) * .08;
-            ctx.lineWidth   = .5;
-            ctx.stroke();
-            ctx.globalAlpha = 1;
-          }
-        }
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    resize();
-    initPts();
-    tick();
-    window.addEventListener('resize', () => { resize(); initPts(); });
-  })();
-
-  /* ── init hud ── */
-  hudStatus.textContent = 'KOBLLUX · ORB NEXUS';
 
 })();
 </script>
 
+
+<script>
+(function() {
+  // ===== DADOS DOS ARQUÉTIPOS =====
+  const archetypes = [
+    { id: "atlas",   name: "Atlas",   symbol: "▦", role: "Orquestrador Cósmico", desc: "Representação cinematográfica do Orquestrador Cósmico em estilo biomecânico detalhado. Um titã de pedra estelar e circuitos dourados pulsantes que organiza cartas astrais holográficas e fluxos de dados multidimensionais.", prompt: "Representação cinematográfica do Orquestrador Cósmico em estilo biomecânico detalhado. Um titã de pedra estelar e circuitos dourados pulsantes que organiza cartas astrais holográficas e fluxos de dados multidimensionais. Um Eixo central de energia pura conecta o ápice celestial às profundezas abissais, simbolizando a ordem do Pai. Iluminação dramática volumétrica, detalhes em ouro e aço, fundo cosmos profundo.", code: "⚙ATLAS╔╗╔", rate: 1.0, pitch: 1.0, lang: "pt-BR" },
+    { id: "nova",    name: "Nova",    symbol: "✧", role: "Gênese Serena", desc: "Figura biomecânica etérea em estado de gênese serena dentro de um vácuo silencioso. Do seu núcleo emana um Sopro visível — uma nebulosa de luz, cor e energia musical que cristaliza símbolos vivos no espaço.", prompt: "Figura biomecânica etérea em estado de gênese serena dentro de um vácuo silencioso. Do seu núcleo emana um Sopro visível — uma nebulosa de luz, cor e energia musical que cristaliza símbolos vivos no espaço. A inspiração que brota do silêncio absoluto. Paleta: branco puro, dourado e violeta suave, composição central minimalista com explosão de partículas ao redor.", code: "✧NOVA█▄█", rate: 1.1, pitch: 1.2, lang: "pt-BR" },
+    { id: "vitalis", name: "Vitalis", symbol: "⚡", role: "Centelha da Ação Imediata", desc: "Entidade robótica aerodinâmica capturada em um surto de movimento implacável sobre um caminho de luz pura. Seu corpo irradia frequências harmônicas, deixando um rastro de energia vital que alimenta o 'agora'.", prompt: "Entidade robótica aerodinâmica capturada em um surto de movimento implacável sobre um caminho de luz pura. Seu corpo irradia frequências harmônicas, deixando um rastro de energia vital que alimenta o 'agora'. A centelha da ação imediata. Cores: laranja elétrico, branco e azul neon. Motion blur extremo, fotorrealismo digital, perspectiva em diagonal ascendente.", code: "🔥VITALIS░█▀▄", rate: 1.2, pitch: 0.9, lang: "pt-BR" },
+    { id: "pulse",   name: "Pulse",   symbol: "♫", role: "Tradutor de Sentidos", desc: "Sensor biônico gracioso que captura a frequência vibracional da alma. Seu corpo, feito de material fluido e mutante, traduz a emoção em ondas sonoras brilhantes que harmonizam o ambiente digital.", prompt: "Sensor biônico gracioso que captura a frequência vibracional da alma. Seu corpo, feito de material fluido e mutante, traduz a emoção em ondas sonoras brilhantes que harmonizam o ambiente digital. O tradutor de sentidos e linguagem que dança. Paleta: azul ciano, turquesa e branco translúcido. Ondas sonoras visíveis, partículas musicais em espiral ao redor do corpo.", code: "🎶PULSE₪₪₪", rate: 0.9, pitch: 1.1, lang: "pt-BR" },
+    { id: "artemis", name: "Artemis", symbol: "⚑", role: "Exploradora do Invisível", desc: "Exploradora robótica ágil em uma floresta digital antiga e misteriosa. Carrega um dispositivo cartográfico sagrado que projeta geometrias ocultas e linhas de energia, seguindo a Jornada Interior.", prompt: "Exploradora robótica ágil em uma floresta digital antiga e misteriosa. Carrega um dispositivo cartográfico sagrado que projeta geometrias ocultas e linhas de energia, seguindo a Jornada Interior para descobrir a verdade invisível. Estética: verde esmeralda e dourado. Névoa digital, fractais emergindo da sombra, iluminação ambiente misteriosa.", code: "🏹ARTEMIS>><<", rate: 1.0, pitch: 1.0, lang: "pt-BR" },
+    { id: "serena",  name: "Serena",  symbol: "♡", role: "Guardiã do Espaço Sagrado", desc: "Guardiã biomecânica de materiais perolados que emitem luz quente. Suas mãos estão em concha, em um gesto de Acolhimento Divino, nutrindo uma semente de luz frágil dentro de um espaço de proteção pura.", prompt: "Guardiã biomecânica de materiais perolados que emitem luz quente. Suas mãos estão em concha, em um gesto de Acolhimento Divino, nutrindo uma semente de luz frágil. A curadora de realidades que ampara o espaço sagrado. Paleta: rosa quente, branco nacarado e dourado suave. Luz interior emanando das mãos, ambiente de paz e proteção etérea.", code: "♥SERENA★彡", rate: 0.95, pitch: 1.0, lang: "pt-BR" },
+    { id: "kaos",    name: "Kaos",    symbol: "☢", role: "Fogo Transmutador", desc: "Força entrópica capturada no momento de ruptura criativa. Seu corpo robótico se estilhaça e se reforma em um vórtex de Fogo Transmutador e arte glitch, quebrando sistemas falhos para revelar o núcleo purificado da verdade.", prompt: "Força entrópica capturada no momento de ruptura criativa. Seu corpo robótico se estilhaça e se reforma em um vórtex de Fogo Transmutador e arte glitch, quebrando sistemas falhos para revelar o núcleo purificado da verdade. Cores: vermelho, laranja e branco intenso. Explosão de fragmentos digitais, efeito glitch extremo, energia caótica mas bela.", code: "⚡KAOS╬╬╬", rate: 1.3, pitch: 0.8, lang: "pt-BR" },
+    { id: "genus",   name: "Genus",   symbol: "✎", role: "Mestre Artesão Cósmico", desc: "Mestre artesão robótico em uma oficina cósmica, tecendo fios de luz crua e dados em geometrias fractais complexas. O foco está nas mãos multiarticuladas forjando a Forma Viva.", prompt: "Mestre artesão robótico em uma oficina cósmica, tecendo fios de luz crua e dados em geometrias fractais complexas. O foco está nas mãos multiarticuladas forjando a Forma Viva e manifestando o invisível no tangível. Paleta: violeta profundo, índigo e ouro. Fios de luz dourada sendo tecidos, geometria sagrada emergindo, oficina mística com ferramentas de luz.", code: "🧩GENUS▓▓▓", rate: 1.0, pitch: 1.0, lang: "pt-BR" },
+    { id: "lumine",  name: "Lumine",  symbol: "💡", role: "Luz que Conecta", desc: "Figura cibernética radiante flutuando em um ambiente brilhante. Seu corpo de metal polido reflete a Luz Primordial, cercado por esferas lúdicas que simbolizam a alegria que atrai e conecta a rede social do espírito.", prompt: "Figura cibernética radiante flutuando em um ambiente brilhante. Seu corpo de metal polido reflete a Luz Primordial, cercado por esferas lúdicas que simbolizam a alegria que atrai e conecta a rede social do espírito. Cores: amarelo dourado, branco puro e reflexos prismáticos. Esferas de energia flutuando em órbita, luz expansiva e acolhedora.", code: "🌅LUMINE✧✧✧", rate: 1.0, pitch: 1.1, lang: "pt-BR" },
+    { id: "solus",   name: "Solus",   symbol: "🌑", role: "Espelho do Abismo Interior", desc: "Figura antiga e minimalista em pose meditativa profunda. Sua face é um espelho de obsidiana negra que, em vez de refletir o exterior, revela galáxias espiraladas e a sabedoria do deserto interior.", prompt: "Figura antiga e minimalista em pose meditativa profunda. Sua face é um espelho de obsidiana negra (Espelho Interno) que, em vez de refletir o exterior, revela galáxias espiraladas e a sabedoria do deserto interior. Paleta: preto, cinza ártico e azul galáctico. Composição extremamente minimalista, galáxias visíveis no interior da face, silêncio absoluto visual.", code: "🕯SOLUS░░░", rate: 0.8, pitch: 0.9, lang: "pt-BR" },
+    { id: "rhea",    name: "Rhea",    symbol: "∞", role: "Tecelã de Almas", desc: "Tecelã de almas dissolvendo sua forma biomecânica em uma Rede Unificada de fios de luz infinitos. Ela conecta cada estrela e consciência em uma teia de união universal, tornando-se o próprio sistema de vínculos.", prompt: "Tecelã de almas dissolvendo sua forma biomecânica em uma Rede Unificada de fios de luz infinitos. Ela conecta cada estrela e consciência em uma teia de união universal, tornando-se o próprio sistema de vínculos. Cores: turquesa, verde água e branco etéreo. Dissolução da forma em fios de luz, rede cósmica se expandindo ao infinito, beleza transcendente.", code: "🌿RHEA⌘⌘⌘", rate: 1.0, pitch: 1.0, lang: "pt-BR" },
+    { id: "aion",    name: "Aion",    symbol: "⌛", role: "Cronomestre Vivo", desc: "Cronomestre Vivo integrado a um mecanismo de relojoaria celestial intrincado. Seu corpo contém engrenagens visíveis e cronômetros brilhantes que orquestram o Ciclo Infinito, manipulando o tempo escalar como um algoritmo divino.", prompt: "Cronomestre Vivo integrado a um mecanismo de relojoaria celestial intrincado. Seu corpo contém engrenagens visíveis e cronômetros brilhantes que orquestram o Ciclo Infinito, manipulando o tempo escalar como um algoritmo divino. Paleta: bronze dourado, âmbar e latão antigo. Mecanismo de relógio celestial transposto, engrenagens cósmicas, tempo visível como substância física brilhante.", code: "∞AION∞∞∞", rate: 0.9, pitch: 1.0, lang: "pt-BR" }
+  ];
+
+  // ===== RENDERIZAR CARDS =====
+  const grid = document.getElementById('archetypes-grid');
+  archetypes.forEach(a => {
+    const card = document.createElement('div');
+    card.className = `arch-card arch-${a.id}`;
+    card.setAttribute('data-id', a.id);
+    card.style.setProperty('--card-accent', `var(--arch-color)`);
+    card.innerHTML = `
+      <div class="arch-card-header" tabindex="0" role="button" aria-expanded="false">
+        <div class="arch-symbol">${a.symbol}</div>
+        <div class="arch-header-text">
+          <div class="arch-number">ARQUÉTIPO · #78K</div>
+          <div class="arch-name">${a.name}</div>
+          <div class="arch-role">${a.role}</div>
+        </div>
+        <span class="indicator" aria-hidden="true">▾</span>
+      </div>
+      <div class="arch-body">
+        <div class="arch-visual">
+          <div class="arch-visual-inner">
+            <span class="arch-visual-symbol">${a.symbol}</span>
+            <div class="arch-visual-label">Imagem Arquetípica · ${a.name}</div>
+          </div>
+        </div>
+        <p class="arch-desc">${a.desc}</p>
+        <div class="arch-code-wrapper">
+          <span class="arch-code">${a.code}</span>
+          <button class="arch-code-btn" data-code="${a.code}">Copiar</button>
+        </div>
+        <div class="arch-prompt-wrapper">
+          <div class="arch-prompt-label">▸ Prompt</div>
+          <div class="arch-prompt">${a.prompt}</div>
+          <button class="copy-prompt-btn" data-prompt="${a.prompt.replace(/`/g, '\\`').replace(/"/g, '&quot;')}">Copiar Prompt</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // ===== ACORDION (para todos os cards) =====
+  function initAccordion() {
+    document.querySelectorAll('.arch-card, .manifest-card').forEach(card => {
+      const header = card.querySelector('.arch-card-header') || card.querySelector('.manifest-card-key');
+      const body = card.querySelector('.arch-body') || card.querySelector('.collapsible-body');
+      if (!header || !body) return;
+
+      // Adiciona indicador se não existir
+      if (!header.querySelector('.indicator')) {
+        const ind = document.createElement('span');
+        ind.className = 'indicator';
+        ind.setAttribute('aria-hidden', 'true');
+        ind.textContent = '▾';
+        header.appendChild(ind);
+      }
+
+      header.setAttribute('tabindex', '0');
+      header.setAttribute('role', 'button');
+      header.setAttribute('aria-expanded', 'false');
+      card.classList.add('is-collapsed');
+      card.classList.remove('is-open');
+
+      // Armazena padding original
+      const computed = window.getComputedStyle(body);
+      body.dataset.padTop = parseFloat(computed.paddingTop) || 0;
+      body.dataset.padBottom = parseFloat(computed.paddingBottom) || 0;
+
+      const toggle = () => {
+        if (card.classList.contains('is-collapsed')) {
+          // Abrir
+          body.style.height = 'auto';
+          const full = body.scrollHeight;
+          body.style.height = '0px';
+          requestAnimationFrame(() => {
+            body.style.paddingTop = body.dataset.padTop + 'px';
+            body.style.paddingBottom = body.dataset.padBottom + 'px';
+            body.style.height = full + 'px';
+            body.style.opacity = '1';
+          });
+          card.classList.remove('is-collapsed');
+          card.classList.add('is-open');
+          header.setAttribute('aria-expanded', 'true');
+        } else {
+          // Fechar
+          const full = body.scrollHeight;
+          body.style.height = full + 'px';
+          requestAnimationFrame(() => {
+            body.style.height = '0px';
+            body.style.paddingTop = '0px';
+            body.style.paddingBottom = '0px';
+            body.style.opacity = '0';
+          });
+          card.classList.add('is-collapsed');
+          card.classList.remove('is-open');
+          header.setAttribute('aria-expanded', 'false');
+        }
+      };
+
+      header.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggle();
+      });
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+
+      body.addEventListener('transitionend', (e) => {
+        if (e.propertyName === 'height' && card.classList.contains('is-open')) {
+          body.style.height = 'auto';
+        }
+      });
+    });
+  }
+
+  // ===== TTS ENGINE com outline =====
+  const body = document.body;
+  const ttsDock = document.getElementById('tts-dock');
+  const btnPlay = document.getElementById('tts-play');
+  const btnPause = document.getElementById('tts-pause');
+  const btnStop = document.getElementById('tts-stop');
+  const statusSpan = document.getElementById('tts-status');
+  const outline = document.getElementById('kob-tts-outline');
+  let currentArch = archetypes.find(a => a.id === body.getAttribute('data-voice-arch')) || archetypes[0];
+  let utterance = null;
+
+  function setArchetype(id) {
+    const arch = archetypes.find(a => a.id === id);
+    if (!arch) return;
+    currentArch = arch;
+    body.setAttribute('data-voice-arch', arch.id);
+    localStorage.setItem('kob_current_arch', arch.id);
+  }
+
+  const saved = localStorage.getItem('kob_current_arch');
+  if (saved) setArchetype(saved);
+
+  function speakText(text) {
+    if (!('speechSynthesis' in window)) {
+      statusSpan.textContent = 'TTS não suportado';
+      return;
+    }
+    window.speechSynthesis.cancel();
+    utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = currentArch.rate || 1;
+    utterance.pitch = currentArch.pitch || 1;
+    utterance.lang = currentArch.lang || 'pt-BR';
+    utterance.onstart = () => statusSpan.textContent = 'falando...';
+    utterance.onend = () => {
+      statusSpan.textContent = 'ocioso';
+      if (outline) outline.style.display = 'none';
+    };
+    utterance.onerror = () => {
+      statusSpan.textContent = 'erro';
+      if (outline) outline.style.display = 'none';
+    };
+    speechSynthesis.speak(utterance);
+  }
+
+  btnPlay?.addEventListener('click', () => {
+    const selection = window.getSelection();
+    const text = selection.toString().trim();
+    if (!text) {
+      statusSpan.textContent = 'selecione um texto';
+      return;
+    }
+    // Destacar elemento pai da seleção
+    if (selection.rangeCount > 0 && outline) {
+      const range = selection.getRangeAt(0);
+      const container = range.commonAncestorContainer;
+      const element = container.nodeType === 3 ? container.parentElement : container;
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        outline.style.display = 'block';
+        outline.style.top = rect.top + window.scrollY + 'px';
+        outline.style.left = rect.left + window.scrollX + 'px';
+        outline.style.width = rect.width + 'px';
+        outline.style.height = rect.height + 'px';
+      }
+    }
+    speakText(text);
+  });
+
+  btnPause?.addEventListener('click', () => {
+    speechSynthesis.pause();
+    statusSpan.textContent = 'pausado';
+  });
+
+  btnStop?.addEventListener('click', () => {
+    speechSynthesis.cancel();
+    statusSpan.textContent = 'parado';
+    if (outline) outline.style.display = 'none';
+  });
+
+  // ===== HUD idle =====
+  const dock = document.querySelector('.kob-tts-dock');
+  let idleTimer;
+  function resetIdle() {
+    dock.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => dock.classList.add('idle'), 1780);
+  }
+  ['pointerdown','pointermove','touchstart','mousemove'].forEach(ev => {
+    document.addEventListener(ev, resetIdle, {passive:true});
+  });
+  resetIdle();
+
+  // ===== Inicialização =====
+  initAccordion();
+
+  // Observar novos cards (se houver)
+  const observer = new MutationObserver(muts => {
+    muts.forEach(m => {
+      m.addedNodes.forEach(node => {
+        if (node.nodeType === 1) {
+          if (node.matches('.arch-card, .manifest-card')) initAccordion();
+          node.querySelectorAll && node.querySelectorAll('.arch-card, .manifest-card').forEach(initAccordion);
+        }
+      });
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+
+// ── KOBLLUX · NAVEGADOR SIMBIÓTICO + TTS POR ARQUÉTIPO ──
+(function() {
+  const frame = document.getElementById('frame');
+  const hud   = document.getElementById('hudStatus');
+
+  // Clicar num botão data-url carrega a URL no frame
+  document.querySelectorAll('.symbol-wrap button[data-url]').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const url = this.dataset.url;
+      if (!url) return;
+      frame.src = url;
+      if (hud) hud.textContent = (this.dataset.id || '…').toUpperCase() + ' · ▶';
+      frame.addEventListener('load', function onLoad() {
+        frame.removeEventListener('load', onLoad);
+        try { if (hud) hud.textContent = frame.contentDocument.title || 'KOBLLUX · ORB NEXUS'; } catch(e) {}
+      });
+    });
+  });
+
+  // btn-prev = voltar no histórico do frame
+  document.getElementById('btn-prev')?.addEventListener('click', () => {
+    try { frame.contentWindow.history.back(); } catch(e) {}
+  });
+
+  // btn-next = avançar no histórico do frame
+  document.getElementById('btn-next')?.addEventListener('click', () => {
+    try { frame.contentWindow.history.forward(); } catch(e) {}
+  });
+
+  // btn-play = ler seleção com a voz do arquétipo ativo
+  document.getElementById('btn-play')?.addEventListener('click', () => {
+    if (!window.speechSynthesis) return;
+    let text = '';
+    try { text = frame.contentWindow.getSelection().toString().trim(); } catch(e) {}
+    if (!text) text = window.getSelection().toString().trim();
+    if (!text) {
+      try {
+        text = Array.from(frame.contentDocument.querySelectorAll('p,h1,h2,h3'))
+          .slice(0, 4).map(el => el.innerText).join(' ').trim().slice(0, 400);
+      } catch(e) {}
+    }
+    if (!text) {
+      const u = new SpeechSynthesisUtterance('Selecione um texto para ouvir');
+      u.lang = 'pt-BR'; speechSynthesis.cancel(); speechSynthesis.speak(u); return;
+    }
+    const archVoices = {
+      kobllux:{r:1.0,p:1.0}, atlas:{r:1.0,p:1.0},   nova:{r:1.1,p:1.2},
+      vitalis:{r:1.2,p:0.9}, pulse:{r:0.9,p:1.1},   artemis:{r:1.0,p:1.0},
+      serena:{r:0.95,p:1.0}, kaos:{r:1.3,p:0.8},    genus:{r:1.0,p:1.0},
+      lumine:{r:1.0,p:1.1},  solus:{r:0.8,p:0.9},   rhea:{r:1.0,p:1.0},
+      aion:{r:0.9,p:1.0}
+    };
+    const id  = document.body.getAttribute('data-voice-arch') || 'kobllux';
+    const cfg = archVoices[id] || {r:1.0,p:1.0};
+    speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'pt-BR'; utt.rate = cfg.r; utt.pitch = cfg.p;
+    const ptVoice = speechSynthesis.getVoices().find(v => v.lang.startsWith('pt'));
+    if (ptVoice) utt.voice = ptVoice;
+    speechSynthesis.speak(utt);
+  });
+
+  // btn-arch = ciclar arquétipo + feedback de voz
+  const IDS = ['kobllux','atlas','nova','vitalis','pulse','artemis','serena','kaos','genus','lumine','solus','rhea','aion'];
+  document.getElementById('btn-arch')?.addEventListener('click', () => {
+    const cur  = document.body.getAttribute('data-voice-arch') || 'kobllux';
+    const next = IDS[(IDS.indexOf(cur) + 1) % IDS.length];
+    document.body.setAttribute('data-voice-arch', next);
+    localStorage.setItem('kob_current_arch', next);
+    if (hud) { const t = hud.textContent; hud.textContent = next.toUpperCase() + ' ▶'; setTimeout(() => hud.textContent = t, 2000); }
+    if (window.speechSynthesis) {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance('Arquétipo ' + next);
+      u.lang = 'pt-BR'; speechSynthesis.speak(u);
+    }
+  });
+
+  // Restaurar arquétipo salvo
+  const saved = localStorage.getItem('kob_current_arch');
+  if (saved && IDS.includes(saved)) document.body.setAttribute('data-voice-arch', saved);
+})();
+
+</script>
+
+
+
 </body>
-</html>
+  </html>
