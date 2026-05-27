@@ -1125,12 +1125,45 @@
     /* ── kob-voice-accent ── */
     :root { --kob-voice-accent: #ffffff; }
 
-    /* ── Orb core com accent ── */
+    /* ── Orb · câmera/lente · glass depth ── */
+    #btn-arch {
+      width: 48px; height: 48px; border-radius: 50% !important;
+      border: 1.5px solid var(--kob-voice-primary) !important;
+      background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.07), rgba(0,0,0,0.72)) !important;
+      box-shadow:
+        0 0 22px var(--kob-voice-bg-soft),
+        0 0 44px var(--kob-voice-bg-soft),
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        inset 0 0 12px rgba(0,0,0,0.55) !important;
+      padding: 0; display: flex; align-items: center; justify-content: center;
+      overflow: visible; margin: 2px 0;
+    }
+    #btn-arch:hover {
+      transform: scale(1.08);
+      box-shadow:
+        0 0 32px var(--kob-voice-bg-soft),
+        0 0 64px var(--kob-voice-bg-soft),
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        inset 0 0 16px rgba(0,0,0,0.5) !important;
+    }
+    .tts-orb-mini { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; }
+    .orb { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; }
     .orb-core {
+      width: 82%; height: 82%; border-radius: 50%;
       background:
-        radial-gradient(circle at 28% 28%, var(--kob-voice-accent) 0%, rgba(255,255,255,0.08) 12%, transparent 55%),
-        radial-gradient(circle at 72% 72%, var(--kob-voice-primary) 0%, var(--kob-voice-secondary) 100%);
-      box-shadow: 0 0 18px var(--kob-voice-primary), 0 0 8px rgba(255,255,255,0.1) inset;
+        radial-gradient(circle at 22% 22%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 18%),
+        radial-gradient(circle at 30% 30%, var(--kob-voice-accent) 0%, rgba(255,255,255,0.04) 14%, transparent 52%),
+        radial-gradient(circle at 68% 70%, var(--kob-voice-primary) 0%, var(--kob-voice-secondary) 100%);
+      box-shadow:
+        0 0 16px var(--kob-voice-primary),
+        inset 0 0 10px rgba(0,0,0,0.45),
+        inset 0 1px 2px rgba(255,255,255,0.2);
+      animation: orbSpin var(--orb-speed, 7.8s) linear infinite;
+      transition: background 0.5s ease, box-shadow 0.5s ease;
+    }
+    .speaking .orb-core {
+      animation: orbSpin 1.6s linear infinite, orbPulse 0.4s ease-in-out infinite alternate;
+      box-shadow: 0 0 28px var(--kob-voice-primary), 0 0 50px var(--kob-voice-bg-soft), inset 0 0 12px rgba(0,0,0,0.3);
     }
 
     /* ── Chroma ripple ── */
@@ -1214,7 +1247,7 @@
         <button class="symbol-button" id="btn-next" title="Avançar / Parar leitura">▶▶</button>
       </div>
       <!-- Arquétipo ORB (Sempre visível) -->
-      <button class="symbol-button" id="btn-arch" title="Trocar Arquétipo de Voz" style="scroll-snap-align:start;flex-shrink:0;">
+      <button class="symbol-button" id="btn-arch" title="Trocar Arquétipo de Voz">
         <div class="orb-microphone-container">
           <div class="tts-orb-mini">
             <div class="orb" id="main-orb">
@@ -1245,8 +1278,6 @@
 
 <!-- Canvas de fundo e overlay -->
     <canvas id="bg-canvas"></canvas>
-<!-- Scripts -->
-<script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kobdh0-main.js"></script>
 
 </div>
 
