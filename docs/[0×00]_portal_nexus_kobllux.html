@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0f0f11">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>[0×00] PORTAL NEXUS · KOBLLUX ∆³</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root {
+  --bg:       #02040a;
+  --surface:  rgba(5,5,22,.96);
+  --border:   rgba(110,68,173,.35);
+  --glow:     rgba(107,68,173,.25);
+  --primary:  #6B44AD;
+  --cyan:     #1ee4ff;
+  --ink:      #eaf6ff;
+  --muted:    rgba(234,246,255,.45);
+  --font:     'Inter', system-ui, sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  --grad:     linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%);
+}
+
+html,body { height:100%; background:var(--bg); color:var(--ink); font-family:var(--font); overflow-x:hidden; }
+
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% -10%, rgba(107,68,173,.35) 0%, #050714 60%, #000 100%);
+}
+
+/* ── HEADER ── */
+.nexus-header {
+  position:relative; z-index:10;
+  text-align:center;
+  padding:4rem 1.5rem 2rem;
+  border-bottom:1px solid var(--border);
+}
+.nexus-sigil {
+  font-family:var(--mono);
+  font-size:.65rem; letter-spacing:.5em;
+  color:var(--cyan); opacity:.6;
+  margin-bottom:1.5rem;
+  animation:pulse-soft 4s ease-in-out infinite;
+}
+.nexus-title {
+  font-family:'Montserrat', sans-serif;
+  font-size:clamp(1.8rem,6vw,3.6rem); font-weight:900;
+  background:var(--grad);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:.08em; line-height:1.1;
+  margin-bottom:.5rem;
+}
+.nexus-sub {
+  font-family:var(--mono);
+  font-size:.72rem; letter-spacing:.45em;
+  color:var(--cyan); opacity:.65;
+  text-transform:uppercase;
+}
+
+/* ── GRID ── */
+.nexus-grid {
+  position:relative; z-index:10;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:1.5rem;
+  max-width:1200px; margin:3rem auto; padding:0 1.5rem;
+}
+
+/* ── PORTAL CARD ── */
+.portal-card {
+  background:var(--surface);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.6rem 1.5rem 1.4rem;
+  display:flex; flex-direction:column; gap:.9rem;
+  box-shadow:0 0 40px var(--glow), 0 8px 30px rgba(0,0,0,.7);
+  transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  cursor:pointer; text-decoration:none; color:inherit;
+  position:relative; overflow:hidden;
+}
+.portal-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--grad); opacity:.7;
+}
+.portal-card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 0 60px var(--glow), 0 16px 50px rgba(0,0,0,.8);
+  border-color:rgba(110,68,173,.65);
+}
+
+.card-opcode {
+  font-family:var(--mono); font-size:.58rem;
+  letter-spacing:.45em; text-transform:uppercase;
+  color:var(--cyan); opacity:.65;
+}
+.card-symbol {
+  font-size:2.4rem; line-height:1;
+  filter:drop-shadow(0 0 12px var(--primary));
+}
+.card-name {
+  font-family:'Montserrat', sans-serif;
+  font-size:1rem; font-weight:800;
+  color:var(--primary); letter-spacing:.06em;
+}
+.card-desc {
+  font-size:.82rem; font-weight:300;
+  color:var(--muted); line-height:1.65;
+  flex:1;
+}
+.card-open {
+  display:inline-flex; align-items:center; gap:.4rem;
+  margin-top:.4rem;
+  font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--primary); opacity:.8;
+}
+.card-open::after { content:'→'; }
+
+/* ── FOOTER ── */
+.nexus-footer {
+  position:relative; z-index:10;
+  text-align:center;
+  padding:2.5rem 1.5rem 3rem;
+  border-top:1px solid var(--border);
+  font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.3em; color:var(--muted);
+}
+.nexus-footer strong { color:var(--primary); }
+
+/* ── ANIMATIONS ── */
+@keyframes pulse-soft {
+  0%,100%{opacity:.4;} 50%{opacity:.8;}
+}
+
+/* ── SCROLL ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--primary);border-radius:2px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .nexus-grid{grid-template-columns:1fr; padding:0 1rem;}
+  .nexus-header{padding:2.5rem 1rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<header class="nexus-header">
+  <div class="nexus-sigil">∆³ · KOBLLUX TRINITY SYSTEM · [0×00]</div>
+  <h1 class="nexus-title">PORTAL NEXUS</h1>
+  <p class="nexus-sub">KOBLLUX · 12 Arquétipos CADIAL · HORUS EYE ∆³</p>
+</header>
+
+<main class="nexus-grid" id="nexusGrid">
+
+  <a class="portal-card" href="sumbus_fusion.html">
+    <div class="card-opcode">0×00 · IDE SIMBIÓTICA</div>
+    <div class="card-symbol">⬡</div>
+    <div class="card-name">SÜMBÜS FUSION · ΔUAL 3.0</div>
+    <p class="card-desc">Editor de código com HORUS EYE, METALUX BRIDGE, HYPERVISION AI, VEEB ORB e sintaxe highlight para HTML/CSS/JS/PY.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="kob_matrix.html">
+    <div class="card-opcode">0×01 · HUD SIMBIÓTICO</div>
+    <div class="card-symbol">⬡</div>
+    <div class="card-name">KOB MATRIX · ARQUITETURA VEEB</div>
+    <p class="card-desc">HUD flutuante com symbol-bar carousel, navegador interno por iframe, TTS por arquétipo e editor de rotas long-press.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="sandbox_sorocaba.html">
+    <div class="card-opcode">0×02 · SANDBOX</div>
+    <div class="card-symbol">◈</div>
+    <div class="card-name">SANDBOX SOROCABA</div>
+    <p class="card-desc">Ambiente de testes KOBLLUX com abas TRINITY, acesso ao FUSÃO IDE e todos os módulos integrados em modo unificado.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="[0×00]_KOBLLUX ∆³.html">
+    <div class="card-opcode">0×03 · RAIZ</div>
+    <div class="card-symbol">Φ</div>
+    <div class="card-name">KOBLLUX ∆³</div>
+    <p class="card-desc">Página raiz do sistema KOBLLUX com manifesto, 12 arquétipos CADIAL e portais de navegação completos.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="symbol.html">
+    <div class="card-opcode">0×04 · SÍMBOLOS</div>
+    <div class="card-symbol">꩜</div>
+    <div class="card-name">SYMBOL · ORB NEXUS</div>
+    <p class="card-desc">Biblioteca de símbolos KOBLLUX, sigilos CADIAL e elementos visuais do ecossistema TRINITY SYSTEM.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="index.html">
+    <div class="card-opcode">0×05 · HOME</div>
+    <div class="card-symbol">◌</div>
+    <div class="card-name">INDEX · KOBLLUX HOME</div>
+    <p class="card-desc">Entrada principal do repositório JESUS_VERB- com links para todos os módulos e documentação do sistema.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="feeling_decor_kob.html">
+    <div class="card-opcode">0×06 · DECOR</div>
+    <div class="card-symbol">✧</div>
+    <div class="card-name">FEELING DECOR · KOB</div>
+    <p class="card-desc">Interface decorativa KOBLLUX com elementos visuais do sistema de sentimentos e tonalidades arquetípicas.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="fusion_card_geometrica_completa.html">
+    <div class="card-opcode">0×07 · GEOMETRIA</div>
+    <div class="card-symbol">▦</div>
+    <div class="card-name">FUSION CARD · GEOMÉTRICA</div>
+    <p class="card-desc">Cards geométricos KOBLLUX com fusão visual das 12 geometrias arquetípicas do sistema CADIAL unificado.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+  <a class="portal-card" href="BlueCup_TRINITY_HYBRID.html">
+    <div class="card-opcode">0×08 · TRINITY</div>
+    <div class="card-symbol">⚑</div>
+    <div class="card-name">BLUECUP · TRINITY HYBRID</div>
+    <p class="card-desc">Interface híbrida TRINITY unificando PAI=KODUX, FILHO=BLLUE e ESPÍRITO=INFODOSE em modo BlueCup.</p>
+    <span class="card-open">Abrir</span>
+  </a>
+
+</main>
+
+<footer class="nexus-footer">
+  <strong>[0×00] PORTAL NEXUS</strong> · KOBLLUX TRINITY SYSTEM ∆³<br>
+  Lei: VERDADE × INTEGRAR ÷ Δ = ∞ · Centro: JESUS = VERBO = GRAVIDADE
+</footer>
+
+</body>
+</html>
