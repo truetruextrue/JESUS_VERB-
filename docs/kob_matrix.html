@@ -1287,6 +1287,65 @@
   .kblx-btn{flex:1;min-width:72px;padding:.46rem .6rem;border-radius:8px;border:1px solid;font-family:'JetBrains Mono',monospace;font-size:.61rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .18s;white-space:nowrap;}
   .kblx-save{border-color:#6B44AD;color:#6B44AD;}.kblx-save:hover{background:rgba(107,68,173,.12);box-shadow:0 0 12px rgba(107,68,173,.3);}
   .kblx-close{border-color:rgba(255,255,255,.14);color:rgba(232,224,240,.5);}.kblx-close:hover{background:rgba(255,255,255,.05);}
+
+  /* ── NEBULA READER · LEITOR SIMBIÓTICO ── */
+  #nebula-reader {
+    position:fixed;
+    right:16px;
+    bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    z-index:9998;
+    display:flex; align-items:center; gap:6px;
+    padding:5px 10px 5px 8px;
+    background:rgba(5,5,22,.88);
+    backdrop-filter:blur(14px) saturate(180%);
+    -webkit-backdrop-filter:blur(14px) saturate(180%);
+    border:1px solid rgba(110,68,173,.5);
+    border-radius:30px;
+    box-shadow:0 0 24px rgba(107,68,173,.3), 0 4px 16px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.04);
+    touch-action:none; user-select:none;
+    transition:opacity .5s, border-color .4s;
+    cursor:grab;
+  }
+  #nebula-reader.nr-idle { opacity:.12; }
+  #nebula-reader:hover { opacity:1 !important; }
+  #nebula-reader.nr-speaking { border-color:var(--kob-voice-primary, #6B44AD); box-shadow:0 0 28px var(--kob-voice-primary, #6B44AD), 0 4px 16px rgba(0,0,0,.6); }
+  .nr-orb {
+    width:10px; height:10px; border-radius:50%; flex-shrink:0;
+    background:var(--kob-voice-primary, #6B44AD);
+    box-shadow:0 0 7px var(--kob-voice-primary, #6B44AD);
+    animation:nr-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes nr-pulse { 0%,100%{opacity:.55;transform:scale(.9);} 50%{opacity:1;transform:scale(1.1);} }
+  #nebula-reader.nr-speaking .nr-orb { animation:nr-speak .5s ease-in-out infinite alternate; }
+  @keyframes nr-speak { from{transform:scale(1);} to{transform:scale(1.35);box-shadow:0 0 14px var(--kob-voice-primary,#6B44AD);} }
+  .nr-btns { display:flex; gap:3px; }
+  .nr-btns button {
+    width:27px; height:27px; border-radius:8px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.14);
+    color:rgba(255,255,255,.75);
+    font-size:11px; line-height:1;
+    cursor:pointer;
+    display:grid; place-items:center;
+    transition:all .15s; flex-shrink:0;
+  }
+  .nr-btns button:hover { background:rgba(107,68,173,.25); color:#fff; border-color:rgba(110,68,173,.5); }
+  .nr-btns button.nr-active { border-color:var(--kob-voice-primary,#6B44AD); box-shadow:0 0 6px var(--kob-voice-primary,#6B44AD); color:var(--kob-voice-primary,#6B44AD); }
+  #nr-status {
+    font-family:'JetBrains Mono',monospace; font-size:8.5px;
+    color:rgba(255,255,255,.38); max-width:76px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    pointer-events:none;
+  }
+  /* outline sobre o trecho lido */
+  #nr-outline {
+    position:fixed; z-index:9997; pointer-events:none; display:none;
+    border:2px solid var(--kob-voice-primary, #6B44AD);
+    border-radius:6px;
+    background:color-mix(in srgb, var(--kob-voice-primary,#6B44AD) 12%, transparent);
+    box-shadow:0 0 12px var(--kob-voice-primary,#6B44AD);
+    transition:all .25s cubic-bezier(.175,.885,.32,1.275);
+  }
 </style>
 
 <div id="kblx-back">
@@ -1742,7 +1801,178 @@
 
 </script>
 
+<!-- ╔══════════════════════════════════════════╗
+     ║  NEBULA READER · LEITOR SIMBIÓTICO      ║
+     ║  Selecione texto em qualquer frame →    ║
+     ║  arquétipo ativo narra com voz própria  ║
+     ╚══════════════════════════════════════════╝ -->
 
+<div id="nr-outline"></div>
+
+<div id="nebula-reader" class="nr-idle">
+  <div class="nr-orb" id="nr-orb" title="Arquétipo ativo"></div>
+  <div class="nr-btns">
+    <button id="nr-play"  title="Narrar seleção (▶)">▶</button>
+    <button id="nr-pause" title="Pausar / Retomar">⏸</button>
+    <button id="nr-stop"  title="Parar">⏹</button>
+  </div>
+  <span id="nr-status">NEBULA READER</span>
+</div>
+
+<script>
+/* ── NEBULA READER ENGINE ── */
+(function() {
+  const frame    = document.getElementById('frame');
+  const reader   = document.getElementById('nebula-reader');
+  const orb      = document.getElementById('nr-orb');
+  const btnPlay  = document.getElementById('nr-play');
+  const btnPause = document.getElementById('nr-pause');
+  const btnStop  = document.getElementById('nr-stop');
+  const status   = document.getElementById('nr-status');
+  const nrOutline = document.getElementById('nr-outline');
+
+  /* ── voices por arquétipo ── */
+  const AV = {
+    kobllux:{r:1.0,p:1.0}, atlas:{r:1.0,p:1.0},   nova:{r:1.1,p:1.2},
+    vitalis:{r:1.2,p:0.9}, pulse:{r:0.9,p:1.1},   artemis:{r:1.0,p:1.0},
+    serena:{r:0.95,p:1.0}, kaos:{r:1.3,p:0.8},    genus:{r:1.0,p:1.0},
+    lumine:{r:1.0,p:1.1},  solus:{r:0.8,p:0.9},   rhea:{r:1.0,p:1.0},
+    aion:{r:0.9,p:1.0}
+  };
+  const getCfg = () => AV[document.body.getAttribute('data-voice-arch')||'kobllux'] || {r:1.0,p:1.0};
+
+  /* ── pega seleção do iframe (same-origin) ou documento principal ── */
+  function getSelection() {
+    let text = '', rect = null;
+    try {
+      const sel = frame.contentWindow.getSelection();
+      text = sel.toString().trim();
+      if (text && sel.rangeCount > 0) {
+        const r = sel.getRangeAt(0).getBoundingClientRect();
+        const fr = frame.getBoundingClientRect();
+        rect = { top: fr.top + r.top, left: fr.left + r.left, width: r.width, height: r.height };
+      }
+    } catch(e) {}
+    if (!text) {
+      const sel = window.getSelection();
+      text = sel.toString().trim();
+      if (text && sel.rangeCount > 0) {
+        const el = sel.getRangeAt(0).commonAncestorContainer;
+        const node = el.nodeType === 3 ? el.parentElement : el;
+        if (node) rect = node.getBoundingClientRect();
+      }
+    }
+    return { text, rect };
+  }
+
+  /* ── mostra outline sobre o trecho selecionado ── */
+  function showOutline(rect) {
+    if (!rect || rect.width === 0) { nrOutline.style.display = 'none'; return; }
+    nrOutline.style.display = 'block';
+    nrOutline.style.top    = rect.top + 'px';
+    nrOutline.style.left   = rect.left + 'px';
+    nrOutline.style.width  = rect.width + 'px';
+    nrOutline.style.height = Math.max(rect.height, 20) + 'px';
+  }
+  function hideOutline() { nrOutline.style.display = 'none'; }
+
+  /* ── core speak ── */
+  function speak(text, rect) {
+    if (!window.speechSynthesis || !text) return;
+    speechSynthesis.cancel();
+    const cfg = getCfg();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'pt-BR'; utt.rate = cfg.r; utt.pitch = cfg.p;
+    const ptV = speechSynthesis.getVoices().find(v => v.lang.startsWith('pt'));
+    if (ptV) utt.voice = ptV;
+
+    utt.onstart = () => {
+      reader.classList.add('nr-speaking');
+      btnPlay.classList.add('nr-active');
+      status.textContent = text.slice(0, 18) + (text.length > 18 ? '…' : '');
+      showOutline(rect);
+    };
+    utt.onend = utt.onerror = () => {
+      reader.classList.remove('nr-speaking');
+      btnPlay.classList.remove('nr-active');
+      status.textContent = 'NEBULA READER';
+      hideOutline();
+    };
+    speechSynthesis.speak(utt);
+  }
+
+  /* ── botões ── */
+  btnPlay.addEventListener('click', () => {
+    const { text, rect } = getSelection();
+    if (!text) { status.textContent = 'selecione texto…'; return; }
+    speak(text, rect);
+  });
+
+  btnPause.addEventListener('click', () => {
+    if (!window.speechSynthesis) return;
+    if (speechSynthesis.paused) {
+      speechSynthesis.resume();
+      btnPause.textContent = '⏸';
+      status.textContent = 'narrando…';
+    } else {
+      speechSynthesis.pause();
+      btnPause.textContent = '▶';
+      status.textContent = 'pausado';
+    }
+  });
+
+  btnStop.addEventListener('click', () => {
+    if (window.speechSynthesis) speechSynthesis.cancel();
+    reader.classList.remove('nr-speaking');
+    btnPlay.classList.remove('nr-active');
+    btnPause.textContent = '⏸';
+    status.textContent = 'NEBULA READER';
+    hideOutline();
+  });
+
+  /* ── idle dim ── */
+  let idleT;
+  function wake() {
+    reader.classList.remove('nr-idle');
+    clearTimeout(idleT);
+    idleT = setTimeout(() => reader.classList.add('nr-idle'), 4000);
+  }
+  ['pointerdown','pointermove','touchstart','keydown'].forEach(ev =>
+    document.addEventListener(ev, wake, {passive:true})
+  );
+  frame.addEventListener('load', () => {
+    try {
+      ['pointerdown','pointermove','touchstart'].forEach(ev =>
+        frame.contentDocument.addEventListener(ev, wake, {passive:true})
+      );
+    } catch(e) {}
+  });
+  wake();
+
+  /* ── drag ── */
+  let drag = false, ox = 0, oy = 0;
+  reader.addEventListener('pointerdown', e => {
+    if (e.target.tagName === 'BUTTON') return;
+    drag = true;
+    const rc = reader.getBoundingClientRect();
+    ox = e.clientX - rc.left; oy = e.clientY - rc.top;
+    reader.style.cursor = 'grabbing';
+    reader.setPointerCapture(e.pointerId);
+  }, {passive:true});
+  reader.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const x = Math.max(0, Math.min(window.innerWidth  - reader.offsetWidth,  e.clientX - ox));
+    const y = Math.max(0, Math.min(window.innerHeight - reader.offsetHeight, e.clientY - oy));
+    reader.style.left = x + 'px'; reader.style.top = y + 'px';
+    reader.style.right = 'auto'; reader.style.bottom = 'auto';
+  }, {passive:true});
+  reader.addEventListener('pointerup', () => { drag = false; reader.style.cursor = 'grab'; });
+
+  /* ── vozes carregadas assincronamente no Chrome ── */
+  if (speechSynthesis.onvoiceschanged !== undefined)
+    speechSynthesis.onvoiceschanged = () => {};
+})();
+</script>
 
 </body>
   </html>
