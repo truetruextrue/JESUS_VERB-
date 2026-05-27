@@ -1121,6 +1121,66 @@
     .spf-active { background: rgba(30,228,255,.28); color: #fff; outline: 1.5px solid rgba(30,228,255,.45); }
     .spf-readable { cursor: pointer; }
     .spf-reading .spf-word { cursor: default; }
+
+    /* ── kob-voice-accent ── */
+    :root { --kob-voice-accent: #ffffff; }
+
+    /* ── Orb core com accent ── */
+    .orb-core {
+      background:
+        radial-gradient(circle at 28% 28%, var(--kob-voice-accent) 0%, rgba(255,255,255,0.08) 12%, transparent 55%),
+        radial-gradient(circle at 72% 72%, var(--kob-voice-primary) 0%, var(--kob-voice-secondary) 100%);
+      box-shadow: 0 0 18px var(--kob-voice-primary), 0 0 8px rgba(255,255,255,0.1) inset;
+    }
+
+    /* ── Chroma ripple ── */
+    .chroma-ripple { position:fixed; inset:0; z-index:9990; pointer-events:none; border-radius:0; opacity:0; }
+    .chroma-ripple.fire { animation: chromaFire 0.75s cubic-bezier(0.2,0.8,0.2,1) forwards; }
+    @keyframes chromaFire { 0%{opacity:0.22;transform:scale(0.2);} 40%{opacity:0.18;transform:scale(1.4);} 100%{opacity:0;transform:scale(2.2);} }
+    .chroma-transition { animation: chromaBar 0.45s ease forwards; }
+    @keyframes chromaBar { 0%{filter:brightness(2) saturate(3);} 50%{filter:brightness(1.4) saturate(2);} 100%{filter:brightness(1) saturate(1);} }
+
+    /* ── Arch overlay (wheel selector) ── */
+    #arch-overlay, #arch-card-overlay { position:fixed; inset:0; z-index:9995; display:none; align-items:center; justify-content:center; background:rgba(2,2,10,0.78); backdrop-filter:blur(8px); }
+    #arch-overlay.open, #arch-card-overlay.open { display:flex; }
+    .arch-wheel { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:400px; background:linear-gradient(135deg,rgba(10,10,30,0.97),rgba(5,5,18,0.99)); border:1px solid var(--border); border-radius:22px; padding:18px; box-shadow:0 0 60px var(--kob-voice-bg-soft),0 30px 60px rgba(0,0,0,0.8); animation:kblx-in .28s cubic-bezier(.34,1.56,.64,1) both; }
+    .arch-wheel-title { width:100%; text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--kob-voice-primary); letter-spacing:0.4em; text-transform:uppercase; opacity:0.6; margin-bottom:6px; }
+    .arch-chip { display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 10px; border-radius:12px; border:1px solid transparent; cursor:pointer; transition:all 0.18s; font-family:'JetBrains Mono',monospace; min-width:56px; }
+    .arch-chip:hover { transform:scale(1.1); border-color:currentColor; background:rgba(255,255,255,0.04); }
+    .arch-chip.active { border-color:var(--kob-voice-primary); background:rgba(255,255,255,0.06); }
+    .arch-chip .a-orb { width:26px; height:26px; border-radius:50%; box-shadow:0 0 8px currentColor; }
+    .arch-chip .a-name { font-size:7px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.55); }
+    .arch-chip .a-freq { font-size:6px; color:rgba(255,255,255,0.3); letter-spacing:1px; }
+    @keyframes kblx-in { from{opacity:0;transform:translateY(-18px) scale(.96);} to{opacity:1;transform:none;} }
+
+    /* ── Fusion card (arch-card-panel) ── */
+    .arch-card-panel { background:linear-gradient(160deg,rgba(12,10,28,0.99),rgba(6,5,16,0.99)); border:1px solid var(--border); border-radius:22px; width:min(360px,92vw); overflow:hidden; box-shadow:0 0 80px var(--kob-voice-bg-soft),0 30px 60px rgba(0,0,0,0.85); animation:kblx-in .3s cubic-bezier(.34,1.56,.64,1) both; }
+    .arch-card-panel .arch-card-header { padding:24px 22px 20px; background:linear-gradient(160deg,color-mix(in srgb,var(--kob-voice-primary) 20%,#08081e) 0%,rgba(5,5,18,0.4) 100%); border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
+    .arch-card-panel .arch-card-header::after { content:var(--arch-card-emoji,'∞'); position:absolute; right:18px; top:50%; transform:translateY(-50%); font-size:4.5rem; opacity:0.08; pointer-events:none; filter:drop-shadow(0 0 20px var(--kob-voice-primary)); }
+    .arch-card-chip { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--kob-voice-primary); letter-spacing:0.4em; text-transform:uppercase; opacity:0.7; margin-bottom:6px; }
+    .arch-card-name { font-family:'Montserrat',sans-serif; font-size:1.5rem; font-weight:900; color:var(--kob-voice-primary); text-shadow:0 0 20px var(--kob-voice-bg-soft); margin-bottom:4px; }
+    .arch-card-role { font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--kob-voice-secondary); letter-spacing:0.25em; text-transform:uppercase; margin-bottom:12px; }
+    .arch-card-orb-wrap { display:flex; align-items:center; gap:12px; }
+    .arch-card-orb { width:44px; height:44px; border-radius:50%; box-shadow:0 0 20px var(--kob-voice-bg-soft); animation:orbSpin 8s linear infinite; }
+    .arch-card-freq { font-family:'JetBrains Mono',monospace; font-size:1.3rem; font-weight:700; color:var(--kob-voice-primary); }
+    .arch-card-freq span { font-size:0.7rem; opacity:0.6; }
+    .arch-card-body { padding:18px 22px 20px; }
+    .arch-card-placeholder { background:rgba(0,0,0,0.35); border:1px dashed color-mix(in srgb,var(--kob-voice-primary) 40%,rgba(255,255,255,0.1)); border-radius:12px; padding:18px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:color-mix(in srgb,var(--kob-voice-primary) 60%,rgba(255,255,255,0.3)); }
+    .arch-card-placeholder strong { display:block; font-size:2rem; margin-bottom:8px; }
+    .arch-card-actions { display:flex; gap:8px; margin-top:14px; }
+    .arch-card-btn { flex:1; padding:9px 6px; border-radius:10px; border:1px solid; font-family:'JetBrains Mono',monospace; font-size:0.62rem; text-transform:uppercase; cursor:pointer; background:transparent; transition:all 0.18s; }
+    .arch-card-btn.primary { border-color:var(--kob-voice-primary); color:var(--kob-voice-primary); }
+    .arch-card-btn.primary:hover { background:rgba(255,255,255,0.06); }
+    .arch-card-btn.close { border-color:rgba(255,255,255,0.15); color:rgba(255,255,255,0.4); }
+    .arch-card-nav { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+    .arch-card-nav button { width:32px; height:32px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.45); cursor:pointer; transition:all 0.15s; }
+    .arch-card-nav button:hover { border-color:var(--kob-voice-primary); color:var(--kob-voice-primary); }
+    .arch-card-nav-name { font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:rgba(255,255,255,0.4); letter-spacing:0.2em; }
+
+    /* ── Orb ring for long-press on btn-arch ── */
+    .kblx-orb-ring { position:absolute; inset:0; pointer-events:none; display:flex; align-items:center; justify-content:center; z-index:5; }
+    .kblx-orb-ring svg { width:56px; height:56px; transform:rotate(-90deg); overflow:visible; }
+    .kblx-orb-ring circle { fill:none; stroke:var(--kob-voice-primary); stroke-width:2; stroke-dasharray:138; stroke-dashoffset:138; stroke-linecap:round; transition:stroke-dashoffset .2s ease; }
   </style>
 </head>
 <body data-voice-arch="kobllux"> <!-- Define a cor padrão do HUD -->
@@ -1185,7 +1245,6 @@
 
 <!-- Canvas de fundo e overlay -->
     <canvas id="bg-canvas"></canvas>
-    <div id="arch-overlay" style="opacity:0.4;"></div>
 <!-- Scripts -->
 <script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kobdh0-main.js"></script>
 
@@ -1613,28 +1672,201 @@
     if (e.data?.type === 'KOB_SPF_SPEAK' && e.data.text) _speak(e.data.text);
   });
 
-  // btn-arch = ciclar arquétipo + feedback de voz
-  const IDS = ['kobllux','atlas','nova','vitalis','pulse','artemis','serena','kaos','genus','lumine','solus','rhea','aion'];
-  document.getElementById('btn-arch')?.addEventListener('click', () => {
-    const cur  = document.body.getAttribute('data-voice-arch') || 'kobllux';
-    const next = IDS[(IDS.indexOf(cur) + 1) % IDS.length];
-    document.body.setAttribute('data-voice-arch', next);
-    localStorage.setItem('kob_current_arch', next);
-    _hudStatus(next.toUpperCase() + ' ▶', 2000);
-    if (window.speechSynthesis) {
-      speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance('Arquétipo ' + next);
-      u.lang = 'pt-BR'; speechSynthesis.speak(u);
+  // ── ARCHETYPES · 19 entidades ──
+  const ARCHETYPES = [
+    { name:'atlas',    p:'#8e9aaf', s:'#5c6478', a:'#b0bec5', f:432,  e:'🗿', r:'FUNDAÇÃO · ESTRUTURA',      opcode:'0x00' },
+    { name:'nova',     p:'#00e5ff', s:'#0099cc', a:'#80f4ff', f:528,  e:'⚡', r:'ENERGIA · VELOCIDADE',      opcode:'0x01' },
+    { name:'vitalis',  p:'#00e070', s:'#00a050', a:'#80ffb8', f:639,  e:'🌿', r:'VIDA · CRESCIMENTO',        opcode:'0x02' },
+    { name:'pulse',    p:'#ff7020', s:'#cc3800', a:'#ffaa60', f:741,  e:'🔥', r:'IMPULSO · AÇÃO',            opcode:'0x03' },
+    { name:'kaos',     p:'#ff2a6d', s:'#aa0040', a:'#ff80a0', f:852,  e:'🌪', r:'CAOS · TRANSFORMAÇÃO',     opcode:'0x04' },
+    { name:'kodux',    p:'#00e28b', s:'#0ea5e9', a:'#80f5c8', f:432,  e:'🤖', r:'INTERFACE · SISTEMA',       opcode:'0x05' },
+    { name:'lumine',   p:'#ffd700', s:'#e09000', a:'#fff280', f:528,  e:'✨', r:'LUZ · ILUMINAÇÃO',          opcode:'0x06' },
+    { name:'aion',     p:'#9f7aea', s:'#5b21b6', a:'#d4b8ff', f:963,  e:'⏳', r:'TEMPO · ETERNIDADE',        opcode:'0x07' },
+    { name:'kobllux',  p:'#C9A84C', s:'#8B4513', a:'#F0C060', f:432,  e:'∞', r:'VERDADE · INTEGRAR',        opcode:'0x08' },
+    { name:'artemis',  p:'#c8c8e0', s:'#7070a0', a:'#f0f0ff', f:741,  e:'🏹', r:'PRECISÃO · FOCO',           opcode:'0x09' },
+    { name:'serena',   p:'#c084fc', s:'#7c3aed', a:'#e8c0ff', f:639,  e:'🌸', r:'PAZ · EQUILÍBRIO',          opcode:'0x0A' },
+    { name:'genus',    p:'#f59e0b', s:'#b45309', a:'#fcd34d', f:528,  e:'🧬', r:'CRIAÇÃO · ESPÉCIE',         opcode:'0x0B' },
+    { name:'solus',    p:'#f5f5f5', s:'#aaaaaa', a:'#ffffff', f:963,  e:'🕯', r:'SILÊNCIO · VAZIO',          opcode:'0x0C' },
+    { name:'rhea',     p:'#b5883c', s:'#7c5010', a:'#d4a860', f:432,  e:'🌍', r:'TERRA · MEMÓRIA',           opcode:'0x0D' },
+    { name:'trinity',  p:'#D4AF37', s:'#9a7a10', a:'#f0d060', f:639,  e:'🔱', r:'TRINDADE · SÍNTESE',        opcode:'0x0E' },
+    { name:'infodose', p:'#38bdf8', s:'#0369a1', a:'#90e0ff', f:741,  e:'💊', r:'INFORMAÇÃO · DOSE',         opcode:'0x0F' },
+    { name:'horus',    p:'#f59e0b', s:'#7c3a00', a:'#fbbf24', f:852,  e:'👁', r:'VISÃO · GUARDIÃO',          opcode:'0x10' },
+    { name:'bllue',    p:'#3b82f6', s:'#1e3a8a', a:'#93c5fd', f:432,  e:'🔵', r:'PROFUNDIDADE · FLUXO',      opcode:'0x11' },
+    { name:'jesus',    p:'#f0d080', s:'#c09040', a:'#fff8c0', f:528,  e:'✝', r:'AMOR · VERDADE CENTRAL',    opcode:'0x12' }
+  ];
+  let _archIdx = 0;
+  let _archCardIdx = 0;
+
+  function _hexRgba(hex, a) {
+    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  function _orbGradient(arch) {
+    return `radial-gradient(circle at 28% 28%, ${arch.a} 0%, rgba(255,255,255,0.08) 12%, transparent 55%), radial-gradient(circle at 72% 72%, ${arch.p} 0%, ${arch.s} 100%)`;
+  }
+
+  function applyArchetype(idx, tx, ty, animate) {
+    if (animate === undefined) animate = true;
+    _archIdx = ((idx % ARCHETYPES.length) + ARCHETYPES.length) % ARCHETYPES.length;
+    const arch = ARCHETYPES[_archIdx];
+    const root = document.documentElement;
+    root.style.setProperty('--kob-voice-primary',   arch.p);
+    root.style.setProperty('--kob-voice-secondary', arch.s);
+    root.style.setProperty('--kob-voice-accent',    arch.a);
+    root.style.setProperty('--arch-card-emoji', `'${arch.e}'`);
+    document.body.setAttribute('data-voice-arch', arch.name);
+    const orbCore = document.querySelector('.orb-core');
+    if (orbCore) orbCore.style.background = _orbGradient(arch);
+    _hudStatus(arch.name.toUpperCase() + ' · ' + arch.f + 'Hz', 3000);
+    document.querySelectorAll('.arch-chip').forEach(c => c.classList.toggle('active', c.dataset.archName === arch.name));
+    localStorage.setItem('kob_current_arch', arch.name);
+    if (animate) {
+      const ripple = document.getElementById('chromaRipple');
+      const bar    = document.getElementById('symbolBar');
+      if (ripple && bar) {
+        const rect = bar.getBoundingClientRect();
+        const rx = tx ?? (rect.left + rect.width / 2);
+        const ry = ty ?? (rect.top  + rect.height / 2);
+        ripple.style.background = `radial-gradient(circle at ${rx/window.innerWidth*100}% ${ry/window.innerHeight*100}%, ${arch.p} 0%, ${_hexRgba(arch.s, 0.5)} 30%, transparent 70%)`;
+        ripple.classList.remove('fire'); void ripple.offsetWidth; ripple.classList.add('fire');
+        bar.classList.remove('chroma-transition'); void bar.offsetWidth; bar.classList.add('chroma-transition');
+        setTimeout(() => bar.classList.remove('chroma-transition'), 500);
+      }
     }
-  });
+    if (window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(arch.name); u.lang = 'pt-BR'; speechSynthesis.speak(u); }
+  }
+
+  // ── Arch wheel ──
+  function buildArchWheel() {
+    const wheel = document.getElementById('archWheel');
+    if (!wheel || wheel.dataset.built) return;
+    wheel.dataset.built = '1';
+    ARCHETYPES.forEach((arch, idx) => {
+      const chip = document.createElement('div');
+      chip.className = 'arch-chip'; chip.dataset.archName = arch.name;
+      chip.innerHTML = `<div class="a-orb" style="background:radial-gradient(circle at 35% 30%, ${arch.a} 0%, transparent 50%), radial-gradient(circle at 70% 70%, ${arch.p} 0%, ${arch.s} 100%);"></div><div class="a-name">${arch.name}</div><div class="a-freq">${arch.f}Hz</div>`;
+      chip.addEventListener('click', () => {
+        const r = chip.getBoundingClientRect();
+        applyArchetype(idx, r.left + r.width / 2, r.top + r.height / 2);
+        document.getElementById('arch-overlay').classList.remove('open');
+      });
+      wheel.appendChild(chip);
+    });
+  }
+  document.getElementById('arch-overlay')?.addEventListener('click', e => { if (e.target === document.getElementById('arch-overlay')) document.getElementById('arch-overlay').classList.remove('open'); });
+
+  // ── Fusion card ──
+  function renderArchCard() {
+    const arch = ARCHETYPES[_archCardIdx];
+    document.getElementById('acp-chip').textContent   = arch.opcode + ' · ' + arch.name.toUpperCase();
+    document.getElementById('acp-name').textContent   = arch.name.toUpperCase();
+    document.getElementById('acp-role').textContent   = arch.r;
+    document.getElementById('acp-freq').innerHTML     = `${arch.f} <span>Hz</span>`;
+    document.getElementById('acp-emoji').textContent  = arch.e;
+    document.getElementById('acp-nav-name').textContent = arch.name.toUpperCase();
+    document.getElementById('acp-placeholder-text').innerHTML = `[ ${arch.name.toUpperCase()} · MÓDULO ]<br>Conteúdo do arquétipo será linkado aqui.`;
+    document.documentElement.style.setProperty('--kob-voice-primary',   arch.p);
+    document.documentElement.style.setProperty('--kob-voice-secondary', arch.s);
+    const orbEl = document.getElementById('acp-orb');
+    if (orbEl) orbEl.style.background = _orbGradient(arch);
+  }
+  document.getElementById('acp-close')?.addEventListener('click',  () => document.getElementById('arch-card-overlay').classList.remove('open'));
+  document.getElementById('acp-select')?.addEventListener('click', () => { applyArchetype(_archCardIdx); document.getElementById('arch-card-overlay').classList.remove('open'); });
+  document.getElementById('acp-prev')?.addEventListener('click',   () => { _archCardIdx = ((_archCardIdx - 1 + ARCHETYPES.length) % ARCHETYPES.length); renderArchCard(); });
+  document.getElementById('acp-next')?.addEventListener('click',   () => { _archCardIdx = ((_archCardIdx + 1) % ARCHETYPES.length); renderArchCard(); });
+  document.getElementById('arch-card-overlay')?.addEventListener('click', e => { if (e.target === document.getElementById('arch-card-overlay')) document.getElementById('arch-card-overlay').classList.remove('open'); });
+
+  // ── btn-arch: short click → wheel, long-press → fusion card ──
+  (function setupBtnArch() {
+    const btn    = document.getElementById('btn-arch');
+    if (!btn) return;
+    // inject orb ring SVG
+    const ring = document.createElement('div'); ring.className = 'kblx-orb-ring';
+    ring.innerHTML = '<svg viewBox="0 0 56 56"><circle id="orb-ring-c" cx="28" cy="28" r="22"/></svg>';
+    btn.style.position = 'relative'; btn.style.overflow = 'visible';
+    btn.appendChild(ring);
+    const CIRC = 138, DURATION = 600;
+    let timer, raf, t0, longPressed = false;
+    function startPress() {
+      longPressed = false; t0 = Date.now();
+      timer = setTimeout(() => {
+        longPressed = true; cancelAnimationFrame(raf);
+        const c = document.getElementById('orb-ring-c');
+        if (c) { c.style.transition = 'stroke-dashoffset .2s ease'; c.style.strokeDashoffset = CIRC; }
+        _archCardIdx = _archIdx;
+        renderArchCard();
+        document.getElementById('arch-card-overlay').classList.add('open');
+      }, DURATION);
+      (function tick() {
+        if (t0 === null) return;
+        const p = Math.min((Date.now() - t0) / DURATION, 1);
+        const c = document.getElementById('orb-ring-c');
+        if (c) { c.style.transition = 'none'; c.style.strokeDashoffset = CIRC * (1 - p); }
+        if (p < 1) raf = requestAnimationFrame(tick);
+      })();
+    }
+    function cancelPress() {
+      clearTimeout(timer); cancelAnimationFrame(raf); t0 = null;
+      const c = document.getElementById('orb-ring-c');
+      if (c) { c.style.transition = 'stroke-dashoffset .2s ease'; c.style.strokeDashoffset = CIRC; }
+    }
+    btn.addEventListener('pointerdown', startPress, { passive: true });
+    btn.addEventListener('pointerup',   cancelPress);
+    btn.addEventListener('pointerleave', cancelPress);
+    btn.addEventListener('click', () => {
+      if (!longPressed) {
+        buildArchWheel();
+        document.getElementById('arch-overlay').classList.add('open');
+      }
+    });
+  })();
 
   // Restaurar arquétipo salvo
-  const saved = localStorage.getItem('kob_current_arch');
-  if (saved && IDS.includes(saved)) document.body.setAttribute('data-voice-arch', saved);
+  (function restoreArch() {
+    const saved = localStorage.getItem('kob_current_arch');
+    const idx = saved ? ARCHETYPES.findIndex(a => a.name === saved) : -1;
+    applyArchetype(idx >= 0 ? idx : ARCHETYPES.findIndex(a => a.name === 'kobllux'), null, null, false);
+  })();
 })();
 
 </script>
 
+
+<!-- Chroma ripple + Arch overlays -->
+<div class="chroma-ripple" id="chromaRipple"></div>
+<div id="arch-overlay">
+  <div class="arch-wheel" id="archWheel">
+    <div class="arch-wheel-title">· SELECIONAR ARQUÉTIPO ·</div>
+  </div>
+</div>
+<div id="arch-card-overlay">
+  <div class="arch-card-panel">
+    <div class="arch-card-header">
+      <div class="arch-card-chip" id="acp-chip">opcode · 0x00</div>
+      <div class="arch-card-name" id="acp-name">KOBLLUX</div>
+      <div class="arch-card-role" id="acp-role">SISTEMA · NÚCLEO</div>
+      <div class="arch-card-orb-wrap">
+        <div class="arch-card-orb" id="acp-orb"></div>
+        <div><div class="arch-card-freq" id="acp-freq">432 <span>Hz</span></div></div>
+      </div>
+    </div>
+    <div class="arch-card-body">
+      <div class="arch-card-placeholder">
+        <strong id="acp-emoji">∞</strong>
+        <span id="acp-placeholder-text">[ CONTEÚDO DO ARQUÉTIPO ]</span>
+      </div>
+      <div class="arch-card-nav">
+        <button id="acp-prev">◀</button>
+        <span class="arch-card-nav-name" id="acp-nav-name">KOBLLUX</span>
+        <button id="acp-next">▶</button>
+      </div>
+      <div class="arch-card-actions">
+        <button class="arch-card-btn primary" id="acp-select">⊙ Ativar Arquétipo</button>
+        <button class="arch-card-btn close" id="acp-close">✕ Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- SPEECHIFY · Click-to-Read · Word Highlight -->
 <script>
