@@ -39,6 +39,13 @@
       "description": "Chat com IA KOBLLUX",
       "url": "./sumbus_fusion.html#hypervision",
       "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "KOB MATRIX HUD",
+      "short_name": "⬡MX",
+      "description": "HUD Simbiótico · Symbol-bar · Arquétipos CADIAL",
+      "url": "./kob_matrix.html",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0f0f11">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>KOBLLUX · HUD SIMBIÓTICO · ARQUITETURA VEEB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+<style>
+/* ── CSS RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── ROOT VARIABLES ── */
+:root {
+  --bg-dark:         #0f0f11;
+  --bg-surface:      rgba(5,5,22,.96);
+  --bg-panel:        rgba(10,10,26,.92);
+  --ink:             #e8e0f0;
+  --text:            #d0c8e0;
+  --muted:           rgba(232,224,240,.45);
+  --kob-voice-primary:   #6B44AD;
+  --kob-voice-secondary: #1ee4ff;
+  --kob-voice-glow:      rgba(107,68,173,.35);
+  --kob-voice-border:    rgba(110,68,173,.45);
+  --kob-accent:      #1ee4ff;
+  --kob-gold:        #c9a84c;
+  --radius-sm:       8px;
+  --radius-md:       14px;
+  --radius-lg:       18px;
+  --transition:      .18s cubic-bezier(.4,0,.2,1);
+  --bar-w:           56px;
+  --bar-h:           56px;
+  --symbol-size:     40px;
+}
+
+/* ── ARCHETYPE PALETTE OVERRIDES ── */
+body[data-voice-arch="atlas"]   { --kob-voice-primary:#4a7fa5; --kob-voice-glow:rgba(74,127,165,.35); --kob-voice-border:rgba(74,127,165,.45); }
+body[data-voice-arch="nova"]    { --kob-voice-primary:#a54a7a; --kob-voice-glow:rgba(165,74,122,.35); --kob-voice-border:rgba(165,74,122,.45); }
+body[data-voice-arch="vitalis"] { --kob-voice-primary:#4aa55a; --kob-voice-glow:rgba(74,165,90,.35);  --kob-voice-border:rgba(74,165,90,.45); }
+body[data-voice-arch="pulse"]   { --kob-voice-primary:#a54a4a; --kob-voice-glow:rgba(165,74,74,.35);  --kob-voice-border:rgba(165,74,74,.45); }
+body[data-voice-arch="artemis"] { --kob-voice-primary:#7a4aa5; --kob-voice-glow:rgba(122,74,165,.35); --kob-voice-border:rgba(122,74,165,.45); }
+body[data-voice-arch="serena"]  { --kob-voice-primary:#4a9ca5; --kob-voice-glow:rgba(74,156,165,.35); --kob-voice-border:rgba(74,156,165,.45); }
+body[data-voice-arch="kaos"]    { --kob-voice-primary:#a5804a; --kob-voice-glow:rgba(165,128,74,.35); --kob-voice-border:rgba(165,128,74,.45); }
+body[data-voice-arch="genus"]   { --kob-voice-primary:#5a7aa5; --kob-voice-glow:rgba(90,122,165,.35); --kob-voice-border:rgba(90,122,165,.45); }
+body[data-voice-arch="lumine"]  { --kob-voice-primary:#a5a54a; --kob-voice-glow:rgba(165,165,74,.35); --kob-voice-border:rgba(165,165,74,.45); }
+body[data-voice-arch="solus"]   { --kob-voice-primary:#4a4aa5; --kob-voice-glow:rgba(74,74,165,.35);  --kob-voice-border:rgba(74,74,165,.45); }
+body[data-voice-arch="rhea"]    { --kob-voice-primary:#a54a8a; --kob-voice-glow:rgba(165,74,138,.35); --kob-voice-border:rgba(165,74,138,.45); }
+body[data-voice-arch="aion"]    { --kob-voice-primary:#6aa58a; --kob-voice-glow:rgba(106,165,138,.35); --kob-voice-border:rgba(106,165,138,.45); }
+body[data-voice-arch="kobllux"] { --kob-voice-primary:#6B44AD; --kob-voice-glow:rgba(107,68,173,.35); --kob-voice-border:rgba(110,68,173,.45); }
+
+/* ── BASE BODY ── */
+html, body {
+  min-height: 100%;
+  background: var(--bg-dark);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 30% 20%, rgba(107,68,173,.08) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 75% 80%, rgba(30,228,255,.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── WRAP & CONTENT ── */
+.wrap {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+#frame {
+  width: 100%;
+  flex: 1;
+  border: none;
+  min-height: 100vh;
+  background: transparent;
+}
+
+#kob-tts-outline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  border: 2px solid transparent;
+  transition: border-color .3s;
+}
+#kob-tts-outline.speaking {
+  border-color: var(--kob-voice-primary);
+  box-shadow: inset 0 0 24px var(--kob-voice-glow);
+}
+
+/* ── BG CANVAS ── */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .35;
+}
+
+/* ── ARCH OVERLAY ── */
+#arch-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, var(--kob-voice-glow) 0%, transparent 70%);
+  transition: background .5s;
+}
+
+/* ══════════════════════════════════════════
+   SYMBOL-BAR · FLOATING HUD
+══════════════════════════════════════════ */
+.symbol-bar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 1000;
+  background: rgba(5,5,22,.82);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--kob-voice-border);
+  border-radius: var(--radius-lg);
+  padding: 8px 6px;
+  box-shadow:
+    0 0 40px var(--kob-voice-glow),
+    0 8px 32px rgba(0,0,0,.7),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+  transition:
+    left var(--transition),
+    top var(--transition),
+    right var(--transition),
+    bottom var(--transition),
+    border-color .4s,
+    box-shadow .4s,
+    opacity .25s;
+  user-select: none;
+  touch-action: none;
+}
+
+/* ── floating (default: bottom-right) ── */
+.symbol-bar.floating {
+  right: 14px;
+  bottom: 80px;
+  left: auto;
+  top: auto;
+}
+
+/* ── snap-side (left or right wall) ── */
+.symbol-bar.snap-side {
+  top: 50%;
+  transform: translateY(-50%);
+  bottom: auto;
+  border-radius: var(--radius-lg);
+}
+.symbol-bar.snap-side.snap-left  { left: 0;  right: auto; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+.symbol-bar.snap-side.snap-right { right: 0; left: auto;  border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+
+/* ── snap-top ── */
+.symbol-bar.snap-top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: auto;
+  right: auto;
+  flex-direction: row;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* ── snap-bottom ── */
+.symbol-bar.snap-bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: auto;
+  right: auto;
+  flex-direction: row;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 6px 8px;
+}
+
+/* ── dragging state ── */
+.symbol-bar.is-dragging {
+  opacity: .82;
+  box-shadow:
+    0 0 60px var(--kob-voice-glow),
+    0 20px 50px rgba(0,0,0,.85),
+    inset 0 0 0 1px rgba(255,255,255,.08);
+  cursor: grabbing;
+}
+
+/* ── collapsed ── */
+.symbol-bar.collapsed .kob-symmbar-scroll,
+.symbol-bar.collapsed .hud-info {
+  display: none;
+}
+
+/* ── idle / dimmed ── */
+.symbol-bar.idle {
+  opacity: .55;
+}
+.symbol-bar:hover,
+.symbol-bar:focus-within {
+  opacity: 1 !important;
+}
+
+/* ── TOGGLE WRAP ── */
+.toggle-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── HUD STATUS ── */
+.hud-info {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .52rem;
+  color: var(--muted);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 2px 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: color .3s;
+}
+
+/* ══════════════════════════════════════════
+   SYMBOL BUTTONS
+══════════════════════════════════════════ */
+.symbol-button {
+  position: relative;
+  width: var(--symbol-size);
+  height: var(--symbol-size);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+  color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.symbol-button:hover {
+  background: rgba(255,255,255,.07);
+  border-color: var(--kob-voice-primary);
+  box-shadow: 0 0 12px var(--kob-voice-glow);
+  transform: scale(1.06);
+}
+
+.symbol-button:active {
+  transform: scale(.94);
+  background: rgba(255,255,255,.1);
+}
+
+.symbol-button.main-toggle {
+  font-size: 1.1rem;
+  border-color: rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+}
+
+.symbol-button.main-toggle:hover {
+  background: rgba(255,255,255,.1);
+  border-color: var(--kob-voice-primary);
+}
+
+.symbol-button.active,
+.symbol-button[data-active="true"] {
+  background: rgba(107,68,173,.18);
+  border-color: var(--kob-voice-primary);
+  box-shadow: 0 0 16px var(--kob-voice-glow);
+}
+
+/* ── SYMBOL WRAP ── */
+.symbol-wrap {
+  display: contents;
+}
+
+/* ── ORB MICROPHONE ── */
+.orb-microphone-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.tts-orb-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--kob-voice-primary), rgba(107,68,173,.3));
+  box-shadow:
+    0 0 12px var(--kob-voice-glow),
+    inset 0 0 6px rgba(255,255,255,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow .3s, background .3s;
+  animation: orb-breathe 3s ease-in-out infinite;
+}
+
+.orb.speaking {
+  animation: orb-pulse 0.6s ease-in-out infinite;
+  box-shadow:
+    0 0 24px var(--kob-voice-glow),
+    0 0 48px var(--kob-voice-glow),
+    inset 0 0 10px rgba(255,255,255,.2);
+}
+
+.orb-core {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.7);
+  box-shadow: 0 0 6px rgba(255,255,255,.5);
+}
+
+@keyframes orb-breathe {
+  0%, 100% { transform: scale(1);    opacity: .85; }
+  50%       { transform: scale(1.08); opacity: 1; }
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1);    }
+  50%       { transform: scale(1.18); }
+}
+
+/* ══════════════════════════════════════════
+   KOB-SYMMBAR SCROLL (CARROSSEL)
+══════════════════════════════════════════ */
+.kob-symmbar-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  max-height: 55vh;
+  scroll-snap-type: y mandatory;
+  padding: 2px 0;
+}
+.kob-symmbar-scroll::-webkit-scrollbar { display: none; }
+
+.symbol-bar.snap-top .kob-symmbar-scroll {
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-height: none;
+  max-width: 70vw;
+  scroll-snap-type: x mandatory;
+}
+
+.kob-symmbar-scroll .symbol-wrap,
+.kob-symmbar-scroll > .symbol-button {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════
+   KBLX PANEL — KOBLLUX/NEBULA UNIFICADO
+══════════════════════════════════════════ */
+#kblx-back {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(2,4,10,.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  align-items: center;
+  justify-content: center;
+}
+#kblx-back.open { display: flex; }
+
+#kblx-panel {
+  background: rgba(5,5,22,.96);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(110,68,173,.45);
+  border-radius: 18px;
+  padding: 1.6rem 1.6rem 1.2rem;
+  width: min(400px, 92vw);
+  box-shadow:
+    0 0 60px rgba(107,68,173,.2),
+    0 20px 50px rgba(0,0,0,.8),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+  animation: kblx-in .25s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+@keyframes kblx-in {
+  from { opacity: 0; transform: translateY(-18px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+#kblx-panel .p-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  color: rgba(30,228,255,.65);
+  letter-spacing: .4em;
+  text-transform: uppercase;
+  margin-bottom: .3rem;
+}
+
+#kblx-panel .p-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #6B44AD;
+  letter-spacing: .06em;
+  margin-bottom: 1rem;
+}
+
+#kblx-panel .p-lbl {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  color: rgba(232,224,240,.45);
+  letter-spacing: .18em;
+  margin-bottom: .3rem;
+}
+
+#kblx-inp {
+  width: 100%;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(110,68,173,.35);
+  border-radius: 8px;
+  padding: .6rem .88rem;
+  color: #e8e0f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .82rem;
+  outline: none;
+  margin-bottom: .9rem;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+#kblx-inp:focus {
+  border-color: #6B44AD;
+  box-shadow: 0 0 12px rgba(107,68,173,.3);
+}
+
+.kblx-row {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.kblx-btn {
+  flex: 1;
+  min-width: 72px;
+  padding: .46rem .6rem;
+  border-radius: 8px;
+  border: 1px solid;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .61rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  transition: all .18s;
+  white-space: nowrap;
+}
+
+.kblx-save {
+  border-color: #6B44AD;
+  color: #6B44AD;
+}
+.kblx-save:hover {
+  background: rgba(107,68,173,.12);
+  box-shadow: 0 0 12px rgba(107,68,173,.3);
+}
+
+.kblx-close {
+  border-color: rgba(255,255,255,.14);
+  color: rgba(232,224,240,.5);
+}
+.kblx-close:hover { background: rgba(255,255,255,.05); }
+
+/* ── anel de progresso (long-press) ── */
+.kblx-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+.kblx-ring svg {
+  width: 44px;
+  height: 44px;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+.kblx-ring circle {
+  fill: none;
+  stroke: #6B44AD;
+  stroke-width: 2.5;
+  stroke-dasharray: 119.38;
+  stroke-dashoffset: 119.38;
+  stroke-linecap: round;
+}
+
+/* ── ring animation (driven by JS) ── */
+.kblx-ring.pressing circle {
+  animation: ring-fill var(--press-dur, 3000ms) linear forwards;
+}
+@keyframes ring-fill {
+  from { stroke-dashoffset: 119.38; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  :root {
+    --symbol-size: 36px;
+  }
+  #kblx-panel {
+    padding: 1.2rem 1rem .9rem;
+  }
+}
+</style>
+</head>
+<body data-voice-arch="kobllux">
+<div id="root">
+
+<!-- ══ MAIN WRAP ══ -->
+<div class="wrap">
+  <div class="content">
+    <iframe id="frame" src="about:blank"></iframe>
+    <div id="kob-tts-outline"></div>
+  </div>
+
+  <!-- ══ SYMBOL-BAR HUD ══ -->
+  <div class="symbol-bar floating" id="symbolBar">
+
+    <!-- Toggle -->
+    <div class="toggle-wrap">
+      <button class="symbol-button main-toggle" id="toggleBtn" title="Menu">≡</button>
+    </div>
+
+    <!-- Controles de Navegação -->
+    <div class="kob-symmbar-scroll" id="symmbarScroll">
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-prev" title="Voltar">◀</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-play" title="Play/Pause">▶</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" id="btn-next" title="Próximo">▶▶</button>
+      </div>
+      <button class="symbol-button" id="btn-arch" title="Trocar Arquétipo">
+        <div class="orb-microphone-container">
+          <div class="tts-orb-mini">
+            <div class="orb" id="main-orb">
+              <div class="orb-core"></div>
+            </div>
+          </div>
+        </div>
+      </button>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="phi" data-url="[0×01]_KOBLLUX_ARQUETIPOS.html">Φ</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="viv" data-url="https://kodux78k.github.io/oiDual-Vivivi-1/">꩜</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="home" data-url="https://kodux78k.github.io/oiDual-idHome/">◌</button>
+      </div>
+      <div class="symbol-wrap">
+        <button class="symbol-button" data-id="doc" data-url="https://kodux78k.github.io/info-Doc/index.html">◘</button>
+      </div>
+    </div>
+
+    <div class="hud-info" id="hudStatus">KOBLLUX · ORB NEXUS</div>
+  </div><!-- /symbol-bar -->
+</div><!-- /wrap -->
+
+<!-- ══ BACKGROUND CANVAS ══ -->
+<canvas id="bg-canvas"></canvas>
+<div id="arch-overlay" style="opacity:0.4;"></div>
+
+<!-- ══ KBLX URL EDITOR PANEL ══ -->
+<div id="kblx-back" role="dialog" aria-modal="true" aria-label="Editar URL">
+  <div id="kblx-panel">
+    <div class="p-chip">KOBLLUX · SYMMBAR</div>
+    <div class="p-title">EDITAR DESTINO</div>
+    <label class="p-lbl" for="kblx-inp">URL · DESTINO DO SÍMBOLO</label>
+    <input id="kblx-inp" type="url" placeholder="https://" autocomplete="off" spellcheck="false">
+    <div class="kblx-row">
+      <button class="kblx-btn kblx-save" id="kblx-save">SALVAR</button>
+      <button class="kblx-btn kblx-close" id="kblx-close">CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /root -->
+
+<!-- ══ JAVASCRIPT ══ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── constants ── */
+  const PRESS_DURATION = 3000;
+  const STORAGE_KEY    = 'kob_symmbar_urls';
+  const IDLE_DELAY     = 4000;
+
+  /* ── state ── */
+  let activeBtn   = null;   // button being long-pressed / edited
+  let pressTimer  = null;
+  let pressStart  = null;
+  let rafId       = null;
+  let idleTimer   = null;
+  let isDragging  = false;
+  let dragOffX    = 0;
+  let dragOffY    = 0;
+  let collapsed   = false;
+
+  /* ── elements ── */
+  const bar       = document.getElementById('symbolBar');
+  const frame     = document.getElementById('frame');
+  const hudStatus = document.getElementById('hudStatus');
+  const toggleBtn = document.getElementById('toggleBtn');
+  const kblxBack  = document.getElementById('kblx-back');
+  const kblxPanel = document.getElementById('kblx-panel');
+  const kblxInp   = document.getElementById('kblx-inp');
+  const kblxSave  = document.getElementById('kblx-save');
+  const kblxClose = document.getElementById('kblx-close');
+  const mainOrb   = document.getElementById('main-orb');
+
+  /* ── url storage ── */
+  function loadUrls() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch { return {}; }
+  }
+  function saveUrls(map) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(map)); }
+    catch {}
+  }
+
+  /* ── apply saved urls ── */
+  function applyStoredUrls() {
+    const map = loadUrls();
+    document.querySelectorAll('.symbol-button[data-id]').forEach(btn => {
+      const id = btn.getAttribute('data-id');
+      if (map[id]) btn.setAttribute('data-url', map[id]);
+    });
+  }
+  applyStoredUrls();
+
+  /* ── navigate ── */
+  function navigateTo(url) {
+    if (!url || url === 'about:blank') return;
+    frame.src = url;
+    const short = url.replace(/^https?:\/\//, '').slice(0, 28);
+    hudStatus.textContent = short;
+    resetIdle();
+  }
+
+  /* ── symbol-button clicks ── */
+  document.querySelectorAll('.symbol-button[data-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const url = btn.getAttribute('data-url');
+      if (url) navigateTo(url);
+      document.querySelectorAll('.symbol-button[data-id]').forEach(b => b.removeAttribute('data-active'));
+      btn.setAttribute('data-active', 'true');
+    });
+  });
+
+  /* ── nav buttons ── */
+  document.getElementById('btn-prev')?.addEventListener('click', () => { history.back(); });
+  document.getElementById('btn-next')?.addEventListener('click', () => { history.forward(); });
+  document.getElementById('btn-play')?.addEventListener('click', () => {
+    hudStatus.textContent = 'PLAY · PAUSE';
+  });
+
+  /* ── toggle collapse ── */
+  toggleBtn.addEventListener('click', () => {
+    collapsed = !collapsed;
+    bar.classList.toggle('collapsed', collapsed);
+    toggleBtn.textContent = collapsed ? '⊞' : '≡';
+  });
+
+  /* ══════════════════════════════
+     LONG-PRESS → OPEN PANEL
+  ══════════════════════════════ */
+  function injectRing(btn) {
+    if (btn.querySelector('.kblx-ring')) return;
+    const ring = document.createElement('div');
+    ring.className = 'kblx-ring';
+    ring.innerHTML = `<svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="19"/></svg>`;
+    btn.appendChild(ring);
+  }
+
+  function startPress(btn) {
+    if (!btn.hasAttribute('data-id')) return;
+    injectRing(btn);
+    activeBtn = btn;
+    pressStart = performance.now();
+
+    const ring = btn.querySelector('.kblx-ring');
+    const circle = ring?.querySelector('circle');
+
+    function animateRing() {
+      if (!pressStart) return;
+      const elapsed  = performance.now() - pressStart;
+      const progress = Math.min(elapsed / PRESS_DURATION, 1);
+      const CIRCUM   = 119.38;
+      if (circle) circle.style.strokeDashoffset = CIRCUM * (1 - progress);
+      if (progress < 1) {
+        rafId = requestAnimationFrame(animateRing);
+      }
+    }
+
+    pressTimer = setTimeout(() => {
+      cancelAnimationFrame(rafId);
+      openPanel(btn);
+      resetRing(btn);
+    }, PRESS_DURATION);
+
+    rafId = requestAnimationFrame(animateRing);
+  }
+
+  function cancelPress() {
+    clearTimeout(pressTimer);
+    cancelAnimationFrame(rafId);
+    pressStart = null;
+    if (activeBtn) resetRing(activeBtn);
+  }
+
+  function resetRing(btn) {
+    const circle = btn?.querySelector('.kblx-ring circle');
+    if (circle) circle.style.strokeDashoffset = '119.38';
+  }
+
+  document.querySelectorAll('.symbol-button[data-id]').forEach(btn => {
+    // mouse
+    btn.addEventListener('mousedown',  () => startPress(btn));
+    btn.addEventListener('mouseup',    cancelPress);
+    btn.addEventListener('mouseleave', cancelPress);
+    // touch
+    btn.addEventListener('touchstart', (e) => { e.preventDefault(); startPress(btn); }, { passive: false });
+    btn.addEventListener('touchend',   cancelPress);
+    btn.addEventListener('touchcancel',cancelPress);
+  });
+
+  /* ══════════════════════════════
+     KBLX PANEL
+  ══════════════════════════════ */
+  function openPanel(btn) {
+    activeBtn = btn;
+    kblxInp.value = btn.getAttribute('data-url') || '';
+    kblxBack.classList.add('open');
+    setTimeout(() => kblxInp.focus(), 80);
+  }
+
+  function closePanel() {
+    kblxBack.classList.remove('open');
+    activeBtn = null;
+  }
+
+  function saveUrl() {
+    const url = kblxInp.value.trim();
+    if (!activeBtn) { closePanel(); return; }
+    if (url) {
+      activeBtn.setAttribute('data-url', url);
+      const id  = activeBtn.getAttribute('data-id');
+      const map = loadUrls();
+      map[id]   = url;
+      saveUrls(map);
+    }
+    closePanel();
+  }
+
+  kblxSave.addEventListener('click', saveUrl);
+  kblxClose.addEventListener('click', closePanel);
+
+  kblxBack.addEventListener('click', (e) => {
+    if (e.target === kblxBack) closePanel();
+  });
+
+  kblxInp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter')  saveUrl();
+    if (e.key === 'Escape') closePanel();
+  });
+
+  /* ══════════════════════════════
+     DRAGGABLE BAR
+  ══════════════════════════════ */
+  function onDragStart(e) {
+    if (e.target.closest('button')) return;
+    isDragging = true;
+    bar.classList.add('is-dragging');
+    const touch = e.touches ? e.touches[0] : e;
+    const rect  = bar.getBoundingClientRect();
+    dragOffX = touch.clientX - rect.left;
+    dragOffY = touch.clientY - rect.top;
+    e.preventDefault();
+  }
+
+  function onDragMove(e) {
+    if (!isDragging) return;
+    const touch = e.touches ? e.touches[0] : e;
+    let x = touch.clientX - dragOffX;
+    let y = touch.clientY - dragOffY;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const bw = bar.offsetWidth;
+    const bh = bar.offsetHeight;
+
+    // clamp
+    x = Math.max(0, Math.min(x, W - bw));
+    y = Math.max(0, Math.min(y, H - bh));
+
+    bar.style.left   = x + 'px';
+    bar.style.top    = y + 'px';
+    bar.style.right  = 'auto';
+    bar.style.bottom = 'auto';
+    bar.style.transform = 'none';
+    bar.classList.remove('snap-side', 'snap-left', 'snap-right', 'snap-top', 'snap-bottom', 'floating');
+    e.preventDefault();
+  }
+
+  function onDragEnd(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    bar.classList.remove('is-dragging');
+
+    const rect = bar.getBoundingClientRect();
+    const W    = window.innerWidth;
+    const H    = window.innerHeight;
+    const cx   = rect.left + rect.width  / 2;
+    const cy   = rect.top  + rect.height / 2;
+
+    const snapEdge   = 48;
+    const snapTop    = cy < snapEdge;
+    const snapBottom = cy > H - snapEdge;
+    const snapLeft   = cx < snapEdge;
+    const snapRight  = cx > W - snapEdge;
+
+    bar.style.left = bar.style.top = bar.style.right = bar.style.bottom = '';
+    bar.style.transform = '';
+
+    if (snapTop) {
+      bar.classList.add('snap-top');
+    } else if (snapBottom) {
+      bar.classList.add('snap-bottom');
+    } else if (snapLeft) {
+      bar.classList.add('snap-side', 'snap-left');
+    } else if (snapRight) {
+      bar.classList.add('snap-side', 'snap-right');
+    } else {
+      bar.classList.add('floating');
+      bar.style.left   = rect.left + 'px';
+      bar.style.top    = rect.top  + 'px';
+      bar.style.right  = 'auto';
+      bar.style.bottom = 'auto';
+      bar.style.transform = 'none';
+    }
+  }
+
+  bar.addEventListener('mousedown',  onDragStart);
+  bar.addEventListener('touchstart', onDragStart, { passive: false });
+  window.addEventListener('mousemove',  onDragMove);
+  window.addEventListener('touchmove',  onDragMove, { passive: false });
+  window.addEventListener('mouseup',    onDragEnd);
+  window.addEventListener('touchend',   onDragEnd);
+
+  /* ══════════════════════════════
+     IDLE DIMMING
+  ══════════════════════════════ */
+  function resetIdle() {
+    clearTimeout(idleTimer);
+    bar.classList.remove('idle');
+    idleTimer = setTimeout(() => bar.classList.add('idle'), IDLE_DELAY);
+  }
+
+  window.addEventListener('pointermove', resetIdle, { passive: true });
+  window.addEventListener('keydown',     resetIdle, { passive: true });
+  window.addEventListener('touchstart',  resetIdle, { passive: true });
+  resetIdle();
+
+  /* ══════════════════════════════
+     ARCHETYPE CYCLE (btn-arch)
+  ══════════════════════════════ */
+  const archetypes = [
+    'kobllux','atlas','nova','vitalis','pulse','artemis',
+    'serena','kaos','genus','lumine','solus','rhea','aion'
+  ];
+  let archIdx = 0;
+
+  document.getElementById('btn-arch')?.addEventListener('click', () => {
+    archIdx = (archIdx + 1) % archetypes.length;
+    const arch = archetypes[archIdx];
+    document.body.setAttribute('data-voice-arch', arch);
+    hudStatus.textContent = arch.toUpperCase() + ' · ATIVO';
+    resetIdle();
+  });
+
+  /* ══════════════════════════════
+     BG CANVAS — PARTICLE FIELD
+  ══════════════════════════════ */
+  (function initCanvas() {
+    const canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
+    const ctx    = canvas.getContext('2d');
+    const pts    = [];
+    const N      = 60;
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initPts() {
+      pts.length = 0;
+      for (let i = 0; i < N; i++) {
+        pts.push({
+          x:  Math.random() * canvas.width,
+          y:  Math.random() * canvas.height,
+          vx: (Math.random() - .5) * .3,
+          vy: (Math.random() - .5) * .3,
+          r:  Math.random() * 1.5 + .5
+        });
+      }
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const style = getComputedStyle(document.documentElement);
+      const primary = style.getPropertyValue('--kob-voice-primary').trim() || '#6B44AD';
+
+      pts.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width)  p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = primary;
+        ctx.globalAlpha = .25;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+
+      // lines
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx   = pts[i].x - pts[j].x;
+          const dy   = pts[i].y - pts[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 110) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = primary;
+            ctx.globalAlpha = (1 - dist / 110) * .08;
+            ctx.lineWidth   = .5;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    initPts();
+    tick();
+    window.addEventListener('resize', () => { resize(); initPts(); });
+  })();
+
+  /* ── init hud ── */
+  hudStatus.textContent = 'KOBLLUX · ORB NEXUS';
+
+})();
+</script>
+
+</body>
+</html>
