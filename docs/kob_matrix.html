@@ -1187,7 +1187,6 @@
 
 <div id="root">
 
-<script src="https://kodux78k.github.io/oiDual--Y-/js/kob-LVb.js"></script>
 <script src="kobllux_voices.js"></script>
 
 <div class="wrap">
@@ -1246,7 +1245,6 @@
 <!-- Canvas de fundo e overlay -->
     <canvas id="bg-canvas"></canvas>
 <!-- Scripts -->
-<script type="module" src="https://kodux78k.github.io/oiDual--Y-/M0D/kob-DH0/js/kobdh0-main.js"></script>
 
 </div>
 
@@ -1867,6 +1865,85 @@
     </div>
   </div>
 </div>
+
+<!-- ── SYMBOL BAR · Drag + Snap + Idle (autônomo) ── -->
+<script>
+(function(){
+  const bar = document.getElementById('symbolBar');
+  if (!bar) return;
+  let sbDragging = false, sbOffX = 0, sbOffY = 0;
+
+  // Posição inicial: centro vertical, borda esquerda
+  function _initPos() {
+    bar.style.top  = Math.max(0, (window.innerHeight / 2 - bar.offsetHeight / 2)) + 'px';
+    bar.style.left = '16px';
+  }
+  // Aguarda render para medir offsetHeight
+  requestAnimationFrame(() => requestAnimationFrame(_initPos));
+
+  bar.addEventListener('pointerdown', e => {
+    if (e.target.closest('button, .kob-symmbar-scroll')) return;
+    sbDragging = true;
+    bar.setPointerCapture(e.pointerId);
+    const r = bar.getBoundingClientRect();
+    sbOffX = e.clientX - r.left; sbOffY = e.clientY - r.top;
+    bar.classList.add('is-dragging');
+    bar.classList.remove('snap-side', 'snap-side-right', 'snap-top', 'floating');
+    bar.style.transform = 'none';
+  });
+
+  window.addEventListener('pointermove', e => {
+    if (!sbDragging) return;
+    const x = Math.max(0, Math.min(window.innerWidth  - bar.offsetWidth,  e.clientX - sbOffX));
+    const y = Math.max(0, Math.min(window.innerHeight - bar.offsetHeight, e.clientY - sbOffY));
+    bar.style.left = x + 'px'; bar.style.top = y + 'px';
+  });
+
+  window.addEventListener('pointerup', () => {
+    if (!sbDragging) return;
+    sbDragging = false;
+    bar.classList.remove('is-dragging');
+    _snapBar();
+  });
+
+  function _snapBar() {
+    const r  = bar.getBoundingClientRect();
+    const cx = r.left + r.width  / 2;
+    const cy = r.top  + r.height / 2;
+    const W  = window.innerWidth, H = window.innerHeight;
+    if (cx <= 60 || (cx <= W - cx && cx <= cy * 1.5)) {
+      bar.classList.add('snap-side');
+      bar.style.left = '0';
+      bar.style.top  = Math.max(0, Math.min(H - bar.offsetHeight, r.top)) + 'px';
+    } else if (W - cx < cx && W - cx < 60) {
+      bar.classList.add('snap-side-right');
+      bar.style.left = (W - bar.offsetWidth) + 'px';
+      bar.style.top  = Math.max(0, Math.min(H - bar.offsetHeight, r.top)) + 'px';
+    } else if (cy < 50) {
+      bar.classList.add('snap-top');
+      bar.style.top  = '0';
+      bar.style.left = Math.max(0, Math.min(W - bar.offsetWidth, r.left)) + 'px';
+    } else {
+      bar.classList.add('floating');
+    }
+  }
+
+  // Idle fade
+  let _idleT;
+  function _wake() {
+    bar.classList.remove('idle');
+    clearTimeout(_idleT);
+    _idleT = setTimeout(() => { if (!sbDragging) bar.classList.add('idle'); }, 4000);
+  }
+  ['pointerdown', 'pointermove', 'touchstart', 'mousemove'].forEach(ev =>
+    document.addEventListener(ev, _wake, { passive: true })
+  );
+  _wake();
+
+  // Toggle collapse
+  document.getElementById('toggleBtn')?.addEventListener('click', () => bar.classList.toggle('collapsed'));
+})();
+</script>
 
 <!-- SPEECHIFY · Click-to-Read · Word Highlight -->
 <script>
