@@ -1196,6 +1196,7 @@
 <div id="root">
 
 <script src="https://kodux78k.github.io/oiDual--Y-/js/kob-LVb.js"></script>
+<script src="kobllux_voices.js"></script>
 
 <div class="wrap">
   <div class="content">
@@ -1762,21 +1763,17 @@
       const u = new SpeechSynthesisUtterance('Selecione um texto para ouvir');
       u.lang = 'pt-BR'; speechSynthesis.cancel(); speechSynthesis.speak(u); return;
     }
-    const archVoices = {
-      kobllux:{r:1.0,p:1.0}, atlas:{r:1.0,p:1.0},   nova:{r:1.1,p:1.2},
-      vitalis:{r:1.2,p:0.9}, pulse:{r:0.9,p:1.1},   artemis:{r:1.0,p:1.0},
-      serena:{r:0.95,p:1.0}, kaos:{r:1.3,p:0.8},    genus:{r:1.0,p:1.0},
-      lumine:{r:1.0,p:1.1},  solus:{r:0.8,p:0.9},   rhea:{r:1.0,p:1.0},
-      aion:{r:0.9,p:1.0}
-    };
-    const id  = document.body.getAttribute('data-voice-arch') || 'kobllux';
-    const cfg = archVoices[id] || {r:1.0,p:1.0};
-    speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'pt-BR'; utt.rate = cfg.r; utt.pitch = cfg.p;
-    const ptVoice = speechSynthesis.getVoices().find(v => v.lang.startsWith('pt'));
-    if (ptVoice) utt.voice = ptVoice;
-    speechSynthesis.speak(utt);
+    const id = document.body.getAttribute('data-voice-arch') || 'kobllux';
+    if (window.KOBLLUX_VOICES) {
+      KOBLLUX_VOICES.speak(text, id);
+    } else {
+      speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'pt-BR';
+      const ptV = speechSynthesis.getVoices().find(v => v.lang.startsWith('pt'));
+      if (ptV) utt.voice = ptV;
+      speechSynthesis.speak(utt);
+    }
   });
 
   // btn-arch = ciclar arquétipo + feedback de voz
@@ -1831,15 +1828,10 @@
   const status   = document.getElementById('nr-status');
   const nrOutline = document.getElementById('nr-outline');
 
-  /* ── voices por arquétipo ── */
-  const AV = {
-    kobllux:{r:1.0,p:1.0}, atlas:{r:1.0,p:1.0},   nova:{r:1.1,p:1.2},
-    vitalis:{r:1.2,p:0.9}, pulse:{r:0.9,p:1.1},   artemis:{r:1.0,p:1.0},
-    serena:{r:0.95,p:1.0}, kaos:{r:1.3,p:0.8},    genus:{r:1.0,p:1.0},
-    lumine:{r:1.0,p:1.1},  solus:{r:0.8,p:0.9},   rhea:{r:1.0,p:1.0},
-    aion:{r:0.9,p:1.0}
-  };
-  const getCfg = () => AV[document.body.getAttribute('data-voice-arch')||'kobllux'] || {r:1.0,p:1.0};
+  /* ── voices via KOBLLUX_VOICES engine (iOS + Android + macOS + Windows) ── */
+  const KV = window.KOBLLUX_VOICES || null;
+  const getCfg = () => KV ? KV.getConfig(document.body.getAttribute('data-voice-arch')||'kobllux')
+                           : {r:1.0, p:1.0};
 
   /* ── pega seleção do iframe (same-origin) ou documento principal ── */
   function getSelection() {
@@ -1876,29 +1868,37 @@
   }
   function hideOutline() { nrOutline.style.display = 'none'; }
 
-  /* ── core speak ── */
+  /* ── core speak — delega ao KOBLLUX_VOICES engine ── */
   function speak(text, rect) {
     if (!window.speechSynthesis || !text) return;
-    speechSynthesis.cancel();
-    const cfg = getCfg();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'pt-BR'; utt.rate = cfg.r; utt.pitch = cfg.p;
-    const ptV = speechSynthesis.getVoices().find(v => v.lang.startsWith('pt'));
-    if (ptV) utt.voice = ptV;
+    const archId = document.body.getAttribute('data-voice-arch') || 'kobllux';
 
-    utt.onstart = () => {
+    const onstart = () => {
       reader.classList.add('nr-speaking');
       btnPlay.classList.add('nr-active');
       status.textContent = text.slice(0, 18) + (text.length > 18 ? '…' : '');
       showOutline(rect);
     };
-    utt.onend = utt.onerror = () => {
+    const onend = () => {
       reader.classList.remove('nr-speaking');
       btnPlay.classList.remove('nr-active');
       status.textContent = 'NEBULA READER';
       hideOutline();
     };
-    speechSynthesis.speak(utt);
+
+    if (KV) {
+      KV.speak(text, archId, { onstart, onend, onerror: onend });
+    } else {
+      /* fallback sem engine */
+      speechSynthesis.cancel();
+      const cfg = getCfg();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'pt-BR'; utt.rate = cfg.r; utt.pitch = cfg.p;
+      const ptV = speechSynthesis.getVoices().find(v => v.lang.startsWith('pt'));
+      if (ptV) utt.voice = ptV;
+      utt.onstart = onstart; utt.onend = utt.onerror = onend;
+      speechSynthesis.speak(utt);
+    }
   }
 
   /* ── botões ── */
