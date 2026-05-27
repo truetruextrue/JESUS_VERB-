@@ -291,19 +291,27 @@
     }
     #kob-nebula-marker.show { opacity: 1; }
 
-    /* ── NEBULA TTS PANEL ──────────────────────────────────── */
+    /* ── DOCK UNIFICADO (sempre visível) ─────────────────────── */
     #kob-nebula-panel {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(5,5,16,.92);
-      border-top: 1px solid rgba(30,228,255,.25);
+      background: rgba(5,5,16,.95);
+      border-top: 1px solid rgba(30,228,255,.2);
       backdrop-filter: blur(20px);
-      padding: 10px 20px 12px;
-      display: flex; align-items: center; gap: 12px;
-      flex-wrap: wrap;
-      transform: translateY(100%);
-      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
-    #kob-nebula-panel.open { transform: translateY(0); }
+    .dock-main-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+    }
+    .dock-extras-row {
+      display: none; padding: 4px 14px 10px;
+      gap: 8px; align-items: center; flex-wrap: wrap;
+      border-top: 1px solid rgba(30,228,255,.1);
+    }
+    .dock-extras-row.open { display: flex; }
+    #dock-progress { height: 2px; background: rgba(30,228,255,.08); }
+    #dock-progress-bar { height: 100%; background: linear-gradient(90deg,#ff00ff,#00ffff); width:0%; transition:width .3s linear; }
 
     .nebula-orb {
       width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
@@ -343,7 +351,7 @@
       border-radius: 2px; overflow: hidden; width: 100%;
       cursor: pointer;
     }
-    #nebula-progress-bar {
+    #dock-progress-bar {
       height: 100%;
       background: linear-gradient(90deg, #ff00ff, #00ffff);
       width: 0%; transition: width .3s linear;
@@ -367,15 +375,12 @@
       white-space: nowrap; max-width: 88vw; overflow: hidden; text-overflow: ellipsis;
     }
     #nebula-sel-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .nebula-toggle-btn {
-      position: fixed; bottom: 20px; right: 20px; z-index: 1001;
-      width: 44px; height: 44px; border-radius: 50%;
-      background: linear-gradient(135deg, #ff00ff, #00ffff);
-      border: none; cursor: pointer; box-shadow: 0 4px 20px #ff00ff55;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; transition: transform .2s, box-shadow .2s;
-    }
-    .nebula-toggle-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px #00ffff66; }
+    /* ── SPEECHIFY · Click-to-Read ──────────────────────────── */
+    .spf-word { border-radius: 3px; transition: background .1s; }
+    .spf-active { background: rgba(30,228,255,.3); color: #fff; outline: 1.5px solid rgba(30,228,255,.5); outline-offset: 1px; }
+    .spf-readable { cursor: pointer; }
+    .spf-readable:hover { outline: 1px dashed rgba(30,228,255,.2); outline-offset: 2px; }
+    .spf-reading .spf-word { cursor: default; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--kob-void); }
     ::-webkit-scrollbar-thumb { background: var(--kob-violet); border-radius: 4px; }
@@ -940,22 +945,25 @@
 <!-- NEBULA MARKER -->
 <div id="kob-nebula-marker">✦ NOVA · NEBULA</div>
 
-<!-- NEBULA TTS TOGGLE BUTTON -->
-<button class="nebula-toggle-btn" onclick="nebulaTogglePanel()" title="Vozes Nebula · Dual Reader">🎙</button>
-
-<!-- NEBULA TTS PANEL -->
+<!-- DOCK UNIFICADO (sempre visível) -->
 <div id="kob-nebula-panel">
-  <div class="nebula-orb" onclick="nebulaPlayPause()" title="Play / Stop"></div>
-  <div class="nebula-info">
-    <div class="nebula-title">✦ VOZES NEBULA · DUAL READER · ∆7</div>
-    <div class="nebula-sub" id="nebula-status">selecione uma voz · pressione play</div>
+  <div id="dock-progress"><div id="dock-progress-bar"></div></div>
+  <div class="dock-main-row">
+    <div class="nebula-orb" id="dock-orb" title="Ciclar arquétipo"></div>
+    <span style="font-size:.65rem;font-family:'Courier New',monospace;color:#1be4ff;min-width:74px;white-space:nowrap" id="nebula-hz">NOVA · 528Hz</span>
+    <button class="nebula-btn" id="nebula-play-btn" onclick="nebulaPlayPause()" style="padding:5px 10px">▶</button>
+    <button class="nebula-btn" onclick="nebulaStop()" style="padding:5px 10px">⏹</button>
+    <div class="nebula-sub" id="nebula-status" style="flex:1;cursor:pointer;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" onclick="dockToggleExtras()">toque em qualquer texto para ler ·  ⚙</div>
+    <button class="nebula-btn" onclick="dockToggleExtras()" style="padding:5px 8px;font-size:.8rem" title="Configurações">⚙</button>
   </div>
-  <div class="nebula-bar">
-    <button class="nebula-btn" id="nebula-play-btn" onclick="nebulaPlayPause()">▶ LER</button>
-    <button class="nebula-btn" onclick="nebulaStop()">■ STOP</button>
-    <select class="nebula-select" id="nebula-voice-select" onchange="nebulaSetVoice(this.value)">
-      <option value="">— voz —</option>
-    </select>
+  <div class="dock-extras-row" id="dock-extras-row">
+    <span class="nebula-lbl">⚡</span>
+    <input type="range" class="nebula-slider" id="nebula-rate" min="0.5" max="1.8" step="0.05" value="0.95" title="Velocidade">
+    <span class="nebula-pill" id="nebula-rate-out">0.95×</span>
+    <span class="nebula-lbl">♩</span>
+    <input type="range" class="nebula-slider" id="nebula-pitch" min="0.5" max="2" step="0.05" value="1.0" title="Tom">
+    <span class="nebula-pill" id="nebula-pitch-out">1.00</span>
+    <select class="nebula-select" id="nebula-voice-select" onchange="nebulaSetVoice(this.value)"><option value="">— voz —</option></select>
     <select class="nebula-select" id="nebula-section-select">
       <option value="all">página completa</option>
       <option value="sobre">O Sistema</option>
@@ -963,18 +971,8 @@
       <option value="smart-cities">Smart Cities</option>
       <option value="arquetipos">12 Arquétipos</option>
     </select>
-    <span class="nebula-hz" id="nebula-hz">528Hz</span>
+    <button class="nebula-btn" id="nebula-clip-btn" title="Clipboard">📋</button>
   </div>
-  <div class="nebula-extras">
-    <span class="nebula-lbl">⚡</span>
-    <input type="range" class="nebula-slider" id="nebula-rate" min="0.5" max="1.8" step="0.05" value="0.95" title="Velocidade">
-    <span class="nebula-pill" id="nebula-rate-out">0.95×</span>
-    <span class="nebula-lbl">♩</span>
-    <input type="range" class="nebula-slider" id="nebula-pitch" min="0.5" max="2" step="0.05" value="1.0" title="Tom">
-    <span class="nebula-pill" id="nebula-pitch-out">1.00</span>
-    <button class="nebula-btn" id="nebula-clip-btn" title="Narrar área de transferência · clipboard">📋</button>
-  </div>
-  <div id="nebula-progress"><div id="nebula-progress-bar"></div></div>
 </div>
 
 <div id="nebula-sel-toast">✦ narrando seleção</div>
@@ -1367,7 +1365,7 @@ function toast(msg, dur=2800){
   function playNext() {
     if (chunkIdx >= chunks.length || !speaking) { nebulaStop(); return; }
     const pct = Math.round((chunkIdx / chunks.length) * 100);
-    document.getElementById('nebula-progress-bar').style.width = pct + '%';
+    document.getElementById('dock-progress-bar').style.width = pct + '%';
     _status(`[${chunkIdx+1}/${chunks.length}] ${chunks[chunkIdx].slice(0,52)}…`);
     speakChunk(chunks[chunkIdx], () => { chunkIdx++; playNext(); });
   }
@@ -1381,9 +1379,10 @@ function toast(msg, dur=2800){
   /* ═══════ PUBLIC API ════════════════════════════════════════════════════ */
 
   window.nebulaTogglePanel = function() {
-    panelOpen = !panelOpen;
-    document.getElementById('kob-nebula-panel')?.classList.toggle('open', panelOpen);
-    document.getElementById('kob-nebula-marker')?.classList.toggle('show', panelOpen);
+    document.getElementById('kob-nebula-marker')?.classList.toggle('show');
+  };
+  window.dockToggleExtras = function() {
+    document.getElementById('dock-extras-row')?.classList.toggle('open');
   };
 
   window.nebulaSetVoice = function(idx) {
@@ -1430,7 +1429,7 @@ function toast(msg, dur=2800){
     chunkIdx = 0;
     stopKeepAlive();
     document.getElementById('nebula-play-btn').textContent = '▶ LER';
-    document.getElementById('nebula-progress-bar').style.width = '0%';
+    document.getElementById('dock-progress-bar').style.width = '0%';
     _status('selecione uma voz · pressione play');
   };
 
@@ -1438,11 +1437,6 @@ function toast(msg, dur=2800){
   window.nebulaSpeak = function(text, label) {
     synth.cancel();
     speaking = false; stopKeepAlive();
-    if (!panelOpen) {
-      panelOpen = true;
-      document.getElementById('kob-nebula-panel')?.classList.add('open');
-      document.getElementById('kob-nebula-marker')?.classList.add('show');
-    }
     speaking = true; startKeepAlive();
     document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
     _status(`📚 ${(label||text).slice(0,50)}…`);
@@ -1456,7 +1450,7 @@ function toast(msg, dur=2800){
   /* ── ORB: cicla arquétipos ao toque ─────────────────────── */
   const archKeys = Object.keys(NEBULA_ARCHS);
   let archIdx    = 0;
-  document.querySelector('.nebula-orb')?.addEventListener('click', () => {
+  document.getElementById('dock-orb')?.addEventListener('click', () => {
     archIdx = (archIdx + 1) % archKeys.length;
     currentArch = archKeys[archIdx];
     const arch = NEBULA_ARCHS[currentArch];
@@ -1470,6 +1464,9 @@ function toast(msg, dur=2800){
     switchVoiceForArch(currentArch);
     _syncSliders(currentArch);
     _status(`✦ ${arch.label} · ${activeVoice?.name || 'auto'}`);
+    /* Update dock arch label */
+    const hzEl = document.getElementById('nebula-hz');
+    if (hzEl) hzEl.textContent = arch.label;
   });
 
   /* ── Seleção de texto → narrar automaticamente ──────────── */
@@ -1483,16 +1480,10 @@ function toast(msg, dur=2800){
       synth.cancel();
       speaking = false;
       stopKeepAlive();
-      /* abre painel se fechado */
-      if (!panelOpen) {
-        panelOpen = true;
-        document.getElementById('kob-nebula-panel')?.classList.add('open');
-        document.getElementById('kob-nebula-marker')?.classList.add('show');
-      }
       speaking = true;
       startKeepAlive();
       document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
-      document.getElementById('nebula-progress-bar').style.width = '0%';
+      document.getElementById('dock-progress-bar').style.width = '0%';
       const preview = text.slice(0,52) + (text.length>52?'…':'');
       _status(`✦ narrando · "${preview}"`);
       /* toast de seleção */
@@ -1507,8 +1498,8 @@ function toast(msg, dur=2800){
         stopKeepAlive();
         document.getElementById('nebula-play-btn').textContent = '▶ LER';
         _status('seleção narrada · ∆7 ✦');
-        document.getElementById('nebula-progress-bar').style.width = '100%';
-        setTimeout(()=>{ document.getElementById('nebula-progress-bar').style.width='0%'; }, 1200);
+        document.getElementById('dock-progress-bar').style.width = '100%';
+        setTimeout(()=>{ document.getElementById('dock-progress-bar').style.width='0%'; }, 1200);
       });
     }, 380);
   }
@@ -1542,11 +1533,6 @@ function toast(msg, dur=2800){
       chunkIdx = 0;
       speaking = true;
       startKeepAlive();
-      if (!panelOpen) {
-        panelOpen = true;
-        document.getElementById('kob-nebula-panel')?.classList.add('open');
-        document.getElementById('kob-nebula-marker')?.classList.add('show');
-      }
       document.getElementById('nebula-play-btn').textContent = '⏸ PAUSA';
       _status(`📋 ${text.trim().slice(0,50)}…`);
       speakChunk(chunks[0], () => {
@@ -1587,6 +1573,139 @@ function toast(msg, dur=2800){
   console.log(`[NEBULA ∆7] VOZES NEBULA · DUAL READER · ${plat} · NOVA 528Hz · ONLINE`);
   console.log('[NEBULA ∆7] KODUX detecta → BLLUE pronuncia → AION sela');
   console.log('[NEBULA ∆7] Seleção de texto → narração automática ATIVA');
+})();
+
+/* ── SPEECHIFY · Click-to-Read · Word Highlight · Auto-Scroll ─────────────
+   Toque em qualquer texto → lê palavra a palavra com highlight tipo Speechify
+   ─────────────────────────────────────────────────────────────────────────── */
+(function(){
+  'use strict';
+
+  const READABLE_SEL = [
+    'h1','h2','h3','.section-title','.section-body','.card-body','.card-title',
+    '.pipe-name','.pipe-desc','.law-text','.cta-title','.cta-sub',
+    'p','.benefit-list li > div','.hero-sub'
+  ].join(',');
+
+  let _spfEl      = null;  /* element being read */
+  let _spfOrigHTML = '';
+
+  function _spfRestore(el) {
+    if (el) el.innerHTML = _spfOrigHTML;
+    el?.classList.remove('spf-reading');
+    _spfEl = null;
+  }
+
+  function _escHTML(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function _spfSpeak(el) {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+
+    /* Restore any previous element */
+    if (_spfEl && _spfEl !== el) _spfRestore(_spfEl);
+
+    _spfOrigHTML = el.innerHTML;
+    _spfEl       = el;
+    el.classList.add('spf-reading');
+
+    const fullText = el.textContent.trim().replace(/\s+/g, ' ');
+    if (fullText.length < 2) return;
+
+    /* Build word map: charStart → span id */
+    const wordMap = [];
+    let charCursor = 0;
+    const parts = fullText.split(/(\s+)/);
+    const html = parts.map(part => {
+      if (/^\s+$/.test(part)) { charCursor += part.length; return part; }
+      const start = charCursor;
+      const id    = 'spf' + start;
+      charCursor += part.length;
+      wordMap.push({ start, id });
+      return `<span class="spf-word" id="${id}">${_escHTML(part)}</span>`;
+    }).join('');
+    el.innerHTML = html;
+
+    /* Utterance */
+    synth.cancel();
+    const utt = new SpeechSynthesisUtterance(fullText);
+
+    /* Use active nebula voice */
+    const voiceSel = document.getElementById('nebula-voice-select');
+    if (voiceSel?.value !== '' && voiceSel?.value !== undefined) {
+      const vs = synth.getVoices();
+      const v  = vs[parseInt(voiceSel.value)];
+      if (v) { utt.voice = v; utt.lang = v.lang; }
+    } else {
+      utt.lang = document.documentElement.lang || 'pt-BR';
+    }
+    utt.rate  = parseFloat(document.getElementById('nebula-rate')?.value  || 0.95);
+    utt.pitch = parseFloat(document.getElementById('nebula-pitch')?.value || 1.0);
+
+    /* Word boundary → highlight + scroll */
+    utt.onboundary = function(e) {
+      if (e.name !== 'word') return;
+      el.querySelectorAll('.spf-active').forEach(s => s.classList.remove('spf-active'));
+      let best = wordMap[0];
+      for (let i = 0; i < wordMap.length; i++) {
+        if (wordMap[i].start <= e.charIndex) best = wordMap[i];
+        else break;
+      }
+      if (best) {
+        const span = document.getElementById(best.id);
+        if (span) {
+          span.classList.add('spf-active');
+          span.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    };
+
+    utt.onend = function() {
+      el.querySelectorAll('.spf-active').forEach(s => s.classList.remove('spf-active'));
+      setTimeout(() => { if (_spfEl === el) _spfRestore(el); }, 350);
+      const st = document.getElementById('nebula-status');
+      if (st) st.textContent = 'concluído ✦ · toque em texto para ler';
+    };
+
+    utt.onerror = function() {
+      if (_spfEl === el) _spfRestore(el);
+    };
+
+    synth.speak(utt);
+
+    /* Update dock status */
+    const st = document.getElementById('nebula-status');
+    if (st) st.textContent = `▶ "${fullText.slice(0, 52)}${fullText.length > 52 ? '…' : ''}"`;
+
+    /* Progress bar anim */
+    const pb = document.getElementById('dock-progress-bar');
+    if (pb) { pb.style.width = '0%'; pb.style.transition = 'none'; requestAnimationFrame(()=>{ pb.style.transition = ''; pb.style.width = '100%'; }); }
+  }
+
+  /* Attach click-to-read to readable elements */
+  function _attach() {
+    document.querySelectorAll(READABLE_SEL).forEach(el => {
+      if (el.closest('#kob-nebula-panel, #kob-tab-bar, nav, footer, #kob-lib-drawer')) return;
+      if (el.dataset.spf) return;
+      el.dataset.spf = '1';
+      el.classList.add('spf-readable');
+      el.addEventListener('click', function(e) {
+        const sel = window.getSelection()?.toString().trim();
+        if (sel && sel.length > 3) return; /* user is selecting text */
+        e.stopPropagation();
+        _spfSpeak(this);
+      });
+    });
+  }
+
+  _attach();
+  /* re-attach when tab changes */
+  document.querySelectorAll('.kob-tab').forEach(t => t.addEventListener('click', () => setTimeout(_attach, 100)));
+
+  window.NEBULA_SPF = { speak: _spfSpeak, restore: _spfRestore };
+  console.log('[SPF ∆7] SPEECHIFY · click-to-read + word-highlight + auto-scroll · ATIVO');
 })();
 
 /* ── KOBLLUX GEOMETRY ENGINE (◇ 0x04 · 594Hz) ─────────────
@@ -1860,6 +1979,90 @@ window.kobTab = function(panel) {
 console.log('[∆7] KOBLLUX × SANDBOX SOROCABA · VERDADE × INTEGRAR ÷ Δ = ∞');
 console.log('[∆7] Candidatura: https://form.jotform.com/232154764578061');
 </script>
+
+<!-- SPEECHIFY · Click-to-Read · Word Highlight · Auto-Scroll -->
+<script>
+(function(){
+  'use strict';
+  const READABLE_SEL = [
+    'h1','h2','h3','.section-title','.section-body','.card-body','.card-title',
+    '.pipe-name','.pipe-desc','.law-text','.cta-title','.cta-sub',
+    'p','.benefit-list li > div','.hero-sub'
+  ].join(',');
+  let _spfEl = null, _spfOrigHTML = '';
+  function _spfRestore(el) {
+    if (el) { el.innerHTML = _spfOrigHTML; el.classList.remove('spf-reading'); }
+    _spfEl = null;
+  }
+  function _esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function _spfSpeak(el) {
+    const synth = window.speechSynthesis; if (!synth) return;
+    if (_spfEl && _spfEl !== el) _spfRestore(_spfEl);
+    _spfOrigHTML = el.innerHTML; _spfEl = el; el.classList.add('spf-reading');
+    const fullText = el.textContent.trim().replace(/\s+/g,' ');
+    if (fullText.length < 2) return;
+    const wordMap = []; let cursor = 0;
+    el.innerHTML = fullText.split(/(\s+)/).map(part => {
+      if (/^\s+$/.test(part)) { cursor += part.length; return part; }
+      const start = cursor, id = 'spf' + start;
+      cursor += part.length; wordMap.push({ start, id });
+      return `<span class="spf-word" id="${id}">${_esc(part)}</span>`;
+    }).join('');
+    synth.cancel();
+    const utt = new SpeechSynthesisUtterance(fullText);
+    const voiceSel = document.getElementById('nebula-voice-select');
+    if (voiceSel?.value !== '' && voiceSel?.value !== undefined) {
+      const v = synth.getVoices()[parseInt(voiceSel.value)];
+      if (v) { utt.voice = v; utt.lang = v.lang; }
+    } else { utt.lang = 'pt-BR'; }
+    utt.rate  = parseFloat(document.getElementById('nebula-rate')?.value  || 0.95);
+    utt.pitch = parseFloat(document.getElementById('nebula-pitch')?.value || 1.0);
+    utt.onboundary = function(e) {
+      if (e.name !== 'word') return;
+      el.querySelectorAll('.spf-active').forEach(s => s.classList.remove('spf-active'));
+      let best = wordMap[0];
+      for (let i = 0; i < wordMap.length; i++) {
+        if (wordMap[i].start <= e.charIndex) best = wordMap[i]; else break;
+      }
+      if (best) {
+        const span = document.getElementById(best.id);
+        if (span) { span.classList.add('spf-active'); span.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
+      }
+    };
+    utt.onend = function() {
+      el.querySelectorAll('.spf-active').forEach(s => s.classList.remove('spf-active'));
+      setTimeout(() => { if (_spfEl === el) _spfRestore(el); }, 350);
+      const st = document.getElementById('nebula-status');
+      if (st) st.textContent = '✦ concluído · toque em texto para ler';
+    };
+    utt.onerror = function() { if (_spfEl === el) _spfRestore(el); };
+    synth.speak(utt);
+    const st = document.getElementById('nebula-status');
+    if (st) st.textContent = `▶ "${fullText.slice(0,52)}${fullText.length>52?'…':''}"`;
+    const pb = document.getElementById('dock-progress-bar');
+    if (pb) { pb.style.transition='none'; pb.style.width='0%'; requestAnimationFrame(()=>{ pb.style.transition=''; pb.style.width='100%'; }); }
+  }
+  function _attach() {
+    document.querySelectorAll(READABLE_SEL).forEach(el => {
+      if (el.closest('#kob-nebula-panel,#kob-tab-bar,nav,footer,#kob-lib-drawer')) return;
+      if (el.dataset.spf) return;
+      el.dataset.spf = '1'; el.classList.add('spf-readable');
+      el.addEventListener('click', function(e) {
+        const sel = window.getSelection()?.toString().trim();
+        if (sel && sel.length > 3) return;
+        e.stopPropagation(); _spfSpeak(this);
+      });
+    });
+  }
+  _attach();
+  document.querySelectorAll('.kob-tab').forEach(t => t.addEventListener('click', () => setTimeout(_attach, 120)));
+  window.NEBULA_SPF = { speak: _spfSpeak, restore: _spfRestore };
+  console.log('[SPF ∆7] SPEECHIFY · click-to-read + word-highlight + auto-scroll · ATIVO');
+})();
+</script>
+
+<script src="kob-core.js"></script>
+<script src="kobllux_voices.js"></script>
 
 </body>
 </html>
