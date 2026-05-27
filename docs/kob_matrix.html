@@ -1148,16 +1148,10 @@
         <button class="symbol-button" id="btn-prev" title="Voltar">◀</button>
       </div>
       <div class="symbol-wrap">
-        <button class="symbol-button" id="btn-play" title="Ler seleção (voz do arquétipo)">▶</button>
+        <button class="symbol-button" id="btn-play" title="Ler / Pausar / Retomar">▶</button>
       </div>
       <div class="symbol-wrap">
-        <button class="symbol-button" id="btn-pause" title="Pausar / Retomar">⏸</button>
-      </div>
-      <div class="symbol-wrap">
-        <button class="symbol-button" id="btn-stop" title="Parar leitura">⏹</button>
-      </div>
-      <div class="symbol-wrap">
-        <button class="symbol-button" id="btn-next" title="Avançar">▶▶</button>
+        <button class="symbol-button" id="btn-next" title="Avançar / Parar leitura">▶▶</button>
       </div>
       <!-- Arquétipo ORB (Sempre visível) -->
       <button class="symbol-button" id="btn-arch" title="Trocar Arquétipo de Voz" style="scroll-snap-align:start;flex-shrink:0;">
@@ -1529,24 +1523,24 @@
     try { frame.contentWindow.history.back(); } catch(e) {}
   });
 
-  // btn-next = avançar no histórico do frame
-  document.getElementById('btn-next')?.addEventListener('click', () => {
-    try { frame.contentWindow.history.forward(); } catch(e) {}
-  });
-
-  // btn-play = ler seleção com a voz do arquétipo ativo
+  // ── TTS helpers ──
+  const btnPlay = document.getElementById('btn-play');
   function _hudStatus(msg, revert) {
-    if (hud) {
-      const prev = hud.textContent;
-      hud.textContent = msg;
-      if (revert) setTimeout(() => { if (hud.textContent === msg) hud.textContent = prev; }, revert);
-    }
+    if (!hud) return;
+    const prev = hud.textContent;
+    hud.textContent = msg;
+    if (revert) setTimeout(() => { if (hud.textContent === msg) hud.textContent = prev; }, revert);
+  }
+  function _setPlayIcon(state) { // 'play'|'pause'|'resume'
+    if (!btnPlay) return;
+    btnPlay.textContent = state === 'pause' ? '⏸' : '▶';
+    btnPlay.title = state === 'pause' ? 'Pausar' : state === 'resume' ? 'Retomar' : 'Ler / Pausar';
   }
   function _speak(text) {
     if (!window.speechSynthesis || !text) return;
     const id = document.body.getAttribute('data-voice-arch') || 'kobllux';
-    const onstart = () => _hudStatus('▶ ' + text.slice(0,20) + (text.length>20?'…':''));
-    const onend   = () => _hudStatus('KOBLLUX · ORB NEXUS');
+    const onstart = () => { _setPlayIcon('pause'); _hudStatus('▶ ' + text.slice(0,22) + (text.length>22?'…':'')); };
+    const onend   = () => { _setPlayIcon('play');  _hudStatus('KOBLLUX · ORB NEXUS'); };
     if (window.KOBLLUX_VOICES) {
       KOBLLUX_VOICES.speak(text, id, { onstart, onend, onerror: onend });
     } else {
@@ -1559,8 +1553,17 @@
       speechSynthesis.speak(utt);
     }
   }
-  document.getElementById('btn-play')?.addEventListener('click', () => {
+
+  // btn-play = toggle inteligente: play → pause → resume → stop
+  btnPlay?.addEventListener('click', () => {
     if (!window.speechSynthesis) return;
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+      speechSynthesis.pause(); _setPlayIcon('resume'); _hudStatus('⏸ pausado'); return;
+    }
+    if (speechSynthesis.paused) {
+      speechSynthesis.resume(); _setPlayIcon('pause'); _hudStatus('▶ retomando…'); return;
+    }
+    // idle → get text and speak
     let text = '';
     try { text = frame.contentWindow.getSelection().toString().trim(); } catch(e) {}
     if (!text) text = window.getSelection().toString().trim();
@@ -1570,26 +1573,44 @@
           .slice(0, 4).map(el => el.innerText).join(' ').trim().slice(0, 400);
       } catch(e) {}
     }
-    if (!text) { _hudStatus('selecione texto…', 2000); return; }
+    if (!text) { _hudStatus('toque em texto ou selecione…', 2000); return; }
     _speak(text);
   });
 
-  // btn-pause = pausar / retomar
-  document.getElementById('btn-pause')?.addEventListener('click', () => {
-    if (!window.speechSynthesis) return;
-    if (speechSynthesis.paused) {
-      speechSynthesis.resume();
-      _hudStatus('▶ retomando…');
-    } else {
-      speechSynthesis.pause();
-      _hudStatus('⏸ pausado');
+  // btn-next: quando lendo = parar; caso contrário = avançar histórico do frame
+  document.getElementById('btn-next')?.addEventListener('click', () => {
+    if (window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.paused)) {
+      speechSynthesis.cancel(); _setPlayIcon('play'); _hudStatus('KOBLLUX · ORB NEXUS'); return;
     }
+    try { frame.contentWindow.history.forward(); } catch(e) {}
   });
 
-  // btn-stop = parar
-  document.getElementById('btn-stop')?.addEventListener('click', () => {
-    if (window.speechSynthesis) speechSynthesis.cancel();
-    _hudStatus('KOBLLUX · ORB NEXUS');
+  // ── Injeção Speechify no iframe (same-origin) ──
+  const SPF_SCRIPT = `
+(function(){
+  if(window.__kobSpf) return; window.__kobSpf = true;
+  const SEL = 'h1,h2,h3,p,.section-title,.card-title,.card-body,.hero-title,.arch-name,.arch-role';
+  document.querySelectorAll(SEL).forEach(el => {
+    if(el.dataset.spf) return;
+    el.dataset.spf='1'; el.style.cursor='pointer';
+    el.addEventListener('click', function(e){
+      if(window.getSelection().toString().trim()) return;
+      e.stopPropagation();
+      window.parent.postMessage({type:'KOB_SPF_SPEAK', text: this.innerText||this.textContent}, '*');
+    });
+  });
+})();`;
+
+  frame.addEventListener('load', () => {
+    try {
+      const s = frame.contentDocument.createElement('script');
+      s.textContent = SPF_SCRIPT;
+      frame.contentDocument.body?.appendChild(s);
+    } catch(e) { /* cross-origin: silencioso */ }
+  });
+
+  window.addEventListener('message', e => {
+    if (e.data?.type === 'KOB_SPF_SPEAK' && e.data.text) _speak(e.data.text);
   });
 
   // btn-arch = ciclar arquétipo + feedback de voz
