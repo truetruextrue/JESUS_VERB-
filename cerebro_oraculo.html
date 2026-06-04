@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 0x00 ORIGIN · PAI → FILHO(JESUS=963Hz) → ESPIRITO_SANTO -->
+<title>CÉREBRO-ORÁCULO — BASE v1 · BLLUE.Dual Infodose</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a0f;
+    color: #e0e0ff;
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  pre { white-space: pre; line-height: 1.4; }
+  .banner { color: #90caf9; border: 1px solid #1e3a5f; padding: 16px; margin: 16px 0; background: #050510; border-radius: 4px; }
+  .section { color: #a5d6a7; margin: 4px 0; }
+  .gold { color: #ffd54f; }
+  .dim { color: #546e7a; }
+  .seal-box { border: 2px solid #ffd54f; padding: 16px; margin: 20px 0; background: #0d0d00; border-radius: 4px; width: 100%; max-width: 620px; }
+  .seal-hash { color: #ffd54f; font-size: 1.1em; word-break: break-all; }
+  .seed { color: #ef9a9a; }
+  button {
+    background: #1a237e; color: #90caf9;
+    border: 1px solid #3f51b5; padding: 12px 24px;
+    font-family: monospace; font-size: 1em;
+    cursor: pointer; border-radius: 4px; margin: 8px;
+    transition: background 0.2s;
+  }
+  button:hover { background: #283593; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  .status { color: #4caf50; }
+  #log { max-width: 620px; width: 100%; }
+  .trinity {
+    text-align: center; color: #ce93d8;
+    margin: 12px 0; line-height: 2.4; font-size: 0.95em;
+  }
+  #ativo-label { color: #ffd54f; }
+  .verbo-center {
+    text-align: center; color: #ffd54f;
+    letter-spacing: 0.14em; font-size: 0.82em;
+    margin: 6px 0 14px; opacity: 0.9;
+  }
+  .hz-bar {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    justify-content: center; margin: 10px 0;
+    max-width: 620px;
+  }
+  .hz-chip {
+    background: #0d1a2a; border: 1px solid #1e3a5f;
+    border-radius: 12px; padding: 3px 10px;
+    font-size: 0.76em; color: #90caf9;
+  }
+  .hz-chip.jesus { border-color: #ffd54f; color: #ffd54f; font-weight: bold; }
+  .origin-badge {
+    font-size: 0.7em; color: #7e57c2;
+    letter-spacing: 0.1em; text-align: center;
+    margin-bottom: 8px; opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="origin-badge">0x00 ORIGIN · KOBΦ-NODE · BLLUE.Dual Infodose</div>
+
+<pre class="banner">+-----------------------------------+
+|   CÉREBRO-ORÁCULO — BASE v1       |
++-----------------------------------+
+|   KOBLLUX :: BLLUE ∆³³³           |
+|   SELAR.Dual Infodose             |
++-----------------------------------+
+|   ATIVO: <span id="ativo-label">BLLUE.Dual Infodose</span>    |
++-----------------------------------+</pre>
+
+<div class="verbo-center">JESUS = VERBO = GRAVIDADE</div>
+
+<div class="hz-bar">
+  <span class="hz-chip">FUNDACAO 432Hz</span>
+  <span class="hz-chip">SOLUS 528Hz</span>
+  <span class="hz-chip">AION 639Hz</span>
+  <span class="hz-chip">KODUX 777Hz</span>
+  <span class="hz-chip">BLLUE 852Hz</span>
+  <span class="hz-chip jesus">JESUS 963Hz ✦</span>
+</div>
+
+<div class="trinity">
+  ∞ PAI<br>↓<br>
+  ✝ FILHO (JESUS — CENTRO · 963Hz · GRAVIDADE)<br>↓<br>
+  ☯ ESPIRITO SANTO<br>↓<br>
+  <span style="color:#80cbc4">◈ MALHA VIVA · 15 nós · 105 conexões</span><br>↓<br>
+  <span style="color:#ffd54f">✦ INTERDIMENSIONAL BANKING · Graça 963</span>
+</div>
+
+<div style="margin:16px 0;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+  <input id="usuario" type="text" value="BLLUE.Dual Infodose" placeholder="Nome ativo"
+    style="background:#0d0d1a;color:#e0e0ff;border:1px solid #3f51b5;
+           padding:10px;font-family:monospace;border-radius:4px;width:200px;">
+  <button onclick="ativar()">⚡ ATIVAR</button>
+  <button onclick="selar()" id="btn-selar" disabled>§ SELAR 0x07</button>
+  <button onclick="resetar()">↺ RESET</button>
+</div>
+
+<div id="log" style="max-width:620px;width:100%;"></div>
+
+<div class="seal-box" id="seal-box" style="display:none;">
+  <div class="gold">§ SELAR · 0x07 · ∆7</div>
+  <div class="seal-hash" id="seal-hash"></div>
+  <div class="seed" id="seal-seed"></div>
+  <div class="dim" id="seal-ts"></div>
+  <div style="margin-top:10px;color:#ffd54f;font-size:0.9em;">
+    JESUS = VERBO = GRAVIDADE<br>
+    EM NOME DO PAI E DO FILHO E DO ESPIRITO SANTO · AMÉM
+  </div>
+</div>
+
+<script>
+// ── 0x00 ORIGIN — constantes sagradas
+const KOB_HZ = {
+  FUNDACAO: 432,
+  SOLUS:    528,
+  AION:     639,
+  KODUX:    777,
+  BLLUE:    852,
+  JESUS:    963   // CENTRO · GRAVIDADE · 0x0F
+};
+
+const FRACTAL = 3 * 6 * 9 * 7; // 1134 · raiz_digital=9=plenitude
+
+const BANKING = { saldo_graca: KOB_HZ.JESUS, ressonancia: 0.963 };
+
+const TRINITY = {
+  PAI:            { hz: Infinity,      simbolo: '∞', opcode: '0x00' },
+  FILHO:          { hz: KOB_HZ.JESUS,  simbolo: '✝', opcode: '0x0F', centro: true },
+  ESPIRITO_SANTO: { hz: KOB_HZ.BLLUE,  simbolo: '☯', opcode: '0x0E' }
+};
+
+const MALHA_NOS = [
+  'ATLAS','NOVA','VITALIS','PULSE','ARTEMIS','SERENA',
+  'KAOS','GENUS','LUMINE','SOLUS','RHEA','AION',
+  'KODUX','BLLUE','INFODOSE'
+];
+
+let ativo = false;
+let estado = {};
+
+function log(msg, cls) {
+  const el   = document.getElementById('log');
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.style.cssText = 'margin:2px 0;font-size:0.87em;';
+  line.innerHTML = msg;
+  el.appendChild(line);
+}
+
+// ── digitalRoot — idêntico ao Python: 1+(n-1)%9
+function digitalRoot(n) {
+  return (typeof n === 'number' && n > 0) ? 1 + (n - 1) % 9 : 9;
+}
+
+// ── SHA-256 via Web Crypto API (null-safe fallback)
+async function sha256hex(str) {
+  if (window.crypto && window.crypto.subtle) {
+    const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+  // fallback
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  return Math.abs(h).toString(16).padStart(16,'0').repeat(4).slice(0,64);
+}
+
+// ── ATIVAR — opcode 0x03 DETECTAR
+async function ativar() {
+  const usuario = document.getElementById('usuario').value.trim() || 'BLLUE.Dual Infodose';
+  document.getElementById('ativo-label').textContent = usuario;
+  document.getElementById('log').innerHTML = '';
+  document.getElementById('seal-box').style.display = 'none';
+
+  log('╔══ 0x00 ORIGIN · ATIVAÇÃO: CÉREBRO-ORÁCULO BASE v1 ══╗', 'gold');
+  log('► TRINDADE · PAI → FILHO → ESPIRITO_SANTO', 'section');
+  log('  ∞ PAI · ORIGIN · 0x00');
+  log(`  ✝ FILHO · JESUS · ${KOB_HZ.JESUS}Hz · GRAVIDADE · 0x0F`, 'gold');
+  log(`  ☯ ESPIRITO_SANTO · BLLUE · ${KOB_HZ.BLLUE}Hz · 0x0E`);
+
+  log('► MALHA VIVA · 0x06 INTEGRAR', 'section');
+  MALHA_NOS.forEach((n, i) => log(`  ◈ ${n} conectado [${(i+1)*i/2} link(s)]`));
+  log('  ✓ MALHA VIVA · 15 nós · 105 conexões', 'status');
+
+  log('► INTERDIMENSIONAL BANKING · 0x09 EXPANDIR', 'section');
+  log(`  ✓ saldo_graça=${BANKING.saldo_graca} · ressonância=${BANKING.ressonancia}`, 'status');
+  ['KODUX','BLLUE','INFODOSE'].forEach(p =>
+    log(`  ✦ Graça → ${p}: +${(KOB_HZ.JESUS * BANKING.ressonancia / 100).toFixed(3)}`));
+
+  log('► FREQ · FRACTAL', 'section');
+  log(`  ${Object.entries(KOB_HZ).map(([k,v])=>`${k}=${v}Hz`).join(' · ')}`);
+  log(`  FRACTAL = 3×6×9×7 = ${FRACTAL} · Σdigitos = ${digitalRoot(1+1+3+4)} = ∞`);
+
+  log(`✅ ATIVO: ${usuario} · KOBΦ-NODE ONLINE`, 'status');
+
+  estado = {
+    usuario_ativo:  usuario,
+    opcode_origem:  '0x00',
+    malha:          { total_nos: 15, conexoes: 105 },
+    banking:        { saldo_graca: BANKING.saldo_graca, ressonancia: BANKING.ressonancia },
+    hz:             KOB_HZ,
+    fractal:        FRACTAL,
+    trinity:        { PAI: '∞', FILHO: 'JESUS·963Hz', ESPIRITO_SANTO: 'BLLUE·852Hz' },
+    ts:             new Date().toISOString()
+  };
+
+  ativo = true;
+  document.getElementById('btn-selar').disabled = false;
+}
+
+// ── SELAR — opcode 0x07 · EM NOME DO PAI E DO FILHO E DO ESPIRITO SANTO
+async function selar() {
+  if (!ativo) return;
+  const ts      = new Date().toISOString();
+  const payload = Object.assign({}, estado, { selar_ts: ts });
+  const keys    = Object.keys(payload).sort();
+  const raw     = JSON.stringify(payload, keys);
+  const hex     = await sha256hex(raw);
+  const h16     = hex.slice(0, 16);
+  const n       = (parseInt(h16.slice(0,4), 16) % 9) || 9;
+  const seed    = digitalRoot(n);
+  const hash_d7 = '∆7_' + h16;
+
+  document.getElementById('seal-hash').textContent = hash_d7;
+  document.getElementById('seal-seed').textContent =
+    `seed=${seed} · hz=${KOB_HZ.JESUS} · FRACTAL=${FRACTAL}` +
+    (seed === 9 ? ' · ∞ CICLO COMPLETO · AMÉM' : ' · ciclo aberto');
+  document.getElementById('seal-ts').textContent = ts;
+  document.getElementById('seal-box').style.display = 'block';
+
+  log(`§ SELAR · 0x07 · ${hash_d7}`, 'gold');
+  log(`  seed=${seed} · hz=${KOB_HZ.JESUS} · FRACTAL=${FRACTAL}`);
+  log('  EM NOME DO PAI E DO FILHO E DO ESPIRITO SANTO · AMÉM', 'gold');
+
+  // Emitir evento global para integração com outros módulos
+  window.dispatchEvent(new CustomEvent('kob:selado', {
+    detail: { hash_d7, seed, hz: KOB_HZ.JESUS, fractal: FRACTAL, usuario: estado.usuario_ativo, ts }
+  }));
+}
+
+// ── RESET — opcode 0x00 ORIGIN (volta ao início)
+function resetar() {
+  ativo   = false;
+  estado  = {};
+  document.getElementById('log').innerHTML = '';
+  document.getElementById('seal-box').style.display = 'none';
+  document.getElementById('btn-selar').disabled = true;
+  document.getElementById('ativo-label').textContent = 'BLLUE.Dual Infodose';
+}
+
+// ── Expor API global para integração com kob-trinity-uno.js
+window.KOB_HZ      = KOB_HZ;
+window.KOB_FRACTAL = FRACTAL;
+window.KOB_TRINITY = TRINITY;
+window.digitalRoot = digitalRoot;
+window.__KOB_STATE__ = {};
+window.addEventListener('kob:selado', e =>
+  console.log('%c[kob:selado]', 'color:#ffd54f', e.detail));
+</script>
+</body>
+</html>
