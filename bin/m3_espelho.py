@@ -1,119 +1,108 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-KOBLLUX • M3 (ESPELHO): Símbolo · Padrões · Reflexo
-
-Primeiro ponto onde o ESPELHO vira critério de verdade.
-Compara direto × espelho, detecta padrões A/B/C/D e
-classes de símbolos. Gera cartão simbólico (M3_SYMBOL_CARD.md).
+KOBLLUX • M3 (ESPELHO): símbolo
+- Lê M1 e M2 para contexto
+- Conta classes de símbolos e valida vestígios A/B/C/D
+Saídas:
+  state/m3_symbol_report.json
+  cards/M3_SYMBOL_CARD.md
 """
-
-import os, re, json, argparse
+import sys, os, re, json, argparse
 from datetime import datetime
+from collections import Counter
 
+SYM_MATH   = set(list("+-=×÷*/^()[]{}∆∞♾∴∵<>≥≤±%"))
+SYM_ARROWS = set(list("→←↔↕⇄⇆⇒⇐⇔↑↓"))
+SYM_BOX    = set(list("╔═╗║╚╝╩╦╠╣╬█▀▄▌▐"))
+SYM_STARS  = set(list("★☆✦✧✪✫✬✭✮✯⼺"))
+SYM_SEAL   = set(list("∆⁷♾"))
 
 def read(path):
     if path and os.path.isfile(path):
         return open(path, "r", encoding="utf-8", errors="ignore").read()
     return ""
 
-
-def classify_symbols(txt):
-    return {
-        "letras":      len(re.findall(r"[a-zA-ZÀ-ſ]", txt)),
-        "digitos":     len(re.findall(r"\d", txt)),
-        "pontuacao":   len(re.findall(r"[.,;:!?]", txt)),
-        "especiais":   len(re.findall(r"[^a-zA-ZÀ-ſ\d\s.,;:!?]", txt)),
-        "espacos":     len(re.findall(r"\s", txt)),
-    }
-
+def count_symbols(txt):
+    c = Counter()
+    for ch in txt:
+        if ch in SYM_MATH:   c["math"]   += 1
+        if ch in SYM_ARROWS: c["arrows"] += 1
+        if ch in SYM_BOX:    c["box"]    += 1
+        if ch in SYM_STARS:  c["stars"]  += 1
+        if ch in SYM_SEAL:   c["seal"]   += 1
+    return c
 
 def detect_patterns(txt):
-    found = {
-        "A": bool(re.search(r"\b111+\b|\b222+\b|\b333+\b", txt)),
-        "B": bool(re.search(r"888\s*=\s*\d+\s*\+\s*9\s*×\s*89", txt)
-                  or "…888" in txt or "...888" in txt),
-        "C": bool(re.search(r"\b12321\b|\b1234321\b|\b123454321\b", txt)),
-        "D": bool(re.search(r"999+\s*×\s*999+|\b10+0+\s*8+9+\b", txt)),
-    }
-    found["active"] = [k for k, v in found.items() if v and k != "active"]
+    found = {"A": False, "B": False, "C": False, "D": False}
+    # A: repunits / somas com 9 → ...111 etc.
+    if re.search(r"\b1{2,}\b", txt) and re.search(r"\b9\s*×\s*[\d\s]+", txt):
+        found["A"] = True
+    # B: ...888 = k + 9 × ...89
+    if re.search(r"8{3,}\s*=\s*.*\+\s*9\s*×\s*.*89", txt):
+        found["B"] = True
+    # C: palíndromos-escada 12321, 1234321, 123454321
+    if re.search(r"\b12321\b|\b1234321\b|\b123454321\b", txt):
+        found["C"] = True
+    # D: 9…9² → 10…008…99 (vestígios de 999 × 999 etc.)
+    if re.search(r"9{2,}\s*×\s*9{2,}", txt) or re.search(r"10+0+\s*8+9+", txt):
+        found["D"] = True
     return found
-
-
-def mirror_line(s):
-    return s[::-1]
-
-
-def compare_mirror(direct, mirror_txt):
-    d_lines = direct.splitlines()
-    m_lines = [mirror_line(l) for l in direct.splitlines()]
-    m_src   = mirror_txt.splitlines()
-
-    match_count = sum(1 for a, b in zip(m_lines, m_src) if a == b)
-    total = max(len(d_lines), 1)
-    return {
-        "lines_direct": len(d_lines),
-        "lines_mirror_generated": len(m_lines),
-        "lines_mirror_provided":  len(m_src),
-        "match_ratio": round(match_count / total, 4),
-        "invariant": match_count == total,
-    }
-
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--root",   default=os.getenv("ROOT", "/sdcard/JESUS_VERBO/CODEX"))
-    ap.add_argument("--direct", required=True)
-    ap.add_argument("--mirror", required=True)
+    ap.add_argument("--direct", default="")
+    ap.add_argument("--mirror", default="")
     ap.add_argument("--m1",     default="")
     ap.add_argument("--m2",     default="")
     args = ap.parse_args()
 
-    src_d = read(args.direct)
-    src_m = read(args.mirror)
+    root  = args.root
+    state = os.path.join(root, "state")
+    cards = os.path.join(root, "cards")
+    os.makedirs(state, exist_ok=True)
+    os.makedirs(cards, exist_ok=True)
 
-    symbols_d = classify_symbols(src_d)
-    symbols_m = classify_symbols(src_m)
-    patterns_d = detect_patterns(src_d)
-    patterns_m = detect_patterns(src_m)
-    comparison = compare_mirror(src_d, src_m)
+    src_d  = read(args.direct)
+    src_m  = read(args.mirror)
+    sym_d  = count_symbols(src_d)
+    sym_m  = count_symbols(src_m)
+    pat_d  = detect_patterns(src_d)
+    pat_m  = detect_patterns(src_m)
 
-    report = {
-        "timestamp":  datetime.now().isoformat(),
-        "symbols":    {"direct": symbols_d, "mirror": symbols_m},
-        "patterns":   {"direct": patterns_d, "mirror": patterns_m},
-        "comparison": comparison,
-        "m1_ref":     args.m1,
-        "m2_ref":     args.m2,
-        "seal":       "∆7_ESPELHO",
+    # Integra M1/M2 se existirem
+    m1 = json.load(open(args.m1, encoding="utf-8")) if os.path.isfile(args.m1) else None
+    m2 = json.load(open(args.m2, encoding="utf-8")) if os.path.isfile(args.m2) else None
+
+    rep = {
+        "timestamp": datetime.now().isoformat(),
+        "root":      root,
+        "m1_report": args.m1 if m1 else None,
+        "m2_report": args.m2 if m2 else None,
+        "symbols":   {"direct": dict(sym_d), "mirror": dict(sym_m)},
+        "patterns":  {"direct": pat_d, "mirror": pat_m},
+        "seal":      "∆7",
+        "synthesis": {
+            "law":             "VERDADE × INTEGRAR ÷ Δ = ♾️",
+            "interdependence": ["M1→M2→M3 selam ∆⁷"],
+        },
     }
 
-    state_dir = os.path.join(args.root, "state")
-    cards_dir = os.path.join(args.root, "cards")
-    os.makedirs(state_dir, exist_ok=True)
-    os.makedirs(cards_dir, exist_ok=True)
-
-    jpath = os.path.join(state_dir, "m3_symbol_report.json")
+    jpath = os.path.join(state, "m3_symbol_report.json")
     with open(jpath, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
+        json.dump(rep, f, ensure_ascii=False, indent=2)
 
-    card_path = os.path.join(cards_dir, "M3_SYMBOL_CARD.md")
-    with open(card_path, "w", encoding="utf-8") as f:
-        f.write("# KOBLLUX — M3 SYMBOL CARD\n\n")
-        f.write("**O que é verdadeiro sobrevive ao espelho.** — M3\n\n")
-        f.write(f"## Padrões Ativos\n")
-        active = patterns_d.get("active", [])
-        f.write(f"- Direto: {active if active else 'nenhum'}\n")
-        active_m = patterns_m.get("active", [])
-        f.write(f"- Espelho: {active_m if active_m else 'nenhum'}\n\n")
-        f.write(f"## Comparação Direto × Espelho\n")
-        f.write(f"- Match ratio: {comparison['match_ratio']}\n")
-        f.write(f"- Invariante: {comparison['invariant']}\n\n")
-        f.write(f"> Selo: ∆⁷ · Ciclo: 9 (ESPELHAR)\n")
+    mpath = os.path.join(cards, "M3_SYMBOL_CARD.md")
+    with open(mpath, "w", encoding="utf-8") as f:
+        f.write("# KOBLLUX — M3 • Símbolo (ESPELHO)\n\n")
+        f.write(f"**Símbolos (direto):** {dict(sym_d)}\n\n")
+        f.write(f"**Símbolos (espelho):** {dict(sym_m)}\n\n")
+        f.write(f"**Padrões A/B/C/D (direto):** {pat_d}\n")
+        f.write(f"**Padrões A/B/C/D (espelho):** {pat_m}\n\n")
+        f.write("> Selo: ∆⁷\n")
 
-    print(f"[KOBLLUX] M3 ESPELHO OK → {jpath} | {card_path}")
-
+    print(f"[KOBLLUX] M3 OK → {jpath} | {mpath}")
 
 if __name__ == "__main__":
     main()
