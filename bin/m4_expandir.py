@@ -41,9 +41,15 @@ def gen_trinary_grid(size, rng):
 
     return final_grid
 
+TRI_CHARS = {0: " ", 1: "█", 2: "▒"}
+
 def grid_to_tri_txt(grid):
     # Formato de leitura trinária (0/1/2)
     return "\n".join(" ".join(map(str, row)) for row in grid)
+
+def grid_to_ascii(grid):
+    # Arte SCI: 0=PAI(espaço) 1=FILHO(█) 2=ESPÍRITO(▒)
+    return "\n".join("".join(TRI_CHARS[v] for v in row) for row in grid)
 
 def main():
     ap = argparse.ArgumentParser()
@@ -68,18 +74,24 @@ def main():
     )
     rng  = random.Random(seed)
 
-    grid    = gen_trinary_grid(args.size, rng)
-    tri_txt = grid_to_tri_txt(grid)
+    grid     = gen_trinary_grid(args.size, rng)
+    tri_txt  = grid_to_tri_txt(grid)
+    ascii_art = grid_to_ascii(grid)
 
     tri_path = os.path.join(state_dir, "m4_sci_art.tri.txt")
     with open(tri_path, "w", encoding="utf-8") as f:
         f.write(tri_txt)
 
+    ascii_path = os.path.join(state_dir, "m4_sci_art.ascii.txt")
+    with open(ascii_path, "w", encoding="utf-8") as f:
+        f.write(ascii_art)
+
     report = {
         "timestamp":     datetime.now().isoformat(),
         "size":          args.size,
         "seed":          seed,
-        "output_format": "TRI TXT (0/1/2)",
+        "output_format": "TRI TXT (0/1/2) + ASCII ART (█▒ )",
+        "encoding":      {"0": "PAI( )", "1": "FILHO(█)", "2": "ESPÍRITO(▒)"},
         "manifestation": "Forma Viva (GENUS)",
         "pal_h":         True,
         "pal_v":         True,
@@ -91,7 +103,7 @@ def main():
     with open(jpath, "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
 
-    print(f"[KOBLLUX] 0x09 EXPANDIR (M4) OK → {jpath} | {tri_path}")
+    print(f"[KOBLLUX] 0x09 EXPANDIR (M4) OK → {jpath} | {tri_path} | {ascii_path}")
 
 if __name__ == "__main__":
     main()
