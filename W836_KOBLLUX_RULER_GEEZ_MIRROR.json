@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "titulo": "W836 × KOBLLUX — Régua Simbólica Máquina↔Humano↔Geez",
+    "natureza": "overlay geométrico-simbólico; crítica textual permanece como selada",
+    "equacao": "VERDADE × INTEGRAR ÷ Δ = ∞",
+    "fractal": "3×6×9×7 = 1134 → ∆9",
+    "loop_metalux": "fora→dentro pela leitura; dentro→fora pelo hash"
+  },
+  "ruler": [
+    {
+      "lvl": "0",
+      "symbol": "◌",
+      "form": "ponto-zero / vazio",
+      "machine": "bit 0/1 · opcode 0×00 ORIGEM",
+      "cli": "/dev/null · exit 0",
+      "w836": "p.1–2 capas",
+      "geez": "o pergaminho antes da letra",
+      "hz": 768,
+      "lambda": 0.447
+    },
+    {
+      "lvl": "1",
+      "symbol": "●",
+      "form": "ponto",
+      "machine": "opcode 0×01 DETECTAR",
+      "cli": "grep -c · sha256sum (nó)",
+      "w836": "p.3–5 Carta de Eusébio",
+      "geez": "፡ wordspace — o pulso entre palavras",
+      "hz": 432,
+      "lambda": 0.794
+    },
+    {
+      "lvl": "2",
+      "symbol": "―",
+      "form": "linha",
+      "machine": "opcode 0×02 INTEGRAR",
+      "cli": "pipe | · diff (aresta)",
+      "w836": "p.6–12 Cânones I–X",
+      "geez": "a coluna de texto — 26 letras × 7 ordens = 182 fidels",
+      "hz": 528,
+      "lambda": 0.65
+    },
+    {
+      "lvl": "3",
+      "symbol": "▢",
+      "form": "plano",
+      "machine": "opcode 0×03 EXPANDIR",
+      "cli": "tabela CSV · join (face)",
+      "w836": "p.13 diagrama Nubāre Śərʿat",
+      "geez": "a página inteira como face de leitura",
+      "hz": 639,
+      "lambda": 0.537
+    },
+    {
+      "lvl": "4",
+      "symbol": "◇",
+      "form": "cristal",
+      "machine": "opcode 0×04 LAPIDAR",
+      "cli": "sed · tr (lapidação de dados)",
+      "w836": "p.14–16 miniaturas",
+      "geez": "cor rubricada — letras iniciais",
+      "hz": 594,
+      "lambda": 0.577
+    },
+    {
+      "lvl": "5",
+      "symbol": "⧉",
+      "form": "cruzamento",
+      "machine": "opcode 0×05 CONVERGIR",
+      "cli": "sort -u · uniq (kephalaion)",
+      "w836": "p.17–19 kephalaia (68 cabeças)",
+      "geez": "ክፍል — a seção numerada",
+      "hz": 672,
+      "lambda": 0.51
+    },
+    {
+      "lvl": "6",
+      "symbol": "☯",
+      "form": "dobra",
+      "machine": "opcode 0×06 UNIFICAR",
+      "cli": "merge · rebase (união)",
+      "w836": "p.20–157 Mateus (138 p.)",
+      "geez": "ወንጌል — o corpo do texto",
+      "hz": 672,
+      "lambda": 0.51
+    },
+    {
+      "lvl": "7",
+      "symbol": "✧⃝⚝",
+      "form": "selo",
+      "machine": "opcode 0×07 SELAR",
+      "cli": "gpg --sign · sha256 (carimbo)",
+      "w836": "p.158–240 Marcos (83 p.)",
+      "geez": "subscrito · marca do escriba",
+      "hz": 777,
+      "lambda": 0.441
+    },
+    {
+      "lvl": "8",
+      "symbol": "◉",
+      "form": "testemunho",
+      "machine": "opcode 0×08 TESTEMUNHAR",
+      "cli": "tee log · journalctl (registro)",
+      "w836": "p.241–385 Lucas (145 p.)",
+      "geez": "testemunho das colunas",
+      "hz": 852,
+      "lambda": 0.403
+    },
+    {
+      "lvl": "9",
+      "symbol": "♾️",
+      "form": "eterno",
+      "machine": "opcode 0×09 ETERNIZAR",
+      "cli": "git commit · archive (memória)",
+      "w836": "p.386–495 João (110 p.)",
+      "geez": "ግምባር — o verbo que permanece",
+      "hz": 963,
+      "lambda": 0.356
+    },
+    {
+      "lvl": "10",
+      "symbol": "⌘",
+      "form": "síntese",
+      "machine": "opcode 0×0C SÍNTESE",
+      "cli": "make · pipeline completo",
+      "w836": "p.496–504 fecho",
+      "geez": "ተፈጸመ — “cumpriu-se”",
+      "hz": 777,
+      "lambda": 0.441
+    }
+  ],
+  "canon_dimensions": [
+    {
+      "canon": "I",
+      "concordia": "os quatro concordam",
+      "dimensao": "10D Hiperesfera",
+      "chave": "unificação",
+      "evangelhos": 4
+    },
+    {
+      "canon": "II",
+      "concordia": "Mateus+Marcos+Lucas",
+      "dimensao": "9D Fractal",
+      "chave": "padrão sem João",
+      "evangelhos": 3
+    },
+    {
+      "canon": "III",
+      "concordia": "Mateus+Lucas+João",
+      "dimensao": "8D Hipercubo",
+      "chave": "transição",
+      "evangelhos": 3
+    },
+    {
+      "canon": "IV",
+      "concordia": "Mateus+Marcos+João",
+      "dimensao": "7D Toro",
+      "chave": "regeneração",
+      "evangelhos": 3
+    },
+    {
+      "canon": "V",
+      "concordia": "Mateus+Lucas",
+      "dimensao": "6D Superfície",
+      "chave": "interconexão",
+      "evangelhos": 2
+    },
+    {
+      "canon": "VI",
+      "concordia": "Mateus+Marcos",
+      "dimensao": "5D Poliedro",
+      "chave": "realidades",
+      "evangelhos": 2
+    },
+    {
+      "canon": "VII",
+      "concordia": "Mateus+João",
+      "dimensao": "4D Tempo",
+      "chave": "fluxo",
+      "evangelhos": 2
+    },
+    {
+      "canon": "VIII",
+      "concordia": "Lucas+Marcos",
+      "dimensao": "3D Volume",
+      "chave": "percepção espacial",
+      "evangelhos": 2
+    },
+    {
+      "canon": "IX",
+      "concordia": "Lucas+João",
+      "dimensao": "2D Plano",
+      "chave": "forma",
+      "evangelhos": 2
+    },
+    {
+      "canon": "X",
+      "concordia": "cada um só",
+      "dimensao": "1D Linha",
+      "chave": "singularidade",
+      "evangelhos": 1
+    }
+  ],
+  "numerology_checks": {
+    "504_paginas": 504,
+    "504_dr": 9,
+    "dr_504": 9,
+    "1134_fractal": 1134,
+    "1134_dr": 9,
+    "matthew_138_dr": 12,
+    "mark_83_dr": 11,
+    "luke_145_dr": 10,
+    "john_110_dr": 2,
+    "corpus_4_evangelhos_paginas": 474,
+    "corpus_dr": 15,
+    "fidels_26x7": 182,
+    "facets_kobllux": 52,
+    "26x2": 52,
+    "canon_sum": 27,
+    "canon_sum_dr": 9,
+    "opcodes": 13,
+    "fases": 13
+  }
+}
