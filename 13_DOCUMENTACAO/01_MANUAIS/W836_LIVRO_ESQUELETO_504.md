@@ -1,0 +1,525 @@
+# W836 — LIVRO ESQUELETO 504 PÁGINAS
+
+**Etapa:** esqueleto descritivo/transcrição-base · **Regra:** estimativa ≠ paginação canônica; OCR/EMUFI decide.
+
+**Fractal:** 3×6×9×7 = 1134 → ∆9
+
+## Como ler
+- `[W-hash]` = imagem local presente com hash.
+- `[W-sap]` = já visível em JPG sap.
+- `[W/E-est]` = reconstrução estimada para trabalho.
+- `†300` = precisa TIFF 300/600 para fechar.
+
+## Esqueleto por página
+- **W836_000001** · p. 001 · fol. capa · cover · **capa externa** · [W-sap]
+- **W836_000002** · p. 002 · fol. capa · cover · **contracapa/guarda** · [W-sap]
+- **W836_000003** · p. 003 · fol. 1r · Eusebius letter · **Eusébio a Carpiano — incipit** · [W-sap]
+- **W836_000004** · p. 004 · fol. 1v · Eusebius letter · **Eusébio — corpo do método** · [W-sap]
+- **W836_000005** · p. 005 · fol. 2r · Eusebius letter · **Eusébio — fecho e abertura do cânone** · [W-sap]
+- **W836_000006** · p. 006 · fol. 2v · Canon tables · **Cânone I — os quatro** · [W-sap]
+- **W836_000007** · p. 007 · fol. 3r · Canon tables · **Cânone II — três sem João** · [W-sap]
+- **W836_000008** · p. 008 · fol. 3v · Canon tables · **Cânones III–IV** · [W-sap]
+- **W836_000009** · p. 009 · fol. 4r · Canon tables · **Cânone V** · [W-sap]
+- **W836_000010** · p. 010 · fol. 4v · Canon tables · **Cânones VI–VII** · [W-sap]
+- **W836_000011** · p. 011 · fol. 5r · Canon tables · **Cânones VIII–IX** · [W-sap]
+- **W836_000012** · p. 012 · fol. 5v · Canon tables · **Cânone X** · [W-sap]
+- **W836_000013** · p. 013 · fol. 6r · Four-Gospels diagram · **diagrama Nubāre Śərʿat** · [W-sap/†300]
+- **W836_000014** · p. 014 · fol. 6v · Prefatory miniatures · **miniatura prefatória** · [W-sap/†300]
+- **W836_000015** · p. 015 · fol. 7r · Prefatory miniatures · **miniatura prefatória** · [W-sap/†300]
+- **W836_000016** · p. 016 · fol. 7v · Prefatory miniatures · **miniatura prefatória** · [W-sap/†300]
+- **W836_000017** · p. 017 · fol. 8r · Matthew kephalaia list · **kephalaia de Mateus — lista inicial** · [W-sap/†300]
+- **W836_000018** · p. 018 · fol. 8v · Matthew kephalaia list · **kephalaia de Mateus — continuação †** · [W-sap/†300]
+- **W836_000019** · p. 019 · fol. 9r · Matthew kephalaia list · **kephalaia de Mateus — limite †** · [W-sap/†300]
+- **W836_000020** · p. 020 · fol. 9v · Matthew · **Mt 1:1–1:8** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000021** · p. 021 · fol. 10r · Matthew · **Mt 1:9–1:15** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000022** · p. 022 · fol. 10v · Matthew · **Mt 1:16–1:22** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000023** · p. 023 · fol. 11r · Matthew · **Mt 1:23–2:4** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000024** · p. 024 · fol. 11v · Matthew · **Mt 2:5–2:11** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000025** · p. 025 · fol. 12r · Matthew · **Mt 2:12–2:18** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000026** · p. 026 · fol. 12v · Matthew · **Mt 2:19–3:2** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000027** · p. 027 · fol. 13r · Matthew · **Mt 3:3–3:9** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000028** · p. 028 · fol. 13v · Matthew · **Mt 3:10–3:16** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000029** · p. 029 · fol. 14r · Matthew · **Mt 3:17–4:7** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000030** · p. 030 · fol. 14v · Matthew · **Mt 4:8–4:14** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000031** · p. 031 · fol. 15r · Matthew · **Mt 4:15–4:21** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000032** · p. 032 · fol. 15v · Matthew · **Mt 4:22–5:3** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000033** · p. 033 · fol. 16r · Matthew · **Mt 5:4–5:10** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000034** · p. 034 · fol. 16v · Matthew · **Mt 5:11–5:17** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000035** · p. 035 · fol. 17r · Matthew · **Mt 5:18–5:24** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000036** · p. 036 · fol. 17v · Matthew · **Mt 5:25–5:31** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000037** · p. 037 · fol. 18r · Matthew · **Mt 5:32–5:38** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000038** · p. 038 · fol. 18v · Matthew · **Mt 5:39–5:46** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000039** · p. 039 · fol. 19r · Matthew · **Mt 5:47–6:5** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000040** · p. 040 · fol. 19v · Matthew · **Mt 6:6–6:12** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000041** · p. 041 · fol. 20r · Matthew · **Mt 6:13–6:19** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000042** · p. 042 · fol. 20v · Matthew · **Mt 6:20–6:26** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000043** · p. 043 · fol. 21r · Matthew · **Mt 6:27–6:33** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000044** · p. 044 · fol. 21v · Matthew · **Mt 6:34–7:6** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000045** · p. 045 · fol. 22r · Matthew · **Mt 7:7–7:13** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000046** · p. 046 · fol. 22v · Matthew · **Mt 7:14–7:20** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000047** · p. 047 · fol. 23r · Matthew · **Mt 7:21–7:27** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000048** · p. 048 · fol. 23v · Matthew · **Mt 7:28–8:6** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000049** · p. 049 · fol. 24r · Matthew · **Mt 8:7–8:13** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000050** · p. 050 · fol. 24v · Matthew · **Mt 8:14–8:20** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000051** · p. 051 · fol. 25r · Matthew · **Mt 8:21–8:27** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000052** · p. 052 · fol. 25v · Matthew · **Mt 8:28–8:34** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000053** · p. 053 · fol. 26r · Matthew · **Mt 9:1–9:7** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000054** · p. 054 · fol. 26v · Matthew · **Mt 9:8–9:14** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000055** · p. 055 · fol. 27r · Matthew · **Mt 9:15–9:21** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000056** · p. 056 · fol. 27v · Matthew · **Mt 9:22–9:28** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000057** · p. 057 · fol. 28r · Matthew · **Mt 9:29–9:36** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000058** · p. 058 · fol. 28v · Matthew · **Mt 9:37–10:5** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000059** · p. 059 · fol. 29r · Matthew · **Mt 10:6–10:12** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000060** · p. 060 · fol. 29v · Matthew · **Mt 10:13–10:19** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000061** · p. 061 · fol. 30r · Matthew · **Mt 10:20–10:26** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000062** · p. 062 · fol. 30v · Matthew · **Mt 10:27–10:33** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000063** · p. 063 · fol. 31r · Matthew · **Mt 10:34–10:40** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000064** · p. 064 · fol. 31v · Matthew · **Mt 10:41–11:5** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000065** · p. 065 · fol. 32r · Matthew · **Mt 11:6–11:12** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000066** · p. 066 · fol. 32v · Matthew · **Mt 11:13–11:19** · [W/E-est] aguarda OCR p/ paginação fina
+- **W836_000067** · p. 067 · fol. 33r · Matthew · **Mt 11:20–11:28** · [E/W-est] promover só com scan+EMUFI
+- **W836_000068** · p. 068 · fol. 33v · Matthew · **Mt 11:29–12:7** · [E/W-est] promover só com scan+EMUFI
+- **W836_000069** · p. 069 · fol. 34r · Matthew · **Mt 12:8–12:15** · [E/W-est] promover só com scan+EMUFI
+- **W836_000070** · p. 070 · fol. 34v · Matthew · **Mt 12:16–12:24** · [E/W-est] promover só com scan+EMUFI
+- **W836_000071** · p. 071 · fol. 35r · Matthew · **Mt 12:25–12:33** · [E/W-est] promover só com scan+EMUFI
+- **W836_000072** · p. 072 · fol. 35v · Matthew · **Mt 12:34–12:41** · [E/W-est] promover só com scan+EMUFI
+- **W836_000073** · p. 073 · fol. 36r · Matthew · **Mt 12:42–12:50** · [E/W-est] promover só com scan+EMUFI
+- **W836_000074** · p. 074 · fol. 36v · Matthew · **Mt 12:51–13:8** · [E/W-est] promover só com scan+EMUFI
+- **W836_000075** · p. 075 · fol. 37r · Matthew · **Mt 13:9–13:16** · [E/W-est] promover só com scan+EMUFI
+- **W836_000076** · p. 076 · fol. 37v · Matthew · **Mt 13:17–13:25** · [E/W-est] promover só com scan+EMUFI
+- **W836_000077** · p. 077 · fol. 38r · Matthew · **Mt 13:26–13:33** · [E/W-est] promover só com scan+EMUFI
+- **W836_000078** · p. 078 · fol. 38v · Matthew · **Mt 13:34–13:42** · [E/W-est] promover só com scan+EMUFI
+- **W836_000079** · p. 079 · fol. 39r · Matthew · **Mt 13:43–13:51** · [E/W-est] promover só com scan+EMUFI
+- **W836_000080** · p. 080 · fol. 39v · Matthew · **Mt 13:52–14:1** · [E/W-est] promover só com scan+EMUFI
+- **W836_000081** · p. 081 · fol. 40r · Matthew · **Mt 14:2–14:10** · [E/W-est] promover só com scan+EMUFI
+- **W836_000082** · p. 082 · fol. 40v · Matthew · **Mt 14:11–14:19** · [E/W-est] promover só com scan+EMUFI
+- **W836_000083** · p. 083 · fol. 41r · Matthew · **Mt 14:20–14:27** · [E/W-est] promover só com scan+EMUFI
+- **W836_000084** · p. 084 · fol. 41v · Matthew · **Mt 14:28–14:36** · [E/W-est] promover só com scan+EMUFI
+- **W836_000085** · p. 085 · fol. 42r · Matthew · **Mt 15:1–15:9** · [E/W-est] promover só com scan+EMUFI
+- **W836_000086** · p. 086 · fol. 42v · Matthew · **Mt 15:10–15:17** · [E/W-est] promover só com scan+EMUFI
+- **W836_000087** · p. 087 · fol. 43r · Matthew · **Mt 15:18–15:26** · [E/W-est] promover só com scan+EMUFI
+- **W836_000088** · p. 088 · fol. 43v · Matthew · **Mt 15:27–15:34** · [E/W-est] promover só com scan+EMUFI
+- **W836_000089** · p. 089 · fol. 44r · Matthew · **Mt 15:35–16:4** · [E/W-est] promover só com scan+EMUFI
+- **W836_000090** · p. 090 · fol. 44v · Matthew · **Mt 16:5–16:13** · [E/W-est] promover só com scan+EMUFI
+- **W836_000091** · p. 091 · fol. 45r · Matthew · **Mt 16:14–16:21** · [E/W-est] promover só com scan+EMUFI
+- **W836_000092** · p. 092 · fol. 45v · Matthew · **Mt 16:22–17:2** · [E/W-est] promover só com scan+EMUFI
+- **W836_000093** · p. 093 · fol. 46r · Matthew · **Mt 17:3–17:11** · [E/W-est] promover só com scan+EMUFI
+- **W836_000094** · p. 094 · fol. 46v · Matthew · **Mt 17:12–17:19** · [E/W-est] promover só com scan+EMUFI
+- **W836_000095** · p. 095 · fol. 47r · Matthew · **Mt 17:20–18:1** · [E/W-est] promover só com scan+EMUFI
+- **W836_000096** · p. 096 · fol. 47v · Matthew · **Mt 18:2–18:10** · [E/W-est] promover só com scan+EMUFI
+- **W836_000097** · p. 097 · fol. 48r · Matthew · **Mt 18:11–18:18** · [E/W-est] promover só com scan+EMUFI
+- **W836_000098** · p. 098 · fol. 48v · Matthew · **Mt 18:19–18:27** · [E/W-est] promover só com scan+EMUFI
+- **W836_000099** · p. 099 · fol. 49r · Matthew · **Mt 18:28–18:35** · [E/W-est] promover só com scan+EMUFI
+- **W836_000100** · p. 100 · fol. 49v · Matthew · **Mt 19:1–19:8** · [W-hash] OCR pendente
+- **W836_000101** · p. 101 · fol. 50r · Matthew · **Mt 19:9–19:16** · [W-hash] OCR pendente
+- **W836_000102** · p. 102 · fol. 50v · Matthew · **Mt 19:17–19:24** · [W-hash] OCR pendente
+- **W836_000103** · p. 103 · fol. 51r · Matthew · **Mt 19:25–20:2** · [W-hash] OCR pendente
+- **W836_000104** · p. 104 · fol. 51v · Matthew · **Mt 20:3–20:10** · [W-hash] OCR pendente
+- **W836_000105** · p. 105 · fol. 52r · Matthew · **Mt 20:11–20:17** · [W-hash] OCR pendente
+- **W836_000106** · p. 106 · fol. 52v · Matthew · **Mt 20:18–20:25** · [W-hash] OCR pendente
+- **W836_000107** · p. 107 · fol. 53r · Matthew · **Mt 20:26–20:33** · [W-hash] OCR pendente
+- **W836_000108** · p. 108 · fol. 53v · Matthew · **Mt 20:34–21:7** · [W-hash] OCR pendente
+- **W836_000109** · p. 109 · fol. 54r · Matthew · **Mt 21:8–21:15** · [W-hash] OCR pendente
+- **W836_000110** · p. 110 · fol. 54v · Matthew · **Mt 21:16–21:22** · [W-hash] OCR pendente
+- **W836_000111** · p. 111 · fol. 55r · Matthew · **Mt 21:23–21:30** · [W-hash] OCR pendente
+- **W836_000112** · p. 112 · fol. 55v · Matthew · **Mt 21:31–21:38** · [W-hash] OCR pendente
+- **W836_000113** · p. 113 · fol. 56r · Matthew · **Mt 21:39–21:46** · [W-hash] OCR pendente
+- **W836_000114** · p. 114 · fol. 56v · Matthew · **Mt 22:1–22:8** · [W-hash] OCR pendente
+- **W836_000115** · p. 115 · fol. 57r · Matthew · **Mt 22:9–22:15** · [W-hash] OCR pendente
+- **W836_000116** · p. 116 · fol. 57v · Matthew · **Mt 22:16–22:23** · [W-hash] OCR pendente
+- **W836_000117** · p. 117 · fol. 58r · Matthew · **Mt 22:24–22:31** · [W-hash] OCR pendente
+- **W836_000118** · p. 118 · fol. 58v · Matthew · **Mt 22:32–22:39** · [W-hash] OCR pendente
+- **W836_000119** · p. 119 · fol. 59r · Matthew · **Mt 22:40–23:1** · [W-hash] OCR pendente
+- **W836_000120** · p. 120 · fol. 59v · Matthew · **Mt 23:2–23:9** · [W-hash] OCR pendente
+- **W836_000121** · p. 121 · fol. 60r · Matthew · **Mt 23:10–23:16** · [W-hash] OCR pendente
+- **W836_000122** · p. 122 · fol. 60v · Matthew · **Mt 23:17–23:24** · [W-hash] OCR pendente
+- **W836_000123** · p. 123 · fol. 61r · Matthew · **Mt 23:25–23:32** · [W-hash] OCR pendente
+- **W836_000124** · p. 124 · fol. 61v · Matthew · **Mt 23:33–24:1** · [W-hash] OCR pendente
+- **W836_000125** · p. 125 · fol. 62r · Matthew · **Mt 24:2–24:9** · [W-hash] OCR pendente
+- **W836_000126** · p. 126 · fol. 62v · Matthew · **Mt 24:10–24:16** · [W-hash] OCR pendente
+- **W836_000127** · p. 127 · fol. 63r · Matthew · **Mt 24:17–24:24** · [W-hash] OCR pendente
+- **W836_000128** · p. 128 · fol. 63v · Matthew · **Mt 24:25–24:32** · [W-hash] OCR pendente
+- **W836_000129** · p. 129 · fol. 64r · Matthew · **Mt 24:33–24:40** · [W-hash] OCR pendente
+- **W836_000130** · p. 130 · fol. 64v · Matthew · **Mt 24:41–24:48** · [W-hash] OCR pendente
+- **W836_000131** · p. 131 · fol. 65r · Matthew · **Mt 24:49–25:4** · [W-hash] OCR pendente
+- **W836_000132** · p. 132 · fol. 65v · Matthew · **Mt 25:5–25:12** · [W-hash] OCR pendente
+- **W836_000133** · p. 133 · fol. 66r · Matthew · **Mt 25:13–25:20** · [W-hash] OCR pendente
+- **W836_000134** · p. 134 · fol. 66v · Matthew · **Mt 25:21–25:28** · [W-hash] OCR pendente
+- **W836_000135** · p. 135 · fol. 67r · Matthew · **Mt 25:29–25:36** · [W-hash] OCR pendente
+- **W836_000136** · p. 136 · fol. 67v · Matthew · **Mt 25:37–25:43** · [W-hash] OCR pendente
+- **W836_000137** · p. 137 · fol. 68r · Matthew · **Mt 25:44–26:5** · [W-hash] OCR pendente
+- **W836_000138** · p. 138 · fol. 68v · Matthew · **Mt 26:6–26:13** · [W-hash] OCR pendente
+- **W836_000139** · p. 139 · fol. 69r · Matthew · **Mt 26:14–26:21** · [W-hash] OCR pendente
+- **W836_000140** · p. 140 · fol. 69v · Matthew · **Mt 26:22–26:29** · [W-hash] OCR pendente
+- **W836_000141** · p. 141 · fol. 70r · Matthew · **Mt 26:30–26:37** · [W-hash] OCR pendente
+- **W836_000142** · p. 142 · fol. 70v · Matthew · **Mt 26:38–26:44** · [W-hash] OCR pendente
+- **W836_000143** · p. 143 · fol. 71r · Matthew · **Mt 26:45–26:52** · [W-hash] OCR pendente
+- **W836_000144** · p. 144 · fol. 71v · Matthew · **Mt 26:53–26:60** · [W-hash] OCR pendente
+- **W836_000145** · p. 145 · fol. 72r · Matthew · **Mt 26:61–26:68** · [W-hash] OCR pendente
+- **W836_000146** · p. 146 · fol. 72v · Matthew · **Mt 26:69–27:1** · [W-hash] OCR pendente
+- **W836_000147** · p. 147 · fol. 73r · Matthew · **Mt 27:2–27:8** · [W-hash] OCR pendente
+- **W836_000148** · p. 148 · fol. 73v · Matthew · **Mt 27:9–27:16** · [W-hash] OCR pendente
+- **W836_000149** · p. 149 · fol. 74r · Matthew · **Mt 27:17–27:24** · [W-hash] OCR pendente
+- **W836_000150** · p. 150 · fol. 74v · Matthew · **Mt 27:25–27:32** · [W-hash] OCR pendente
+- **W836_000151** · p. 151 · fol. 75r · Matthew · **Mt 27:33–27:40** · [W-hash] OCR pendente
+- **W836_000152** · p. 152 · fol. 75v · Matthew · **Mt 27:41–27:47** · [W-hash] OCR pendente
+- **W836_000153** · p. 153 · fol. 76r · Matthew · **Mt 27:48–27:55** · [W-hash] OCR pendente
+- **W836_000154** · p. 154 · fol. 76v · Matthew · **Mt 27:56–27:63** · [W-hash] OCR pendente
+- **W836_000155** · p. 155 · fol. 77r · Matthew · **Mt 27:64–28:5** · [W-hash] OCR pendente
+- **W836_000156** · p. 156 · fol. 77v · Matthew · **Mt 28:6–28:13** · [W-hash] OCR pendente
+- **W836_000157** · p. 157 · fol. 78r · Matthew · **Mt 28:14–28:20** · [W-hash] OCR pendente
+- **W836_000158** · p. 158 · fol. 78v · Mark kephalaia list / portrait boundary · **lista/retrato de Marcos — limite** · †300
+- **W836_000159** · p. 159 · fol. 79r · Mark kephalaia list / portrait boundary · **lista/retrato de Marcos — limite** · †300
+- **W836_000160** · p. 160 · fol. 79v · Mark · **Mc 1** · [W-hash] OCR pendente
+- **W836_000161** · p. 161 · fol. 80r · Mark · **Mc 1** · [W-hash] OCR pendente
+- **W836_000162** · p. 162 · fol. 80v · Mark · **Mc 1** · [W-hash] OCR pendente
+- **W836_000163** · p. 163 · fol. 81r · Mark · **Mc 1** · [W-hash] OCR pendente
+- **W836_000164** · p. 164 · fol. 81v · Mark · **Mc 1** · [W-hash] OCR pendente
+- **W836_000165** · p. 165 · fol. 82r · Mark · **Mc 1** · [W-hash] OCR pendente
+- **W836_000166** · p. 166 · fol. 82v · Mark · **Mc 2** · [W-hash] OCR pendente
+- **W836_000167** · p. 167 · fol. 83r · Mark · **Mc 2** · [W-hash] OCR pendente
+- **W836_000168** · p. 168 · fol. 83v · Mark · **Mc 2** · [W-hash] OCR pendente
+- **W836_000169** · p. 169 · fol. 84r · Mark · **Mc 2** · [W-hash] OCR pendente
+- **W836_000170** · p. 170 · fol. 84v · Mark · **Mc 2** · [W-hash] OCR pendente
+- **W836_000171** · p. 171 · fol. 85r · Mark · **Mc 3** · [W-hash] OCR pendente
+- **W836_000172** · p. 172 · fol. 85v · Mark · **Mc 3** · [W-hash] OCR pendente
+- **W836_000173** · p. 173 · fol. 86r · Mark · **Mc 3** · [W-hash] OCR pendente
+- **W836_000174** · p. 174 · fol. 86v · Mark · **Mc 3** · [W-hash] OCR pendente
+- **W836_000175** · p. 175 · fol. 87r · Mark · **Mc 3** · [W-hash] OCR pendente
+- **W836_000176** · p. 176 · fol. 87v · Mark · **Mc 4** · [W-hash] OCR pendente
+- **W836_000177** · p. 177 · fol. 88r · Mark · **Mc 4** · [W-hash] OCR pendente
+- **W836_000178** · p. 178 · fol. 88v · Mark · **Mc 4** · [W-hash] OCR pendente
+- **W836_000179** · p. 179 · fol. 89r · Mark · **Mc 4** · [W-hash] OCR pendente
+- **W836_000180** · p. 180 · fol. 89v · Mark · **Mc 4** · [W-hash] OCR pendente
+- **W836_000181** · p. 181 · fol. 90r · Mark · **Mc 5** · [W-hash] OCR pendente
+- **W836_000182** · p. 182 · fol. 90v · Mark · **Mc 5** · [W-hash] OCR pendente
+- **W836_000183** · p. 183 · fol. 91r · Mark · **Mc 5** · [W-hash] OCR pendente
+- **W836_000184** · p. 184 · fol. 91v · Mark · **Mc 5** · [W-hash] OCR pendente
+- **W836_000185** · p. 185 · fol. 92r · Mark · **Mc 5** · [W-hash] OCR pendente
+- **W836_000186** · p. 186 · fol. 92v · Mark · **Mc 6** · [W-hash] OCR pendente
+- **W836_000187** · p. 187 · fol. 93r · Mark · **Mc 6** · [W-hash] OCR pendente
+- **W836_000188** · p. 188 · fol. 93v · Mark · **Mc 6** · [W-hash] OCR pendente
+- **W836_000189** · p. 189 · fol. 94r · Mark · **Mc 6** · [W-hash] OCR pendente
+- **W836_000190** · p. 190 · fol. 94v · Mark · **Mc 6** · [W-hash] OCR pendente
+- **W836_000191** · p. 191 · fol. 95r · Mark · **Mc 7** · [W-hash] OCR pendente
+- **W836_000192** · p. 192 · fol. 95v · Mark · **Mc 7** · [W-hash] OCR pendente
+- **W836_000193** · p. 193 · fol. 96r · Mark · **Mc 7** · [W-hash] OCR pendente
+- **W836_000194** · p. 194 · fol. 96v · Mark · **Mc 7** · [W-hash] OCR pendente
+- **W836_000195** · p. 195 · fol. 97r · Mark · **Mc 7** · [W-hash] OCR pendente
+- **W836_000196** · p. 196 · fol. 97v · Mark · **Mc 8** · [W-hash] OCR pendente
+- **W836_000197** · p. 197 · fol. 98r · Mark · **Mc 8** · [W-hash] OCR pendente
+- **W836_000198** · p. 198 · fol. 98v · Mark · **Mc 8** · [W-hash] OCR pendente
+- **W836_000199** · p. 199 · fol. 99r · Mark · **Mc 8** · [W-hash] OCR pendente
+- **W836_000200** · p. 200 · fol. 99v · Mark · **Mc 8** · [W-hash] OCR pendente
+- **W836_000201** · p. 201 · fol. 100r · Mark · **Mc 9** · [W-hash] OCR pendente
+- **W836_000202** · p. 202 · fol. 100v · Mark · **Mc 9** · [W-hash] OCR pendente
+- **W836_000203** · p. 203 · fol. 101r · Mark · **Mc 9** · [W-hash] OCR pendente
+- **W836_000204** · p. 204 · fol. 101v · Mark · **Mc 9** · [W-hash] OCR pendente
+- **W836_000205** · p. 205 · fol. 102r · Mark · **Mc 9** · [W-hash] OCR pendente
+- **W836_000206** · p. 206 · fol. 102v · Mark · **Mc 10** · [W-hash] OCR pendente
+- **W836_000207** · p. 207 · fol. 103r · Mark · **Mc 10** · [W-hash] OCR pendente
+- **W836_000208** · p. 208 · fol. 103v · Mark · **Mc 10** · [W-hash] OCR pendente
+- **W836_000209** · p. 209 · fol. 104r · Mark · **Mc 10** · [W-hash] OCR pendente
+- **W836_000210** · p. 210 · fol. 104v · Mark · **Mc 10** · [W-hash] OCR pendente
+- **W836_000211** · p. 211 · fol. 105r · Mark · **Mc 11** · [W-hash] OCR pendente
+- **W836_000212** · p. 212 · fol. 105v · Mark · **Mc 11** · [W-hash] OCR pendente
+- **W836_000213** · p. 213 · fol. 106r · Mark · **Mc 11** · [W-hash] OCR pendente
+- **W836_000214** · p. 214 · fol. 106v · Mark · **Mc 11** · [W-hash] OCR pendente
+- **W836_000215** · p. 215 · fol. 107r · Mark · **Mc 11** · [W-hash] OCR pendente
+- **W836_000216** · p. 216 · fol. 107v · Mark · **Mc 12** · [W-hash] OCR pendente
+- **W836_000217** · p. 217 · fol. 108r · Mark · **Mc 12** · [W-hash] OCR pendente
+- **W836_000218** · p. 218 · fol. 108v · Mark · **Mc 12** · [W-hash] OCR pendente
+- **W836_000219** · p. 219 · fol. 109r · Mark · **Mc 12** · [W-hash] OCR pendente
+- **W836_000220** · p. 220 · fol. 109v · Mark · **Mc 12** · [W-hash] OCR pendente
+- **W836_000221** · p. 221 · fol. 110r · Mark · **Mc 13** · [W-hash] OCR pendente
+- **W836_000222** · p. 222 · fol. 110v · Mark · **Mc 13** · [W-hash] OCR pendente
+- **W836_000223** · p. 223 · fol. 111r · Mark · **Mc 13** · [W-hash] OCR pendente
+- **W836_000224** · p. 224 · fol. 111v · Mark · **Mc 13** · [W-hash] OCR pendente
+- **W836_000225** · p. 225 · fol. 112r · Mark · **Mc 13** · [W-hash] OCR pendente
+- **W836_000226** · p. 226 · fol. 112v · Mark · **Mc 14** · [W-hash] OCR pendente
+- **W836_000227** · p. 227 · fol. 113r · Mark · **Mc 14** · [W-hash] OCR pendente
+- **W836_000228** · p. 228 · fol. 113v · Mark · **Mc 14** · [W-hash] OCR pendente
+- **W836_000229** · p. 229 · fol. 114r · Mark · **Mc 14** · [W-hash] OCR pendente
+- **W836_000230** · p. 230 · fol. 114v · Mark · **Mc 14** · [W-hash] OCR pendente
+- **W836_000231** · p. 231 · fol. 115r · Mark · **Mc 15** · [W-hash] OCR pendente
+- **W836_000232** · p. 232 · fol. 115v · Mark · **Mc 15** · [W-hash] OCR pendente
+- **W836_000233** · p. 233 · fol. 116r · Mark · **Mc 15** · [W-hash] OCR pendente
+- **W836_000234** · p. 234 · fol. 116v · Mark · **Mc 15** · [W-hash] OCR pendente
+- **W836_000235** · p. 235 · fol. 117r · Mark · **Mc 15** · [W-hash] OCR pendente
+- **W836_000236** · p. 236 · fol. 117v · Mark · **Mc 16** · [W-hash] OCR pendente
+- **W836_000237** · p. 237 · fol. 118r · Mark · **Mc 16** · [W-hash] OCR pendente
+- **W836_000238** · p. 238 · fol. 118v · Mark · **Mc 16** · [W-hash] OCR pendente
+- **W836_000239** · p. 239 · fol. 119r · Mark · **Mc 16** · [W-hash] OCR pendente
+- **W836_000240** · p. 240 · fol. 119v · Mark · **Mc 16** · [W-hash] OCR pendente
+- **W836_000241** · p. 241 · fol. 120r · Added prayer / Luke list zone · **oração/lista de Lucas — zona de transição** · †300
+- **W836_000242** · p. 242 · fol. 120v · Added prayer / Luke list zone · **oração/lista de Lucas — zona de transição** · †300
+- **W836_000243** · p. 243 · fol. 121r · Added prayer / Luke list zone · **oração/lista de Lucas — zona de transição** · †300
+- **W836_000244** · p. 244 · fol. 121v · Added prayer / Luke list zone · **oração/lista de Lucas — zona de transição** · †300
+- **W836_000245** · p. 245 · fol. 122r · Added prayer / Luke list zone · **oração/lista de Lucas — zona de transição** · †300
+- **W836_000246** · p. 246 · fol. 122v · Added prayer / Luke list zone · **oração/lista de Lucas — zona de transição** · †300
+- **W836_000247** · p. 247 · fol. 123r · Luke · **Lc 1** · [W-hash] OCR pendente
+- **W836_000248** · p. 248 · fol. 123v · Luke · **Lc 1** · [W-hash] OCR pendente
+- **W836_000249** · p. 249 · fol. 124r · Luke · **Lc 1** · [W-hash] OCR pendente
+- **W836_000250** · p. 250 · fol. 124v · Luke · **Lc 1** · [W-hash] OCR pendente
+- **W836_000251** · p. 251 · fol. 125r · Luke · **Lc 1** · [W-hash] OCR pendente
+- **W836_000252** · p. 252 · fol. 125v · Luke · **Lc 1** · [W-hash] OCR pendente
+- **W836_000253** · p. 253 · fol. 126r · Luke · **Lc 2** · [W-hash] OCR pendente
+- **W836_000254** · p. 254 · fol. 126v · Luke · **Lc 2** · [W-hash] OCR pendente
+- **W836_000255** · p. 255 · fol. 127r · Luke · **Lc 2** · [W-hash] OCR pendente
+- **W836_000256** · p. 256 · fol. 127v · Luke · **Lc 2** · [W-hash] OCR pendente
+- **W836_000257** · p. 257 · fol. 128r · Luke · **Lc 2** · [W-hash] OCR pendente
+- **W836_000258** · p. 258 · fol. 128v · Luke · **Lc 2** · [W-hash] OCR pendente
+- **W836_000259** · p. 259 · fol. 129r · Luke · **Lc 3** · [W-hash] OCR pendente
+- **W836_000260** · p. 260 · fol. 129v · Luke · **Lc 3** · [W-hash] OCR pendente
+- **W836_000261** · p. 261 · fol. 130r · Luke · **Lc 3** · [W-hash] OCR pendente
+- **W836_000262** · p. 262 · fol. 130v · Luke · **Lc 3** · [W-hash] OCR pendente
+- **W836_000263** · p. 263 · fol. 131r · Luke · **Lc 3** · [W-hash] OCR pendente
+- **W836_000264** · p. 264 · fol. 131v · Luke · **Lc 3** · [W-hash] OCR pendente
+- **W836_000265** · p. 265 · fol. 132r · Luke · **Lc 4** · [W-hash] OCR pendente
+- **W836_000266** · p. 266 · fol. 132v · Luke · **Lc 4** · [W-hash] OCR pendente
+- **W836_000267** · p. 267 · fol. 133r · Luke · **Lc 4** · [W-hash] OCR pendente
+- **W836_000268** · p. 268 · fol. 133v · Luke · **Lc 4** · [W-hash] OCR pendente
+- **W836_000269** · p. 269 · fol. 134r · Luke · **Lc 4** · [W-hash] OCR pendente
+- **W836_000270** · p. 270 · fol. 134v · Luke · **Lc 4** · [W-hash] OCR pendente
+- **W836_000271** · p. 271 · fol. 135r · Luke · **Lc 5** · [W-hash] OCR pendente
+- **W836_000272** · p. 272 · fol. 135v · Luke · **Lc 5** · [W-hash] OCR pendente
+- **W836_000273** · p. 273 · fol. 136r · Luke · **Lc 5** · [W-hash] OCR pendente
+- **W836_000274** · p. 274 · fol. 136v · Luke · **Lc 5** · [W-hash] OCR pendente
+- **W836_000275** · p. 275 · fol. 137r · Luke · **Lc 5** · [W-hash] OCR pendente
+- **W836_000276** · p. 276 · fol. 137v · Luke · **Lc 6** · [W-hash] OCR pendente
+- **W836_000277** · p. 277 · fol. 138r · Luke · **Lc 6** · [W-hash] OCR pendente
+- **W836_000278** · p. 278 · fol. 138v · Luke · **Lc 6** · [W-hash] OCR pendente
+- **W836_000279** · p. 279 · fol. 139r · Luke · **Lc 6** · [W-hash] OCR pendente
+- **W836_000280** · p. 280 · fol. 139v · Luke · **Lc 6** · [W-hash] OCR pendente
+- **W836_000281** · p. 281 · fol. 140r · Luke · **Lc 6** · [W-hash] OCR pendente
+- **W836_000282** · p. 282 · fol. 140v · Luke · **Lc 7** · [W-hash] OCR pendente
+- **W836_000283** · p. 283 · fol. 141r · Luke · **Lc 7** · [W-hash] OCR pendente
+- **W836_000284** · p. 284 · fol. 141v · Luke · **Lc 7** · [W-hash] OCR pendente
+- **W836_000285** · p. 285 · fol. 142r · Luke · **Lc 7** · [W-hash] OCR pendente
+- **W836_000286** · p. 286 · fol. 142v · Luke · **Lc 7** · [W-hash] OCR pendente
+- **W836_000287** · p. 287 · fol. 143r · Luke · **Lc 7** · [W-hash] OCR pendente
+- **W836_000288** · p. 288 · fol. 143v · Luke · **Lc 8** · [W-hash] OCR pendente
+- **W836_000289** · p. 289 · fol. 144r · Luke · **Lc 8** · [W-hash] OCR pendente
+- **W836_000290** · p. 290 · fol. 144v · Luke · **Lc 8** · [W-hash] OCR pendente
+- **W836_000291** · p. 291 · fol. 145r · Luke · **Lc 8** · [W-hash] OCR pendente
+- **W836_000292** · p. 292 · fol. 145v · Luke · **Lc 8** · [W-hash] OCR pendente
+- **W836_000293** · p. 293 · fol. 146r · Luke · **Lc 8** · [W-hash] OCR pendente
+- **W836_000294** · p. 294 · fol. 146v · Luke · **Lc 9** · [W-hash] OCR pendente
+- **W836_000295** · p. 295 · fol. 147r · Luke · **Lc 9** · [W-hash] OCR pendente
+- **W836_000296** · p. 296 · fol. 147v · Luke · **Lc 9** · [W-hash] OCR pendente
+- **W836_000297** · p. 297 · fol. 148r · Luke · **Lc 9** · [W-hash] OCR pendente
+- **W836_000298** · p. 298 · fol. 148v · Luke · **Lc 9** · [W-hash] OCR pendente
+- **W836_000299** · p. 299 · fol. 149r · Luke · **Lc 9** · [W-hash] OCR pendente
+- **W836_000300** · p. 300 · fol. 149v · Luke · **Lc 10** · [W-hash] OCR pendente
+- **W836_000301** · p. 301 · fol. 150r · Luke · **Lc 10** · [W-hash] OCR pendente
+- **W836_000302** · p. 302 · fol. 150v · Luke · **Lc 10** · [W-hash] OCR pendente
+- **W836_000303** · p. 303 · fol. 151r · Luke · **Lc 10** · [W-hash] OCR pendente
+- **W836_000304** · p. 304 · fol. 151v · Luke · **Lc 10** · [W-hash] OCR pendente
+- **W836_000305** · p. 305 · fol. 152r · Luke · **Lc 11** · [W-hash] OCR pendente
+- **W836_000306** · p. 306 · fol. 152v · Luke · **Lc 11** · [W-hash] OCR pendente
+- **W836_000307** · p. 307 · fol. 153r · Luke · **Lc 11** · [W-hash] OCR pendente
+- **W836_000308** · p. 308 · fol. 153v · Luke · **Lc 11** · [W-hash] OCR pendente
+- **W836_000309** · p. 309 · fol. 154r · Luke · **Lc 11** · [W-hash] OCR pendente
+- **W836_000310** · p. 310 · fol. 154v · Luke · **Lc 11** · [W-hash] OCR pendente
+- **W836_000311** · p. 311 · fol. 155r · Luke · **Lc 12** · [W-hash] OCR pendente
+- **W836_000312** · p. 312 · fol. 155v · Luke · **Lc 12** · [W-hash] OCR pendente
+- **W836_000313** · p. 313 · fol. 156r · Luke · **Lc 12** · [W-hash] OCR pendente
+- **W836_000314** · p. 314 · fol. 156v · Luke · **Lc 12** · [W-hash] OCR pendente
+- **W836_000315** · p. 315 · fol. 157r · Luke · **Lc 12** · [W-hash] OCR pendente
+- **W836_000316** · p. 316 · fol. 157v · Luke · **Lc 12** · [W-hash] OCR pendente
+- **W836_000317** · p. 317 · fol. 158r · Luke · **Lc 13** · [W-hash] OCR pendente
+- **W836_000318** · p. 318 · fol. 158v · Luke · **Lc 13** · [W-hash] OCR pendente
+- **W836_000319** · p. 319 · fol. 159r · Luke · **Lc 13** · [W-hash] OCR pendente
+- **W836_000320** · p. 320 · fol. 159v · Luke · **Lc 13** · [W-hash] OCR pendente
+- **W836_000321** · p. 321 · fol. 160r · Luke · **Lc 13** · [W-hash] OCR pendente
+- **W836_000322** · p. 322 · fol. 160v · Luke · **Lc 13** · [W-hash] OCR pendente
+- **W836_000323** · p. 323 · fol. 161r · Luke · **Lc 14** · [W-hash] OCR pendente
+- **W836_000324** · p. 324 · fol. 161v · Luke · **Lc 14** · [W-hash] OCR pendente
+- **W836_000325** · p. 325 · fol. 162r · Luke · **Lc 14** · [W-hash] OCR pendente
+- **W836_000326** · p. 326 · fol. 162v · Luke · **Lc 14** · [W-hash] OCR pendente
+- **W836_000327** · p. 327 · fol. 163r · Luke · **Lc 14** · [W-hash] OCR pendente
+- **W836_000328** · p. 328 · fol. 163v · Luke · **Lc 14** · [W-hash] OCR pendente
+- **W836_000329** · p. 329 · fol. 164r · Luke · **Lc 15** · [W-hash] OCR pendente
+- **W836_000330** · p. 330 · fol. 164v · Luke · **Lc 15** · [W-hash] OCR pendente
+- **W836_000331** · p. 331 · fol. 165r · Luke · **Lc 15** · [W-hash] OCR pendente
+- **W836_000332** · p. 332 · fol. 165v · Luke · **Lc 15** · [W-hash] OCR pendente
+- **W836_000333** · p. 333 · fol. 166r · Luke · **Lc 15** · [W-hash] OCR pendente
+- **W836_000334** · p. 334 · fol. 166v · Luke · **Lc 16** · [W-hash] OCR pendente
+- **W836_000335** · p. 335 · fol. 167r · Luke · **Lc 16** · [W-hash] OCR pendente
+- **W836_000336** · p. 336 · fol. 167v · Luke · **Lc 16** · [W-hash] OCR pendente
+- **W836_000337** · p. 337 · fol. 168r · Luke · **Lc 16** · [W-hash] OCR pendente
+- **W836_000338** · p. 338 · fol. 168v · Luke · **Lc 16** · [W-hash] OCR pendente
+- **W836_000339** · p. 339 · fol. 169r · Luke · **Lc 16** · [W-hash] OCR pendente
+- **W836_000340** · p. 340 · fol. 169v · Luke · **Lc 17** · [W-hash] OCR pendente
+- **W836_000341** · p. 341 · fol. 170r · Luke · **Lc 17** · [W-hash] OCR pendente
+- **W836_000342** · p. 342 · fol. 170v · Luke · **Lc 17** · [W-hash] OCR pendente
+- **W836_000343** · p. 343 · fol. 171r · Luke · **Lc 17** · [W-hash] OCR pendente
+- **W836_000344** · p. 344 · fol. 171v · Luke · **Lc 17** · [W-hash] OCR pendente
+- **W836_000345** · p. 345 · fol. 172r · Luke · **Lc 17** · [W-hash] OCR pendente
+- **W836_000346** · p. 346 · fol. 172v · Luke · **Lc 18** · [W-hash] OCR pendente
+- **W836_000347** · p. 347 · fol. 173r · Luke · **Lc 18** · [W-hash] OCR pendente
+- **W836_000348** · p. 348 · fol. 173v · Luke · **Lc 18** · [W-hash] OCR pendente
+- **W836_000349** · p. 349 · fol. 174r · Luke · **Lc 18** · [W-hash] OCR pendente
+- **W836_000350** · p. 350 · fol. 174v · Luke · **Lc 18** · [W-hash] OCR pendente
+- **W836_000351** · p. 351 · fol. 175r · Luke · **Lc 18** · [W-hash] OCR pendente
+- **W836_000352** · p. 352 · fol. 175v · Luke · **Lc 19** · [W-hash] OCR pendente
+- **W836_000353** · p. 353 · fol. 176r · Luke · **Lc 19** · [W-hash] OCR pendente
+- **W836_000354** · p. 354 · fol. 176v · Luke · **Lc 19** · [W-hash] OCR pendente
+- **W836_000355** · p. 355 · fol. 177r · Luke · **Lc 19** · [W-hash] OCR pendente
+- **W836_000356** · p. 356 · fol. 177v · Luke · **Lc 19** · [W-hash] OCR pendente
+- **W836_000357** · p. 357 · fol. 178r · Luke · **Lc 19** · [W-hash] OCR pendente
+- **W836_000358** · p. 358 · fol. 178v · Luke · **Lc 20** · [W-hash] OCR pendente
+- **W836_000359** · p. 359 · fol. 179r · Luke · **Lc 20** · [W-hash] OCR pendente
+- **W836_000360** · p. 360 · fol. 179v · Luke · **Lc 20** · [W-hash] OCR pendente
+- **W836_000361** · p. 361 · fol. 180r · Luke · **Lc 20** · [W-hash] OCR pendente
+- **W836_000362** · p. 362 · fol. 180v · Luke · **Lc 20** · [W-hash] OCR pendente
+- **W836_000363** · p. 363 · fol. 181r · Luke · **Lc 21** · [W-hash] OCR pendente
+- **W836_000364** · p. 364 · fol. 181v · Luke · **Lc 21** · [W-hash] OCR pendente
+- **W836_000365** · p. 365 · fol. 182r · Luke · **Lc 21** · [W-hash] OCR pendente
+- **W836_000366** · p. 366 · fol. 182v · Luke · **Lc 21** · [W-hash] OCR pendente
+- **W836_000367** · p. 367 · fol. 183r · Luke · **Lc 21** · [W-hash] OCR pendente
+- **W836_000368** · p. 368 · fol. 183v · Luke · **Lc 21** · [W-hash] OCR pendente
+- **W836_000369** · p. 369 · fol. 184r · Luke · **Lc 22** · [W-hash] OCR pendente
+- **W836_000370** · p. 370 · fol. 184v · Luke · **Lc 22** · [W-hash] OCR pendente
+- **W836_000371** · p. 371 · fol. 185r · Luke · **Lc 22** · [W-hash] OCR pendente
+- **W836_000372** · p. 372 · fol. 185v · Luke · **Lc 22** · [W-hash] OCR pendente
+- **W836_000373** · p. 373 · fol. 186r · Luke · **Lc 22** · [W-hash] OCR pendente
+- **W836_000374** · p. 374 · fol. 186v · Luke · **Lc 22** · [W-hash] OCR pendente
+- **W836_000375** · p. 375 · fol. 187r · Luke · **Lc 23** · [W-hash] OCR pendente
+- **W836_000376** · p. 376 · fol. 187v · Luke · **Lc 23** · [W-hash] OCR pendente
+- **W836_000377** · p. 377 · fol. 188r · Luke · **Lc 23** · [W-hash] OCR pendente
+- **W836_000378** · p. 378 · fol. 188v · Luke · **Lc 23** · [W-hash] OCR pendente
+- **W836_000379** · p. 379 · fol. 189r · Luke · **Lc 23** · [W-hash] OCR pendente
+- **W836_000380** · p. 380 · fol. 189v · Luke · **Lc 23** · [W-hash] OCR pendente
+- **W836_000381** · p. 381 · fol. 190r · Luke · **Lc 24** · [W-hash] OCR pendente
+- **W836_000382** · p. 382 · fol. 190v · Luke · **Lc 24** · [W-hash] OCR pendente
+- **W836_000383** · p. 383 · fol. 191r · Luke · **Lc 24** · [W-hash] OCR pendente
+- **W836_000384** · p. 384 · fol. 191v · Luke · **Lc 24** · [W-hash] OCR pendente
+- **W836_000385** · p. 385 · fol. 192r · Luke · **Lc 24** · [W-hash] OCR pendente
+- **W836_000386** · p. 386 · fol. 192v · John list zone · **lista/retrato de João — limite** · †300
+- **W836_000387** · p. 387 · fol. 193r · John list zone · **lista/retrato de João — limite** · †300
+- **W836_000388** · p. 388 · fol. 193v · John · **Jo 1** · [W-hash] OCR pendente
+- **W836_000389** · p. 389 · fol. 194r · John · **Jo 1** · [W-hash] OCR pendente
+- **W836_000390** · p. 390 · fol. 194v · John · **Jo 1** · [W-hash] OCR pendente
+- **W836_000391** · p. 391 · fol. 195r · John · **Jo 1** · [W-hash] OCR pendente
+- **W836_000392** · p. 392 · fol. 195v · John · **Jo 1** · [W-hash] OCR pendente
+- **W836_000393** · p. 393 · fol. 196r · John · **Jo 1** · [W-hash] OCR pendente
+- **W836_000394** · p. 394 · fol. 196v · John · **Jo 2** · [W-hash] OCR pendente
+- **W836_000395** · p. 395 · fol. 197r · John · **Jo 2** · [W-hash] OCR pendente
+- **W836_000396** · p. 396 · fol. 197v · John · **Jo 2** · [W-hash] OCR pendente
+- **W836_000397** · p. 397 · fol. 198r · John · **Jo 2** · [W-hash] OCR pendente
+- **W836_000398** · p. 398 · fol. 198v · John · **Jo 2** · [W-hash] OCR pendente
+- **W836_000399** · p. 399 · fol. 199r · John · **Jo 3** · [W-hash] OCR pendente
+- **W836_000400** · p. 400 · fol. 199v · John · **Jo 3** · [W-hash] OCR pendente
+- **W836_000401** · p. 401 · fol. 200r · John · **Jo 3** · [W-hash] OCR pendente
+- **W836_000402** · p. 402 · fol. 200v · John · **Jo 3** · [W-hash] OCR pendente
+- **W836_000403** · p. 403 · fol. 201r · John · **Jo 3** · [W-hash] OCR pendente
+- **W836_000404** · p. 404 · fol. 201v · John · **Jo 4** · [W-hash] OCR pendente
+- **W836_000405** · p. 405 · fol. 202r · John · **Jo 4** · [W-hash] OCR pendente
+- **W836_000406** · p. 406 · fol. 202v · John · **Jo 4** · [W-hash] OCR pendente
+- **W836_000407** · p. 407 · fol. 203r · John · **Jo 4** · [W-hash] OCR pendente
+- **W836_000408** · p. 408 · fol. 203v · John · **Jo 4** · [W-hash] OCR pendente
+- **W836_000409** · p. 409 · fol. 204r · John · **Jo 5** · [W-hash] OCR pendente
+- **W836_000410** · p. 410 · fol. 204v · John · **Jo 5** · [W-hash] OCR pendente
+- **W836_000411** · p. 411 · fol. 205r · John · **Jo 5** · [W-hash] OCR pendente
+- **W836_000412** · p. 412 · fol. 205v · John · **Jo 5** · [W-hash] OCR pendente
+- **W836_000413** · p. 413 · fol. 206r · John · **Jo 5** · [W-hash] OCR pendente
+- **W836_000414** · p. 414 · fol. 206v · John · **Jo 6** · [W-hash] OCR pendente
+- **W836_000415** · p. 415 · fol. 207r · John · **Jo 6** · [W-hash] OCR pendente
+- **W836_000416** · p. 416 · fol. 207v · John · **Jo 6** · [W-hash] OCR pendente
+- **W836_000417** · p. 417 · fol. 208r · John · **Jo 6** · [W-hash] OCR pendente
+- **W836_000418** · p. 418 · fol. 208v · John · **Jo 6** · [W-hash] OCR pendente
+- **W836_000419** · p. 419 · fol. 209r · John · **Jo 7** · [W-hash] OCR pendente
+- **W836_000420** · p. 420 · fol. 209v · John · **Jo 7** · [W-hash] OCR pendente
+- **W836_000421** · p. 421 · fol. 210r · John · **Jo 7** · [W-hash] OCR pendente
+- **W836_000422** · p. 422 · fol. 210v · John · **Jo 7** · [W-hash] OCR pendente
+- **W836_000423** · p. 423 · fol. 211r · John · **Jo 7** · [W-hash] OCR pendente
+- **W836_000424** · p. 424 · fol. 211v · John · **Jo 8** · [W-hash] OCR pendente
+- **W836_000425** · p. 425 · fol. 212r · John · **Jo 8** · [W-hash] OCR pendente
+- **W836_000426** · p. 426 · fol. 212v · John · **Jo 8** · [W-hash] OCR pendente
+- **W836_000427** · p. 427 · fol. 213r · John · **Jo 8** · [W-hash] OCR pendente
+- **W836_000428** · p. 428 · fol. 213v · John · **Jo 8** · [W-hash] OCR pendente
+- **W836_000429** · p. 429 · fol. 214r · John · **Jo 8** · [W-hash] OCR pendente
+- **W836_000430** · p. 430 · fol. 214v · John · **Jo 9** · [W-hash] OCR pendente
+- **W836_000431** · p. 431 · fol. 215r · John · **Jo 9** · [W-hash] OCR pendente
+- **W836_000432** · p. 432 · fol. 215v · John · **Jo 9** · [W-hash] OCR pendente
+- **W836_000433** · p. 433 · fol. 216r · John · **Jo 9** · [W-hash] OCR pendente
+- **W836_000434** · p. 434 · fol. 216v · John · **Jo 9** · [W-hash] OCR pendente
+- **W836_000435** · p. 435 · fol. 217r · John · **Jo 10** · [W-hash] OCR pendente
+- **W836_000436** · p. 436 · fol. 217v · John · **Jo 10** · [W-hash] OCR pendente
+- **W836_000437** · p. 437 · fol. 218r · John · **Jo 10** · [W-hash] OCR pendente
+- **W836_000438** · p. 438 · fol. 218v · John · **Jo 10** · [W-hash] OCR pendente
+- **W836_000439** · p. 439 · fol. 219r · John · **Jo 10** · [W-hash] OCR pendente
+- **W836_000440** · p. 440 · fol. 219v · John · **Jo 11** · [W-hash] OCR pendente
+- **W836_000441** · p. 441 · fol. 220r · John · **Jo 11** · [W-hash] OCR pendente
+- **W836_000442** · p. 442 · fol. 220v · John · **Jo 11** · [W-hash] OCR pendente
+- **W836_000443** · p. 443 · fol. 221r · John · **Jo 11** · [W-hash] OCR pendente
+- **W836_000444** · p. 444 · fol. 221v · John · **Jo 11** · [W-hash] OCR pendente
+- **W836_000445** · p. 445 · fol. 222r · John · **Jo 12** · [W-hash] OCR pendente
+- **W836_000446** · p. 446 · fol. 222v · John · **Jo 12** · [W-hash] OCR pendente
+- **W836_000447** · p. 447 · fol. 223r · John · **Jo 12** · [W-hash] OCR pendente
+- **W836_000448** · p. 448 · fol. 223v · John · **Jo 12** · [W-hash] OCR pendente
+- **W836_000449** · p. 449 · fol. 224r · John · **Jo 12** · [W-hash] OCR pendente
+- **W836_000450** · p. 450 · fol. 224v · John · **Jo 13** · [W-hash] OCR pendente
+- **W836_000451** · p. 451 · fol. 225r · John · **Jo 13** · [W-hash] OCR pendente
+- **W836_000452** · p. 452 · fol. 225v · John · **Jo 13** · [W-hash] OCR pendente
+- **W836_000453** · p. 453 · fol. 226r · John · **Jo 13** · [W-hash] OCR pendente
+- **W836_000454** · p. 454 · fol. 226v · John · **Jo 13** · [W-hash] OCR pendente
+- **W836_000455** · p. 455 · fol. 227r · John · **Jo 14** · [W-hash] OCR pendente
+- **W836_000456** · p. 456 · fol. 227v · John · **Jo 14** · [W-hash] OCR pendente
+- **W836_000457** · p. 457 · fol. 228r · John · **Jo 14** · [W-hash] OCR pendente
+- **W836_000458** · p. 458 · fol. 228v · John · **Jo 14** · [W-hash] OCR pendente
+- **W836_000459** · p. 459 · fol. 229r · John · **Jo 14** · [W-hash] OCR pendente
+- **W836_000460** · p. 460 · fol. 229v · John · **Jo 15** · [W-hash] OCR pendente
+- **W836_000461** · p. 461 · fol. 230r · John · **Jo 15** · [W-hash] OCR pendente
+- **W836_000462** · p. 462 · fol. 230v · John · **Jo 15** · [W-hash] OCR pendente
+- **W836_000463** · p. 463 · fol. 231r · John · **Jo 15** · [W-hash] OCR pendente
+- **W836_000464** · p. 464 · fol. 231v · John · **Jo 15** · [W-hash] OCR pendente
+- **W836_000465** · p. 465 · fol. 232r · John · **Jo 15** · [W-hash] OCR pendente
+- **W836_000466** · p. 466 · fol. 232v · John · **Jo 16** · [W-hash] OCR pendente
+- **W836_000467** · p. 467 · fol. 233r · John · **Jo 16** · [W-hash] OCR pendente
+- **W836_000468** · p. 468 · fol. 233v · John · **Jo 16** · [W-hash] OCR pendente
+- **W836_000469** · p. 469 · fol. 234r · John · **Jo 16** · [W-hash] OCR pendente
+- **W836_000470** · p. 470 · fol. 234v · John · **Jo 16** · [W-hash] OCR pendente
+- **W836_000471** · p. 471 · fol. 235r · John · **Jo 17** · [W-hash] OCR pendente
+- **W836_000472** · p. 472 · fol. 235v · John · **Jo 17** · [W-hash] OCR pendente
+- **W836_000473** · p. 473 · fol. 236r · John · **Jo 17** · [W-hash] OCR pendente
+- **W836_000474** · p. 474 · fol. 236v · John · **Jo 17** · [W-hash] OCR pendente
+- **W836_000475** · p. 475 · fol. 237r · John · **Jo 17** · [W-hash] OCR pendente
+- **W836_000476** · p. 476 · fol. 237v · John · **Jo 18** · [W-hash] OCR pendente
+- **W836_000477** · p. 477 · fol. 238r · John · **Jo 18** · [W-hash] OCR pendente
+- **W836_000478** · p. 478 · fol. 238v · John · **Jo 18** · [W-hash] OCR pendente
+- **W836_000479** · p. 479 · fol. 239r · John · **Jo 18** · [W-hash] OCR pendente
+- **W836_000480** · p. 480 · fol. 239v · John · **Jo 18** · [W-hash] OCR pendente
+- **W836_000481** · p. 481 · fol. 240r · John · **Jo 19** · [W-hash] OCR pendente
+- **W836_000482** · p. 482 · fol. 240v · John · **Jo 19** · [W-hash] OCR pendente
+- **W836_000483** · p. 483 · fol. 241r · John · **Jo 19** · [W-hash] OCR pendente
+- **W836_000484** · p. 484 · fol. 241v · John · **Jo 19** · [W-hash] OCR pendente
+- **W836_000485** · p. 485 · fol. 242r · John · **Jo 19** · [W-hash] OCR pendente
+- **W836_000486** · p. 486 · fol. 242v · John · **Jo 20** · [W-hash] OCR pendente
+- **W836_000487** · p. 487 · fol. 243r · John · **Jo 20** · [W-hash] OCR pendente
+- **W836_000488** · p. 488 · fol. 243v · John · **Jo 20** · [W-hash] OCR pendente
+- **W836_000489** · p. 489 · fol. 244r · John · **Jo 20** · [W-hash] OCR pendente
+- **W836_000490** · p. 490 · fol. 244v · John · **Jo 20** · [W-hash] OCR pendente
+- **W836_000491** · p. 491 · fol. 245r · John · **Jo 21** · [W-hash] OCR pendente
+- **W836_000492** · p. 492 · fol. 245v · John · **Jo 21** · [W-hash] OCR pendente
+- **W836_000493** · p. 493 · fol. 246r · John · **Jo 21** · [W-hash] OCR pendente
+- **W836_000494** · p. 494 · fol. 246v · John · **Jo 21** · [W-hash] OCR pendente
+- **W836_000495** · p. 495 · fol. 247r · John · **Jo 21** · [W-hash] OCR pendente
+- **W836_000496** · p. 496 · fol. 247v · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000497** · p. 497 · fol. 248r · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000498** · p. 498 · fol. 248v · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000499** · p. 499 · fol. 249r · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000500** · p. 500 · fol. 249v · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000501** · p. 501 · fol. 250r · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000502** · p. 502 · fol. 250v · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000503** · p. 503 · fol. 251r · back matter / binding edges · **fecho/guardas** · [W-hash]
+- **W836_000504** · p. 504 · fol. 251v · back matter / binding edges · **fecho/guardas** · [W-hash]
+
+## Próximo bloco
+1. Preencher transcrição Ge’ez por OCR.
+2. Resolver anomalias `000490/000502` e bytes <600 KB.
+3. Baixar `_300.tif` das zonas críticas.
+4. Só depois transformar estimativas em paginação crítica.
+
+JESUS É O CENTRO. A MALHA VIVE. ∴
