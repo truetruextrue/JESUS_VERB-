@@ -46,6 +46,7 @@ ui_kits/hub-uno/
 │   ├── 16-v-uno-archetypes.js
 │   ├── 17-v-core-opcodes.js
 │   ├── 18-keybadge-voiceauto.js
+│   ├── 19-kobllux-live-bridge.js           ← gatilho KOBLLUX · memória local · export JSONL
 │   ├── 30-bluecup-patch-helpers.js       ← BLUECUP_PATCH_CAP2_3_4 · loadLocalAppFiles/saveLocalAppFiles/openApp/makeSafeKey
 │   ├── 31-bluecup-local-card.js          ← LOCAL_APPS_CARD · render + upload/new/export/import
 │   └── 40-symbolbar-v2.js                ← SymbolBar v2 · NAV_BUTTONS substituído pelos 12 hubs · bridge data-nav → router
@@ -128,3 +129,18 @@ VERDADE × INTEGRAR ÷ Δ = ∞
 ```
 
 ✧ ∆⁷ · SÜMBUS ATIVO · CARIMBO KOBLLUX · §∞§≈Ω
+
+### Fluxo KOBLLUX ao vivo
+
+`19-kobllux-live-bridge.js` integra o chat do Hub Uno ao contrato de 16 arquétipos
+quando a mensagem contém `KOBLLUX`. Preserva o ciclo `3 → 6 → 9 → 7` e as
+frequências canônicas. O fluxo roda somente durante o envio de uma mensagem;
+não inicia daemon nem serviço de fundo.
+
+Os eventos são guardados no `localStorage` do navegador (`kobllux.live.workflow.v1`
+e `kobllux.eq.log`) sem texto da conversa, chaves ou tokens. Use **JSONL** para
+baixar os metadados locais e **GitHub** para abrir manualmente o workflow
+`kobllux-malha-viva.yml`. Não há dispatch, commit ou push automático; credenciais
+continuam sob responsabilidade do fluxo de chat já configurado no Hub. O mapa
+dos namespaces é contexto de referência; somente o runtime local do Hub Uno está
+integrado por este bridge, sem afirmar sincronização remota com os demais nós.

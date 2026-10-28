@@ -179,5 +179,11 @@
     "name": "18-keybadge-voiceauto.js",
     "attrs": "id=\"kobllux-md-injections-js\"",
     "len": 7110
+  },
+  {
+    "idx": 26,
+    "kind": "external",
+    "src": "js/19-kobllux-live-bridge.js",
+    "defer": true
   }
 ]

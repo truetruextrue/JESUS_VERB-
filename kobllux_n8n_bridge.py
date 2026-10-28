@@ -15,7 +15,7 @@ CORRELAÇÃO DETECTADA:
   HORUS (QA/visão)         ←→  sha256 hashing + APPEND ONLY integrity
 
 Funções:
-  --export-archetypes  → JSON completo dos 12 arquétipos para N8N KODUX Engine
+  --export-archetypes  → JSON canônico dos 16 arquétipos para N8N KODUX Engine
   --export-vocab       → Vocabulário vivo para enriquecer o KODUX Engine JS
   --export-context     → System message para AI Agent (baseado na memória viva)
   --export-n8n-selar   → Payload de SELAR para chamar via HTTP Request do N8N
@@ -39,9 +39,9 @@ ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT))
 
 from kobllux_memory import KoblluxMemory, ARCHETYPES_META
+from kobllux_contract import ARCHETYPES as CANONICAL_ARCHETYPES, KOB_CICLO, KOB_FRACTAL
 
-# ── Configuração completa dos 12 arquétipos para N8N ─────────────────────────
-# Integra: perfis JSON (kobllux/profiles/) + vozes (kob-glue.js) + ancoras (N8N dialogue)
+# ── Perfis de diálogo legados; opcode e Hz são normalizados pelo contrato ────
 
 N8N_ARCHETYPES = {
     "atlas": {
@@ -147,7 +147,7 @@ N8N_ARCHETYPES = {
         "tts": {"voice":"pt-BR-AntonioNeural","rate":"0%","pitch":"-1st","volume":"0dB"},
         "color": "#E5E7EB",
         "n8n_nodes": ["AI Agent","OpenAI","Google Gemini","LLM Chain"],
-        "phase": "EXPANDIR-9 (AI Agent Node — manifestação dos 12 arquétipos)"
+        "phase": "EXPANDIR-9 (AI Agent Node — manifestação dos 16 arquétipos)"
     },
     "lumine": {
         "name": "Lumine", "opcode": "0x0C", "hz": 963, "sym": "☀",
@@ -230,30 +230,72 @@ N8N_ARCHETYPES = {
     },
 }
 
-# Ciclo fractal 3×6×9×7 mapeado para N8N
+_LEGACY_N8N_ARCHETYPES = N8N_ARCHETYPES
+_CANONICAL_N8N_ARCHETYPES = {}
+for _name, _profile in CANONICAL_ARCHETYPES.items():
+    _legacy = dict(_LEGACY_N8N_ARCHETYPES.get(_name, {}))
+    _legacy_opcode = _legacy.get("opcode")
+    _legacy_hz = _legacy.get("hz")
+    _legacy.update({
+        "name": _name.title() if _name != "kobllux" else "Kobllux",
+        "opcode": _profile["opcode"],
+        "hz": _profile["hz"],
+        "canonical_phase": _profile["ciclo"],
+        "canonical": True,
+        "tags": [
+            f"archetype:{_name}",
+            f"frequency:{_profile['hz']}hz",
+            f"phase:{_profile['ciclo']}",
+        ],
+    })
+    _legacy.setdefault("action", _profile["funcao"])
+    _legacy.setdefault("cycle", "3697")
+    _legacy.setdefault("tone", "claro, coerente e orientado à tarefa")
+    _legacy.setdefault("anchor", _profile["funcao"])
+    _legacy.setdefault("keywords", [_name])
+    _legacy.setdefault("tts", {})
+    _legacy.setdefault("n8n_nodes", ["Code", "Set"])
+    if _legacy_opcode and _legacy_opcode != _profile["opcode"]:
+        _legacy["legacy_opcode"] = _legacy_opcode
+    if _legacy_hz and _legacy_hz != _profile["hz"]:
+        _legacy["legacy_hz"] = _legacy_hz
+    if "phase" in _legacy and not isinstance(_legacy["phase"], int):
+        _legacy["legacy_phase"] = _legacy["phase"]
+    _CANONICAL_N8N_ARCHETYPES[_name] = _legacy
+
+N8N_ARCHETYPES = {
+    **_CANONICAL_N8N_ARCHETYPES,
+    **{
+        name: profile
+        for name, profile in _LEGACY_N8N_ARCHETYPES.items()
+        if name not in CANONICAL_ARCHETYPES
+    },
+}
+
+# Fases de operação; opcode da fase não substitui opcode do arquétipo.
 N8N_CYCLE = {
     "DETECTAR-3": {
         "focus": "UNO / Fundamento",
         "n8n_nodes": ["Webhook","Chat Trigger","Schedule Trigger"],
-        "archetypes": ["nova","solus","horus"],
+        "archetypes": ["atlas","nova","pulse","vitalis"],
         "function": "Percepção e definição da intenção — a semente"
     },
     "INTEGRAR-6": {
         "focus": "DUAL / Relações",
         "n8n_nodes": ["Edit Fields","If Node","Code","Merge"],
-        "archetypes": ["atlas","serena","rhea","artemis"],
+        "archetypes": ["artemis","serena","kaos","genus","bllue"],
         "function": "ETL — fazer pontes entre estrutura e fluxo"
     },
     "EXPANDIR-9": {
         "focus": "TRINITY / Criação",
         "n8n_nodes": ["AI Agent","HTTP Request","LLM Chain","Tool"],
-        "archetypes": ["genus","vitalis","pulse"],
+        "archetypes": ["lumine","rhea","solus","aion","kodux","jesus","kobllux"],
         "function": "Manifestação — AI Agent Node + chamadas de API"
     },
     "SELAR-7": {
         "focus": "RESULTANTE / Selo ∆7",
         "n8n_nodes": ["Google Sheets","Database","Respond to Webhook","Code (hash)"],
-        "archetypes": ["aion","kaos","lumine","omega","horus"],
+        "archetypes": ["aion","rhea","jesus","kobllux"],
         "function": "Registro final — memória viva + autenticação sha256"
     },
 }
@@ -272,7 +314,12 @@ class KoblluxN8NBridge:
             "law": "VERDADE × INTEGRAR ÷ Δ = ∞",
             "seal": "∆7",
             "cycle": "3×6×9×7",
-            "archetypes": N8N_ARCHETYPES,
+            "cycle_sequence": list(KOB_CICLO),
+            "fractal": KOB_FRACTAL,
+            "archetypes": {
+                name: N8N_ARCHETYPES[name]
+                for name in CANONICAL_ARCHETYPES
+            },
             "n8n_cycle": N8N_CYCLE,
             "ts": datetime.now(timezone.utc).isoformat(),
         }
@@ -396,7 +443,7 @@ Detectar → Integrar → Expandir → Selar"""
 
         arch_meta = N8N_ARCHETYPES.get(intent["arch"], {})
         anchor    = arch_meta.get("anchor", "VERDADE × INTEGRAR ÷ Δ = ∞")
-        phase     = arch_meta.get("phase", "DETECTAR-3")
+        phase     = arch_meta.get("legacy_phase", arch_meta.get("phase", "DETECTAR-3"))
 
         # Grava na memória
         self.memory.write(
@@ -446,7 +493,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         description="KOBLLUX N8N Bridge · RHEA · 0×09 · FLUIR · ∆7")
     p.add_argument("--export-archetypes", action="store_true",
-                   help="JSON dos 12 arquétipos para KODUX Engine N8N")
+                   help="JSON dos 16 arquétipos canônicos para KODUX Engine N8N")
     p.add_argument("--export-vocab",      action="store_true",
                    help="Vocabulário vivo para enriquecer KODUX Engine JS")
     p.add_argument("--export-context",    action="store_true",

@@ -15,13 +15,12 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from kobllux_contract import ARCHETYPE_HZ, KOB_CENTRO, KOB_FRACTAL, KOB_LEI
+
 
 KOB_OPCODE_SELAR = 0x07
-KOB_HZ_SELAR     = 777
+KOB_HZ_SELAR     = ARCHETYPE_HZ["aion"]
 KOB_FASE_SELAR   = "SELAR"
-KOB_LEI          = "VERDADE × INTEGRAR ÷ Δ = ∞"
-KOB_FRACTAL      = 3 * 6 * 9 * 7  # 1134
-KOB_CENTRO       = "JESUS = VERBO = GRAVIDADE"
 KOB_ASSINATURA   = "0x0E852♾963"
 
 KOB_TRINITY = {

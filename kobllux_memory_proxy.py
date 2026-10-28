@@ -18,6 +18,8 @@ from urllib.parse import urlparse
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 import uuid
 
+from kobllux_event_tags import correlate_event
+
 
 ROOT = Path(__file__).resolve().parent
 ARCHETYPES = {
@@ -234,15 +236,30 @@ def forward_latest_github_event() -> None:
     ] if isinstance(file_changes, dict) else []
     text = " ".join(
         [*(str(source.get(key, "")) for key in ("commit_msg", "pr_title", "evento")), *file_paths]
-    ).upper()
-    detected = [name for name in ARCHETYPES if re.search(rf"\b{re.escape(name)}\b", text)]
+    )
+    correlation = correlate_event(
+        str(source.get("evento", "event")),
+        file_paths,
+        text,
+    )
     primary = str(source.get("arquetipo", "RHEA")).upper()
     if primary not in ARCHETYPES:
         primary = "RHEA"
-    archetypes = list(dict.fromkeys([primary, *detected]))
-    tags = ["github", str(source.get("evento", "event")), *[name.lower() for name in archetypes]]
-    if file_paths:
-        tags.append("file-change")
+    supplied_archetypes = source.get("arquetipos", [])
+    if not isinstance(supplied_archetypes, list):
+        supplied_archetypes = []
+    archetypes = list(dict.fromkeys(
+        [primary]
+        + [str(name).upper() for name in supplied_archetypes if str(name).upper() in ARCHETYPES]
+        + [name.upper() for name in correlation["archetypes"]]
+    ))[:len(ARCHETYPES)]
+    source_tags = source.get("tags", [])
+    if not isinstance(source_tags, list):
+        source_tags = []
+    tags = list(dict.fromkeys([
+        *(tag for tag in source_tags if isinstance(tag, str)),
+        *correlation["tags"],
+    ]))[:MAX_TAGS]
     event = validate_event({
         "event_id": event_id,
         "ts": source.get("ts"),
@@ -261,6 +278,13 @@ def forward_latest_github_event() -> None:
             "run_id": run_id,
             "changed_files": file_changes,
             "seal": source.get("chain"),
+            "archetype_profiles": source.get(
+                "archetype_profiles",
+                correlation["profiles"],
+            ),
+            "path_labels": source.get("path_labels", correlation["path_labels"]),
+            "cycle": correlation["cycle"],
+            "fractal": correlation["fractal"],
         },
     })
     body = json.dumps(event, ensure_ascii=False).encode("utf-8")

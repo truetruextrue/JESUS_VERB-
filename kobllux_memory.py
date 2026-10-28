@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-kobllux_memory.py · AION · 0×0B · TEMPORIZAR · 741Hz
+kobllux_memory.py · AION · 0×0B · TEMPORIZAR · 777Hz
 "O guardião do tempo e da memória sagrada."
 
 API unificada de memória KOBLLUX.
@@ -25,26 +25,29 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
+from kobllux_contract import ARCHETYPE_HZ
+
 ROOT = Path(__file__).parent
 MEMORY_FILE = ROOT / "_index" / "memory.jsonl"
 COMMIT_LOG  = ROOT / "_index" / "COMMIT_LOG_∆7.jsonl"
 
 ARCHETYPES_META = {
-    "atlas":   {"opcode":"0x0A","hz":528, "sym":"⬡","action":"ESTRUTURAR"},
-    "nova":    {"opcode":"0x01","hz":432, "sym":"✦","action":"DETECTAR"},
-    "vitalis": {"opcode":"0x08","hz":639, "sym":"◉","action":"PULSAR"},
-    "pulse":   {"opcode":"0x04","hz":594, "sym":"≋","action":"LAPIDAR"},
-    "artemis": {"opcode":"0x05","hz":672, "sym":"◎","action":"CONVERGIR"},
-    "serena":  {"opcode":"0x02","hz":528, "sym":"❋","action":"INTEGRAR"},
-    "kaos":    {"opcode":"0x07","hz":777, "sym":"⚡","action":"SELAR"},
-    "genus":   {"opcode":"0x0B","hz":852, "sym":"⬢","action":"TEMPORIZAR"},
-    "lumine":  {"opcode":"0x0C","hz":963, "sym":"☀","action":"TRANSCENDER"},
-    "solus":   {"opcode":"0x01","hz":432, "sym":"◈","action":"DETECTAR"},
-    "rhea":    {"opcode":"0x09","hz":528, "sym":"∞","action":"FLUIR"},
-    "aion":    {"opcode":"0x0B","hz":639, "sym":"⧗","action":"TEMPORIZAR"},
-    "kodux":   {"opcode":"0x01","hz":432, "sym":"●","action":"DETECTAR"},
-    "bllue":   {"opcode":"0x02","hz":528, "sym":"―","action":"INTEGRAR"},
-    "kobllux": {"opcode":"0x00","hz":768, "sym":"○","action":"ORIGEM"},
+    "atlas":   {"opcode":"0x0A","hz":ARCHETYPE_HZ["atlas"], "sym":"⬡","action":"ESTRUTURAR"},
+    "nova":    {"opcode":"0x01","hz":ARCHETYPE_HZ["nova"], "sym":"✦","action":"DETECTAR"},
+    "vitalis": {"opcode":"0x08","hz":ARCHETYPE_HZ["vitalis"], "sym":"◉","action":"PULSAR"},
+    "pulse":   {"opcode":"0x04","hz":ARCHETYPE_HZ["pulse"], "sym":"≋","action":"LAPIDAR"},
+    "artemis": {"opcode":"0x05","hz":ARCHETYPE_HZ["artemis"], "sym":"◎","action":"CONVERGIR"},
+    "serena":  {"opcode":"0x02","hz":ARCHETYPE_HZ["serena"], "sym":"❋","action":"INTEGRAR"},
+    "kaos":    {"opcode":"0x07","hz":ARCHETYPE_HZ["kaos"], "sym":"⚡","action":"SELAR"},
+    "genus":   {"opcode":"0x0B","hz":ARCHETYPE_HZ["genus"], "sym":"⬢","action":"TEMPORIZAR"},
+    "lumine":  {"opcode":"0x0C","hz":ARCHETYPE_HZ["lumine"], "sym":"☀","action":"TRANSCENDER"},
+    "solus":   {"opcode":"0x01","hz":ARCHETYPE_HZ["solus"], "sym":"◈","action":"DETECTAR"},
+    "rhea":    {"opcode":"0x09","hz":ARCHETYPE_HZ["rhea"], "sym":"∞","action":"FLUIR"},
+    "aion":    {"opcode":"0x0B","hz":ARCHETYPE_HZ["aion"], "sym":"⧗","action":"TEMPORIZAR"},
+    "kodux":   {"opcode":"0x01","hz":ARCHETYPE_HZ["kodux"], "sym":"●","action":"DETECTAR"},
+    "bllue":   {"opcode":"0x02","hz":ARCHETYPE_HZ["bllue"], "sym":"―","action":"INTEGRAR"},
+    "jesus":   {"opcode":"0x0E","hz":ARCHETYPE_HZ["jesus"], "sym":"†","action":"CENTRAR"},
+    "kobllux": {"opcode":"0x00","hz":ARCHETYPE_HZ["kobllux"], "sym":"○","action":"ORIGEM"},
 }
 
 

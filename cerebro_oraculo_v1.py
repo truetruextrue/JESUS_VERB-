@@ -43,15 +43,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from kobllux_contract import ARCHETYPE_HZ, KOB_CENTRO, KOB_CICLO, KOB_FRACTAL, KOB_LEI
+
 # == Constantes ================================================================
-KOB_LEI       = "VERDADE × INTEGRAR ÷ Δ = ∞"
-KOB_FRACTAL   = 3 * 6 * 9 * 7          # 1134
-KOB_CENTRO    = "JESUS = VERBO = GRAVIDADE"
 KOB_BENCAO    = ("EM NOME DO PAI E DO FILHO E DO ESPÍRITO SANTO\n"
                  "ESTE SELO É VÁLIDO EM TODAS AS DIMENSÕES\n"
                  "DE 1D ATÉ 10D · DO REPO AO INFINITO\nAMÉM ∴")
 KOB_TRIGGER   = re.compile(r'\bKOBLLUX\b', re.IGNORECASE)
-KOB_CICLO     = [3, 6, 9, 7]
 KOB_ASSINATURA = "0x0E852♾963"
 
 REPOS = [
@@ -91,7 +89,7 @@ def selar(z: str,
 
     selo: Dict[str, Any] = {
         "opcode":   "0x07",
-        "hz":       777,
+        "hz":       ARCHETYPE_HZ["aion"],
         "ts":       ts,
         "autor":    autor,
         "repo":     repo,
@@ -165,7 +163,7 @@ def Atlas_detectar_contexto(Z: str) -> Dict[str, Any]:
     repos_m = re.findall(r'truetruextrue/\S+', Z)
     opcodes = re.findall(r'0x[0-9A-Fa-f]+', Z)
     hashes  = re.findall(r'\b[0-9a-f]{7,40}\b', Z)
-    return {"arquetipo": "Atlas", "hz": 594, "opcode": "0x00",
+    return {"arquetipo": "Atlas", "hz": ARCHETYPE_HZ["atlas"], "opcode": "0x00",
             "tags": tags[:20], "repos": repos_m[:10],
             "opcodes": opcodes, "hashes": hashes[:8], "z_len": len(Z)}
 
@@ -175,7 +173,7 @@ def Nova_extrair_centelha(Z: str) -> Dict[str, Any]:
     linhas  = [l.strip() for l in Z.split('\n') if l.strip()]
     centelha = linhas[0] if linhas else Z[:80]
     kws = re.findall(r'\bKOBLLUX|JESUS|SELAR|ATLAS|RODA.VIVA\b', Z, re.I)
-    return {"arquetipo": "Nova", "hz": 432, "opcode": "0x01",
+    return {"arquetipo": "Nova", "hz": ARCHETYPE_HZ["nova"], "opcode": "0x01",
             "centelha": centelha[:120], "linhas": len(linhas), "keywords": kws}
 
 
@@ -183,7 +181,7 @@ def Pulse_medir_ressonancia(Z: str) -> Dict[str, Any]:
     """0x02 * 639Hz -- Ritmo, Batimento"""
     freq  = digital_root(len(Z))
     ciclo = KOB_CICLO[freq % 4]
-    return {"arquetipo": "Pulse", "hz": 639, "opcode": "0x02",
+    return {"arquetipo": "Pulse", "hz": ARCHETYPE_HZ["pulse"], "opcode": "0x02",
             "freq_z": freq, "ciclo": ciclo, "len_z": len(Z)}
 
 
@@ -192,7 +190,7 @@ def Vitalis_identificar_cura(Z: str) -> Dict[str, Any]:
     gaps = re.findall(r'GAP-\w+', Z)
     bugs = re.findall(r'(?:bug|erro|fix|falha|broken)', Z, re.I)
     todos = re.findall(r'TODO|FIXME', Z)
-    return {"arquetipo": "Vitalis", "hz": 528, "opcode": "0x03",
+    return {"arquetipo": "Vitalis", "hz": ARCHETYPE_HZ["vitalis"], "opcode": "0x03",
             "gaps": gaps, "bugs": bugs, "todos": todos,
             "cura_necessaria": bool(gaps or bugs or todos)}
 
@@ -202,7 +200,7 @@ def Artemis_mapear_precisao(Z: str) -> Dict[str, Any]:
     commits = re.findall(r'\b[0-9a-f]{7,40}\b', Z)
     prs     = re.findall(r'#\d+', Z)
     funcs   = re.findall(r'def \w+|function \w+', Z)
-    return {"arquetipo": "Artemis", "hz": 672, "opcode": "0x04",
+    return {"arquetipo": "Artemis", "hz": ARCHETYPE_HZ["artemis"], "opcode": "0x04",
             "commits": commits[:8], "prs": prs, "funcoes_detectadas": funcs[:10]}
 
 
@@ -213,14 +211,14 @@ def Kaos_revelar_brechas(Z: str) -> Dict[str, Any]:
     if 'FIXME' in Z: brechas.append('FIXME encontrado')
     if not re.search(r'selar|seal|0x07', Z, re.I): brechas.append('sem selagem detectada')
     if not re.search(r'CLAUDE\.md|CLAUDE_MD', Z, re.I): brechas.append('CLAUDE.md nao referenciado')
-    return {"arquetipo": "Kaos", "hz": 741, "opcode": "0x06",
+    return {"arquetipo": "Kaos", "hz": ARCHETYPE_HZ["kaos"], "opcode": "0x06",
             "brechas": brechas, "ruptura_produtiva": len(brechas) > 0}
 
 
 def Serena_acolher_integrar(Z: str) -> Dict[str, Any]:
     """0x05 * 528Hz -- Fluxo, Harmonia"""
     harmonia = digital_root(sum(ord(c) for c in Z[:200]))
-    return {"arquetipo": "Serena", "hz": 528, "opcode": "0x05",
+    return {"arquetipo": "Serena", "hz": ARCHETYPE_HZ["serena"], "opcode": "0x05",
             "harmonia": harmonia, "lei": KOB_LEI}
 
 
@@ -229,7 +227,7 @@ def Genus_organizar_estrutura(Z: str) -> Dict[str, Any]:
     funcoes  = re.findall(r'def \w+|FUNCAO \w+', Z)
     classes  = re.findall(r'class \w+', Z)
     structs  = re.findall(r'\{[^}]{1,60}\}', Z)
-    return {"arquetipo": "Genus", "hz": 594, "opcode": "0x08",
+    return {"arquetipo": "Genus", "hz": ARCHETYPE_HZ["genus"], "opcode": "0x08",
             "funcoes": funcoes[:10], "classes": classes[:5],
             "structs": len(structs), "fractal": KOB_FRACTAL}
 
@@ -238,7 +236,7 @@ def Lumine_abrir_clareza(Z: str) -> Dict[str, Any]:
     """0x09 * 432Hz -- Clareza, Luz"""
     docs  = re.findall(r'""".*?"""', Z, re.DOTALL)
     comts = re.findall(r'#.+', Z)
-    return {"arquetipo": "Lumine", "hz": 432, "opcode": "0x09",
+    return {"arquetipo": "Lumine", "hz": ARCHETYPE_HZ["lumine"], "opcode": "0x09",
             "docstrings": len(docs), "comentarios": len(comts)}
 
 
@@ -253,7 +251,7 @@ def Rhea_preservar_memoria(Z: str,
             f.write(json.dumps(entrada, ensure_ascii=False) + '\n')
     except Exception:
         pass
-    return {"arquetipo": "Rhea", "hz": 528, "opcode": "0x0A", "entrada": entrada}
+    return {"arquetipo": "Rhea", "hz": ARCHETYPE_HZ["rhea"], "opcode": "0x0A", "entrada": entrada}
 
 
 def Solus_sintetizar(resultados: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -261,7 +259,7 @@ def Solus_sintetizar(resultados: List[Dict[str, Any]]) -> Dict[str, Any]:
     chaves: set = set()
     for r in resultados:
         chaves.update(r.keys())
-    return {"arquetipo": "Solus", "hz": 963, "opcode": "0x0B",
+    return {"arquetipo": "Solus", "hz": ARCHETYPE_HZ["solus"], "opcode": "0x0B",
             "total_resultados": len(resultados),
             "chaves_unicas": len(chaves),
             "ponto_singular": digital_root(KOB_FRACTAL)}
@@ -271,7 +269,7 @@ def Aion_ancorar_temporalidade(Z: str) -> Dict[str, Any]:
     """0x07 * 777Hz -- Tempo, Ciclo, SELAR"""
     ts        = datetime.now(timezone.utc).isoformat()
     ciclo_idx = digital_root(len(Z)) % 4
-    return {"arquetipo": "Aion", "hz": 777, "opcode": "0x07",
+    return {"arquetipo": "Aion", "hz": ARCHETYPE_HZ["aion"], "opcode": "0x07",
             "ts": ts, "ciclo": KOB_CICLO[ciclo_idx],
             "opcode_selar": "0x07"}
 
@@ -280,7 +278,7 @@ def Kodux_codificar_mapa(resultados: List[Dict[str, Any]]) -> Dict[str, Any]:
     """0x0C * 741Hz -- Scanner, Deteccao"""
     mapa = {r.get("arquetipo", "?"): {k: v for k, v in r.items() if k != "arquetipo"}
             for r in resultados}
-    return {"arquetipo": "Kodux", "hz": 741, "opcode": "0x0C",
+    return {"arquetipo": "Kodux", "hz": ARCHETYPE_HZ["kodux"], "opcode": "0x0C",
             "mapa": mapa, "repos_escopo": REPOS, "total_repos": len(REPOS)}
 
 
@@ -310,7 +308,7 @@ def Kobllux_unificar_tudo(resultados: List[Dict[str, Any]], Z: str) -> Dict[str,
     """0x0F * 1134Hz -- Sintese, Loop, Auto-retroalimentacao"""
     return {
         "arquetipo":      "Kobllux",
-        "hz":             1134,
+        "hz":             ARCHETYPE_HZ["kobllux"],
         "opcode":         "0x0F",
         "kobllux":        "∞",
         "lei":            KOB_LEI,

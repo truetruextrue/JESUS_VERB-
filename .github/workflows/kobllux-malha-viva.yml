@@ -25,6 +25,7 @@ on:
 
 jobs:
   malha-viva:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     if: >
       github.event.head_commit.message == null ||
@@ -38,6 +39,11 @@ jobs:
         with:
           fetch-depth: 20
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "ᚨ Aion · Acompanhar evento em um ciclo finito"
+        env:
+          KOB_EVENT: ${{ github.event_name }}
+        run: python3 kobllux_loop.py --once "KOBLLUX GitHub ${KOB_EVENT} ${GITHUB_SHA}"
 
       - name: "ᚺᛟ Horus 0x10 · Verificar Integridade [1111Hz]"
         run: |

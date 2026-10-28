@@ -1,0 +1,54 @@
+{
+  "report_id": "KBLX-AION-CORRELATION-20261028T105618Z",
+  "generated_at": "2026-10-28T10:56:18Z",
+  "status": "implemented_locally",
+  "contract": {
+    "archetypes": 16,
+    "cycle": [3, 6, 9, 7],
+    "fractal": 1134,
+    "source": "kobllux_memory.json"
+  },
+  "github_actions": {
+    "workflow": ".github/workflows/kobllux-malha-viva.yml",
+    "events": "Existing push, pull request, issue, release, repository, schedule, and manual dispatch triggers",
+    "aion_watch": "One finite KoblluxLoop cycle per workflow run, before Rhea appends the GitHub event",
+    "timeout_minutes": 15,
+    "recursion_guard": "Existing [skip ci] guard remains on generated memory commits",
+    "event_tags": "Rhea derives canonical archetypes, frequencies/opcodes, component labels, and cycle metadata from event and changed paths"
+  },
+  "integrations": {
+    "n8n_export": "kobllux_n8n_bridge.py exports all 16 canonical archetypes and operation phases; legacy opcode/frequency values are retained only as legacy_* metadata",
+    "n8n_memory_ingest": "n8n/workflows/KOBLLUX_MEMORY_INGEST.json validates and stores archetypes/tags idempotently; inactive until an operator configures and activates it",
+    "github_to_n8n": "Existing authenticated memory proxy forwards GitHub event metadata only when server-side Actions secrets are configured",
+    "scanner": "Scanner reports add canonical profiles/tags per path while retaining the legacy filename-heuristic assignment and opcode separately",
+    "local_loop": "Loop memory records include all 16 archetype tags and canonical cycle/fractal metadata"
+  },
+  "limitations": [
+    "No infinite process or persistent filesystem daemon is started",
+    "Actions sees committed repository events; uncommitted local file edits are not watched",
+    "The Codex watcher invoked by Actions remains one-shot",
+    "No n8n instance was contacted or activated; the root workflow.json is a separate legacy sample",
+    "No secrets or credentials were read, created, or copied"
+  ],
+  "validation": {
+    "python_tests": "21 focused tests passed, including an offline Actions-to-proxy-to-JSON-node round trip",
+    "javascript_tests": "2 Hub Uno bridge tests passed",
+    "three_point_communication": "passed; mocked authenticated proxy transport and executed the imported n8n Code node validator; no remote service contacted",
+    "python_compile": "passed",
+    "workflow_yaml": "passed",
+    "n8n_json": "passed",
+    "git_diff_check": "passed"
+  },
+  "files": [
+    "kobllux_event_tags.py",
+    ".github/scripts/rhea_sync.py",
+    ".github/workflows/kobllux-malha-viva.yml",
+    "kobllux_memory_proxy.py",
+    "kobllux_loop.py",
+    "kobllux_n8n_bridge.py",
+    "DETECT_0X03_kobllux_archetypes_scanner_VEEB-A_D5.py",
+    "n8n/README.md",
+    "tests/test_kobllux_event_tags.py",
+    "tests/test_kobllux_contract.py"
+  ]
+}

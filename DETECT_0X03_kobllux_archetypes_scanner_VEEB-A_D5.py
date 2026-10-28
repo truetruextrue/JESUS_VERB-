@@ -33,6 +33,8 @@ import unicodedata
 from pathlib import Path
 from datetime import datetime
 from collections import defaultdict
+from kobllux_contract import ARCHETYPES, KOB_CICLO, KOB_FRACTAL
+from kobllux_event_tags import canonical_scan_tag
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -498,6 +500,30 @@ class KoblluxScanner:
                 "total_renomeacoes": len(self.renomeacoes),
                 "total_erros": len(self.erros),
             },
+            "contrato_canonico": {
+                "cycle": list(KOB_CICLO),
+                "fractal": KOB_FRACTAL,
+                "archetypes": [
+                    {
+                        "name": name.title() if name != "kobllux" else "Kobllux",
+                        "hz": profile["hz"],
+                        "opcode": profile["opcode"],
+                        "phase": profile["ciclo"],
+                    }
+                    for name, profile in ARCHETYPES.items()
+                ],
+            },
+            "canonical_tags_by_path": [
+                {
+                    "path": str(path),
+                    "assignment_type": "filename heuristic",
+                    "legacy_scanner_opcode": ARQUETIPOS[name]["opcode"],
+                    **canonical_scan_tag(name),
+                }
+                for collection in (self.arquivos_por_arquetipo, self.pastas_por_arquetipo)
+                for name, paths in collection.items()
+                for path in paths
+            ],
             "por_arquetipo": {
                 nome: {
                     "opcode": ARQUETIPOS[nome]["opcode"],

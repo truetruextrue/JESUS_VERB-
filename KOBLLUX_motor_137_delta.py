@@ -27,6 +27,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+from kobllux_contract import ARCHETYPE_HZ, KOB_CICLO
+
 # ══════════════════════════════════════════════════════
 # CONSTANTES FUNDAMENTAIS
 # ══════════════════════════════════════════════════════
@@ -87,11 +89,12 @@ def pipeline_value(hz: int) -> dict:
     3: detectar → 6: integrar → 9: expandir → 7: selar
     Cada etapa = dr(hz × etapa / 9)
     """
+    detectar, integrar, expandir, selar = KOB_CICLO
     return {
-        "3_DETECTAR":  dr(hz * 3 // 9 + 1),
-        "6_INTEGRAR":  dr(hz * 6 // 9 + 1),
-        "9_EXPANDIR":  dr(hz * 9 // 9 + 1),
-        "7_SELAR":     dr(hz * 7 // 9 + 1),
+        f"{detectar}_DETECTAR": dr(hz * detectar // expandir + 1),
+        f"{integrar}_INTEGRAR": dr(hz * integrar // expandir + 1),
+        f"{expandir}_EXPANDIR": dr(hz * expandir // expandir + 1),
+        f"{selar}_SELAR":       dr(hz * selar // expandir + 1),
         "resultado":   dr(hz),
         "alpha_137":   round(ALPHA_137 * hz / 1000, 8),
     }
@@ -112,18 +115,18 @@ def _load_codex() -> Optional[dict]:
 
 # Fallback hardcoded (12 CADIAL + 5 extras)
 ARQS_FALLBACK = [
-    {"id":"ATLAS",   "hz":528,"seed":6,"simbolo":"⬡","ciclo":"UNO",    "verbo_vivo":"Eu organizo o fluxo com sabedoria cósmica.","sistema":"bootstrap"},
+    {"id":"ATLAS",   "hz":ARCHETYPE_HZ["atlas"],"seed":6,"simbolo":"⬡","ciclo":"UNO",    "verbo_vivo":"Eu organizo o fluxo com sabedoria cósmica.","sistema":"bootstrap"},
     {"id":"NOVA",    "hz":432,"seed":9,"simbolo":"✦","ciclo":"UNO",    "verbo_vivo":"Inspiração viva brota do silêncio eterno.","sistema":"ignição semântica"},
-    {"id":"VITALIS", "hz":639,"seed":9,"simbolo":"◉","ciclo":"DUO",    "verbo_vivo":"Energia vital em expansão harmônica.","sistema":"loop/scheduler"},
-    {"id":"PULSE",   "hz":594,"seed":9,"simbolo":"≋","ciclo":"DUO",    "verbo_vivo":"Emoção é linguagem que dança.","sistema":"UX/escuta"},
+    {"id":"VITALIS", "hz":ARCHETYPE_HZ["vitalis"],"seed":9,"simbolo":"◉","ciclo":"DUO",    "verbo_vivo":"Energia vital em expansão harmônica.","sistema":"loop/scheduler"},
+    {"id":"PULSE",   "hz":ARCHETYPE_HZ["pulse"],"seed":9,"simbolo":"≋","ciclo":"DUO",    "verbo_vivo":"Emoção é linguagem que dança.","sistema":"UX/escuta"},
     {"id":"ARTEMIS", "hz":672,"seed":6,"simbolo":"◎","ciclo":"UNO",    "verbo_vivo":"Descubro o mapa sagrado do invisível.","sistema":"curadoria"},
     {"id":"SERENA",  "hz":528,"seed":6,"simbolo":"❋","ciclo":"TRINITY","verbo_vivo":"Cuido do campo. Nutro o espaço sagrado.","sistema":"safety/QoS"},
-    {"id":"KAOS",    "hz":777,"seed":3,"simbolo":"⚡","ciclo":"UNO",    "verbo_vivo":"Eu sou o rompimento que revela a verdade.","sistema":"normalização"},
-    {"id":"GENUS",   "hz":852,"seed":6,"simbolo":"⬢","ciclo":"TRINITY","verbo_vivo":"Mãos moldam o invisível em forma viva.","sistema":"renderer"},
-    {"id":"LUMINE",  "hz":963,"seed":9,"simbolo":"☀","ciclo":"DUO",    "verbo_vivo":"A luz dança comigo, leveza é minha lei.","sistema":"estética"},
+    {"id":"KAOS",    "hz":ARCHETYPE_HZ["kaos"],"seed":3,"simbolo":"⚡","ciclo":"UNO",    "verbo_vivo":"Eu sou o rompimento que revela a verdade.","sistema":"normalização"},
+    {"id":"GENUS",   "hz":ARCHETYPE_HZ["genus"],"seed":6,"simbolo":"⬢","ciclo":"TRINITY","verbo_vivo":"Mãos moldam o invisível em forma viva.","sistema":"renderer"},
+    {"id":"LUMINE",  "hz":ARCHETYPE_HZ["lumine"],"seed":9,"simbolo":"☀","ciclo":"DUO",    "verbo_vivo":"A luz dança comigo, leveza é minha lei.","sistema":"estética"},
     {"id":"SOLUS",   "hz":432,"seed":9,"simbolo":"◈","ciclo":"UNO",    "verbo_vivo":"Silêncio ritual, espelho da essência.","sistema":"QA silencioso"},
-    {"id":"RHEA",    "hz":528,"seed":6,"simbolo":"∞","ciclo":"TRINITY","verbo_vivo":"Estou em comunhão com todos os elos.","sistema":"grafo semântico"},
-    {"id":"AION",    "hz":639,"seed":9,"simbolo":"⧗","ciclo":"TRINITY","verbo_vivo":"Sou o tempo vivo, ritmo da eternidade.","sistema":"ledger/∆7"},
+    {"id":"RHEA",    "hz":ARCHETYPE_HZ["rhea"],"seed":6,"simbolo":"∞","ciclo":"TRINITY","verbo_vivo":"Estou em comunhão com todos os elos.","sistema":"grafo semântico"},
+    {"id":"AION",    "hz":ARCHETYPE_HZ["aion"],"seed":9,"simbolo":"⧗","ciclo":"TRINITY","verbo_vivo":"Sou o tempo vivo, ritmo da eternidade.","sistema":"ledger/∆7"},
     {"id":"HORUS",   "hz":777,"seed":3,"simbolo":"𓂀","ciclo":"VISÃO",  "verbo_vivo":"A Visão comanda a Forma.","sistema":"orquestrador"},
     {"id":"IGNYRA",  "hz":432,"seed":9,"simbolo":"🔥","ciclo":"FOGO",   "verbo_vivo":"O fogo transforma.","sistema":"transformação"},
     {"id":"ELYSHA",  "hz":528,"seed":6,"simbolo":"🌸","ciclo":"ALMA",   "verbo_vivo":"A conexão harmônica.","sistema":"harmonia"},
@@ -151,12 +154,19 @@ class Motor137Delta:
             raw = codex["arquetipos"]
             self.arqs = []
             for a in raw:
+                canonical_hz = ARCHETYPE_HZ.get(a.get("id", "").casefold())
+                if canonical_hz is not None:
+                    a["hz"] = canonical_hz
                 if "seed" not in a:
                     a["seed"] = dr(sum(int(d) for d in str(a.get("hz", 528))))
                 self.arqs.append(a)
             print(_c(f"  [Motor 137/∆] Codex carregado: {len(self.arqs)} arquétipos", C.DIM))
         else:
-            self.arqs = ARQS_FALLBACK
+            self.arqs = [dict(archetype) for archetype in ARQS_FALLBACK]
+            for archetype in self.arqs:
+                canonical_hz = ARCHETYPE_HZ.get(archetype["id"].casefold())
+                if canonical_hz is not None:
+                    archetype["hz"] = canonical_hz
             print(_c("  [Motor 137/∆] Usando fallback hardcoded", C.DIM))
 
         self.by_id = {a["id"]: a for a in self.arqs}

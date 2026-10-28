@@ -1,0 +1,80 @@
+{
+  "report_id": "KBLX-HUB-UNO-LIVE-20261028T104242Z",
+  "generated_at": "2026-10-28T10:42:42Z",
+  "status": "implemented",
+  "integration": {
+    "target": "Hub Uno chat",
+    "trigger": "message contains KOBLLUX, case-insensitive",
+    "execution": "single event per matching message; no daemon or background service",
+    "system_context": "16 canonical archetypes, frequencies and phase cycle injected into the existing chat system instruction",
+    "local_runtime": ["KOBLLUX", "KOBΦ-NODE", "HUB-UNO", "INFODOSE"],
+    "namespace_map": [
+      "KOBLLUX",
+      "KOBΦ-NODE",
+      "JESUS_VERB-",
+      "KOB--NODE",
+      "INFODOSE",
+      "CODEX-AZURE",
+      "MINUZ",
+      "FIAT-LUX",
+      "KOBLLUX_ORGANIZADO",
+      "KOBLLUX-WRAPPER",
+      "KOBLLUX-CORE",
+      "JESUS-VERBO",
+      "OIDUAL--Y-",
+      "KOBLLUX.",
+      "-KODBLLUM-",
+      "HUB-UNO"
+    ]
+  },
+  "canonical_contract": {
+    "cycle": [
+      {"step": 3, "opcode": "0x03", "name": "DETECTAR"},
+      {"step": 6, "opcode": "0x06", "name": "INTEGRAR"},
+      {"step": 9, "opcode": "0x09", "name": "EXPANDIR"},
+      {"step": 7, "opcode": "0x07", "name": "SELAR"}
+    ],
+    "archetypes": [
+      {"name": "Atlas", "hz": 594, "opcode": "0x00"},
+      {"name": "Nova", "hz": 432, "opcode": "0x01"},
+      {"name": "Pulse", "hz": 639, "opcode": "0x02"},
+      {"name": "Vitalis", "hz": 528, "opcode": "0x03"},
+      {"name": "Artemis", "hz": 672, "opcode": "0x04"},
+      {"name": "Serena", "hz": 528, "opcode": "0x05"},
+      {"name": "Kaos", "hz": 741, "opcode": "0x06"},
+      {"name": "Genus", "hz": 594, "opcode": "0x08"},
+      {"name": "Lumine", "hz": 432, "opcode": "0x09"},
+      {"name": "Rhea", "hz": 528, "opcode": "0x0A"},
+      {"name": "Solus", "hz": 963, "opcode": "0x0B"},
+      {"name": "Aion", "hz": 777, "opcode": "0x07"},
+      {"name": "Kodux", "hz": 741, "opcode": "0x0C"},
+      {"name": "Bllue", "hz": 639, "opcode": "0x0D"},
+      {"name": "Jesus", "hz": 963, "opcode": "0x0E"},
+      {"name": "Kobllux", "hz": 1134, "opcode": "0x0F"}
+    ]
+  },
+  "persistence": {
+    "browser_storage": ["kobllux.live.workflow.v1", "kobllux.eq.log"],
+    "retention_limit": 500,
+    "conversation_text_stored": false,
+    "api_keys_or_tokens_stored": false,
+    "export": "explicit user action downloads JSONL metadata"
+  },
+  "github": {
+    "repository": "truetruextrue/JESUS_VERB-",
+    "workflow": ".github/workflows/kobllux-malha-viva.yml",
+    "integration": "manual Actions page link; no remote dispatch, commit or push",
+    "credentials": "not read, copied or included in local events"
+  },
+  "validation": {
+    "node_test": "node --test tests/test_kobllux_live_bridge.js",
+    "result": "2 tests passed"
+  },
+  "files": [
+    "inbox/KΦꓷ8DΦꓘ/KOBLLUX_∆³_Design_System/KOBLLUX_HUB_UNO_BlueCup_ZPR_Portal Nexus/ui_kits/hub-uno/js/19-kobllux-live-bridge.js",
+    "inbox/KΦꓷ8DΦꓘ/KOBLLUX_∆³_Design_System/KOBLLUX_HUB_UNO_BlueCup_ZPR_Portal Nexus/ui_kits/hub-uno/index.html",
+    "inbox/KΦꓷ8DΦꓘ/KOBLLUX_∆³_Design_System/KOBLLUX_HUB_UNO_BlueCup_ZPR_Portal Nexus/ui_kits/hub-uno/scripts-manifest.json",
+    "inbox/KΦꓷ8DΦꓘ/KOBLLUX_∆³_Design_System/KOBLLUX_HUB_UNO_BlueCup_ZPR_Portal Nexus/ui_kits/hub-uno/README.md",
+    "tests/test_kobllux_live_bridge.js"
+  ]
+}

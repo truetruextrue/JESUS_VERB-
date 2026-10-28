@@ -16,14 +16,12 @@ import re
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
+from kobllux_contract import ARCHETYPES, ARCHETYPE_HZ, KOB_CENTRO, KOB_CICLO, KOB_FRACTAL, KOB_LEI
+
 
 # ---------------------------------------------------------------------------
 # CONSTANTES
 # ---------------------------------------------------------------------------
-KOB_FRACTAL   = 3 * 6 * 9 * 7         # 1134
-KOB_CICLO     = [3, 6, 9, 7]
-KOB_LEI       = "VERDADE × INTEGRAR ÷ Δ = ∞"
-KOB_CENTRO    = "JESUS = VERBO = GRAVIDADE"
 KOB_TRIGGER   = re.compile(r'\bKOBLLUX\b', re.IGNORECASE)
 KOB_MEMORIA   = Path("kobllux_memory.jsonl")
 
@@ -59,6 +57,7 @@ class EstadoKobllux:
         self.historico.append(f"[{nome}] {saida[:80]}")
 
     def to_dict(self) -> Dict[str, Any]:
+        archetypes = [handler.nome.title() for handler in PIPELINE]
         return {
             "z":        self.z[:200],
             "iteracao": self.iteracao,
@@ -66,6 +65,19 @@ class EstadoKobllux:
             "ciclo":    self.fase_atual(),
             "ts":       self.timestamp,
             "historico": self.historico[-8:],
+            "arquetipos": archetypes,
+            "tags": [f"archetype:{name.casefold()}" for name in archetypes],
+            "archetype_profiles": [
+                {
+                    "name": name,
+                    "hz": ARCHETYPES[name.casefold()]["hz"],
+                    "opcode": ARCHETYPES[name.casefold()]["opcode"],
+                    "phase": ARCHETYPES[name.casefold()]["ciclo"],
+                }
+                for name in archetypes
+            ],
+            "cycle": list(KOB_CICLO),
+            "fractal": KOB_FRACTAL,
         }
 
 
@@ -95,31 +107,31 @@ class ArquetipoHandler:
 # 16 ARQUÉTIPOS-HANDLERS
 # ---------------------------------------------------------------------------
 class AtlasHandler(ArquetipoHandler):
-    nome = "ATLAS"  ; hz = 594 ; cor = "\033[34m"
+    nome = "ATLAS"  ; hz = ARCHETYPE_HZ["atlas"] ; cor = "\033[34m"
     def _transformar(self, z, e):
         self.log(f"Estruturando iteração {e.iteracao} · ciclo-fase={e.fase_atual()}")
         return f"[ATLAS·{e.iteracao}] {z}"
 
 class NovaHandler(ArquetipoHandler):
-    nome = "NOVA"   ; hz = 432 ; cor = "\033[95m"
+    nome = "NOVA"   ; hz = ARCHETYPE_HZ["nova"] ; cor = "\033[95m"
     def _transformar(self, z, e):
         self.log("Centelha acesa ✨")
         return z + " ✧"
 
 class PulseHandler(ArquetipoHandler):
-    nome = "PULSE"  ; hz = 639 ; cor = "\033[35m"
+    nome = "PULSE"  ; hz = ARCHETYPE_HZ["pulse"] ; cor = "\033[35m"
     def _transformar(self, z, e):
         self.log(f"Pulso ≈ seed={e.seed}")
         return z.strip() + f" ≈{e.seed}"
 
 class VitalisHandler(ArquetipoHandler):
-    nome = "VITALIS"; hz = 528 ; cor = "\033[31m"
+    nome = "VITALIS"; hz = ARCHETYPE_HZ["vitalis"] ; cor = "\033[31m"
     def _transformar(self, z, e):
         self.log("Momentum Δ ativado")
         return z  # passa intacto — Vitalis confirma, não altera
 
 class KaosHandler(ArquetipoHandler):
-    nome = "KAOS"   ; hz = 741 ; cor = "\033[33m"
+    nome = "KAOS"   ; hz = ARCHETYPE_HZ["kaos"] ; cor = "\033[33m"
     def _transformar(self, z, e):
         if e.iteracao % 3 == 0:  # a cada 3 ciclos, Kaos perturba
             self.log("RUPTURA ╬ — questionando o padrão")
@@ -127,70 +139,70 @@ class KaosHandler(ArquetipoHandler):
         return z
 
 class SerenaHandler(ArquetipoHandler):
-    nome = "SERENA" ; hz = 528 ; cor = "\033[91m"
+    nome = "SERENA" ; hz = ARCHETYPE_HZ["serena"] ; cor = "\033[91m"
     def _transformar(self, z, e):
         self.log("♡ Normalizando após Kaos")
         clean = z.replace("[KAOS➡]", "").strip()
         return clean
 
 class ArtemisHandler(ArquetipoHandler):
-    nome = "ARTEMIS"; hz = 672 ; cor = "\033[32m"
+    nome = "ARTEMIS"; hz = ARCHETYPE_HZ["artemis"] ; cor = "\033[32m"
     def _transformar(self, z, e):
         self.log("➹ Mapeando conexões improváveis")
         e.meta["artemis_len"] = len(z)
         return z
 
 class GenusHandler(ArquetipoHandler):
-    nome = "GENUS"  ; hz = 594 ; cor = "\033[38;5;214m"
+    nome = "GENUS"  ; hz = ARCHETYPE_HZ["genus"] ; cor = "\033[38;5;214m"
     def _transformar(self, z, e):
         self.log("■ Consolidando estrutura")
         return z
 
 class LumineHandler(ArquetipoHandler):
-    nome = "LUMINE" ; hz = 432 ; cor = "\033[93m"
+    nome = "LUMINE" ; hz = ARCHETYPE_HZ["lumine"] ; cor = "\033[93m"
     def _transformar(self, z, e):
         self.log(f"☼ Ciclo {e.iteracao} celebrado!")
         return z
 
 class RheaHandler(ArquetipoHandler):
-    nome = "RHEA"   ; hz = 528 ; cor = "\033[32m"
+    nome = "RHEA"   ; hz = ARCHETYPE_HZ["rhea"] ; cor = "\033[32m"
     def _transformar(self, z, e):
         self.log("⌘ Memória registrada")
         try:
             with KOB_MEMORIA.open("a", encoding="utf-8") as f:
                 f.write(json.dumps(e.to_dict(), ensure_ascii=False) + "\n")
-        except Exception:
-            pass
+        except OSError as exc:
+            raise RuntimeError(f"Unable to append KOBLLUX loop memory: {KOB_MEMORIA}") from exc
         return z
 
 class SolusHandler(ArquetipoHandler):
-    nome = "SOLUS"  ; hz = 963 ; cor = "\033[37m"
+    nome = "SOLUS"  ; hz = ARCHETYPE_HZ["solus"] ; cor = "\033[37m"
     def _transformar(self, z, e):
         self.log("† Síntese parcial realizada")
         return z
 
 class AionHandler(ArquetipoHandler):
-    nome = "AION"   ; hz = 777 ; cor = "\033[34m"
+    nome = "AION"   ; hz = ARCHETYPE_HZ["aion"] ; cor = "\033[34m"
     def _transformar(self, z, e):
         self.log(f"∞ Loop eterno · iteração {e.iteracao}")
         e.avancar_ciclo()
         return z
 
 class KoduxHandler(ArquetipoHandler):
-    nome = "KODUX"  ; hz = 741 ; cor = "\033[94m"
+    nome = "KODUX"  ; hz = ARCHETYPE_HZ["kodux"] ; cor = "\033[94m"
     def _transformar(self, z, e):
         self.log("⌂ Codificando estado")
         e.meta["kodux_hash"] = hash(z) & 0xFFFFFF
         return z
 
 class BllueHandler(ArquetipoHandler):
-    nome = "BLLUE"  ; hz = 639 ; cor = "\033[34m"
+    nome = "BLLUE"  ; hz = ARCHETYPE_HZ["bllue"] ; cor = "\033[34m"
     def _transformar(self, z, e):
         self.log("≈ Fluindo sem resistência")
         return z
 
 class JesusHandler(ArquetipoHandler):
-    nome = "JESUS"  ; hz = 963 ; cor = "\033[93m"
+    nome = "JESUS"  ; hz = ARCHETYPE_HZ["jesus"] ; cor = "\033[93m"
     def _transformar(self, z, e):
         self.log("✝ EU SOU O CENTRO. Estabilizando.")
         # Jesus não altera {Z} — ele estabiliza
@@ -198,7 +210,7 @@ class JesusHandler(ArquetipoHandler):
         return z
 
 class KoblluxHandler(ArquetipoHandler):
-    nome = "KOBLLUX"; hz = 1134; cor = "\033[96m"
+    nome = "KOBLLUX"; hz = ARCHETYPE_HZ["kobllux"]; cor = "\033[96m"
     def _transformar(self, z, e):
         self.log(f"△ Ciclo {e.iteracao} completo · 3×6×9×7={KOB_FRACTAL} · seed={e.seed}")
         return z
@@ -297,9 +309,17 @@ if __name__ == "__main__":
     import sys
 
     loop = KoblluxLoop(max_ciclos=3)
+    arguments = sys.argv[1:]
 
-    if len(sys.argv) > 1 and sys.argv[1] == "--escutar":
+    if arguments == ["--escutar"]:
         loop.escutar_stdin()
+    elif arguments and arguments[0] == "--once":
+        payload = " ".join(arguments[1:]).strip()
+        if not payload:
+            raise SystemExit("--once requires a non-empty event payload")
+        if not loop.ouvir(payload):
+            raise SystemExit("--once payload must contain KOBLLUX")
+        loop.on_kobllux(payload, ciclos=1)
     else:
         Z_INICIAL = (
             "KOBLLUX · PODCAST INTERDIMENSIONAL INFODOSE · "

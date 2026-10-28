@@ -1,0 +1,130 @@
+{
+  "report_id": "KBLX-UNIFY-20261028-1026",
+  "generated_at": "2026-10-28T10:33:48.090591+00:00",
+  "workflow": [
+    "0x03_DETECTAR",
+    "0x06_INTEGRAR",
+    "0x09_EXPANDIR",
+    "0x07_SELAR"
+  ],
+  "formula": {
+    "master": "VERDADE × INTEGRAR ÷ Δ = ∞",
+    "user_expression": "VERDADE × [C∅DBL∅CK§ × C∆BLEX ÷ ∆ = ∞] INTEGRAR ÷ [KOBLLUX × KOBΦ-NODE ÷ ∆ = ∞] ∆ = ∞",
+    "interpretation": "Tratada como princípio simbólico de correlação, não como operação numérica executada pelo código."
+  },
+  "canonical_source": "kobllux_memory.json: _kobllux_meta.ciclos and arquetipos",
+  "cycle": [
+    3,
+    6,
+    9,
+    7
+  ],
+  "fractal": 1134,
+  "archetypes": [
+    {
+      "name": "aion",
+      "hz": 777,
+      "cycle_phase": 9
+    },
+    {
+      "name": "artemis",
+      "hz": 672,
+      "cycle_phase": 6
+    },
+    {
+      "name": "atlas",
+      "hz": 594,
+      "cycle_phase": 3
+    },
+    {
+      "name": "bllue",
+      "hz": 639,
+      "cycle_phase": 6
+    },
+    {
+      "name": "genus",
+      "hz": 594,
+      "cycle_phase": 6
+    },
+    {
+      "name": "jesus",
+      "hz": 963,
+      "cycle_phase": 9
+    },
+    {
+      "name": "kaos",
+      "hz": 741,
+      "cycle_phase": 6
+    },
+    {
+      "name": "kobllux",
+      "hz": 1134,
+      "cycle_phase": 9
+    },
+    {
+      "name": "kodux",
+      "hz": 741,
+      "cycle_phase": 9
+    },
+    {
+      "name": "lumine",
+      "hz": 432,
+      "cycle_phase": 9
+    },
+    {
+      "name": "nova",
+      "hz": 432,
+      "cycle_phase": 3
+    },
+    {
+      "name": "pulse",
+      "hz": 639,
+      "cycle_phase": 3
+    },
+    {
+      "name": "rhea",
+      "hz": 528,
+      "cycle_phase": 9
+    },
+    {
+      "name": "serena",
+      "hz": 528,
+      "cycle_phase": 6
+    },
+    {
+      "name": "solus",
+      "hz": 963,
+      "cycle_phase": 9
+    },
+    {
+      "name": "vitalis",
+      "hz": 528,
+      "cycle_phase": 3
+    }
+  ],
+  "opcode_policy": "Preserve consumer-local/versioned opcode aliases; do not infer or change frequency/cycle from opcode differences.",
+  "integration_scope": {
+    "completed": [
+      "Added validated shared Python contract sourced from kobllux_memory.json.",
+      "Connected core loop, oracle handlers, activation listing, 137/Delta motor, memory metadata, and sealer to canonical frequencies/cycle.",
+      "Added focused contract tests and canonical-contract documentation."
+    ],
+    "not_bulk_rewritten": "Tracked JavaScript/HTML interface copies and unrelated historical inventories; listed as later integration scope."
+  },
+  "validation": {
+    "command": "python3 -m unittest discover -s tests -p 'test_kobllux*.py'",
+    "result": "PASS: 13 tests",
+    "py_compile": "PASS for modified modules and focused tests",
+    "git_diff_check": "PASS",
+    "existing_warning": "selar.py emits an existing SyntaxWarning for an invalid escape in its ASCII-art string."
+  },
+  "sealed_code_set": {
+    "selection": "All tracked and non-ignored untracked source/interface files with source-code extensions at report-generation time.",
+    "files": 852,
+    "bytes": 34213732,
+    "sha256_tree": "d26d92b3412b1189511d9c090947c226728052bf5b36a8c345aeee9554f43e21",
+    "algorithm": "SHA-256 over sorted relative paths and each file SHA-256, with a 4-byte big-endian path length prefix."
+  },
+  "memory_log": "_index/memory.jsonl",
+  "readonly_attachment": "TEMPLATE FRACTAL UNIVERSAL KOBLLUX ∆³.markdown; read-only snapshot, not edited."
+}

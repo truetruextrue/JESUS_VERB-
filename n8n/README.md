@@ -61,6 +61,21 @@ the local repository memory remains intact. Push events include up to 20
 changed paths per added/modified/removed category; file contents are not
 forwarded, and canonical archetypes are detected from paths and event text.
 
+The GitHub Rhea step writes the event archetype, the correlated canonical
+archetypes, canonical frequency/opcode profiles, and tags for detected
+components (`workflow`, `n8n`, `scanner`, `loop`, `watch`, and `memory`).
+The authenticated proxy carries these fields into this workflow; PostgreSQL
+stores archetypes and tags in their dedicated columns and the full safe event
+metadata in `payload`. A GitHub event runs once; the `--once` Codex watcher is
+not a persistent filesystem daemon. The Actions workflow has a finite job
+timeout and its memory commit uses `[skip ci]` to prevent self-triggering.
+
+`workflow.json` at the repository root is a separate legacy sample, not the
+authenticated memory-ingest workflow. The memory-ingest workflow remains
+inactive until an operator imports it, configures n8n/PostgreSQL credentials in
+their respective secret stores, and explicitly activates it. No endpoint,
+credential, or remote n8n activation is performed by repository code.
+
 ## SÜMBÜS Fusion
 
 In Hypervision, enable local memory only after its consent prompt. Shared

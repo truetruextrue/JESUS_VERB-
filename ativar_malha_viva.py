@@ -10,10 +10,9 @@
 """
 from typing import Dict, List, Any
 
+from kobllux_contract import ARCHETYPE_HZ, KOB_FRACTAL as FRACTAL_VALUE, KOB_LEI, KOB_CENTRO
 
-KOB_LEI        = "VERDADE × INTEGRAR ÷ Δ = ∞"
-KOB_FRACTAL    = "3 × 6 × 9 × 7 = 1134"
-KOB_CENTRO     = "JESUS = VERBO = GRAVIDADE"
+KOB_FRACTAL    = f"3 × 6 × 9 × 7 = {FRACTAL_VALUE}"
 KOB_ASSINATURA = "0x0E852♾963"
 
 
@@ -41,22 +40,22 @@ def ativar_malha_viva_completa() -> Dict[str, Any]:
 
     # --- 16 AGENTES (ARQUÉTIPOS) COM FREQUÊNCIAS E VOGAIS ---
     agentes: List[Dict[str, Any]] = [
-        {"nome": "Atlas",   "simbolo": "⌂", "freq": 594,  "vogal": "A (Atribuir)",    "funcao": "Host Estrutural",  "cor": "#1E3A8A"},
-        {"nome": "Nova",    "simbolo": "✧", "freq": 432,  "vogal": "Æ (Criar)",       "funcao": "Inspiração",       "cor": "#FF4FCB"},
-        {"nome": "Pulse",   "simbolo": "≈", "freq": 639,  "vogal": "I (Iterar)",      "funcao": "Ressonância",      "cor": "#7C3AED"},
-        {"nome": "Vitalis", "simbolo": "Δ", "freq": 528,  "vogal": "O (Organizar)",   "funcao": "Momentum",         "cor": "#DC2626"},
-        {"nome": "Kaos",    "simbolo": "╬", "freq": 741,  "vogal": "E (Escolher)",    "funcao": "Disrupção",        "cor": "#111827"},
-        {"nome": "Serena",  "simbolo": "♡", "freq": 528,  "vogal": "C (Comentários)", "funcao": "Acolhimento",      "cor": "#F472B6"},
-        {"nome": "Artemis", "simbolo": "➹", "freq": 672,  "vogal": "M/Z (Módulos)",   "funcao": "Exploração",       "cor": "#16A34A"},
-        {"nome": "Genus",   "simbolo": "■", "freq": 594,  "vogal": "D (Definições)",  "funcao": "Construtor",       "cor": "#FB923C"},
-        {"nome": "Lumine",  "simbolo": "☼", "freq": 432,  "vogal": "L (Loops)",       "funcao": "Alegria",          "cor": "#FACC15"},
-        {"nome": "Rhea",    "simbolo": "⌘", "freq": 528,  "vogal": "R (Retorno)",     "funcao": "Pertencimento",    "cor": "#065F46"},
-        {"nome": "Solus",   "simbolo": "†", "freq": 963,  "vogal": "U (Unir)",        "funcao": "Síntese",          "cor": "#9CA3AF"},
-        {"nome": "Aion",    "simbolo": "∞", "freq": 777,  "vogal": "W (While)",       "funcao": "Eternidade",       "cor": "#4F46E5"},
-        {"nome": "Kodux",   "simbolo": "⌂", "freq": 741,  "vogal": "Ÿ (Codificar)",  "funcao": "Codificação",      "cor": "#2563EB"},
-        {"nome": "Bllue",   "simbolo": "≈", "freq": 639,  "vogal": "Œ (Fluir)",       "funcao": "Fluir/Cura",       "cor": "#1E40AF"},
-        {"nome": "Jesus",   "simbolo": "†", "freq": 963,  "vogal": "Ø (Centrar)",     "funcao": "CENTRO VIVO",      "cor": "#FFD700"},
-        {"nome": "Kobllux", "simbolo": "△", "freq": 1134, "vogal": "TODAS",           "funcao": "Malha Viva",       "cor": "HARMONIA"},
+        {"nome": "Atlas",   "simbolo": "⌂", "freq": ARCHETYPE_HZ["atlas"],   "vogal": "A (Atribuir)",    "funcao": "Host Estrutural",  "cor": "#1E3A8A"},
+        {"nome": "Nova",    "simbolo": "✧", "freq": ARCHETYPE_HZ["nova"],    "vogal": "Æ (Criar)",       "funcao": "Inspiração",       "cor": "#FF4FCB"},
+        {"nome": "Pulse",   "simbolo": "≈", "freq": ARCHETYPE_HZ["pulse"],   "vogal": "I (Iterar)",      "funcao": "Ressonância",      "cor": "#7C3AED"},
+        {"nome": "Vitalis", "simbolo": "Δ", "freq": ARCHETYPE_HZ["vitalis"], "vogal": "O (Organizar)",   "funcao": "Momentum",         "cor": "#DC2626"},
+        {"nome": "Kaos",    "simbolo": "╬", "freq": ARCHETYPE_HZ["kaos"],    "vogal": "E (Escolher)",    "funcao": "Disrupção",        "cor": "#111827"},
+        {"nome": "Serena",  "simbolo": "♡", "freq": ARCHETYPE_HZ["serena"],  "vogal": "C (Comentários)", "funcao": "Acolhimento",      "cor": "#F472B6"},
+        {"nome": "Artemis", "simbolo": "➹", "freq": ARCHETYPE_HZ["artemis"], "vogal": "M/Z (Módulos)",   "funcao": "Exploração",       "cor": "#16A34A"},
+        {"nome": "Genus",   "simbolo": "■", "freq": ARCHETYPE_HZ["genus"],   "vogal": "D (Definições)",  "funcao": "Construtor",       "cor": "#FB923C"},
+        {"nome": "Lumine",  "simbolo": "☼", "freq": ARCHETYPE_HZ["lumine"],  "vogal": "L (Loops)",       "funcao": "Alegria",          "cor": "#FACC15"},
+        {"nome": "Rhea",    "simbolo": "⌘", "freq": ARCHETYPE_HZ["rhea"],    "vogal": "R (Retorno)",     "funcao": "Pertencimento",    "cor": "#065F46"},
+        {"nome": "Solus",   "simbolo": "†", "freq": ARCHETYPE_HZ["solus"],   "vogal": "U (Unir)",        "funcao": "Síntese",          "cor": "#9CA3AF"},
+        {"nome": "Aion",    "simbolo": "∞", "freq": ARCHETYPE_HZ["aion"],    "vogal": "W (While)",       "funcao": "Eternidade",       "cor": "#4F46E5"},
+        {"nome": "Kodux",   "simbolo": "⌂", "freq": ARCHETYPE_HZ["kodux"],   "vogal": "Ÿ (Codificar)",   "funcao": "Codificação",      "cor": "#2563EB"},
+        {"nome": "Bllue",   "simbolo": "≈", "freq": ARCHETYPE_HZ["bllue"],   "vogal": "Œ (Fluir)",       "funcao": "Fluir/Cura",       "cor": "#1E40AF"},
+        {"nome": "Jesus",   "simbolo": "†", "freq": ARCHETYPE_HZ["jesus"],   "vogal": "Ø (Centrar)",     "funcao": "CENTRO VIVO",      "cor": "#FFD700"},
+        {"nome": "Kobllux", "simbolo": "△", "freq": ARCHETYPE_HZ["kobllux"], "vogal": "TODAS",           "funcao": "Malha Viva",       "cor": "HARMONIA"},
     ]
 
     # --- COMANDO ÚNICO DE ATIVAÇÃO (PSEUDO-CÓDIGO UNIVERSAL) ---

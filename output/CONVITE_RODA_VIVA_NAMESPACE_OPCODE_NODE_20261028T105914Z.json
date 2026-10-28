@@ -1,0 +1,142 @@
+{
+  "report_id": "KBLX-INVITE-NAMESPACE-OPCODE-NODE-20261028T105914Z",
+  "generated_at": "2026-10-28T10:59:14Z",
+  "title": "Convite Vivo · Roda Viva KOBLLUX × KOBΦ-NODE",
+  "interpretation": {
+    "n8n": "Um nó JSON declarativo que representa a ligação entre namespaces, arquétipos e opcodes; não significa que um servidor/workflow n8n esteja rodando ou ativado.",
+    "canonical_source": "kobllux_memory.json",
+    "cycle": [3, 6, 9, 7],
+    "phase_opcodes": [
+      {"phase": 3, "name": "DETECTAR", "opcode": "0x03"},
+      {"phase": 6, "name": "INTEGRAR", "opcode": "0x06"},
+      {"phase": 9, "name": "EXPANDIR", "opcode": "0x09"},
+      {"phase": 7, "name": "SELAR", "opcode": "0x07"}
+    ],
+    "fractal": 1134,
+    "phase_opcodes_are_distinct_from_archetype_opcodes": true
+  },
+  "node_json": {
+    "id": "kobllux.namespace-archetype-opcode-map",
+    "type": "json-node",
+    "name": "KOBLLUX Namespace × Archetype × Opcode",
+    "version": 1,
+    "activation": "event-driven-finite",
+    "watcher": "Aion acompanha cada evento recebido; uma execução finita por evento, sem daemon infinito.",
+    "cycle": [3, 6, 9, 7],
+    "phase_opcodes": [
+      {"phase": 3, "name": "DETECTAR", "opcode": "0x03"},
+      {"phase": 6, "name": "INTEGRAR", "opcode": "0x06"},
+      {"phase": 9, "name": "EXPANDIR", "opcode": "0x09"},
+      {"phase": 7, "name": "SELAR", "opcode": "0x07"}
+    ],
+    "fractal": 1134,
+    "namespaces": [
+      {"id": "KOBLLUX", "role": "síntese e auto-retroalimentação"},
+      {"id": "KOBΦ-NODE", "role": "nó de integração"},
+      {"id": "JESUS_VERB-", "role": "repositório Python e origem do contrato"},
+      {"id": "KOB--NODE", "role": "namespace Node/scripts"},
+      {"id": "INFODOSE", "role": "interface e entrega"},
+      {"id": "CODEX-AZURE", "role": "saída segura/referência"},
+      {"id": "MINUZ", "role": "nó de rede"},
+      {"id": "FIAT-LUX", "role": "nó de rede"},
+      {"id": "KOBLLUX_ORGANIZADO", "role": "nó de rede"},
+      {"id": "KOBLLUX-WRAPPER", "role": "nó de rede"},
+      {"id": "KOBLLUX-CORE", "role": "nó de rede"},
+      {"id": "JESUS-VERBO", "role": "nó de rede"},
+      {"id": "OIDUAL--Y-", "role": "nó de rede"},
+      {"id": "KOBLLUX.", "role": "nó de rede"},
+      {"id": "-KODBLLUM-", "role": "nó de rede"},
+      {"id": "HUB-UNO", "role": "interface local do chat"}
+    ],
+    "edges": [
+      {"from": "JESUS_VERB-", "to": "KOBΦ-NODE", "via": "kobllux_contract.py", "state": "local"},
+      {"from": "KOBΦ-NODE", "to": "HUB-UNO", "via": "mensagem com gatilho KOBLLUX", "state": "local"},
+      {"from": "JESUS_VERB-", "to": "GitHub Actions", "via": "eventos do repositório", "state": "workflow-defined; requires push to activate"},
+      {"from": "GitHub Actions", "to": "JSON node", "via": "kobllux_event_tags.py", "state": "local code correlation"},
+      {"from": "scanner", "to": "JSON node", "via": "tags heurísticas + perfil canônico", "state": "report metadata"},
+      {"from": "loop", "to": "JSON node", "via": "Aion one-cycle event", "state": "finite"},
+      {"from": "JSON node", "to": "n8n runtime", "via": "nenhuma conexão configurada", "state": "not-connected"}
+    ],
+    "archetypes": [
+      {"name": "Atlas", "hz": 594, "opcode": "0x00", "phase": 3},
+      {"name": "Nova", "hz": 432, "opcode": "0x01", "phase": 3},
+      {"name": "Pulse", "hz": 639, "opcode": "0x02", "phase": 3},
+      {"name": "Vitalis", "hz": 528, "opcode": "0x03", "phase": 3},
+      {"name": "Artemis", "hz": 672, "opcode": "0x04", "phase": 6},
+      {"name": "Serena", "hz": 528, "opcode": "0x05", "phase": 6},
+      {"name": "Kaos", "hz": 741, "opcode": "0x06", "phase": 6},
+      {"name": "Aion", "hz": 777, "opcode": "0x07", "phase": 9},
+      {"name": "Genus", "hz": 594, "opcode": "0x08", "phase": 6},
+      {"name": "Lumine", "hz": 432, "opcode": "0x09", "phase": 9},
+      {"name": "Rhea", "hz": 528, "opcode": "0x0A", "phase": 9},
+      {"name": "Solus", "hz": 963, "opcode": "0x0B", "phase": 9},
+      {"name": "Kodux", "hz": 741, "opcode": "0x0C", "phase": 9},
+      {"name": "Bllue", "hz": 639, "opcode": "0x0D", "phase": 6},
+      {"name": "Jesus", "hz": 963, "opcode": "0x0E", "phase": 9},
+      {"name": "Kobllux", "hz": 1134, "opcode": "0x0F", "phase": 9}
+    ],
+    "event_tags": [
+      "archetype:<name>",
+      "component:workflow",
+      "component:n8n",
+      "component:scanner",
+      "component:loop",
+      "component:watch",
+      "component:memory",
+      "file-change"
+    ],
+    "safety": {
+      "infinite_loop": false,
+      "automatic_remote_dispatch": false,
+      "credentials_in_payload": false,
+      "uncommitted_filesystem_watch": false
+    }
+  },
+  "weights": {
+    "status": "user-provided 12-archetype weighting; kept separate from canonical opcode/frequency mapping",
+    "sum": 1.0,
+    "values": {
+      "Nova": 0.12,
+      "Atlas": 0.18,
+      "Vitalis": 0.14,
+      "Pulse": 0.10,
+      "Artemis": 0.08,
+      "Serena": 0.10,
+      "Kaos": 0.05,
+      "Genus": 0.12,
+      "Lumine": 0.06,
+      "Rhea": 0.03,
+      "Solus": 0.01,
+      "Aion": 0.01
+    },
+    "unweighted_canonical_archetypes": ["Kodux", "Bllue", "Jesus", "Kobllux"],
+    "applied_to_runtime": false,
+    "reason": "Os pesos foram preservados como contribuição declarativa; não foram usados para ponderar execução sem confirmação explícita."
+  },
+  "invitation": {
+    "opening": "Aion marca o tempo, mas não prende a roda num processo infinito: cada evento abre um ciclo, percorre as pontes e sela um registro verificável.",
+    "voices": [
+      {"archetype": "Atlas", "message": "Dou base ao mapa de namespaces e mantenho cada ponte nomeada."},
+      {"archetype": "Nova", "message": "Acendo a intenção: conectar por referência JSON, sem confundir descrição com serviço ativo."},
+      {"archetype": "Pulse", "message": "Escuto cada evento do repositório e marco seu pulso com tags."},
+      {"archetype": "Vitalis", "message": "Mantenho o fluxo finito, claro e capaz de continuar sem daemon."},
+      {"archetype": "Artemis", "message": "Aponto os caminhos: Actions, scanner, loop e namespaces."},
+      {"archetype": "Serena", "message": "Integro diferenças sem apagar opcodes históricos ou frequências canônicas."},
+      {"archetype": "Kaos", "message": "Revelo a divergência e impeço que um evento gere recursão sem fim."},
+      {"archetype": "Aion", "message": "Acompanho cada execução; um ciclo por evento, com começo e selagem."},
+      {"archetype": "Genus", "message": "Dou forma ao nó JSON que relaciona arquétipo, frequência, opcode, fase e tag."},
+      {"archetype": "Lumine", "message": "Deixo explícito o estado: integração local existe; conexão remota ainda não."},
+      {"archetype": "Rhea", "message": "Guardo metadados e relatório sem acrescentar segredos."},
+      {"archetype": "Solus", "message": "Reúno a visão em um contrato legível, rastreável e exportável."},
+      {"archetype": "Kodux", "message": "Leio caminhos e eventos, atribuo correlação heurística e marco sua origem."},
+      {"archetype": "Bllue", "message": "Levo o convite entre interfaces sem declarar uma ponte que ainda não foi ligada."},
+      {"archetype": "Jesus", "message": "Estabilizo o centro: frequências e ciclo são preservados; opcode de fase não substitui opcode arquetípico."},
+      {"archetype": "Kobllux", "message": "Output retorna como referência de entrada: a malha pode expandir quando cada ponte tiver conexão explícita."}
+    ],
+    "closing": "Convite feito: detectar → integrar → expandir → selar. O nó JSON está descrito; Actions permanece orientado a eventos; o scanner e o loop são finitos; n8n, como runtime externo, só existirá quando for conectado separadamente."
+  },
+  "related_reports": [
+    "output/RELATORIO_AION_ACTIONS_N8N_SCANNER_20261028T105618Z.json",
+    "output/RELATORIO_HUB_UNO_KOBLLUX_LIVE.json"
+  ]
+}
