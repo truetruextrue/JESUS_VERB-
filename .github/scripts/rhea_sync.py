@@ -33,6 +33,19 @@ run_id = os.environ.get("KOB_RUN_ID", "")
 msg = os.environ.get("KOB_MSG", "")[:72]
 pr_title = os.environ.get("KOB_PR_TITLE", "")[:64]
 pr_num = os.environ.get("KOB_PR_NUM", "")
+try:
+    head_commit = json.loads(os.environ.get("KOB_HEAD_COMMIT", "null"))
+except json.JSONDecodeError:
+    head_commit = None
+file_changes = {}
+if isinstance(head_commit, dict):
+    for kind in ("added", "modified", "removed"):
+        values = head_commit.get(kind, [])
+        if isinstance(values, list):
+            file_changes[kind] = sorted({
+                path[:160] for path in values
+                if isinstance(path, str) and path.strip()
+            })[:20]
 
 arquetipo, nivel, runa, hz = ARQUETIPO_MAP.get(event_name, ("Rhea", 9, "ᚱᛇ", 174))
 
@@ -42,6 +55,7 @@ evento = {
     "repo": repo, "branch": branch, "actor": actor, "commit_msg": msg,
     "pr_title": pr_title, "pr_num": pr_num, "run_id": run_id,
     "seed": digital_root(KOB_FRACTAL),
+    "arquivos": file_changes,
     "chain": {"fractal": KOB_FRACTAL, "nivel": nivel, "lei": KOB_LEI, "ciclo_seq": [3,6,9,7]},
 }
 

@@ -1,0 +1,77 @@
+{
+  "name": "KOBLLUX · Memory Ingest · 16 Archetypes",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "kobllux-memory",
+        "authentication": "basicAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "5b45bcaa-00ab-4dcf-9ea1-a7a29ce0d701",
+      "name": "Authenticated Memory Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const allowed = new Set(['ATLAS','NOVA','PULSE','VITALIS','ARTEMIS','SERENA','KAOS','AION','GENUS','LUMINE','RHEA','SOLUS','KODUX','BLLUE','JESUS','KOBLLUX']);\nconst input = $input.first().json.body ?? $input.first().json;\nif (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Expected an event object');\nif (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.event_id ?? '')) throw new Error('Invalid event_id');\nif (!['sumbus-fusion/hypervision','github-actions'].includes(input.source)) throw new Error('Invalid source');\nif (!Array.isArray(input.archetypes) || !input.archetypes.length || input.archetypes.length > 16) throw new Error('Invalid archetypes');\nconst archetypes = [...new Set(input.archetypes.map(value => String(value).toUpperCase()))];\nif (archetypes.some(value => !allowed.has(value))) throw new Error('Unknown archetype');\nif (!Array.isArray(input.tags) || input.tags.length > 32 || input.tags.some(tag => typeof tag !== 'string' || !tag.trim() || tag.length > 80)) throw new Error('Invalid tags');\nif (typeof input.ts !== 'string' || Number.isNaN(Date.parse(input.ts))) throw new Error('Invalid timestamp');\nif (!input.payload || typeof input.payload !== 'object' || Array.isArray(input.payload) || JSON.stringify(input.payload).length > 12000) throw new Error('Invalid payload');\nreturn [{json:{event_id:input.event_id,occurred_at:new Date(input.ts).toISOString(),source:input.source,archetypes,tags:[...new Set(input.tags)],payload:input.payload}}];"
+      },
+      "id": "26463016-e349-42e5-8924-a0a2973f5a4a",
+      "name": "Validate and Normalize 16 Archetypes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO kobllux_interactions (event_id, occurred_at, source, archetypes, tags, payload)\nSELECT event_id, occurred_at, source,\n       ARRAY(SELECT jsonb_array_elements_text(archetypes)),\n       ARRAY(SELECT jsonb_array_elements_text(tags)), payload\nFROM jsonb_to_record($1::jsonb) AS event(\n    event_id UUID, occurred_at TIMESTAMPTZ, source TEXT,\n    archetypes JSONB, tags JSONB, payload JSONB\n)\nON CONFLICT (event_id) DO NOTHING\nRETURNING event_id;",
+        "options": {
+          "queryReplacement": "={{ JSON.stringify($json) }}"
+        }
+      },
+      "id": "11a4666f-e38b-4814-bc70-15d3f0b39519",
+      "name": "Persist Idempotently in PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [780, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { accepted: true, event_id: $('Validate and Normalize 16 Archetypes').first().json.event_id } }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "ea1ad439-9ea6-474f-8ff3-5c66e5e22d30",
+      "name": "Confirm Stored Event",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1060, 300]
+    }
+  ],
+  "connections": {
+    "Authenticated Memory Webhook": {
+      "main": [[{"node": "Validate and Normalize 16 Archetypes", "type": "main", "index": 0}]]
+    },
+    "Validate and Normalize 16 Archetypes": {
+      "main": [[{"node": "Persist Idempotently in PostgreSQL", "type": "main", "index": 0}]]
+    },
+    "Persist Idempotently in PostgreSQL": {
+      "main": [[{"node": "Confirm Stored Event", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c0f773f7-9724-4db4-b0e6-34e9325448d9",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

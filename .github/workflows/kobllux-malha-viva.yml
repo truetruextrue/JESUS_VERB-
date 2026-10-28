@@ -71,7 +71,22 @@ jobs:
           KOB_MSG: ${{ github.event.head_commit.message || github.event.inputs.z || github.event_name }}
           KOB_PR_TITLE: ${{ github.event.pull_request.title || '' }}
           KOB_PR_NUM: ${{ github.event.pull_request.number || '' }}
+          KOB_HEAD_COMMIT: ${{ toJSON(github.event.head_commit) }}
         run: python3 .github/scripts/rhea_sync.py
+
+      - name: "ᚱ Rhea · Sincronizar evento com memória compartilhada"
+        env:
+          KOBLLUX_MEMORY_PROXY_URL: ${{ secrets.KOBLLUX_MEMORY_PROXY_URL }}
+          KOBLLUX_PROXY_TOKEN: ${{ secrets.KOBLLUX_PROXY_TOKEN }}
+        run: |
+          if [ -z "$KOBLLUX_MEMORY_PROXY_URL" ] || [ -z "$KOBLLUX_PROXY_TOKEN" ]; then
+            echo "Memória compartilhada não configurada; registro append-only local preservado."
+            exit 0
+          fi
+          python3 kobllux_memory_proxy.py --forward-latest-github
+
+      - name: "⬡ Kodux · Atualizar índice do Códice"
+        run: python3 kodux_codex_watcher.py --once
 
       - name: "ᚨᛇ Aion · Selo Veritas (schedule/dispatch)"
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -115,7 +130,8 @@ jobs:
           git config user.name "KOBLLUX-∆³"
           git config user.email "kobllux@infodose.com.br"
           git add kobllux_memory.jsonl kobllux_seal.json \
-                  kobllux_seal_veritas.jsonl horus_relatorio.jsonl 2>/dev/null || true
+                  kobllux_seal_veritas.jsonl horus_relatorio.jsonl \
+                  output/CODICE_KODUX_ESTADO.md 2>/dev/null || true
           if ! git diff --staged --quiet; then
             MSG="ᚱᛇᚨᛇᚺᛟ Rhea+Aion+Horus · ${{ github.event_name }} · ${{ github.sha }} [skip ci]"
             git commit -m "$MSG"
