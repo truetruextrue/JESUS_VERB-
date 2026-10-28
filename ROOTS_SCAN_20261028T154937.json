@@ -1,0 +1,534 @@
+{
+ "scanner": "KOBLLUX ROOT SCANNER FRACTAL ∆³",
+ "ts": "20261028T154937",
+ "raiz": "/tmp/E91_JESUS_VERB",
+ "nos": 68,
+ "ocultos": 7,
+ "nivel_max": 2,
+ "redes": {},
+ "equacao": "אֱמֶת × INTEGRAR ÷ Δ = ∞",
+ "fractal": "3×6×9×7=1134",
+ "arvore": [
+  {
+   "caminho": ".claude",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": true
+  },
+  {
+   "caminho": ".git",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": true
+  },
+  {
+   "caminho": ".github",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Rhea",
+   "oculto": true
+  },
+  {
+   "caminho": "000_AUDIO",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Pulse",
+   "oculto": false
+  },
+  {
+   "caminho": "000_VIDEOS",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "00_CORE",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "00_FUNDACAO",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "01_DIMENSOES",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "02_CICLO_369",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "03_FLUXO_ENERGETICO",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Vitalis",
+   "oculto": false
+  },
+  {
+   "caminho": "0Z_ASSETS",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "Estrutura Do Código",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "Linha Do Tempo",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "_index",
+   "tipo": "D",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": ".gitignore",
+   "tipo": "F",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": true,
+   "bytes": 28
+  },
+  {
+   "caminho": ".gitmessage",
+   "tipo": "F",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": true,
+   "bytes": 3
+  },
+  {
+   "caminho": "segredos.local",
+   "tipo": "F",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": true,
+   "bytes": 7
+  },
+  {
+   "caminho": "workflow.json",
+   "tipo": "F",
+   "nivel": 0,
+   "arquetipo": "Rhea",
+   "oculto": false,
+   "bytes": 2
+  },
+  {
+   "caminho": "{Z}_FIRMWARE.md",
+   "tipo": "F",
+   "nivel": 0,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 11
+  },
+  {
+   "caminho": "_index/codex_drive",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Nova",
+   "oculto": false
+  },
+  {
+   "caminho": "_index/.roda_viva_last_seen",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": true,
+   "bytes": 1
+  },
+  {
+   "caminho": "_index/CODEX_SCAN_oiDual.json",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Artemis",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "_index/COMMIT_LOG_∆7.jsonl",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Aion",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "_index/SESSION_LOG_∆7.jsonl",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Aion",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "_index/memory.jsonl",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "_index/vocabulario_vivo.jsonl",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "000_AUDIO/EP.mp3",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Pulse",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "000_AUDIO/README.md",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 37
+  },
+  {
+   "caminho": "Estrutura Do Código/mapa_ast.py",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  },
+  {
+   "caminho": ".claude/settings.json",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Rhea",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": ".claude/settings.local.json",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Rhea",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "00_CORE/LOGS",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Aion",
+   "oculto": false
+  },
+  {
+   "caminho": "01_DIMENSOES/archetypes",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "01_DIMENSOES/escalador_dimensional.py",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  },
+  {
+   "caminho": "02_CICLO_369/temporal_loop.py",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  },
+  {
+   "caminho": "0Z_ASSETS/JSON",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "0Z_ASSETS/TEXTS",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "000_VIDEOS/LISTA.txt",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "000_VIDEOS/README.md",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 37
+  },
+  {
+   "caminho": "000_VIDEOS/Whisk_trilha.mp4",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": ".github/scripts",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": ".github/workflows",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "00_FUNDACAO/01_ATIVAR_DELTA",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Vitalis",
+   "oculto": false
+  },
+  {
+   "caminho": "00_FUNDACAO/02_KOBLLUX_CORE",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "00_FUNDACAO/03_FORMA_VIVA",
+   "tipo": "D",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false
+  },
+  {
+   "caminho": "00_FUNDACAO/DOC_ANALISE.md",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 37
+  },
+  {
+   "caminho": "00_FUNDACAO/RELATORIO.md",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Solus",
+   "oculto": false,
+   "bytes": 37
+  },
+  {
+   "caminho": "00_FUNDACAO/oi_dual_2026.md",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 37
+  },
+  {
+   "caminho": "03_FLUXO_ENERGETICO/energia_vital.py",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  },
+  {
+   "caminho": ".git/config",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 74
+  },
+  {
+   "caminho": "Linha Do Tempo/cronologia.md",
+   "tipo": "F",
+   "nivel": 1,
+   "arquetipo": "Aion",
+   "oculto": false,
+   "bytes": 37
+  },
+  {
+   "caminho": "00_CORE/LOGS/aion_supervisor.jsonl",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "00_CORE/LOGS/dicionario_vivo.jsonl",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "00_CORE/LOGS/roda_viva_council.jsonl",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "01_DIMENSOES/archetypes/atlas.html",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Pulse",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "01_DIMENSOES/archetypes/elysha.html",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Pulse",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "01_DIMENSOES/archetypes/ignyra.html",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Pulse",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "01_DIMENSOES/archetypes/kaion.html",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Pulse",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "01_DIMENSOES/archetypes/luxara.html",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Pulse",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "0Z_ASSETS/TEXTS/glosario.txt",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "0Z_ASSETS/JSON/frequencias.json",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Rhea",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": ".github/scripts/rhea_sync.py",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  },
+  {
+   "caminho": ".github/workflows/cadial-seal.yml",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Aion",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": ".github/workflows/kobllux-malha-viva.yml",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": ".github/workflows/pages.yml",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Atlas",
+   "oculto": false,
+   "bytes": 1
+  },
+  {
+   "caminho": "00_FUNDACAO/02_KOBLLUX_CORE/kobllux_core.py",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  },
+  {
+   "caminho": "00_FUNDACAO/01_ATIVAR_DELTA/ativar_delta.py",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  },
+  {
+   "caminho": "00_FUNDACAO/03_FORMA_VIVA/forma_viva.py",
+   "tipo": "F",
+   "nivel": 2,
+   "arquetipo": "Vitalis",
+   "oculto": false,
+   "bytes": 9
+  }
+ ],
+ "selo": "35f0da683bf7742d817330cdb4cf193b2bf55d575c147a3efbf8c72c53b46a08"
+}
