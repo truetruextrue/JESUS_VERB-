@@ -18,6 +18,13 @@ const hubRoot = path.join(
 );
 const bridgePath = path.join(hubRoot, 'js', '19-kobllux-live-bridge.js');
 const bridgeSource = fs.readFileSync(bridgePath, 'utf8');
+const unifiedHubPath = path.join(
+  __dirname,
+  '..',
+  'KOBLLUX_UNIFICADO',
+  '09_HUB_UNO',
+  'index.html'
+);
 
 function createHub() {
   const values = new Map();
@@ -54,6 +61,13 @@ function createHub() {
   const window = {
     localStorage,
     crypto: { randomUUID: () => 'event-id-1' },
+    KBLX_ORBE: {
+      profiles() { return []; },
+      activeProfile() { return null; },
+      eventMetadata() {
+        return { archetype: 'Rhea', hz: 528, opcode: '0x0A', matched_records: 2 };
+      }
+    },
     koblluxSystemLog() { return 'base system prompt'; },
     handleUserMessage: async function (text) {
       return { text, systemPrompt: window.koblluxSystemLog() };
@@ -113,12 +127,14 @@ test('only KOBLLUX messages add context and persist metadata without message or 
   assert.match(prompted.systemPrompt, /KOBLLUX LIVE BRIDGE/);
   assert.match(prompted.systemPrompt, /uma fala curta de cada arquétipo, sem omissões/);
   assert.match(prompted.systemPrompt, /3 \/ 0x03 DETECTAR → 6 \/ 0x06 INTEGRAR → 9 \/ 0x09 EXPANDIR → 7 \/ 0x07 SELAR/);
-  assert.match(prompted.systemPrompt, /Kobllux \(1134 Hz, 0x0F\)/);
+  assert.match(prompted.systemPrompt, /Kobllux \(1134 Hz, 0x0F,/);
   assert.equal(events.length, 1);
   assert.equal(events[0].message_chars, 'KOBLLUX, integrar o fluxo'.length);
   assert.equal(Object.hasOwn(events[0], 'message'), false);
   assert.equal(JSON.stringify(events).includes('dual.keys'), false);
   assert.equal(events[0].secrets_stored, false);
+  assert.equal(events[0].orbe.archetype, 'Rhea');
+  assert.equal(events[0].orbe.matched_records, 2);
   assert.equal(eqEvents[0].eventId, 'event-id-1');
   assert.match(window.KOBLLUX_LIVE_BRIDGE.exportJsonl(), /"type":"kobllux-chat-trigger"/);
   assert.equal(getLastDownload(), null);
@@ -126,4 +142,19 @@ test('only KOBLLUX messages add context and persist metadata without message or 
   elements.get('koblluxLiveExport').click();
   assert.equal(getLastDownload().download, 'kobllux-live-workflow.jsonl');
   assert.equal(window.koblluxSystemLog(), 'base system prompt');
+});
+
+test('the unified Hub loads the tested bridge after its chat scripts', () => {
+  const html = fs.readFileSync(unifiedHubPath, 'utf8');
+  const script = html.match(/<script src="([^"]*19-kobllux-live-bridge\.js)"><\/script>/);
+
+  assert.ok(script, 'the unified Hub must load the live bridge');
+  assert.equal(
+    path.resolve(path.dirname(unifiedHubPath), decodeURIComponent(script[1])),
+    bridgePath
+  );
+  assert.ok(
+    html.indexOf(script[0]) > html.indexOf('<script src="bluevoice-1milhaum.js"></script>'),
+    'the bridge must load after the Hub chat scripts'
+  );
 });

@@ -67,6 +67,7 @@ jobs:
           fi
 
       - name: "ᚱᛇ Rhea 0x0A · Persistir Evento"
+        id: rhea
         env:
           KOB_SHA: ${{ github.sha }}
           KOB_REPO: ${{ github.repository }}
@@ -79,6 +80,22 @@ jobs:
           KOB_PR_NUM: ${{ github.event.pull_request.number || '' }}
           KOB_HEAD_COMMIT: ${{ toJSON(github.event.head_commit) }}
         run: python3 .github/scripts/rhea_sync.py
+
+      - name: "∆³ · Resumo do pulso de metadados"
+        env:
+          EVENT_ID: ${{ steps.rhea.outputs.event_id }}
+          METADATA_HASH: ${{ steps.rhea.outputs.metadata_hash }}
+          ARCHETYPE: ${{ steps.rhea.outputs.archetype }}
+        run: |
+          {
+            echo "## KOBLLUX · Pulso de metadados"
+            echo ""
+            echo "- Evento: \`${EVENT_ID}\`"
+            echo "- SHA-256 dos metadados: \`${METADATA_HASH}\`"
+            echo "- Arquétipo principal: \`${ARCHETYPE}\`"
+            echo "- Persistência: \`kobllux_memory.jsonl\`, \`_index/memory.jsonl\`, \`kobllux_seal.json\`"
+            echo "- Execução finita; gravação com \`[skip ci]\` impede recursão."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: "ᚱ Rhea · Sincronizar evento com memória compartilhada"
         env:
@@ -136,6 +153,7 @@ jobs:
           git config user.name "KOBLLUX-∆³"
           git config user.email "kobllux@infodose.com.br"
           git add kobllux_memory.jsonl kobllux_seal.json \
+                  _index/memory.jsonl \
                   kobllux_seal_veritas.jsonl horus_relatorio.jsonl \
                   output/CODICE_KODUX_ESTADO.md 2>/dev/null || true
           if ! git diff --staged --quiet; then

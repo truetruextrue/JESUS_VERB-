@@ -276,6 +276,7 @@ def forward_latest_github_event() -> None:
             "pull_request_title": source.get("pr_title"),
             "pull_request_number": source.get("pr_num"),
             "run_id": run_id,
+            "metadata_hash": source.get("metadata_hash"),
             "changed_files": file_changes,
             "seal": source.get("chain"),
             "archetype_profiles": source.get(
@@ -283,6 +284,7 @@ def forward_latest_github_event() -> None:
                 correlation["profiles"],
             ),
             "path_labels": source.get("path_labels", correlation["path_labels"]),
+            "frontend_events": source.get("frontend_events", []),
             "cycle": correlation["cycle"],
             "fractal": correlation["fractal"],
         },

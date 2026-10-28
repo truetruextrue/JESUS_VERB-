@@ -1,4 +1,5 @@
 import json
+import hashlib
 import importlib.util
 import os
 from pathlib import Path
@@ -114,10 +115,11 @@ class EventTagTests(unittest.TestCase):
             "KOB_HEAD_COMMIT": json.dumps(head_commit),
         }
         with tempfile.TemporaryDirectory() as directory:
+            github_output = Path(directory) / "github-output.txt"
             subprocess.run(
                 [sys.executable, str(RHEA_SYNC)],
                 cwd=directory,
-                env=environment,
+                env=environment | {"GITHUB_OUTPUT": str(github_output)},
                 check=True,
                 capture_output=True,
                 text=True,
@@ -126,6 +128,12 @@ class EventTagTests(unittest.TestCase):
                 event = json.loads(file.readline())
             with open(Path(directory) / "kobllux_seal.json", encoding="utf-8") as file:
                 seal = json.load(file)[0]
+            with open(Path(directory) / "_index" / "memory.jsonl", encoding="utf-8") as file:
+                index_record = json.loads(file.readline())
+            output_values = dict(
+                line.split("=", 1)
+                for line in github_output.read_text(encoding="utf-8").splitlines()
+            )
 
         self.assertEqual(event["arquetipo"], "Pulse")
         self.assertIn("Aion", event["arquetipos"])
@@ -133,8 +141,144 @@ class EventTagTests(unittest.TestCase):
         self.assertIn("archetype:aion", event["tags"])
         self.assertEqual(event["archetype_profiles"][0]["hz"], 639)
         self.assertEqual(event["chain"]["ciclo_seq"], [3, 6, 9, 7])
+        self.assertEqual(len(event["metadata_hash"]), 64)
+        self.assertEqual(index_record["event_id"], event["event_id"])
+        self.assertEqual(index_record["hash"], event["metadata_hash"])
+        self.assertEqual(index_record["source"], "github-actions")
+        self.assertEqual(output_values["event_id"], event["event_id"])
+        self.assertEqual(output_values["metadata_hash"], event["metadata_hash"])
+        self.assertEqual(seal["event_id"], event["event_id"])
         self.assertEqual(seal["hz"], 777)
         self.assertIn("component:n8n", seal["tags"])
+
+    def test_github_rhea_sync_hash_is_stable_and_retries_are_idempotent(self):
+        environment = os.environ | {
+            "KOB_EVENT": "push",
+            "KOB_SHA": "a1b2c3d4e5f67890",
+            "KOB_REPO": "truetruextrue/JESUS_VERB-",
+            "KOB_BRANCH": "main",
+            "KOB_ACTOR": "integration-test",
+            "KOB_RUN_ID": "stable-run-3697",
+            "KOB_MSG": "KOBLLUX integration event",
+            "KOB_HEAD_COMMIT": json.dumps({
+                "added": [],
+                "modified": ["KOBLLUX_UNIFICADO/09_HUB_UNO/kblx_orbe_engine.js"],
+                "removed": [],
+            }),
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            outputs = []
+            for attempt in range(2):
+                github_output = Path(directory) / f"github-output-{attempt}.txt"
+                subprocess.run(
+                    [sys.executable, str(RHEA_SYNC)],
+                    cwd=directory,
+                    env=environment | {"GITHUB_OUTPUT": str(github_output)},
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+                outputs.append(dict(
+                    line.split("=", 1)
+                    for line in github_output.read_text(encoding="utf-8").splitlines()
+                ))
+
+            memory_lines = (Path(directory) / "kobllux_memory.jsonl").read_text(
+                encoding="utf-8"
+            ).splitlines()
+            index_lines = (Path(directory) / "_index" / "memory.jsonl").read_text(
+                encoding="utf-8"
+            ).splitlines()
+            seals = json.loads((Path(directory) / "kobllux_seal.json").read_text(
+                encoding="utf-8"
+            ))
+            event = json.loads(memory_lines[0])
+            index_record = json.loads(index_lines[0])
+            hash_payload = {
+                key: value
+                for key, value in event.items()
+                if key not in {"ts", "metadata_hash"}
+            }
+            expected_hash = hashlib.sha256(json.dumps(
+                hash_payload,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")).hexdigest()
+
+        self.assertEqual(len(memory_lines), 1)
+        self.assertEqual(len(index_lines), 1)
+        self.assertEqual(len(seals), 1)
+        self.assertEqual(event["metadata_hash"], expected_hash)
+        self.assertEqual(index_record["hash"], expected_hash)
+        self.assertEqual(outputs[0]["metadata_hash"], outputs[1]["metadata_hash"])
+        self.assertEqual(outputs[0]["event_id"], outputs[1]["event_id"])
+
+    def test_hub_jsonl_metadata_is_sanitized_and_joined_into_actions_memory(self):
+        environment = os.environ | {
+            "KOB_EVENT": "push",
+            "KOB_SHA": "0123456789abcdef",
+            "KOB_REPO": "truetruextrue/JESUS_VERB-",
+            "KOB_BRANCH": "main",
+            "KOB_ACTOR": "integration-test",
+            "KOB_RUN_ID": "hub-import-run",
+            "KOB_MSG": "Import Hub metadata",
+            "KOB_HEAD_COMMIT": json.dumps({"added": [], "modified": [], "removed": []}),
+        }
+        frontend_event = {
+            "id": "browser-event-1",
+            "ts": "2026-10-28T12:00:00Z",
+            "type": "kobllux-chat-trigger",
+            "message": "this user message must not enter the Actions memory",
+            "message_chars": 84,
+            "archetypes": ["Kobllux", "Rhea"],
+            "orbe": {
+                "archetype": "Rhea",
+                "hz": 9999,
+                "opcode": "0xFF",
+                "cycle": 99,
+                "matched_records": 3,
+                "sources": ["event-memory", "untrusted-external-source"],
+            },
+        }
+
+        with tempfile.TemporaryDirectory() as directory:
+            output_dir = Path(directory) / "output"
+            output_dir.mkdir()
+            (output_dir / "kobllux-live-workflow.jsonl").write_text(
+                json.dumps(frontend_event) + "\n",
+                encoding="utf-8",
+            )
+            subprocess.run(
+                [sys.executable, str(RHEA_SYNC)],
+                cwd=directory,
+                env=environment,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            event = json.loads(
+                (Path(directory) / "kobllux_memory.jsonl").read_text(encoding="utf-8")
+            )
+            index_record = json.loads(
+                (Path(directory) / "_index" / "memory.jsonl").read_text(encoding="utf-8")
+            )
+
+        imported = event["frontend_events"]
+        self.assertEqual(len(imported), 1)
+        self.assertEqual(imported[0]["event_id"], "browser-event-1")
+        self.assertNotIn("message", imported[0])
+        self.assertEqual(imported[0]["profile"]["name"], "Rhea")
+        self.assertEqual(imported[0]["profile"]["hz"], 528)
+        self.assertEqual(imported[0]["profile"]["opcode"], "0x0A")
+        self.assertEqual(imported[0]["profile"]["cycle"], 9)
+        self.assertEqual(imported[0]["profile"]["sources"], ["event-memory"])
+        self.assertIn("archetype:rhea", event["tags"])
+        self.assertIn("frontend-metadata", event["tags"])
+        self.assertTrue(any(profile["name"] == "Rhea" for profile in event["archetype_profiles"]))
+        self.assertNotIn("this user message", json.dumps(event))
+        self.assertEqual(index_record["frontend_events"], 1)
+        self.assertEqual(index_record["hash"], event["metadata_hash"])
 
     def test_aion_cli_runs_exactly_one_cycle_and_records_all_archetypes(self):
         loop_script = ROOT / "kobllux_loop.py"
@@ -184,6 +328,7 @@ class EventTagTests(unittest.TestCase):
             if node["name"] == "Validate and Normalize 16 Archetypes"
         )
 
+        metadata_hash = ""
         with tempfile.TemporaryDirectory() as directory:
             temp_root = Path(directory)
             subprocess.run(
@@ -194,6 +339,10 @@ class EventTagTests(unittest.TestCase):
                 capture_output=True,
                 text=True,
             )
+            stored_event = json.loads(
+                (temp_root / "kobllux_memory.jsonl").read_text(encoding="utf-8").splitlines()[0]
+            )
+            metadata_hash = stored_event["metadata_hash"]
 
             request_payload: dict = {}
 
@@ -253,6 +402,22 @@ class EventTagTests(unittest.TestCase):
         self.assertIn("component:n8n", normalized["tags"])
         self.assertEqual(normalized["payload"]["fractal"], 1134)
         self.assertEqual(normalized["payload"]["cycle"], [3, 6, 9, 7])
+        self.assertEqual(normalized["payload"]["metadata_hash"], metadata_hash)
+
+    def test_actions_workflow_persists_hash_and_prevents_recursive_commit_runs(self):
+        workflow = (ROOT / ".github" / "workflows" / "kobllux-malha-viva.yml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("!contains(github.event.head_commit.message, '[skip ci]')", workflow)
+        self.assertIn("_index/memory.jsonl", workflow)
+        self.assertIn("steps.rhea.outputs.metadata_hash", workflow)
+        self.assertIn("GITHUB_STEP_SUMMARY", workflow)
+        self.assertIn("_index/memory.jsonl", workflow)
+        rhea_sync = (
+            ROOT / ".github" / "scripts" / "rhea_sync.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn('Path("output") / "kobllux-live-workflow.jsonl"', rhea_sync)
 
 
 if __name__ == "__main__":

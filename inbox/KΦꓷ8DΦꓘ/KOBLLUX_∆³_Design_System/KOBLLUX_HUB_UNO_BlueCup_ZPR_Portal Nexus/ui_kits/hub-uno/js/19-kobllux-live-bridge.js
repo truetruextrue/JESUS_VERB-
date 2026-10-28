@@ -88,6 +88,9 @@
 
   function makeEvent(text) {
     const ts = new Date().toISOString();
+    const orbe = window.KBLX_ORBE && typeof window.KBLX_ORBE.eventMetadata === 'function'
+      ? window.KBLX_ORBE.eventMetadata()
+      : null;
     return {
       id: newEventId(),
       ts: ts,
@@ -105,13 +108,25 @@
         workflow: WORKFLOW_FILE,
         delivery: 'local-event; manual GitHub Actions dispatch only'
       },
+      orbe: orbe,
       secrets_stored: false
     };
   }
 
   function buildSystemContext(event, recentMemory) {
-    const voices = ARCHETYPES.map(function (archetype) {
-      return archetype.name + ' (' + archetype.hz + ' Hz, ' + archetype.opcode + '): ' + archetype.role;
+    const canonicalProfiles = window.KBLX_ORBE && typeof window.KBLX_ORBE.profiles === 'function'
+      ? window.KBLX_ORBE.profiles()
+      : [];
+    const activeProfile = window.KBLX_ORBE && typeof window.KBLX_ORBE.activeProfile === 'function'
+      ? window.KBLX_ORBE.activeProfile()
+      : null;
+    const voices = (canonicalProfiles.length ? canonicalProfiles : ARCHETYPES).map(function (archetype) {
+      const cycle = archetype.cycle !== undefined ? archetype.cycle : 'n/a';
+      const dimension = archetype.dimension || 'n/a';
+      const role = archetype.role || archetype.funcao || '';
+      const note = archetype.note ? ' · ' + archetype.note : '';
+      return archetype.name + ' (' + archetype.hz + ' Hz, ' + archetype.opcode +
+        ', ciclo ' + cycle + ', ' + dimension + '): ' + role + note;
     }).join('\n');
     const cycle = PHASES.map(function (phase) {
       return phase.step + ' / ' + phase.opcode + ' ' + phase.name;
@@ -127,6 +142,11 @@
       'Preserve as frequências canônicas abaixo e o ciclo fixo ' + cycle + '.',
       'Os opcodes de fase são distintos dos aliases de opcode por arquétipo.',
       'Vozes canônicas:\n' + voices,
+      activeProfile
+        ? 'Arquétipo líder escolhido no Orbe: ' + activeProfile.name + ' · ' +
+          activeProfile.role + ' · ' + activeProfile.opcode + ' · ' +
+          activeProfile.hz + ' Hz. Preserve seu perfil sem apagar os outros arquétipos.'
+        : 'Use o arquétipo atualmente ativo no Hub como perfil de liderança, se disponível.',
       'Mantenha a resposta útil e em português brasileiro.',
       'Mapa de namespaces solicitado: ' + NAMESPACES.join(' × ') + '. Este mapa não implica conexão remota ativa.',
       'Runtime integrado localmente: KOBLLUX × KOBΦ-NODE × HUB-UNO × INFODOSE.',
