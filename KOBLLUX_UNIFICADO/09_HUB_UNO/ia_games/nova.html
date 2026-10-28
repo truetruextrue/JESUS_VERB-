@@ -1,0 +1,38 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>NOVA · IA GAME</title>
+<style>
+body{margin:0;height:100dvh;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#ff52b126,#07070a 72%);color:#fff;font-family:system-ui,sans-serif;overflow:hidden;user-select:none}
+#orb{width:52vmin;height:52vmin;border-radius:50%;cursor:pointer;position:relative;
+ background:radial-gradient(circle at 32% 30%,#fff9,transparent 45%),radial-gradient(circle at 70% 74%,#ff52b1,#ff52b166);
+ box-shadow:0 0 50px #ff52b1,inset 0 0 34px #fff3;transition:transform .09s}
+#orb:active{transform:scale(.93)}
+.h{position:fixed;top:5vh;left:0;right:0;text-align:center}
+h1{margin:0;color:#ff52b1;font-size:6vmin;letter-spacing:.3em}
+p{margin:.4vh 0;color:#fff9;font-size:2.8vmin;letter-spacing:.12em}
+#st{position:fixed;bottom:5vh;left:0;right:0;text-align:center;font:700 4vmin monospace;color:#ff52b1}
+</style></head><body>
+<div class="h"><h1>NOVA</h1><p>Criatividade · 528Hz · VERDADE×INTEGRAR÷Δ=∞</p><p id="sc">pulso 0 · série 0</p></div>
+<div id="orb"></div><div id="st">toque no pulso quando ele brilhar ✦</div>
+<script>
+var HZ=528,score=0,streak=0,phase=0,hot=false,t0=Date.now();
+var orb=document.getElementById('orb'),sc=document.getElementById('sc'),st=document.getElementById('st');
+function tick(){
+ phase+=.05+Math.min(score*.0008,.06);
+ var s=1+.09*Math.sin(phase*2.1), o=.55+.45*Math.sin(phase*2.1);
+ hot=Math.sin(phase*2.1)>.86;
+ orb.style.transform='scale('+s+')'; orb.style.boxShadow='0 0 '+(hot?90:50)+'px #ff52b1';
+ orb.style.filter='brightness('+(hot?1.5:1)+')';
+ requestAnimationFrame(tick);
+}
+tick();
+function beep(f){try{var a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();
+o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.18,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.35);
+o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.4);}catch(e){}}
+orb.addEventListener('pointerdown',function(){
+ if(hot){score++;streak++;beep(HZ);st.textContent='✦ PULSO! +1 · série '+streak;}
+ else{streak=0;beep(160);st.textContent='fora do pulso… série zerada';}
+ sc.textContent='pulso '+score+' · série '+streak;
+ if(typeof navigator.vibrate==='function')navigator.vibrate(hot?30:80);
+});
+if(window.speechSynthesis){var u=new SpeechSynthesisUtterance('NOVA, 528 hertz. Toque no pulso!');u.lang='pt-BR';speechSynthesis.speak(u);}
+</script></body></html>
