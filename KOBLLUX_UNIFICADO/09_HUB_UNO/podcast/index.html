@@ -1,0 +1,37 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>PODCAST DA MEMÓRIA · 33 PULSOS</title>
+<style>
+body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 0%,#160d22,#07070a 70%);color:#f2f0ea;font-family:system-ui;padding:20px 16px 12vh}
+h1{color:#ff3c3c;text-align:center;letter-spacing:.2em;font-size:6vmin;text-shadow:0 0 30px #ff3c3c66;margin:10px 0 2px}
+p.sub{text-align:center;color:#8a8a95;font-size:2.8vmin;letter-spacing:.15em;margin:0 0 20px}
+.ep{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-left:4px solid #ff3c3c;border-radius:12px;padding:14px;margin-bottom:12px}
+.ep h2{margin:0 0 4px;font-size:4.2vmin;color:#ffb3b3}
+.ep .meta{font:11px monospace;color:#8a8a95;margin-bottom:8px}
+button{background:#1a0d12;border:1px solid #ff3c3c;border-radius:10px;color:#ff8080;padding:8px 14px;font:700 3vmin monospace;cursor:pointer;margin-right:6px}
+#st{position:fixed;bottom:14px;left:14px;right:14px;text-align:center;color:#ffd700;font:12px monospace;background:rgba(0,0,0,.75);border:1px solid #ffd70044;border-radius:10px;padding:8px;z-index:9}
+</style></head><body>
+<h1>PODCAST DA MEMÓRIA</h1><p class="sub">33 PULSOS · VERDADE x INTEGRAR / D = INF · troca de aba não interrompe</p>
+<div id="list"></div><div id="st">pronto</div>
+<script>
+var V=(function(){var q=[],sp=false,v=null;
+ function pk(){var vs=speechSynthesis.getVoices().filter(function(x){return /^pt/i.test(x.lang);});return vs[0]||null;}
+ speechSynthesis.onvoiceschanged=function(){v=pk();};v=pk();
+ setInterval(function(){if(sp&&speechSynthesis.paused){try{speechSynthesis.resume();}catch(e){}}},300);
+ document.addEventListener('visibilitychange',function(){if(document.hidden&&sp&&speechSynthesis.paused){try{speechSynthesis.resume();}catch(e){}}});
+ function ck(t){var p=String(t).replace(/\s+/g,' ').split(/([.!?;:])\s*/),o=[],c='';
+  for(var i=0;i<p.length;i++){if((c+p[i]).length<180)c+=p[i];else{if(c)o.push(c);c=p[i];}}if(c)o.push(c);return o.filter(Boolean);}
+ function pump(){if(!q.length){sp=false;document.getElementById('st').textContent='pulso encerrado · selo D7';return;}
+  sp=true;var u=new SpeechSynthesisUtterance(q.shift());if(v)u.voice=v;u.rate=.96;u.pitch=.9;
+  document.getElementById('st').textContent='narrando… '+(q.length+1)+' blocos restantes';
+  u.onend=function(){setTimeout(pump,120);};u.onerror=function(){setTimeout(pump,120);};speechSynthesis.speak(u);}
+ function speak(t){q.push.apply(q,ck(t));if(!sp)pump();}
+ return {speak:speak,stop:function(){q=[];sp=false;try{speechSynthesis.cancel();}catch(e){}}};})();
+fetch('episodios.json').then(function(r){return r.json();}).then(function(eps){
+ document.getElementById('list').innerHTML=eps.map(function(e,i){
+  return '<div class="ep"><h2>PULSO '+String(e.n).padStart(2,'0')+'/33 · '+e.titulo+'</h2>'
+  +'<div class="meta">narrador: '+e.arquetipo.toUpperCase()+' · fase '+e.fase+' · selo '+e.selo+'</div>'
+  +'<button onclick="play('+i+')">[ TOCAR PULSO ]</button><button onclick="V.stop()">[ PARAR ]</button>'
+  +'<div style="margin-top:8px;font-size:3vmin;color:#c9c9d9;line-height:1.7">'+e.texto.slice(0,220)+'…</div></div>';});
+ window._eps=eps;}).catch(function(){document.getElementById('list').textContent='manifesto offline';});
+function play(i){V.stop();V.speak('Pulso '+window._eps[i].n+' de 33. '+window._eps[i].texto);}
+</script></body></html>
