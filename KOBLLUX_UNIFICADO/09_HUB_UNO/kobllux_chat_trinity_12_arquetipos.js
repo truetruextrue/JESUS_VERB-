@@ -1,0 +1,1 @@
+console.log("[KOBLLUX] kobllux_chat_trinity_12_arquetipos.js · espelho íntegro");
