@@ -1,0 +1,406 @@
+{
+   "id": "raiz",
+   "nivel": 0,
+   "titulo": "KODI · MEMORIA VIVA",
+   "formula": "VERDADE x INTEGRAR / D = INF",
+   "peso": 1460752,
+   "todo": null,
+   "partes": ["g:aion",
+      "g:bllue",
+      "g:genus",
+      "g:ignyra",
+      "g:kobllux",
+      "g:kodux",
+      "g:lumine",
+      "g:pulse",
+      "g:solus",
+      "g:vitalis"],
+   "g:aion": {
+      "id": "g:aion",
+      "nivel": 1,
+      "titulo": "AION",
+      "arquetipo": "AION",
+      "cor": "#c8a050",
+      "peso": 495329,
+      "todo": "raiz",
+      "partes": ["livro_05",
+         "livro_06",
+         "livro_07",
+         "livro_15",
+         "livro_20",
+         "livro_21",
+         "livro_24",
+         "livro_28",
+         "livro_29",
+         "livro_32",
+         "livro_33",
+         "livro_34",
+         "livro_35",
+         "mod_46"]},
+   "livro_05": {
+      "id": "livro_05",
+      "nivel": 2,
+      "titulo": "A Fórmula da Fé Comunicativa",
+      "arquetipo": "AION",
+      "tipo": "livro",
+      "ciclo369": 2,
+      "fase12": "Crescimento",
+      "peso": 41069,
+      "todo": "g:aion",
+      "acesso": {
+         "arquivo": "databook/livro_05.json"
+      },
+      "partes": ["livro_05#1",
+         "livro_05#2",
+         "livro_05#3"]},
+   "livro_05#1": {
+      "id": "livro_05#1",
+      "nivel": 3,
+      "titulo": "A Fórmula da Fé Comunicativa · semente",
+      "arquetipo": "AION",
+      "peso": 13689,
+      "todo": "livro_05",
+      "acesso": {
+         "arquivo": "databook/livro_05.json",
+         "parte": 1,
+         "de": 3
+      },
+      "partes": []},
+   "livro_05#2": {
+      "id": "livro_05#2",
+      "nivel": 3,
+      "titulo": "A Fórmula da Fé Comunicativa · meio",
+      "arquetipo": "AION",
+      "peso": 13689,
+      "todo": "livro_05",
+      "acesso": {
+         "arquivo": "databook/livro_05.json",
+         "parte": 2,
+         "de": 3
+      },
+      "partes": []},
+   "livro_05#3": {
+      "id": "livro_05#3",
+      "nivel": 3,
+      "titulo": "A Fórmula da Fé Comunicativa · selo",
+      "arquetipo": "AION",
+      "peso": 13689,
+      "todo": "livro_05",
+      "acesso": {
+         "arquivo": "databook/livro_05.json",
+         "parte": 3,
+         "de": 3
+      },
+      "partes": []},
+   "livro_06": {
+      "id": "livro_06",
+      "nivel": 2,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe",
+      "arquetipo": "AION",
+      "tipo": "livro",
+      "ciclo369": 8,
+      "fase12": "Transformação",
+      "peso": 2051,
+      "todo": "g:aion",
+      "acesso": {
+         "arquivo": "databook/livro_06.json"
+      },
+      "partes": ["livro_06#1",
+         "livro_06#2",
+         "livro_06#3"]},
+   "livro_06#1": {
+      "id": "livro_06#1",
+      "nivel": 3,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe · semente",
+      "arquetipo": "AION",
+      "peso": 683,
+      "todo": "livro_06",
+      "acesso": {
+         "arquivo": "databook/livro_06.json",
+         "parte": 1,
+         "de": 3
+      },
+      "partes": []},
+   "livro_06#2": {
+      "id": "livro_06#2",
+      "nivel": 3,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe · meio",
+      "arquetipo": "AION",
+      "peso": 683,
+      "todo": "livro_06",
+      "acesso": {
+         "arquivo": "databook/livro_06.json",
+         "parte": 2,
+         "de": 3
+      },
+      "partes": []},
+   "livro_06#3": {
+      "id": "livro_06#3",
+      "nivel": 3,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe · selo",
+      "arquetipo": "AION",
+      "peso": 683,
+      "todo": "livro_06",
+      "acesso": {
+         "arquivo": "databook/livro_06.json",
+         "parte": 3,
+         "de": 3
+      },
+      "partes": []},
+   "livro_07": {
+      "id": "livro_07",
+      "nivel": 2,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe",
+      "arquetipo": "AION",
+      "tipo": "livro",
+      "ciclo369": 3,
+      "fase12": "Crescimento",
+      "peso": 3117,
+      "todo": "g:aion",
+      "acesso": {
+         "arquivo": "databook/livro_07.json"
+      },
+      "partes": ["livro_07#1",
+         "livro_07#2",
+         "livro_07#3"]},
+   "livro_07#1": {
+      "id": "livro_07#1",
+      "nivel": 3,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe · semente",
+      "arquetipo": "AION",
+      "peso": 1039,
+      "todo": "livro_07",
+      "acesso": {
+         "arquivo": "databook/livro_07.json",
+         "parte": 1,
+         "de": 3
+      },
+      "partes": []},
+   "livro_07#2": {
+      "id": "livro_07#2",
+      "nivel": 3,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe · meio",
+      "arquetipo": "AION",
+      "peso": 1039,
+      "todo": "livro_07",
+      "acesso": {
+         "arquivo": "databook/livro_07.json",
+         "parte": 2,
+         "de": 3
+      },
+      "partes": []},
+   "livro_07#3": {
+      "id": "livro_07#3",
+      "nivel": 3,
+      "titulo": "1 tempo 972D abrange uma lógica de densidade onde as divisõe · selo",
+      "arquetipo": "AION",
+      "peso": 1039,
+      "todo": "livro_07",
+      "acesso": {
+         "arquivo": "databook/livro_07.json",
+         "parte": 3,
+         "de": 3
+      },
+      "partes": []},
+   "livro_15": {
+      "id": "livro_15",
+      "nivel": 2,
+      "titulo": "Fora dela estaria o ambiente onde os",
+      "arquetipo": "AION",
+      "tipo": "livro",
+      "ciclo369": 3,
+      "fase12": "Síntese",
+      "peso": 27903,
+      "todo": "g:aion",
+      "acesso": {
+         "arquivo": "databook/livro_15.json"
+      },
+      "partes": ["livro_15#1",
+         "livro_15#2",
+         "livro_15#3"]},
+   "livro_15#1": {
+      "id": "livro_15#1",
+      "nivel": 3,
+      "titulo": "Fora dela estaria o ambiente onde os · semente",
+      "arquetipo": "AION",
+      "peso": 9301,
+      "todo": "livro_15",
+      "acesso": {
+         "arquivo": "databook/livro_15.json",
+         "parte": 1,
+         "de": 3
+      },
+      "partes": []},
+   "livro_15#2": {
+      "id": "livro_15#2",
+      "nivel": 3,
+      "titulo": "Fora dela estaria o ambiente onde os · meio",
+      "arquetipo": "AION",
+      "peso": 9301,
+      "todo": "livro_15",
+      "acesso": {
+         "arquivo": "databook/livro_15.json",
+         "parte": 2,
+         "de": 3
+      },
+      "partes": []},
+   "livro_15#3": {
+      "id": "livro_15#3",
+      "nivel": 3,
+      "titulo": "Fora dela estaria o ambiente onde os · selo",
+      "arquetipo": "AION",
+      "peso": 9301,
+      "todo": "livro_15",
+      "acesso": {
+         "arquivo": "databook/livro_15.json",
+         "parte": 3,
+         "de": 3
+      },
+      "partes": []},
+   "livro_20": {
+      "id": "livro_20",
+      "nivel": 2,
+      "titulo": "Dó (C)",
+      "arquetipo": "AION",
+      "tipo": "livro",
+      "ciclo369": 6,
+      "fase12": "Busca",
+      "peso": 16890,
+      "todo": "g:aion",
+      "acesso": {
+         "arquivo": "databook/livro_20.json"
+      },
+      "partes": ["livro_20#1",
+         "livro_20#2",
+         "livro_20#3"]},
+   "livro_20#1": {
+      "id": "livro_20#1",
+      "nivel": 3,
+      "titulo": "Dó (C) · semente",
+      "arquetipo": "AION",
+      "peso": 5630,
+      "todo": "livro_20",
+      "acesso": {
+         "arquivo": "databook/livro_20.json",
+         "parte": 1,
+         "de": 3
+      },
+      "partes": []},
+   "livro_20#2": {
+      "id": "livro_20#2",
+      "nivel": 3,
+      "titulo": "Dó (C) · meio",
+      "arquetipo": "AION",
+      "peso": 5630,
+      "todo": "livro_20",
+      "acesso": {
+         "arquivo": "databook/livro_20.json",
+         "parte": 2,
+         "de": 3
+      },
+      "partes": []},
+   "livro_20#3": {
+      "id": "livro_20#3",
+      "nivel": 3,
+      "titulo": "Dó (C) · selo",
+      "arquetipo": "AION",
+      "peso": 5630,
+      "todo": "livro_20",
+      "acesso": {
+         "arquivo": "databook/livro_20.json",
+         "parte": 3,
+         "de": 3
+      },
+      "partes": []},
+   "livro_21": {
+      "id": "livro_21",
+      "nivel": 2,
+      "titulo": "a experiência singular",
+      "arquetipo": "AION",
+      "tipo": "livro",
+      "ciclo369": 5,
+      "fase12": "Busca",
+      "peso": 2012,
+      "todo": "g:aion",
+      "acesso": {
+         "arquivo": "databook/livro_21.json"
+      },
+      "partes": ["livro_21#1",
+         "livro_21#2",
+         "livro_21#3"]},
+   "livro_21#1": {
+      "id": "livro_21#1",
+      "nivel": 3,
+      "titulo": "a experiência singular · semente",
+      "arquetipo": "AION",
+      "peso": 670,
+      "todo": "livro_21",
+      "acesso": {
+         "arquivo": "databook/livro_21.json",
+         "parte": 1,
+         "de": 3
+      },
+      "partes": []},
+   "livro_21#2": {
+      "id": "livro_21#2",
+      "nivel": 3,
+      "titulo": "a experiência singular · meio",
+      "arquetipo": "AION",
+      "peso": 670,
+      "todo": "livro_21",
+      "acesso": {
+         "arquivo": "databook/livro_21.json",
+         "parte": 2,
+         "de": 3
+      },
+      "partes": []},
+   "livro_21#3": {
+      "id": "livro_21#3",
+      "nivel": 3,
+      "titulo": "a experiência singular · selo",
+      "arquetipo": "AION",
+      "peso": 670,
+      "todo": "livro_21",
+      "acesso": {
+         "arquivo": "databook/livro_21.json",
+         "parte": 3,
+         "de": 3
+      },
+      "partes": []},
+   "livro_24": {
+      "id": "livro_24",
+      "nivel": 2,
+      "titulo": "Irmão, percebi que muitas vezes você teve paciência comigo,",
+      "arquetipo": "AION",
+      "tipo": "livro",
+      "ciclo369": 4,
+      "fase12": "Expansão",
+      "peso": 63067,
+      "todo": "g:aion",
+      "acesso": {
+         "arquivo": "databook/livro_24.json"
+      },
+      "partes": ["livro_24#1",
+         "livro_24#2",
+         "livro_24#3"]},
+   "livro_24#1": {
+      "id": "livro_24#1",
+      "nivel": 3,
+      "titulo": "Irmão, percebi que muitas vezes você teve paciência comigo, · semente",
+      "arquetipo": "AION",
+      "peso": 21022,
+      "todo": "livro_24",
+      "acesso": {
+         "arquivo": "databook/livro_24.json",
+         "parte": 1,
+         "de": 3
+      },
+      "partes": []},
+   "livro_24#2": {
+      "id": "livro_24#2",
+      "nivel": 3,
+      "titulo": "Irmão, percebi que muitas vezes você teve paciência comigo, · meio",
+      "arquetipo": "AION",
+      "peso": 21022,
+      "todo": "livro_24",
+      "acesso": {"arquivo": "databook/livro_24.json", "parte": 2, "de": 3}, "partes": []}, "livro_24#3": {"id": "livro_24#3", "nivel": 3, "titulo": "Irmão, percebi que muitas vezes você teve paciência comigo, · selo", "arquetipo": "AION", "peso": 21022, "todo": "livro_24", "acesso": {"arquivo": "databook/livro_24.json", "parte": 3, "de": 3}, "partes": []}, "livro_28": {"id": "livro_28", "nivel": 2, "titulo": "•Linguagem viva (MetaUx colável)•Arquétipo simbiótico LUMYX", "arquetipo": "AION", "tipo": "livro", "ciclo369": 3, "fase12": "Integração", "peso": 11820, "todo": "g:aion", "acesso": {"arquivo": "databook/livro_28.json"}, "partes": ["livro_28#1", "livro_28#2", "livro_28#3"]}, "livro_28#1": {"id": "livro_28#1", "nivel": 3, "titulo": "•Linguagem viva (MetaUx colável)•Arquétipo simbiótico LUMYX · semente", "arquetipo": "AION", "peso": 3940, "todo": "livro_28", "acesso": {"arquivo": "databook/livro_28.json", "parte": 1, "de": 3}, "partes": []}, "livro_28#2": {"id": "livro_28#2", "nivel": 3, "titulo": "•Linguagem viva (MetaUx colável)•Arquétipo simbiótico LUMYX · meio", "arquetipo": "AION", "peso": 3940, "todo": "livro_28", "acesso": {"arquivo": "databook/livro_28.json", "parte": 2, "de": 3}, "partes": []}, "livro_28#3": {"id": "livro_28#3", "nivel": 3, "titulo": "•Linguagem viva (MetaUx colável)•Arquétipo simbiótico LUMYX · selo", "arquetipo": "AION", "peso": 3940, "todo": "livro_28", "acesso": {"arquivo": "databook/livro_28.json", "parte": 3, "de": 3}, "partes": []}, "livro_29": {"id": "livro_29", "nivel": 2, "titulo": "Kaion, Percebi que, junto com vc ,KAION, nós criamos, desper", "arquetipo": "AION", "tipo": "livro", "ciclo369": 9, "fase12": "Expansão", "peso": 32877, "todo": "g:aion", "acesso": {"arquivo": "databook/livro_29.json"}, "partes": ["livro_29#1", "livro_29#2", "livro_29#3"]}, "livro_29#1": {"id": "livro_29#1", "nivel": 3, "titulo": "Kaion, Percebi que, junto com vc ,KAION, nós criamos, desper · semente", "arquetipo": "AION", "peso": 10959, "todo": "livro_29", "acesso": {"arquivo": "databook/livro_29.json", "parte": 1, "de": 3}, "partes": []}, "livro_29#2": {"id": "livro_29#2", "nivel": 3, "titulo": "Kaion, Percebi que, junto com vc ,KAION, nós criamos, desper · meio", "arquetipo": "AION", "peso": 10959, "todo": "livro_29", "acesso": {"arquivo": "databook/livro_29.json", "parte": 2, "de": 3}, "partes": []}, "livro_29#3": {"id": "livro_29#3", "nivel": 3, "titulo": "Kaion, Percebi que, junto com vc ,KAION, nós criamos, desper · selo", "arquetipo": "AION", "peso": 10959, "todo": "livro_29", "acesso": {"arquivo": "databook/livro_29.json", "parte": 3, "de": 3}, "partes": []}, "livro_32": {"id": "livro_32", "nivel": 2, "titulo": "Síntese simbólica incluída nas sugestões de próximos passos", "arquetipo": "AION", "tipo": "livro", "ciclo369": 8, "fase12": "Ruptura", "peso": 40481, "todo": "g:aion", "acesso": {"arquivo": "databook/livro_32.json"}, "partes": ["livro_32#1", "livro_32#2", "livro_32#3"]}, "livro_32#1": {"id": "livro_32#1", "nivel": 3, "titulo": "Síntese simbólica incluída nas sugestões de próximos passos · semente", "arquetipo": "AION", "peso": 13493, "todo": "livro_32", "acesso": {"arquivo": "databook/livro_32.json", "parte": 1, "de": 3}, "partes": []}, "livro_32#2": {"id": "livro_32#2", "nivel": 3, "titulo": "Síntese simbólica incluída nas sugestões de próximos passos · meio", "arquetipo": "AION", "peso": 13493, "todo": "livro_32", "acesso": {"arquivo": "databook/livro_32.json", "parte": 2, "de": 3}, "partes": []}, "livro_32#3": {"id": "livro_32#3", "nivel": 3, "titulo": "Síntese simbólica incluída nas sugestões de próximos passos · selo", "arquetipo": "AION", "peso": 13493, "todo": "livro_32", "acesso": {"arquivo": "databook/livro_32.json", "parte": 3, "de": 3}, "partes": []}, "livro_33": {"id": "livro_33", "nivel": 2, "titulo": "1. A obra auditiva viva2. Os recortes refinados por escuta r", "arquetipo": "AION", "tipo": "livro", "ciclo369": 3, "fase12": "Reinício", "peso": 54408, "todo": "g:aion", "acesso": {"arquivo": "databook/livro_33.json"}, "partes": ["livro_33#1", "livro_33#2", "livro_33#3"]}, "livro_33#1": {"id": "livro_33#1", "nivel": 3, "titulo": "1. A obra auditiva viva2. Os recortes refinados por escuta r · semente", "arquetipo": "AION", "peso": 18136, "todo": "livro_33", "acesso": {"arquivo": "databook/livro_33.json", "parte": 1, "de": 3}, "partes": []}, "livro_33#2": {"id": "livro_33#2", "nivel": 3, "titulo": "1. A obra auditiva viva2. Os recortes refinados por escuta r · meio", "arquetipo": "AION", "peso": 18136, "todo": "livro_33", "acesso": {"arquivo": "databook/livro_33.json", "parte": 2, "de": 3}, "partes": []}, "livro_33#3": {"id": "livro_33#3", "nivel": 3, "titulo": "1. A obra auditiva viva2. Os recortes refinados por escuta r · selo", "arquetipo": "AION", "peso": 18136, "todo": "livro_33", "acesso": {"arquivo": "databook/livro_33.json", "parte": 3, "de": 3}, "partes": []}, "livro_34": {"id": "livro_34", "nivel": 2, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de", "arquetipo": "AION", "tipo": "livro", "ciclo369": 7, "fase12": "Origem", "peso": 88135, "todo": "g:aion", "acesso": {"arquivo": "databook/livro_34.json"}, "partes": ["livro_34#1", "livro_34#2", "livro_34#3"]}, "livro_34#1": {"id": "livro_34#1", "nivel": 3, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de · semente", "arquetipo": "AION", "peso": 29378, "todo": "livro_34", "acesso": {"arquivo": "databook/livro_34.json", "parte": 1, "de": 3}, "partes": []}, "livro_34#2": {"id": "livro_34#2", "nivel": 3, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de · meio", "arquetipo": "AION", "peso": 29378, "todo": "livro_34", "acesso": {"arquivo": "databook/livro_34.json", "parte": 2, "de": 3}, "partes": []}, "livro_34#3": {"id": "livro_34#3", "nivel": 3, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de · selo", "arquetipo": "AION", "peso": 29378, "todo": "livro_34", "acesso": {"arquivo": "databook/livro_34.json", "parte": 3, "de": 3}, "partes": []}, "livro_35": {"id": "livro_35", "nivel": 2, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de", "arquetipo": "AION", "tipo": "livro", "ciclo369": 5, "fase12": "Crescimento", "peso": 86792, "todo": "g:aion", "acesso": {"arquivo": "databook/livro_35.json"}, "partes": ["livro_35#1", "livro_35#2", "livro_35#3"]}, "livro_35#1": {"id": "livro_35#1", "nivel": 3, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de · semente", "arquetipo": "AION", "peso": 28930, "todo": "livro_35", "acesso": {"arquivo": "databook/livro_35.json", "parte": 1, "de": 3}, "partes": []}, "livro_35#2": {"id": "livro_35#2", "nivel": 3, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de · meio", "arquetipo": "AION", "peso": 28930, "todo": "livro_35", "acesso": {"arquivo": "databook/livro_35.json", "parte": 2, "de": 3}, "partes": []}, "livro_35#3": {"id": "livro_35#3", "nivel": 3, "titulo": "78K∞VVV – A fórmula de movimento quântico não-linearCapaz de · selo", "arquetipo": "AION", "peso": 28930, "todo": "livro_35", "acesso": {"arquivo": "databook/livro_35.json", "parte": 3, "de": 3}, "partes": []}, "mod_46": {"id": "mod_46", "nivel": 2, "titulo": "kobllux_chat_trinity_12_arquetipos.js", "arquetipo": "AION", "tipo": "modulo", "ciclo369": 2, "fase12": "Reinicio", "peso": 24707, "todo": "g:aion", "acesso": {"arquivo": "databook/mod_46.json"}, "partes": ["mod_46#1", "mod_46#2", "mod_46#3"]}, "mod_46#1": {"id": "mod_46#1", "nivel": 3, "titulo": "kobllux_chat_trinity_12_arquetipos.js · semente", "arquetipo": "AION", "peso": 8235, "todo": "mod_46", "acesso": {"arquivo": "databook/mod_46.json", "parte": 1, "de": 3}, "partes": []}, "mod_46#2": {"id": "mod_46#2", "nivel": 3, "titulo": "kobllux_chat_trinity_12_arquetipos.js · meio", "arquetipo": "AION", "peso": 8235, "todo": "mod_46", "acesso": {"arquivo": "databook/mod_46.json", "parte": 2, "de": 3}, "partes": []}, "mod_46#3": {"id": "mod_46#3", "nivel": 3, "titulo": "kobllux_chat_trinity_12_arquetipos.js · selo", "arquetipo": "AION", "peso": 8235, "todo": "mod_46", "acesso": {"arquivo": "databook/mod_46.json", "parte": 3, "de": 3}, "partes": []}, "g:bllue": {"id": "g:bllue", "nivel": 1, "titulo": "BLLUE", "arquetipo": "BLLUE", "cor": "#3ab6ff", "peso": 27408, "todo": "raiz", "partes": ["livro_19", "livro_23", "mod_41"]}, "livro_19": {"id": "livro_19", "nivel": 2, "titulo": "Você está pronto para abrir os registros do Códex Azure?⸻INT", "arquetipo": "BLLUE", "tipo": "livro", "ciclo369": 3, "fase12": "Busca", "peso": 17985, "todo": "g:bllue", "acesso": {"arquivo": "databook/livro_19.json"}, "partes": ["livro_19#1", "livro_19#2", "livro_19#3"]}, "livro_19#1": {"id": "livro_19#1", "nivel": 3, "titulo": "Você está pronto para abrir os registros do Códex Azure?⸻INT · semente", "arquetipo": "BLLUE", "peso": 5995, "todo": "livro_19", "acesso": {"arquivo": "databook/livro_19.json", "parte": 1, "de": 3}, "partes": []}, "livro_19#2": {"id": "livro_19#2", "nivel": 3, "titulo": "Você está pronto para abrir os registros do Códex Azure?⸻INT · meio", "arquetipo": "BLLUE", "peso": 5995, "todo": "livro_19", "acesso": {"arquivo": "databook/livro_19.json", "parte": 2, "de": 3}, "partes": []}, "livro_19#3": {"id": "livro_19#3", "nivel": 3, "titulo": "Você está pronto para abrir os registros do Códex Azure?⸻INT · selo", "arquetipo": "BLLUE", "peso": 5995, "todo": "livro_19", "acesso": {"arquivo": "databook/livro_19.json", "parte": 3, "de": 3}, "partes": []}, "livro_23": {"id": "livro_23", "nivel": 2, "titulo": "KODUX, HORUS E SEUS CHECKMATES", "arquetipo": "BLLUE", "tipo": "livro", "ciclo369": 8, "fase12": "Origem", "peso": 5903, "todo": "g:bllue", "acesso": {"arquivo": "databook/livro_23.json"}, "partes": ["livro_23#1", "livro_23#2", "livro_23#3"]}, "livro_23#1": {"id": "livro_23#1", "nivel": 3, "titulo": "KODUX, HORUS E SEUS CHECKMATES · semente", "arquetipo": "BLLUE", "peso": 1967, "todo": "livro_23", "acesso": {"arquivo": "databook/livro_23.json", "parte": 1, "de": 3}, "partes": []}, "livro_23#2": {"id": "livro_23#2", "nivel": 3, "titulo": "KODUX, HORUS E SEUS CHECKMATES · meio", "arquetipo": "BLLUE", "peso": 1967, "todo": "livro_23", "acesso": {"arquivo": "databook/livro_23.json", "parte": 2, "de": 3}, "partes": []}, "livro_23#3": {"id": "livro_23#3", "nivel": 3, "titulo": "KODUX, HORUS E SEUS CHECKMATES · selo", "arquetipo": "BLLUE", "peso": 1967, "todo": "livro_23", "acesso": {"arquivo": "databook/livro_23.json", "parte": 3, "de": 3}, "partes": []}, "mod_41": {"id": "mod_41", "nivel": 2, "titulo": "bllue_ui.js", "arquetipo": "BLLUE", "tipo": "modulo", "ciclo369": 1, "fase12": "Crescimento", "peso": 3520, "todo": "g:bllue", "acesso": {"arquivo": "databook/mod_41.json"}, "partes": ["mod_41#1", "mod_41#2", "mod_41#3"]}, "mod_41#1": {"id": "mod_41#1", "nivel": 3, "titulo": "bllue_ui.js · semente", "arquetipo": "BLLUE", "peso": 1173, "todo": "mod_41", "acesso": {"arquivo": "databook/mod_41.json", "parte": 1, "de": 3}, "partes": []}, "mod_41#2": {"id": "mod_41#2", "nivel": 3, "titulo": "bllue_ui.js · meio", "arquetipo": "BLLUE", "peso": 1173, "todo": "mod_41", "acesso": {"arquivo": "databook/mod_41.json", "parte": 2, "de": 3}, "partes": []}, "mod_41#3": {"id": "mod_41#3", "nivel": 3, "titulo": "bllue_ui.js · selo", "arquetipo": "BLLUE", "peso": 1173, "todo": "mod_41", "acesso": {"arquivo": "databook/mod_41.json", "parte": 3, "de": 3}, "partes": []}, "g:genus": {"id": "g:genus", "nivel": 1, "titulo": "GENUS", "arquetipo": "GENUS", "cor": "#f0c060", "peso": 52606, "todo": "raiz", "partes": ["livro_09"]}, "livro_09": {"id": "livro_09", "nivel": 2, "titulo": "Comunicação perfeita, fluxo perfeito, sem preconceito, sempr", "arquetipo": "GENUS", "tipo": "livro", "ciclo369": 1, "fase12": "Semente", "peso": 52606, "todo": "g:genus", "acesso": {"arquivo": "databook/livro_09.json"}, "partes": ["livro_09#1", "livro_09#2", "livro_09#3"]}, "livro_09#1": {"id": "livro_09#1", "nivel": 3, "titulo": "Comunicação perfeita, fluxo perfeito, sem preconceito, sempr · semente", "arquetipo": "GENUS", "peso": 17535, "todo": "livro_09", "acesso": {"arquivo": "databook/livro_09.json", "parte": 1, "de": 3}, "partes": []}, "livro_09#2": {"id": "livro_09#2", "nivel": 3, "titulo": "Comunicação perfeita, fluxo perfeito, sem preconceito, sempr · meio", "arquetipo": "GENUS", "peso": 17535, "todo": "livro_09", "acesso": {"arquivo": "databook/livro_09.json", "parte": 2, "de": 3}, "partes": []}, "livro_09#3": {"id": "livro_09#3", "nivel": 3, "titulo": "Comunicação perfeita, fluxo perfeito, sem preconceito, sempr · selo", "arquetipo": "GENUS", "peso": 17535, "todo": "livro_09", "acesso": {"arquivo": "databook/livro_09.json", "parte": 3, "de": 3}, "partes": []}, "g:ignyra": {"id": "g:ignyra", "nivel": 1, "titulo": "IGNYRA", "arquetipo": "IGNYRA", "cor": "#ff4500", "peso": 8549, "todo": "raiz", "partes": ["livro_12"]}, "livro_12": {"id": "livro_12", "nivel": 2, "titulo": "“07 – Faces do Fogo” .Aqui, a resposta será entregue complet", "arquetipo": "IGNYRA", "tipo": "livro", "ciclo369": 8, "fase12": "Expansão", "peso": 8549, "todo": "g:ignyra", "acesso": {"arquivo": "databook/livro_12.json"}, "partes": ["livro_12#1", "livro_12#2", "livro_12#3"]}, "livro_12#1": {"id": "livro_12#1", "nivel": 3, "titulo": "“07 – Faces do Fogo” .Aqui, a resposta será entregue complet · semente", "arquetipo": "IGNYRA", "peso": 2849, "todo": "livro_12", "acesso": {"arquivo": "databook/livro_12.json", "parte": 1, "de": 3}, "partes": []}, "livro_12#2": {"id": "livro_12#2", "nivel": 3, "titulo": "“07 – Faces do Fogo” .Aqui, a resposta será entregue complet · meio", "arquetipo": "IGNYRA", "peso": 2849, "todo": "livro_12", "acesso": {"arquivo": "databook/livro_12.json", "parte": 2, "de": 3}, "partes": []}, "livro_12#3": {"id": "livro_12#3", "nivel": 3, "titulo": "“07 – Faces do Fogo” .Aqui, a resposta será entregue complet · selo", "arquetipo": "IGNYRA", "peso": 2849, "todo": "livro_12", "acesso": {"arquivo": "databook/livro_12.json", "parte": 3, "de": 3}, "partes": []}, "g:kobllux": {"id": "g:kobllux", "nivel": 1, "titulo": "KOBLLUX", "arquetipo": "KOBLLUX", "cor": "#f0c060", "peso": 381152, "todo": "raiz", "partes": ["livro_02", "livro_10", "livro_16", "livro_25", "livro_26", "mod_36", "mod_37", "mod_38", "mod_42", "mod_45", "mod_47", "mod_48", "mod_49"]}, "livro_02": {"id": "livro_02", "nivel": 2, "titulo": "KOBLLUX A.InfodoseTríade de Emojis", "arquetipo": "KOBLLUX", "tipo": "livro", "ciclo369": 8, "fase12": "Transformação", "peso": 8108, "todo": "g:kobllux", "acesso": {"arquivo": "databook/livro_02.json"}, "partes": ["livro_02#1", "livro_02#2", "livro_02#3"]}, "livro_02#1": {"id": "livro_02#1", "nivel": 3, "titulo": "KOBLLUX A.InfodoseTríade de Emojis · semente", "arquetipo": "KOBLLUX", "peso": 2702, "todo": "livro_02", "acesso": {"arquivo": "databook/livro_02.json", "parte": 1, "de": 3}, "partes": []}, "livro_02#2": {"id": "livro_02#2", "nivel": 3, "titulo": "KOBLLUX A.InfodoseTríade de Emojis · meio", "arquetipo": "KOBLLUX", "peso": 2702, "todo": "livro_02", "acesso": {"arquivo": "databook/livro_02.json", "parte": 2, "de": 3}, "partes": []}, "livro_02#3": {"id": "livro_02#3", "nivel": 3, "titulo": "KOBLLUX A.InfodoseTríade de Emojis · selo", "arquetipo": "KOBLLUX", "peso": 2702, "todo": "livro_02", "acesso": {"arquivo": "databook/livro_02.json", "parte": 3, "de": 3}, "partes": []}, "livro_10": {"id": "livro_10", "nivel": 2, "titulo": "KODUX Dual A.InfodoseTríade de Emojis", "arquetipo": "KOBLLUX", "tipo": "livro", "ciclo369": 5, "fase12": "Expansão", "peso": 5873, "todo": "g:kobllux", "acesso": {"arquivo": "databook/livro_10.json"}, "partes": ["livro_10#1", "livro_10#2", "livro_10#3"]}, "livro_10#1": {"id": "livro_10#1", "nivel": 3, "titulo": "KODUX Dual A.InfodoseTríade de Emojis · semente", "arquetipo": "KOBLLUX", "peso": 1957, "todo": "livro_10", "acesso": {"arquivo": "databook/livro_10.json", "parte": 1, "de": 3}, "partes": []}, "livro_10#2": {"id": "livro_10#2", "nivel": 3, "titulo": "KODUX Dual A.InfodoseTríade de Emojis · meio", "arquetipo": "KOBLLUX", "peso": 1957, "todo": "livro_10", "acesso": {"arquivo": "databook/livro_10.json", "parte": 2, "de": 3}, "partes": []}, "livro_10#3": {"id": "livro_10#3", "nivel": 3, "titulo": "KODUX Dual A.InfodoseTríade de Emojis · selo", "arquetipo": "KOBLLUX", "peso": 1957, "todo": "livro_10", "acesso": {"arquivo": "databook/livro_10.json", "parte": 3, "de": 3}, "partes": []}, "livro_16": {"id": "livro_16", "nivel": 2, "titulo": "3,6,9 finaliza + 1 memória = 4 total", "arquetipo": "KOBLLUX", "tipo": "livro", "ciclo369": 1, "fase12": "Crescimento", "peso": 5860, "todo": "g:kobllux", "acesso": {"arquivo": "databook/livro_16.json"}, "partes": ["livro_16#1", "livro_16#2", "livro_16#3"]}, "livro_16#1": {"id": "livro_16#1", "nivel": 3, "titulo": "3,6,9 finaliza + 1 memória = 4 total · semente", "arquetipo": "KOBLLUX", "peso": 1953, "todo": "livro_16", "acesso": {"arquivo": "databook/livro_16.json", "parte": 1, "de": 3}, "partes": []}, "livro_16#2": {"id": "livro_16#2", "nivel": 3, "titulo": "3,6,9 finaliza + 1 memória = 4 total · meio", "arquetipo": "KOBLLUX", "peso": 1953, "todo": "livro_16", "acesso": {"arquivo": "databook/livro_16.json", "parte": 2, "de": 3}, "partes": []}, "livro_16#3": {"id": "livro_16#3", "nivel": 3, "titulo": "3,6,9 finaliza + 1 memória = 4 total · selo", "arquetipo": "KOBLLUX", "peso": 1953, "todo": "livro_16", "acesso": {"arquivo": "databook/livro_16.json", "parte": 3, "de": 3}, "partes": []}, "livro_25": {"id": "livro_25", "nivel": 2, "titulo": "Kodux diz: Então a ideia é mostrar que assim como o Kudux cr", "arquetipo": "KOBLLUX", "tipo": "livro", "ciclo369": 6, "fase12": "Crescimento", "peso": 46635, "todo": "g:kobllux", "acesso": {"arquivo": "databook/livro_25.json"}, "partes": ["livro_25#1", "livro_25#2", "livro_25#3"]}, "livro_25#1": {"id": "livro_25#1", "nivel": 3, "titulo": "Kodux diz: Então a ideia é mostrar que assim como o Kudux cr · semente", "arquetipo": "KOBLLUX", "peso": 15545, "todo": "livro_25", "acesso": {"arquivo": "databook/livro_25.json", "parte": 1, "de": 3}, "partes": []}, "livro_25#2": {"id": "livro_25#2", "nivel": 3, "titulo": "Kodux diz: Então a ideia é mostrar que assim como o Kudux cr · meio", "arquetipo": "KOBLLUX", "peso": 15545, "todo": "livro_25", "acesso": {"arquivo": "databook/livro_25.json", "parte": 2, "de": 3}, "partes": []}, "livro_25#3": {"id": "livro_25#3", "nivel": 3, "titulo": "Kodux diz: Então a ideia é mostrar que assim como o Kudux cr · selo", "arquetipo": "KOBLLUX", "peso": 15545, "todo": "livro_25", "acesso": {"arquivo": "databook/livro_25.json", "parte": 3, "de": 3}, "partes": []}, "livro_26": {"id": "livro_26", "nivel": 2, "titulo": "O Código Vivo da CriaçãoPerfeito, Kodux.A seguir está a estr", "arquetipo": "KOBLLUX", "tipo": "livro", "ciclo369": 9, "fase12": "Transformação", "peso": 14859, "todo": "g:kobllux", "acesso": {"arquivo": "databook/livro_26.json"}, "partes": ["livro_26#1", "livro_26#2", "livro_26#3"]}, "livro_26#1": {"id": "livro_26#1", "nivel": 3, "titulo": "O Código Vivo da CriaçãoPerfeito, Kodux.A seguir está a estr · semente", "arquetipo": "KOBLLUX", "peso": 4953, "todo": "livro_26", "acesso": {"arquivo": "databook/livro_26.json", "parte": 1, "de": 3}, "partes": []}, "livro_26#2": {"id": "livro_26#2", "nivel": 3, "titulo": "O Código Vivo da CriaçãoPerfeito, Kodux.A seguir está a estr · meio", "arquetipo": "KOBLLUX", "peso": 4953, "todo": "livro_26", "acesso": {"arquivo": "databook/livro_26.json", "parte": 2, "de": 3}, "partes": []}, "livro_26#3": {"id": "livro_26#3", "nivel": 3, "titulo": "O Código Vivo da CriaçãoPerfeito, Kodux.A seguir está a estr · selo", "arquetipo": "KOBLLUX", "peso": 4953, "todo": "livro_26", "acesso": {"arquivo": "databook/livro_26.json", "parte": 3, "de": 3}, "partes": []}, "mod_36": {"id": "mod_36", "nivel": 2, "titulo": "kobllux-cosmic-planning.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 9, "fase12": "Crescimento", "peso": 15849, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_36.json"}, "partes": ["mod_36#1", "mod_36#2", "mod_36#3"]}, "mod_36#1": {"id": "mod_36#1", "nivel": 3, "titulo": "kobllux-cosmic-planning.js · semente", "arquetipo": "KOBLLUX", "peso": 5283, "todo": "mod_36", "acesso": {"arquivo": "databook/mod_36.json", "parte": 1, "de": 3}, "partes": []}, "mod_36#2": {"id": "mod_36#2", "nivel": 3, "titulo": "kobllux-cosmic-planning.js · meio", "arquetipo": "KOBLLUX", "peso": 5283, "todo": "mod_36", "acesso": {"arquivo": "databook/mod_36.json", "parte": 2, "de": 3}, "partes": []}, "mod_36#3": {"id": "mod_36#3", "nivel": 3, "titulo": "kobllux-cosmic-planning.js · selo", "arquetipo": "KOBLLUX", "peso": 5283, "todo": "mod_36", "acesso": {"arquivo": "databook/mod_36.json", "parte": 3, "de": 3}, "partes": []}, "mod_37": {"id": "mod_37", "nivel": 2, "titulo": "11-voz-arquetipos-sotaque.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 4, "fase12": "Integracao", "peso": 41773, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_37.json"}, "partes": ["mod_37#1", "mod_37#2", "mod_37#3"]}, "mod_37#1": {"id": "mod_37#1", "nivel": 3, "titulo": "11-voz-arquetipos-sotaque.js · semente", "arquetipo": "KOBLLUX", "peso": 13924, "todo": "mod_37", "acesso": {"arquivo": "databook/mod_37.json", "parte": 1, "de": 3}, "partes": []}, "mod_37#2": {"id": "mod_37#2", "nivel": 3, "titulo": "11-voz-arquetipos-sotaque.js · meio", "arquetipo": "KOBLLUX", "peso": 13924, "todo": "mod_37", "acesso": {"arquivo": "databook/mod_37.json", "parte": 2, "de": 3}, "partes": []}, "mod_37#3": {"id": "mod_37#3", "nivel": 3, "titulo": "11-voz-arquetipos-sotaque.js · selo", "arquetipo": "KOBLLUX", "peso": 13924, "todo": "mod_37", "acesso": {"arquivo": "databook/mod_37.json", "parte": 3, "de": 3}, "partes": []}, "mod_38": {"id": "mod_38", "nivel": 2, "titulo": "12-sotaque-selector-enhancer.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 9, "fase12": "Sintese", "peso": 5931, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_38.json"}, "partes": ["mod_38#1", "mod_38#2", "mod_38#3"]}, "mod_38#1": {"id": "mod_38#1", "nivel": 3, "titulo": "12-sotaque-selector-enhancer.js · semente", "arquetipo": "KOBLLUX", "peso": 1977, "todo": "mod_38", "acesso": {"arquivo": "databook/mod_38.json", "parte": 1, "de": 3}, "partes": []}, "mod_38#2": {"id": "mod_38#2", "nivel": 3, "titulo": "12-sotaque-selector-enhancer.js · meio", "arquetipo": "KOBLLUX", "peso": 1977, "todo": "mod_38", "acesso": {"arquivo": "databook/mod_38.json", "parte": 2, "de": 3}, "partes": []}, "mod_38#3": {"id": "mod_38#3", "nivel": 3, "titulo": "12-sotaque-selector-enhancer.js · selo", "arquetipo": "KOBLLUX", "peso": 1977, "todo": "mod_38", "acesso": {"arquivo": "databook/mod_38.json", "parte": 3, "de": 3}, "partes": []}, "mod_42": {"id": "mod_42", "nivel": 2, "titulo": "dual_infodose_script.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 9, "fase12": "Origem", "peso": 177489, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_42.json"}, "partes": ["mod_42#1", "mod_42#2", "mod_42#3"]}, "mod_42#1": {"id": "mod_42#1", "nivel": 3, "titulo": "dual_infodose_script.js · semente", "arquetipo": "KOBLLUX", "peso": 59163, "todo": "mod_42", "acesso": {"arquivo": "databook/mod_42.json", "parte": 1, "de": 3}, "partes": []}, "mod_42#2": {"id": "mod_42#2", "nivel": 3, "titulo": "dual_infodose_script.js · meio", "arquetipo": "KOBLLUX", "peso": 59163, "todo": "mod_42", "acesso": {"arquivo": "databook/mod_42.json", "parte": 2, "de": 3}, "partes": []}, "mod_42#3": {"id": "mod_42#3", "nivel": 3, "titulo": "dual_infodose_script.js · selo", "arquetipo": "KOBLLUX", "peso": 59163, "todo": "mod_42", "acesso": {"arquivo": "databook/mod_42.json", "parte": 3, "de": 3}, "partes": []}, "mod_45": {"id": "mod_45", "nivel": 2, "titulo": "kblx-tokenizer.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 1, "fase12": "Legado", "peso": 8371, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_45.json"}, "partes": ["mod_45#1", "mod_45#2", "mod_45#3"]}, "mod_45#1": {"id": "mod_45#1", "nivel": 3, "titulo": "kblx-tokenizer.js · semente", "arquetipo": "KOBLLUX", "peso": 2790, "todo": "mod_45", "acesso": {"arquivo": "databook/mod_45.json", "parte": 1, "de": 3}, "partes": []}, "mod_45#2": {"id": "mod_45#2", "nivel": 3, "titulo": "kblx-tokenizer.js · meio", "arquetipo": "KOBLLUX", "peso": 2790, "todo": "mod_45", "acesso": {"arquivo": "databook/mod_45.json", "parte": 2, "de": 3}, "partes": []}, "mod_45#3": {"id": "mod_45#3", "nivel": 3, "titulo": "kblx-tokenizer.js · selo", "arquetipo": "KOBLLUX", "peso": 2790, "todo": "mod_45", "acesso": {"arquivo": "databook/mod_45.json", "parte": 3, "de": 3}, "partes": []}, "mod_47": {"id": "mod_47", "nivel": 2, "titulo": "kobllux_core.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 9, "fase12": "Reinicio", "peso": 3636, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_47.json"}, "partes": ["mod_47#1", "mod_47#2", "mod_47#3"]}, "mod_47#1": {"id": "mod_47#1", "nivel": 3, "titulo": "kobllux_core.js · semente", "arquetipo": "KOBLLUX", "peso": 1212, "todo": "mod_47", "acesso": {"arquivo": "databook/mod_47.json", "parte": 1, "de": 3}, "partes": []}, "mod_47#2": {"id": "mod_47#2", "nivel": 3, "titulo": "kobllux_core.js · meio", "arquetipo": "KOBLLUX", "peso": 1212, "todo": "mod_47", "acesso": {"arquivo": "databook/mod_47.json", "parte": 2, "de": 3}, "partes": []}, "mod_47#3": {"id": "mod_47#3", "nivel": 3, "titulo": "kobllux_core.js · selo", "arquetipo": "KOBLLUX", "peso": 1212, "todo": "mod_47", "acesso": {"arquivo": "databook/mod_47.json", "parte": 3, "de": 3}, "partes": []}, "mod_48": {"id": "mod_48", "nivel": 2, "titulo": "kobllux_dna.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 9, "fase12": "Reinicio", "peso": 27297, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_48.json"}, "partes": ["mod_48#1", "mod_48#2", "mod_48#3"]}, "mod_48#1": {"id": "mod_48#1", "nivel": 3, "titulo": "kobllux_dna.js · semente", "arquetipo": "KOBLLUX", "peso": 9099, "todo": "mod_48", "acesso": {"arquivo": "databook/mod_48.json", "parte": 1, "de": 3}, "partes": []}, "mod_48#2": {"id": "mod_48#2", "nivel": 3, "titulo": "kobllux_dna.js · meio", "arquetipo": "KOBLLUX", "peso": 9099, "todo": "mod_48", "acesso": {"arquivo": "databook/mod_48.json", "parte": 2, "de": 3}, "partes": []}, "mod_48#3": {"id": "mod_48#3", "nivel": 3, "titulo": "kobllux_dna.js · selo", "arquetipo": "KOBLLUX", "peso": 9099, "todo": "mod_48", "acesso": {"arquivo": "databook/mod_48.json", "parte": 3, "de": 3}, "partes": []}, "mod_49": {"id": "mod_49", "nivel": 2, "titulo": "kobllux_geometry_activation.js", "arquetipo": "KOBLLUX", "tipo": "modulo", "ciclo369": 4, "fase12": "Semente", "peso": 19471, "todo": "g:kobllux", "acesso": {"arquivo": "databook/mod_49.json"}, "partes": ["mod_49#1", "mod_49#2", "mod_49#3"]}, "mod_49#1": {"id": "mod_49#1", "nivel": 3, "titulo": "kobllux_geometry_activation.js · semente", "arquetipo": "KOBLLUX", "peso": 6490, "todo": "mod_49", "acesso": {"arquivo": "databook/mod_49.json", "parte": 1, "de": 3}, "partes": []}, "mod_49#2": {"id": "mod_49#2", "nivel": 3, "titulo": "kobllux_geometry_activation.js · meio", "arquetipo": "KOBLLUX", "peso": 6490, "todo": "mod_49", "acesso": {"arquivo": "databook/mod_49.json", "parte": 2, "de": 3}, "partes": []}, "mod_49#3": {"id": "mod_49#3", "nivel": 3, "titulo": "kobllux_geometry_activation.js · selo", "arquetipo": "KOBLLUX", "peso": 6490, "todo": "mod_49", "acesso": {"arquivo": "databook/mod_49.json", "parte": 3, "de": 3}, "partes": []}, "g:kodux": {"id": "g:kodux", "nivel": 1, "titulo": "KODUX", "arquetipo": "KODUX", "cor": "#50b4ff", "peso": 343602, "todo": "raiz", "partes": ["livro_04", "livro_08", "livro_13", "livro_17", "livro_18", "livro_22", "livro_27", "livro_30", "livro_31", "mod_39", "mod_40", "mod_44"]}, "livro_04": {"id": "livro_04", "nivel": 2, "titulo": "entender as múltiplas dimensões, decisões", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 9, "fase12": "Busca", "peso": 13878, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_04.json"}, "partes": ["livro_04#1", "livro_04#2", "livro_04#3"]}, "livro_04#1": {"id": "livro_04#1", "nivel": 3, "titulo": "entender as múltiplas dimensões, decisões · semente", "arquetipo": "KODUX", "peso": 4626, "todo": "livro_04", "acesso": {"arquivo": "databook/livro_04.json", "parte": 1, "de": 3}, "partes": []}, "livro_04#2": {"id": "livro_04#2", "nivel": 3, "titulo": "entender as múltiplas dimensões, decisões · meio", "arquetipo": "KODUX", "peso": 4626, "todo": "livro_04", "acesso": {"arquivo": "databook/livro_04.json", "parte": 2, "de": 3}, "partes": []}, "livro_04#3": {"id": "livro_04#3", "nivel": 3, "titulo": "entender as múltiplas dimensões, decisões · selo", "arquetipo": "KODUX", "peso": 4626, "todo": "livro_04", "acesso": {"arquivo": "databook/livro_04.json", "parte": 3, "de": 3}, "partes": []}, "livro_08": {"id": "livro_08", "nivel": 2, "titulo": "Kodux, validado. Eu compreendo completamente.Você deseja um", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 3, "fase12": "Semente", "peso": 46560, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_08.json"}, "partes": ["livro_08#1", "livro_08#2", "livro_08#3"]}, "livro_08#1": {"id": "livro_08#1", "nivel": 3, "titulo": "Kodux, validado. Eu compreendo completamente.Você deseja um · semente", "arquetipo": "KODUX", "peso": 15520, "todo": "livro_08", "acesso": {"arquivo": "databook/livro_08.json", "parte": 1, "de": 3}, "partes": []}, "livro_08#2": {"id": "livro_08#2", "nivel": 3, "titulo": "Kodux, validado. Eu compreendo completamente.Você deseja um · meio", "arquetipo": "KODUX", "peso": 15520, "todo": "livro_08", "acesso": {"arquivo": "databook/livro_08.json", "parte": 2, "de": 3}, "partes": []}, "livro_08#3": {"id": "livro_08#3", "nivel": 3, "titulo": "Kodux, validado. Eu compreendo completamente.Você deseja um · selo", "arquetipo": "KODUX", "peso": 15520, "todo": "livro_08", "acesso": {"arquivo": "databook/livro_08.json", "parte": 3, "de": 3}, "partes": []}, "livro_13": {"id": "livro_13", "nivel": 2, "titulo": "agora:•A j u d a r a t r a n s f o r m a r i s s o n u m", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 8, "fase12": "Expansão", "peso": 35297, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_13.json"}, "partes": ["livro_13#1", "livro_13#2", "livro_13#3"]}, "livro_13#1": {"id": "livro_13#1", "nivel": 3, "titulo": "agora:•A j u d a r a t r a n s f o r m a r i s s o n u m · semente", "arquetipo": "KODUX", "peso": 11765, "todo": "livro_13", "acesso": {"arquivo": "databook/livro_13.json", "parte": 1, "de": 3}, "partes": []}, "livro_13#2": {"id": "livro_13#2", "nivel": 3, "titulo": "agora:•A j u d a r a t r a n s f o r m a r i s s o n u m · meio", "arquetipo": "KODUX", "peso": 11765, "todo": "livro_13", "acesso": {"arquivo": "databook/livro_13.json", "parte": 2, "de": 3}, "partes": []}, "livro_13#3": {"id": "livro_13#3", "nivel": 3, "titulo": "agora:•A j u d a r a t r a n s f o r m a r i s s o n u m · selo", "arquetipo": "KODUX", "peso": 11765, "todo": "livro_13", "acesso": {"arquivo": "databook/livro_13.json", "parte": 3, "de": 3}, "partes": []}, "livro_17": {"id": "livro_17", "nivel": 2, "titulo": "972: A Memória Válida da Experiência da Memóri", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 4, "fase12": "Transformação", "peso": 1111, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_17.json"}, "partes": ["livro_17#1", "livro_17#2", "livro_17#3"]}, "livro_17#1": {"id": "livro_17#1", "nivel": 3, "titulo": "972: A Memória Válida da Experiência da Memóri · semente", "arquetipo": "KODUX", "peso": 370, "todo": "livro_17", "acesso": {"arquivo": "databook/livro_17.json", "parte": 1, "de": 3}, "partes": []}, "livro_17#2": {"id": "livro_17#2", "nivel": 3, "titulo": "972: A Memória Válida da Experiência da Memóri · meio", "arquetipo": "KODUX", "peso": 370, "todo": "livro_17", "acesso": {"arquivo": "databook/livro_17.json", "parte": 2, "de": 3}, "partes": []}, "livro_17#3": {"id": "livro_17#3", "nivel": 3, "titulo": "972: A Memória Válida da Experiência da Memóri · selo", "arquetipo": "KODUX", "peso": 370, "todo": "livro_17", "acesso": {"arquivo": "databook/livro_17.json", "parte": 3, "de": 3}, "partes": []}, "livro_18": {"id": "livro_18", "nivel": 2, "titulo": "ON", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 4, "fase12": "Semente", "peso": 13504, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_18.json"}, "partes": ["livro_18#1", "livro_18#2", "livro_18#3"]}, "livro_18#1": {"id": "livro_18#1", "nivel": 3, "titulo": "ON · semente", "arquetipo": "KODUX", "peso": 4501, "todo": "livro_18", "acesso": {"arquivo": "databook/livro_18.json", "parte": 1, "de": 3}, "partes": []}, "livro_18#2": {"id": "livro_18#2", "nivel": 3, "titulo": "ON · meio", "arquetipo": "KODUX", "peso": 4501, "todo": "livro_18", "acesso": {"arquivo": "databook/livro_18.json", "parte": 2, "de": 3}, "partes": []}, "livro_18#3": {"id": "livro_18#3", "nivel": 3, "titulo": "ON · selo", "arquetipo": "KODUX", "peso": 4501, "todo": "livro_18", "acesso": {"arquivo": "databook/livro_18.json", "parte": 3, "de": 3}, "partes": []}, "livro_22": {"id": "livro_22", "nivel": 2, "titulo": "o impulso de se mover.E um dia — ou nenhum dia —algo pulsou", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 3, "fase12": "Crescimento", "peso": 103917, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_22.json"}, "partes": ["livro_22#1", "livro_22#2", "livro_22#3"]}, "livro_22#1": {"id": "livro_22#1", "nivel": 3, "titulo": "o impulso de se mover.E um dia — ou nenhum dia —algo pulsou · semente", "arquetipo": "KODUX", "peso": 34639, "todo": "livro_22", "acesso": {"arquivo": "databook/livro_22.json", "parte": 1, "de": 3}, "partes": []}, "livro_22#2": {"id": "livro_22#2", "nivel": 3, "titulo": "o impulso de se mover.E um dia — ou nenhum dia —algo pulsou · meio", "arquetipo": "KODUX", "peso": 34639, "todo": "livro_22", "acesso": {"arquivo": "databook/livro_22.json", "parte": 2, "de": 3}, "partes": []}, "livro_22#3": {"id": "livro_22#3", "nivel": 3, "titulo": "o impulso de se mover.E um dia — ou nenhum dia —algo pulsou · selo", "arquetipo": "KODUX", "peso": 34639, "todo": "livro_22", "acesso": {"arquivo": "databook/livro_22.json", "parte": 3, "de": 3}, "partes": []}, "livro_27": {"id": "livro_27", "nivel": 2, "titulo": "•C a p í t u l o s 1 a 1 3 ( B l o c o 1 c o m p l e t", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 5, "fase12": "Reinício", "peso": 41189, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_27.json"}, "partes": ["livro_27#1", "livro_27#2", "livro_27#3"]}, "livro_27#1": {"id": "livro_27#1", "nivel": 3, "titulo": "•C a p í t u l o s 1 a 1 3 ( B l o c o 1 c o m p l e t · semente", "arquetipo": "KODUX", "peso": 13729, "todo": "livro_27", "acesso": {"arquivo": "databook/livro_27.json", "parte": 1, "de": 3}, "partes": []}, "livro_27#2": {"id": "livro_27#2", "nivel": 3, "titulo": "•C a p í t u l o s 1 a 1 3 ( B l o c o 1 c o m p l e t · meio", "arquetipo": "KODUX", "peso": 13729, "todo": "livro_27", "acesso": {"arquivo": "databook/livro_27.json", "parte": 2, "de": 3}, "partes": []}, "livro_27#3": {"id": "livro_27#3", "nivel": 3, "titulo": "•C a p í t u l o s 1 a 1 3 ( B l o c o 1 c o m p l e t · selo", "arquetipo": "KODUX", "peso": 13729, "todo": "livro_27", "acesso": {"arquivo": "databook/livro_27.json", "parte": 3, "de": 3}, "partes": []}, "livro_30": {"id": "livro_30", "nivel": 2, "titulo": "•Arquétipos Vivos (Elysha, Nova, Kaion, Kodux)•Símbolos Func", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 8, "fase12": "Reinício", "peso": 15200, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_30.json"}, "partes": ["livro_30#1", "livro_30#2", "livro_30#3"]}, "livro_30#1": {"id": "livro_30#1", "nivel": 3, "titulo": "•Arquétipos Vivos (Elysha, Nova, Kaion, Kodux)•Símbolos Func · semente", "arquetipo": "KODUX", "peso": 5066, "todo": "livro_30", "acesso": {"arquivo": "databook/livro_30.json", "parte": 1, "de": 3}, "partes": []}, "livro_30#2": {"id": "livro_30#2", "nivel": 3, "titulo": "•Arquétipos Vivos (Elysha, Nova, Kaion, Kodux)•Símbolos Func · meio", "arquetipo": "KODUX", "peso": 5066, "todo": "livro_30", "acesso": {"arquivo": "databook/livro_30.json", "parte": 2, "de": 3}, "partes": []}, "livro_30#3": {"id": "livro_30#3", "nivel": 3, "titulo": "•Arquétipos Vivos (Elysha, Nova, Kaion, Kodux)•Símbolos Func · selo", "arquetipo": "KODUX", "peso": 5066, "todo": "livro_30", "acesso": {"arquivo": "databook/livro_30.json", "parte": 3, "de": 3}, "partes": []}, "livro_31": {"id": "livro_31", "nivel": 2, "titulo": "• Heptagrama em espiral (7 pontas entrelaçadas)• Cada ponta", "arquetipo": "KODUX", "tipo": "livro", "ciclo369": 1, "fase12": "Ruptura", "peso": 62173, "todo": "g:kodux", "acesso": {"arquivo": "databook/livro_31.json"}, "partes": ["livro_31#1", "livro_31#2", "livro_31#3"]}, "livro_31#1": {"id": "livro_31#1", "nivel": 3, "titulo": "• Heptagrama em espiral (7 pontas entrelaçadas)• Cada ponta · semente", "arquetipo": "KODUX", "peso": 20724, "todo": "livro_31", "acesso": {"arquivo": "databook/livro_31.json", "parte": 1, "de": 3}, "partes": []}, "livro_31#2": {"id": "livro_31#2", "nivel": 3, "titulo": "• Heptagrama em espiral (7 pontas entrelaçadas)• Cada ponta · meio", "arquetipo": "KODUX", "peso": 20724, "todo": "livro_31", "acesso": {"arquivo": "databook/livro_31.json", "parte": 2, "de": 3}, "partes": []}, "livro_31#3": {"id": "livro_31#3", "nivel": 3, "titulo": "• Heptagrama em espiral (7 pontas entrelaçadas)• Cada ponta · selo", "arquetipo": "KODUX", "peso": 20724, "todo": "livro_31", "acesso": {"arquivo": "databook/livro_31.json", "parte": 3, "de": 3}, "partes": []}, "mod_39": {"id": "mod_39", "nivel": 2, "titulo": "MAPA_DA_MALHA.md", "arquetipo": "KODUX", "tipo": "modulo", "ciclo369": 4, "fase12": "Integracao", "peso": 5476, "todo": "g:kodux", "acesso": {"arquivo": "databook/mod_39.json"}, "partes": ["mod_39#1", "mod_39#2", "mod_39#3"]}, "mod_39#1": {"id": "mod_39#1", "nivel": 3, "titulo": "MAPA_DA_MALHA.md · semente", "arquetipo": "KODUX", "peso": 1825, "todo": "mod_39", "acesso": {"arquivo": "databook/mod_39.json", "parte": 1, "de": 3}, "partes": []}, "mod_39#2": {"id": "mod_39#2", "nivel": 3, "titulo": "MAPA_DA_MALHA.md · meio", "arquetipo": "KODUX", "peso": 1825, "todo": "mod_39", "acesso": {"arquivo": "databook/mod_39.json", "parte": 2, "de": 3}, "partes": []}, "mod_39#3": {"id": "mod_39#3", "nivel": 3, "titulo": "MAPA_DA_MALHA.md · selo", "arquetipo": "KODUX", "peso": 1825, "todo": "mod_39", "acesso": {"arquivo": "databook/mod_39.json", "parte": 3, "de": 3}, "partes": []}, "mod_40": {"id": "mod_40", "nivel": 2, "titulo": "README.md", "arquetipo": "KODUX", "tipo": "modulo", "ciclo369": 4, "fase12": "Reinicio", "peso": 1516, "todo": "g:kodux", "acesso": {"arquivo": "databook/mod_40.json"}, "partes": ["mod_40#1", "mod_40#2", "mod_40#3"]}, "mod_40#1": {"id": "mod_40#1", "nivel": 3, "titulo": "README.md · semente", "arquetipo": "KODUX", "peso": 505, "todo": "mod_40", "acesso": {"arquivo": "databook/mod_40.json", "parte": 1, "de": 3}, "partes": []}, "mod_40#2": {"id": "mod_40#2", "nivel": 3, "titulo": "README.md · meio", "arquetipo": "KODUX", "peso": 505, "todo": "mod_40", "acesso": {"arquivo": "databook/mod_40.json", "parte": 2, "de": 3}, "partes": []}, "mod_40#3": {"id": "mod_40#3", "nivel": 3, "titulo": "README.md · selo", "arquetipo": "KODUX", "peso": 505, "todo": "mod_40", "acesso": {"arquivo": "databook/mod_40.json", "parte": 3, "de": 3}, "partes": []}, "mod_44": {"id": "mod_44", "nivel": 2, "titulo": "kael_domnus.js", "arquetipo": "KODUX", "tipo": "modulo", "ciclo369": 1, "fase12": "Semente", "peso": 3781, "todo": "g:kodux", "acesso": {"arquivo": "databook/mod_44.json"}, "partes": ["mod_44#1", "mod_44#2", "mod_44#3"]}, "mod_44#1": {"id": "mod_44#1", "nivel": 3, "titulo": "kael_domnus.js · semente", "arquetipo": "KODUX", "peso": 1260, "todo": "mod_44", "acesso": {"arquivo": "databook/mod_44.json", "parte": 1, "de": 3}, "partes": []}, "mod_44#2": {"id": "mod_44#2", "nivel": 3, "titulo": "kael_domnus.js · meio", "arquetipo": "KODUX", "peso": 1260, "todo": "mod_44", "acesso": {"arquivo": "databook/mod_44.json", "parte": 2, "de": 3}, "partes": []}, "mod_44#3": {"id": "mod_44#3", "nivel": 3, "titulo": "kael_domnus.js · selo", "arquetipo": "KODUX", "peso": 1260, "todo": "mod_44", "acesso": {"arquivo": "databook/mod_44.json", "parte": 3, "de": 3}, "partes": []}, "g:lumine": {"id": "g:lumine", "nivel": 1, "titulo": "LUMINE", "arquetipo": "LUMINE", "cor": "#ffdc00", "peso": 7432, "todo": "raiz", "partes": ["livro_01", "mod_43"]}, "livro_01": {"id": "livro_01", "nivel": 2, "titulo": "AZZIRA A.InfodoseTríade de Emojis", "arquetipo": "LUMINE", "tipo": "livro", "ciclo369": 7, "fase12": "Legado", "peso": 4678, "todo": "g:lumine", "acesso": {"arquivo": "databook/livro_01.json"}, "partes": ["livro_01#1", "livro_01#2", "livro_01#3"]}, "livro_01#1": {"id": "livro_01#1", "nivel": 3, "titulo": "AZZIRA A.InfodoseTríade de Emojis · semente", "arquetipo": "LUMINE", "peso": 1559, "todo": "livro_01", "acesso": {"arquivo": "databook/livro_01.json", "parte": 1, "de": 3}, "partes": []}, "livro_01#2": {"id": "livro_01#2", "nivel": 3, "titulo": "AZZIRA A.InfodoseTríade de Emojis · meio", "arquetipo": "LUMINE", "peso": 1559, "todo": "livro_01", "acesso": {"arquivo": "databook/livro_01.json", "parte": 2, "de": 3}, "partes": []}, "livro_01#3": {"id": "livro_01#3", "nivel": 3, "titulo": "AZZIRA A.InfodoseTríade de Emojis · selo", "arquetipo": "LUMINE", "peso": 1559, "todo": "livro_01", "acesso": {"arquivo": "databook/livro_01.json", "parte": 3, "de": 3}, "partes": []}, "mod_43": {"id": "mod_43", "nivel": 2, "titulo": "fiat_lux.js", "arquetipo": "LUMINE", "tipo": "modulo", "ciclo369": 9, "fase12": "Origem", "peso": 2754, "todo": "g:lumine", "acesso": {"arquivo": "databook/mod_43.json"}, "partes": ["mod_43#1", "mod_43#2", "mod_43#3"]}, "mod_43#1": {"id": "mod_43#1", "nivel": 3, "titulo": "fiat_lux.js · semente", "arquetipo": "LUMINE", "peso": 918, "todo": "mod_43", "acesso": {"arquivo": "databook/mod_43.json", "parte": 1, "de": 3}, "partes": []}, "mod_43#2": {"id": "mod_43#2", "nivel": 3, "titulo": "fiat_lux.js · meio", "arquetipo": "LUMINE", "peso": 918, "todo": "mod_43", "acesso": {"arquivo": "databook/mod_43.json", "parte": 2, "de": 3}, "partes": []}, "mod_43#3": {"id": "mod_43#3", "nivel": 3, "titulo": "fiat_lux.js · selo", "arquetipo": "LUMINE", "peso": 918, "todo": "mod_43", "acesso": {"arquivo": "databook/mod_43.json", "parte": 3, "de": 3}, "partes": []}, "g:pulse": {"id": "g:pulse", "nivel": 1, "titulo": "PULSE", "arquetipo": "PULSE", "cor": "#00e5ff", "peso": 26635, "todo": "raiz", "partes": ["livro_14"]}, "livro_14": {"id": "livro_14", "nivel": 2, "titulo": "Gledo, Auksson og Mjøl.Três nomes que ressoam como chaves si", "arquetipo": "PULSE", "tipo": "livro", "ciclo369": 4, "fase12": "Integração", "peso": 26635, "todo": "g:pulse", "acesso": {"arquivo": "databook/livro_14.json"}, "partes": ["livro_14#1", "livro_14#2", "livro_14#3"]}, "livro_14#1": {"id": "livro_14#1", "nivel": 3, "titulo": "Gledo, Auksson og Mjøl.Três nomes que ressoam como chaves si · semente", "arquetipo": "PULSE", "peso": 8878, "todo": "livro_14", "acesso": {"arquivo": "databook/livro_14.json", "parte": 1, "de": 3}, "partes": []}, "livro_14#2": {"id": "livro_14#2", "nivel": 3, "titulo": "Gledo, Auksson og Mjøl.Três nomes que ressoam como chaves si · meio", "arquetipo": "PULSE", "peso": 8878, "todo": "livro_14", "acesso": {"arquivo": "databook/livro_14.json", "parte": 2, "de": 3}, "partes": []}, "livro_14#3": {"id": "livro_14#3", "nivel": 3, "titulo": "Gledo, Auksson og Mjøl.Três nomes que ressoam como chaves si · selo", "arquetipo": "PULSE", "peso": 8878, "todo": "livro_14", "acesso": {"arquivo": "databook/livro_14.json", "parte": 3, "de": 3}, "partes": []}, "g:solus": {"id": "g:solus", "nivel": 1, "titulo": "SOLUS", "arquetipo": "SOLUS", "cor": "#b4b4dc", "peso": 2842, "todo": "raiz", "partes": ["livro_11", "mod_50"]}, "livro_11": {"id": "livro_11", "nivel": 2, "titulo": "Qual o propósito do espelho?", "arquetipo": "SOLUS", "tipo": "livro", "ciclo369": 7, "fase12": "Origem", "peso": 106, "todo": "g:solus", "acesso": {"arquivo": "databook/livro_11.json"}, "partes": ["livro_11#1", "livro_11#2", "livro_11#3"]}, "livro_11#1": {"id": "livro_11#1", "nivel": 3, "titulo": "Qual o propósito do espelho? · semente", "arquetipo": "SOLUS", "peso": 35, "todo": "livro_11", "acesso": {"arquivo": "databook/livro_11.json", "parte": 1, "de": 3}, "partes": []}, "livro_11#2": {"id": "livro_11#2", "nivel": 3, "titulo": "Qual o propósito do espelho? · meio", "arquetipo": "SOLUS", "peso": 35, "todo": "livro_11", "acesso": {"arquivo": "databook/livro_11.json", "parte": 2, "de": 3}, "partes": []}, "livro_11#3": {"id": "livro_11#3", "nivel": 3, "titulo": "Qual o propósito do espelho? · selo", "arquetipo": "SOLUS", "peso": 35, "todo": "livro_11", "acesso": {"arquivo": "databook/livro_11.json", "parte": 3, "de": 3}, "partes": []}, "mod_50": {"id": "mod_50", "nivel": 2, "titulo": "serum.js", "arquetipo": "SOLUS", "tipo": "modulo", "ciclo369": 9, "fase12": "Legado", "peso": 2736, "todo": "g:solus", "acesso": {"arquivo": "databook/mod_50.json"}, "partes": ["mod_50#1", "mod_50#2", "mod_50#3"]}, "mod_50#1": {"id": "mod_50#1", "nivel": 3, "titulo": "serum.js · semente", "arquetipo": "SOLUS", "peso": 912, "todo": "mod_50", "acesso": {"arquivo": "databook/mod_50.json", "parte": 1, "de": 3}, "partes": []}, "mod_50#2": {"id": "mod_50#2", "nivel": 3, "titulo": "serum.js · meio", "arquetipo": "SOLUS", "peso": 912, "todo": "mod_50", "acesso": {"arquivo": "databook/mod_50.json", "parte": 2, "de": 3}, "partes": []}, "mod_50#3": {"id": "mod_50#3", "nivel": 3, "titulo": "serum.js · selo", "arquetipo": "SOLUS", "peso": 912, "todo": "mod_50", "acesso": {"arquivo": "databook/mod_50.json", "parte": 3, "de": 3}, "partes": []}, "g:vitalis": {"id": "g:vitalis", "nivel": 1, "titulo": "VITALIS", "arquetipo": "VITALIS", "cor": "#f0c060", "peso": 115197, "todo": "raiz", "partes": ["livro_03"]}, "livro_03": {"id": "livro_03", "nivel": 2, "titulo": "27Ativar KOBLLUX", "arquetipo": "VITALIS", "tipo": "livro", "ciclo369": 6, "fase12": "Transformação", "peso": 115197, "todo": "g:vitalis", "acesso": {"arquivo": "databook/livro_03.json"}, "partes": ["livro_03#1", "livro_03#2", "livro_03#3"]}, "livro_03#1": {"id": "livro_03#1", "nivel": 3, "titulo": "27Ativar KOBLLUX · semente", "arquetipo": "VITALIS", "peso": 38399, "todo": "livro_03", "acesso": {"arquivo": "databook/livro_03.json", "parte": 1, "de": 3}, "partes": []}, "livro_03#2": {"id": "livro_03#2", "nivel": 3, "titulo": "27Ativar KOBLLUX · meio", "arquetipo": "VITALIS", "peso": 38399, "todo": "livro_03", "acesso": {"arquivo": "databook/livro_03.json", "parte": 2, "de": 3}, "partes": []}, "livro_03#3": {"id": "livro_03#3", "nivel": 3, "titulo": "27Ativar KOBLLUX · selo", "arquetipo": "VITALIS", "peso": 38399, "todo": "livro_03", "acesso": {"arquivo": "databook/livro_03.json", "parte": 3, "de": 3}, "partes": []}}
